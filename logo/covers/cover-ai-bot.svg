@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="AI 客服／導購機器人">
+  <defs>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34e3c4"/>
+      <stop offset="1" stop-color="#7c8cff"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="50%" cy="34%" r="75%">
+      <stop offset="0" stop-color="#12202c"/>
+      <stop offset="0.55" stop-color="#0b131c"/>
+      <stop offset="1" stop-color="#070b10"/>
+    </radialGradient>
+    <linearGradient id="bubble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f1620"/>
+      <stop offset="1" stop-color="#0a121b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+
+  <!-- faint grid -->
+  <g stroke="#1d2733" stroke-width="1" opacity="0.35">
+    <line x1="0" y1="225" x2="1200" y2="225"/>
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="0" y1="675" x2="1200" y2="675"/>
+    <line x1="300" y1="0" x2="300" y2="900"/>
+    <line x1="600" y1="0" x2="600" y2="900"/>
+    <line x1="900" y1="0" x2="900" y2="900"/>
+  </g>
+
+  <!-- chat bubble with graph nodes inside -->
+  <g transform="translate(600 380)">
+    <path d="M -200 -150 Q -200 -190 -160 -190 L 160 -190 Q 200 -190 200 -150 L 200 90 Q 200 130 160 130 L -60 130 L -110 188 L -118 130 L -160 130 Q -200 130 -200 90 Z"
+          fill="url(#bubble)" stroke="#22303f" stroke-width="2"/>
+    <g transform="translate(0 -30)">
+      <g stroke="url(#edge)" stroke-width="3" opacity="0.7" stroke-linecap="round">
+        <line x1="0" y1="0" x2="-78" y2="-58"/>
+        <line x1="0" y1="0" x2="84" y2="-44"/>
+        <line x1="0" y1="0" x2="-66" y2="62"/>
+        <line x1="0" y1="0" x2="72" y2="58"/>
+        <line x1="-78" y1="-58" x2="84" y2="-44" opacity="0.4"/>
+      </g>
+      <circle cx="-78" cy="-58" r="11" fill="#7c8cff"/>
+      <circle cx="84" cy="-44" r="11" fill="#7c8cff"/>
+      <circle cx="-66" cy="62" r="11" fill="#7c8cff"/>
+      <circle cx="72" cy="58" r="11" fill="#7c8cff"/>
+      <circle cx="0" cy="0" r="30" fill="none" stroke="#34e3c4" stroke-width="2.5" opacity="0.35"/>
+      <circle cx="0" cy="0" r="19" fill="#34e3c4"/>
+    </g>
+  </g>
+
+  <!-- title -->
+  <text x="80" y="700" font-family="Sora, 'Segoe UI', sans-serif" font-size="68" font-weight="800" letter-spacing="-1.5" fill="#eaf2fb">AI 客服<tspan fill="#34e3c4">／</tspan>導購機器人</text>
+  <text x="82" y="752" font-family="'JetBrains Mono', monospace" font-size="27" fill="#61748a">chatbot · 智能客服 · 導購推薦</text>
+
+  <!-- small e-life.ai logo bottom-left -->
+  <g transform="translate(80 818)">
+    <g transform="translate(20 0)">
+      <g stroke="url(#edge)" stroke-width="2" opacity="0.7">
+        <line x1="0" y1="0" x2="-13" y2="-12"/>
+        <line x1="0" y1="0" x2="14" y2="-10"/>
+        <line x1="0" y1="0" x2="-11" y2="13"/>
+        <line x1="0" y1="0" x2="12" y2="12"/>
+      </g>
+      <circle cx="-13" cy="-12" r="2.6" fill="#7c8cff"/>
+      <circle cx="14" cy="-10" r="2.6" fill="#7c8cff"/>
+      <circle cx="-11" cy="13" r="2.6" fill="#7c8cff"/>
+      <circle cx="12" cy="12" r="2.6" fill="#7c8cff"/>
+      <circle cx="0" cy="0" r="4.4" fill="#34e3c4"/>
+    </g>
+    <text x="48" y="9" font-family="Sora, 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="-0.8" fill="#eaf2fb">e-life<tspan fill="#34e3c4">.ai</tspan></text>
+  </g>
+
+  <!-- service tag top-right -->
+  <g transform="translate(1120 70)">
+    <rect x="-150" y="-26" width="150" height="44" rx="22" fill="#0f1620" stroke="#22303f"/>
+    <text x="-75" y="4" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="22" fill="#34e3c4">AI · BOT</text>
+  </g>
+</svg>

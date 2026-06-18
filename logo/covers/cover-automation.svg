@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="自動化與爬蟲">
+  <defs>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34e3c4"/>
+      <stop offset="1" stop-color="#7c8cff"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="50%" cy="34%" r="75%">
+      <stop offset="0" stop-color="#12202c"/>
+      <stop offset="0.55" stop-color="#0b131c"/>
+      <stop offset="1" stop-color="#070b10"/>
+    </radialGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#34e3c4"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+
+  <g stroke="#1d2733" stroke-width="1" opacity="0.35">
+    <line x1="0" y1="225" x2="1200" y2="225"/>
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="0" y1="675" x2="1200" y2="675"/>
+    <line x1="300" y1="0" x2="300" y2="900"/>
+    <line x1="600" y1="0" x2="600" y2="900"/>
+    <line x1="900" y1="0" x2="900" y2="900"/>
+  </g>
+
+  <!-- crawl flow: nodes connected by directed edges forming a loop -->
+  <g transform="translate(600 360)">
+    <!-- circular automation loop arrows -->
+    <g fill="none" stroke="#34e3c4" stroke-width="3" opacity="0.55">
+      <path d="M -150 -130 A 198 198 0 0 1 150 -130" marker-end="url(#arrow)"/>
+      <path d="M 196 0 A 198 198 0 0 1 60 187" marker-end="url(#arrow)"/>
+      <path d="M -60 187 A 198 198 0 0 1 -196 0" marker-end="url(#arrow)"/>
+    </g>
+
+    <!-- crawl graph in center -->
+    <g stroke="url(#edge)" stroke-width="3" opacity="0.75" stroke-linecap="round">
+      <line x1="0" y1="0" x2="-92" y2="-46"/>
+      <line x1="0" y1="0" x2="96" y2="-40"/>
+      <line x1="0" y1="0" x2="-58" y2="84"/>
+      <line x1="0" y1="0" x2="70" y2="80"/>
+      <line x1="-92" y1="-46" x2="-58" y2="84" opacity="0.4"/>
+      <line x1="96" y1="-40" x2="70" y2="80" opacity="0.4"/>
+    </g>
+    <circle cx="-92" cy="-46" r="13" fill="#7c8cff"/>
+    <circle cx="96" cy="-40" r="13" fill="#7c8cff"/>
+    <circle cx="-58" cy="84" r="13" fill="#7c8cff"/>
+    <circle cx="70" cy="80" r="13" fill="#7c8cff"/>
+    <circle cx="0" cy="0" r="34" fill="none" stroke="#34e3c4" stroke-width="2.5" opacity="0.3"/>
+    <circle cx="0" cy="0" r="21" fill="#34e3c4"/>
+    <circle cx="0" cy="0" r="9" fill="#0b131c"/>
+  </g>
+
+  <text x="80" y="700" font-family="Sora, 'Segoe UI', sans-serif" font-size="72" font-weight="800" letter-spacing="-1.5" fill="#eaf2fb">自動化<tspan fill="#34e3c4">與</tspan>爬蟲</text>
+  <text x="82" y="752" font-family="'JetBrains Mono', monospace" font-size="27" fill="#61748a">crawler · 跨平台自動化 · 排程任務</text>
+
+  <g transform="translate(80 818)">
+    <g transform="translate(20 0)">
+      <g stroke="url(#edge)" stroke-width="2" opacity="0.7">
+        <line x1="0" y1="0" x2="-13" y2="-12"/>
+        <line x1="0" y1="0" x2="14" y2="-10"/>
+        <line x1="0" y1="0" x2="-11" y2="13"/>
+        <line x1="0" y1="0" x2="12" y2="12"/>
+      </g>
+      <circle cx="-13" cy="-12" r="2.6" fill="#7c8cff"/>
+      <circle cx="14" cy="-10" r="2.6" fill="#7c8cff"/>
+      <circle cx="-11" cy="13" r="2.6" fill="#7c8cff"/>
+      <circle cx="12" cy="12" r="2.6" fill="#7c8cff"/>
+      <circle cx="0" cy="0" r="4.4" fill="#34e3c4"/>
+    </g>
+    <text x="48" y="9" font-family="Sora, 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="-0.8" fill="#eaf2fb">e-life<tspan fill="#34e3c4">.ai</tspan></text>
+  </g>
+
+  <g transform="translate(1120 70)">
+    <rect x="-180" y="-26" width="180" height="44" rx="22" fill="#0f1620" stroke="#22303f"/>
+    <text x="-90" y="4" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="22" fill="#34e3c4">AUTOMATION</text>
+  </g>
+</svg>
