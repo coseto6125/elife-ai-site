@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>晨光日報 The Morning Ledger ｜e-life-ai</title>
+<meta name="description" content="晨光日報 The Morning Ledger — 即時、深入、可信賴的數位新聞。要聞、政治、財經、科技、國際、文化全方位報導。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;0,900;1,600&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#fbfaf7;
+    --paper-2:#f3f1ea;
+    --line:#dcd8cd;
+    --line-strong:#c4bfb1;
+    --ink:#15130e;
+    --ink-soft:#4a463c;
+    --ink-mute:#7d786b;
+    --accent:#a31515;
+    --accent-deep:#7c1010;
+    --gold:#9a7b2e;
+    --up:#1a7a4c;
+    --down:#b22323;
+    --blue:#1d4f7a;
+    --serif:"Playfair Display","Noto Serif TC",serif;
+    --serif-tc:"Noto Serif TC",serif;
+    --sans:"Source Sans 3",system-ui,sans-serif;
+    --shadow:0 1px 0 rgba(21,19,14,.04), 0 8px 24px rgba(21,19,14,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent);color:#fff}
+
+  .wrap{max-width:1280px;margin-inline:auto;padding-inline:24px}
+
+  /* ===== Breaking ticker ===== */
+  .ticker{
+    background:var(--ink);color:var(--paper);
+    border-bottom:3px double var(--line-strong);
+    font-family:var(--sans);
+    display:flex;align-items:stretch;overflow:hidden;
+  }
+  .ticker__tag{
+    background:var(--accent);color:#fff;font-weight:700;
+    padding-block:9px;padding-inline:16px;white-space:nowrap;
+    letter-spacing:.06em;font-size:12px;display:flex;align-items:center;gap:7px;
+    flex-shrink:0;text-transform:uppercase;
+  }
+  .ticker__tag .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.1s steps(2,end) infinite}
+  @keyframes blink{50%{opacity:.25}}
+  .ticker__view{flex:1;overflow:hidden;position:relative}
+  .ticker__line{
+    padding-block:9px;padding-inline:18px;font-size:13.5px;white-space:nowrap;
+    position:absolute;inset:0;display:flex;align-items:center;gap:10px;
+    opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;
+  }
+  .ticker__line.on{opacity:1;transform:translateY(0)}
+  .ticker__line b{color:#f6c945;font-weight:700;letter-spacing:.04em}
+  .ticker__time{color:#a6a294;font-size:11px;font-variant-numeric:tabular-nums}
+
+  /* ===== Masthead ===== */
+  .top{border-bottom:1px solid var(--line);background:var(--paper)}
+  .top__bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:7px;font-size:12px;color:var(--ink-mute)}
+  .top__bar .date{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .top__bar .weather{display:flex;gap:14px;align-items:center}
+  .top__bar .weather span{display:flex;align-items:center;gap:5px}
+  .masthead{text-align:center;padding-block:18px 14px;border-block:1px solid var(--line);position:relative}
+  .masthead .est{font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
+  .masthead h1{
+    font-family:var(--serif);font-weight:900;font-size:clamp(34px,7vw,76px);
+    line-height:.95;letter-spacing:.005em;margin-block:6px 4px;
+  }
+  .masthead .sub{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-soft)}
+  .masthead .edition{
+    position:absolute;top:18px;right:0;font-size:11px;color:var(--ink-mute);
+    text-align:right;line-height:1.5;display:none;
+  }
+  @media(min-width:900px){.masthead .edition{display:block}}
+
+  /* ===== Nav / sections ===== */
+  .nav{
+    position:sticky;top:0;z-index:30;background:var(--paper);
+    border-block:1.5px solid var(--ink);
+  }
+  .nav__inner{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding-block:0}
+  .nav__inner::-webkit-scrollbar{display:none}
+  .tab{
+    background:none;border:none;cursor:pointer;font-family:var(--sans);
+    font-weight:600;font-size:14px;color:var(--ink-soft);
+    padding-block:13px;padding-inline:15px;white-space:nowrap;position:relative;
+    transition:color .2s;letter-spacing:.02em;
+  }
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--accent)}
+  .tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1.5px;height:3px;background:var(--accent)}
+  .nav__search{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:0}
+  .nav__search input{
+    border:1px solid var(--line-strong);background:var(--paper);
+    font-family:var(--sans);font-size:13px;padding-block:7px;padding-inline:11px;
+    width:0;opacity:0;transition:width .3s,opacity .3s,padding .3s;color:var(--ink);
+  }
+  .nav__search.open input{width:170px;opacity:1}
+  .nav__search button{
+    background:none;border:none;cursor:pointer;padding:9px;color:var(--ink-soft);display:flex;
+  }
+  .nav__search button:hover{color:var(--accent)}
+
+  /* ===== Layout grid ===== */
+  .main{padding-block:26px 60px}
+  .grid{display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:760px){.grid{grid-template-columns:1.4fr 1fr;gap:28px}}
+  @media(min-width:1080px){.grid{grid-template-columns:2.1fr 1fr 1fr;gap:0}}
+
+  .col{min-width:0}
+  .col--lead{padding-right:0}
+  @media(min-width:1080px){
+    .col--lead{padding-right:28px;border-right:1px solid var(--line)}
+    .col--mid{padding-inline:28px;border-right:1px solid var(--line)}
+    .col--side{padding-left:28px}
+  }
+  @media(min-width:760px) and (max-width:1079px){
+    .col--side{grid-column:1 / -1;margin-top:20px;border-top:2px solid var(--ink);padding-top:18px;
+      display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  }
+
+  /* Section kicker */
+  .kicker{
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+    font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink);
+  }
+  .kicker::after{content:"";flex:1;height:1px;background:var(--line-strong)}
+  .kicker .sq{width:9px;height:9px;background:var(--accent)}
+
+  /* Article cards */
+  .art{padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+  .art:last-child{border-bottom:none;margin-bottom:0}
+  .cat{
+    display:inline-block;font-family:var(--sans);font-weight:700;font-size:10.5px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:7px;
+  }
+  .art h2{font-family:var(--serif-tc);font-weight:900;line-height:1.18;color:var(--ink)}
+  .art h2 a:hover{color:var(--accent)}
+  .art .dek{color:var(--ink-soft);font-size:14.5px;margin-top:8px;line-height:1.6}
+  .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--ink-mute)}
+  .meta .by{font-weight:600;color:var(--ink-soft)}
+  .meta .sep{color:var(--line-strong)}
+  .meta time{font-variant-numeric:tabular-nums}
+
+  .lead h2{font-size:clamp(28px,4.5vw,42px);letter-spacing:-.01em}
+  .lead .dek{font-size:16.5px;margin-top:12px}
+
+  /* SVG figure */
+  .fig{width:100%;border:1px solid var(--line);background:var(--paper-2);display:block;margin-bottom:14px}
+  .fig.lead{aspect-ratio:16/9}
+  .fig.std{aspect-ratio:3/2}
+
+  /* secondary list (mid col compact) */
+  .compact h2{font-size:18px;font-weight:700}
+  .compact .dek{font-size:13.5px;margin-top:5px}
+
+  /* bookmark btn */
+  .bm{
+    background:none;border:1px solid var(--line-strong);cursor:pointer;
+    width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    color:var(--ink-mute);transition:.2s;flex-shrink:0;margin-left:auto;
+  }
+  .bm:hover{border-color:var(--accent);color:var(--accent)}
+  .bm.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .meta--bm{width:100%;justify-content:space-between}
+
+  /* ===== Sidebar widgets ===== */
+  .wgt{border:1px solid var(--line);background:var(--paper);margin-bottom:26px}
+  .wgt__hd{
+    background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:700;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding-block:10px;padding-inline:14px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .wgt__hd .live{display:flex;align-items:center;gap:6px;color:#f6c945;font-size:11px}
+  .wgt__hd .live .dot{width:7px;height:7px;border-radius:50%;background:#f6c945;animation:blink 1.1s steps(2,end) infinite}
+  .wgt__bd{padding-block:6px;padding-inline:14px}
+
+  /* live feed */
+  .feed li{
+    list-style:none;display:grid;grid-template-columns:auto 1fr;gap:11px;
+    padding-block:11px;border-bottom:1px solid var(--line);align-items:start;
+    animation:slideIn .55s ease both;
+  }
+  .feed li:last-child{border-bottom:none}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  .feed .tm{font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;color:var(--accent);padding-top:1px;white-space:nowrap}
+  .feed .tx{font-family:var(--serif-tc);font-weight:600;font-size:14px;line-height:1.4;color:var(--ink)}
+  .feed .new{display:inline-block;background:var(--accent);color:#fff;font-size:9px;font-weight:700;
+    padding-block:1px;padding-inline:5px;letter-spacing:.08em;margin-left:6px;vertical-align:middle;border-radius:2px}
+
+  /* markets */
+  .mkt{width:100%;border-collapse:collapse;font-size:13px}
+  .mkt th{text-align:left;font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-mute);padding-block:7px;border-bottom:1px solid var(--line)}
+  .mkt th.r,.mkt td.r{text-align:right}
+  .mkt td{padding-block:9px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  .mkt tr:last-child td{border-bottom:none}
+  .mkt .sym{font-weight:700;color:var(--ink)}
+  .mkt .nm{font-size:11px;color:var(--ink-mute);display:block}
+  .mkt .px{font-weight:600}
+  .mkt .chg{font-weight:700}
+  .mkt .chg.up{color:var(--up)}
+  .mkt .chg.down{color:var(--down)}
+  .mkt .arr{font-size:10px;margin-right:2px}
+
+  /* mini chart widget */
+  .chartcard{padding-block:14px;padding-inline:14px}
+  .chartcard h4{font-family:var(--serif-tc);font-weight:700;font-size:15px;margin-bottom:2px}
+  .chartcard .cap{font-size:11.5px;color:var(--ink-mute);margin-bottom:10px}
+
+  /* most read */
+  .ranked{counter-reset:rk;list-style:none}
+  .ranked li{counter-increment:rk;display:grid;grid-template-columns:auto 1fr;gap:13px;
+    padding-block:12px;border-bottom:1px solid var(--line);align-items:start}
+  .ranked li:last-child{border-bottom:none}
+  .ranked li::before{content:counter(rk);font-family:var(--serif);font-weight:800;font-size:26px;
+    line-height:1;color:var(--line-strong)}
+  .ranked .t{font-family:var(--serif-tc);font-weight:600;font-size:14px;line-height:1.4;color:var(--ink)}
+  .ranked .t:hover{color:var(--accent)}
+  .ranked .mr{font-size:11px;color:var(--ink-mute);margin-top:4px}
+
+  /* newsletter */
+  .nl{background:var(--ink);color:var(--paper);padding-block:20px;padding-inline:18px}
+  .nl h3{font-family:var(--serif);font-weight:800;font-size:21px;margin-bottom:5px;color:#fff}
+  .nl p{font-size:13px;color:#c9c4b6;margin-bottom:13px;line-height:1.5}
+  .nl form{display:flex;flex-direction:column;gap:8px}
+  .nl input{padding-block:11px;padding-inline:12px;border:1px solid #45413a;background:#211f1a;color:#fff;
+    font-family:var(--sans);font-size:13.5px}
+  .nl input:focus{outline:none;border-color:#f6c945}
+  .nl input.err{border-color:#ff7b6b}
+  .nl button{padding-block:11px;background:var(--accent);color:#fff;border:none;cursor:pointer;
+    font-family:var(--sans);font-weight:700;font-size:13.5px;letter-spacing:.05em;transition:.2s}
+  .nl button:hover{background:#c41a1a}
+  .nl .msg{font-size:12px;min-height:16px}
+  .nl .msg.ok{color:#7fdca6}
+  .nl .msg.no{color:#ff9b8d}
+
+  /* empty state */
+  .empty{padding-block:40px;text-align:center;color:var(--ink-mute);font-family:var(--serif-tc);font-size:16px;display:none}
+  .empty.on{display:block}
+
+  /* reading list count badge in nav */
+  .saved-pill{
+    margin-left:6px;flex-shrink:0;font-family:var(--sans);font-weight:600;font-size:12px;
+    color:var(--ink-soft);border:1px solid var(--line-strong);background:var(--paper);
+    padding-block:6px;padding-inline:10px;cursor:pointer;display:flex;align-items:center;gap:6px;border-radius:2px;
+    transition:.2s;white-space:nowrap;
+  }
+  .saved-pill:hover{border-color:var(--accent);color:var(--accent)}
+  .saved-pill b{font-variant-numeric:tabular-nums}
+
+  /* footer */
+  footer{border-top:3px double var(--line-strong);background:var(--paper-2);padding-block:34px 26px}
+  .foot-grid{display:grid;grid-template-columns:1fr;gap:26px}
+  @media(min-width:680px){.foot-grid{grid-template-columns:2fr 1fr 1fr 1fr}}
+  .foot-brand h2{font-family:var(--serif);font-weight:900;font-size:26px;margin-bottom:6px}
+  .foot-brand p{font-size:13px;color:var(--ink-mute);max-width:300px;line-height:1.6}
+  .foot-col h5{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);margin-bottom:11px}
+  .foot-col a{display:block;font-size:13px;color:var(--ink-soft);padding-block:4px}
+  .foot-col a:hover{color:var(--accent)}
+  .foot-base{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;font-size:12px;color:var(--ink-mute)}
+  .foot-base a{color:var(--accent);font-weight:600}
+
+  /* fixed badge */
+  .badge{
+    position:fixed;right:16px;bottom:16px;z-index:60;
+    background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:600;
+    font-size:12px;letter-spacing:.03em;padding-block:8px;padding-inline:13px;border-radius:999px;
+    box-shadow:0 6px 20px rgba(21,19,14,.28);display:flex;align-items:center;gap:7px;
+    border:1px solid #3a362e;
+  }
+  .badge .gd{width:7px;height:7px;border-radius:50%;background:#f6c945}
+  .badge a{color:#f6c945;font-weight:700}
+
+  /* staggered entrance */
+  .reveal{opacity:0;transform:translateY(14px);animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  @media(max-width:520px){
+    .masthead h1{font-size:clamp(30px,11vw,46px)}
+    .top__bar .weather{display:none}
+    .wrap{padding-inline:16px}
+  }
+</style>
+</head>
+<body>
+
+<!-- BREAKING TICKER -->
+<div class="ticker" aria-label="即時快訊">
+  <div class="ticker__tag"><span class="dot"></span>即時快訊 BREAKING</div>
+  <div class="ticker__view" id="tickerView"></div>
+</div>
+
+<!-- TOP BAR + MASTHEAD -->
+<header class="top">
+  <div class="wrap">
+    <div class="top__bar">
+      <div class="date" id="topDate">—</div>
+      <div class="weather">
+        <span>☀ 臺北 28°</span>
+        <span>🌤 臺中 30°</span>
+        <span>⛅ 高雄 31°</span>
+        <span>本期售價 NT$15</span>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="masthead">
+      <div class="est">創刊於虛構紀元 · 數位特別版</div>
+      <h1>晨光日報</h1>
+      <div class="sub">The Morning Ledger — 即時、深入、可信賴</div>
+      <div class="edition">第 4,118 號<br>數位版 · 全日更新</div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV / SECTION TABS + SEARCH -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav__inner">
+      <button class="tab on" data-sec="all">要聞</button>
+      <button class="tab" data-sec="politics">政治</button>
+      <button class="tab" data-sec="finance">財經</button>
+      <button class="tab" data-sec="tech">科技</button>
+      <button class="tab" data-sec="world">國際</button>
+      <button class="tab" data-sec="culture">文化</button>
+      <button class="saved-pill" id="savedBtn" title="閱讀清單">🔖 閱讀清單 <b id="savedCount">0</b></button>
+      <div class="nav__search" id="searchBox">
+        <input type="text" id="searchInput" placeholder="搜尋報導…" aria-label="搜尋" />
+        <button id="searchToggle" aria-label="搜尋">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN GRID -->
+<main class="main">
+  <div class="wrap">
+    <div class="grid" id="grid">
+
+      <!-- LEAD COLUMN -->
+      <section class="col col--lead" data-col="lead">
+        <div class="kicker reveal"><span class="sq"></span>頭條 TOP STORY</div>
+        <div id="leadZone"></div>
+        <div class="kicker reveal" style="margin-top:30px"><span class="sq"></span>更多要聞</div>
+        <div id="leadMore"></div>
+      </section>
+
+      <!-- MID COLUMN -->
+      <section class="col col--mid" data-col="mid">
+        <div class="kicker reveal"><span class="sq"></span>焦點觀察</div>
+        <div id="midZone"></div>
+      </section>
+
+      <!-- SIDE COLUMN -->
+      <aside class="col col--side" data-col="side">
+        <!-- live feed -->
+        <div class="wgt reveal">
+          <div class="wgt__hd">最新 LATEST<span class="live"><span class="dot"></span>即時更新</span></div>
+          <div class="wgt__bd"><ul class="feed" id="liveFeed"></ul></div>
+        </div>
+        <!-- markets -->
+        <div class="wgt reveal">
+          <div class="wgt__hd">市場速覽 MARKETS<span class="live"><span class="dot"></span>盤中</span></div>
+          <div class="wgt__bd" style="padding-inline:14px">
+            <table class="mkt"><thead><tr><th>代號</th><th class="r">價格</th><th class="r">漲跌</th></tr></thead>
+            <tbody id="mktBody"></tbody></table>
+          </div>
+          <div class="chartcard" style="border-top:1px solid var(--line)">
+            <h4>大盤走勢 · 加權指數</h4>
+            <div class="cap">虛構示意資料 · 近 30 分鐘</div>
+            <svg id="sparkChart" viewBox="0 0 280 80" width="100%" height="80" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+        <!-- most read -->
+        <div class="wgt reveal">
+          <div class="wgt__hd">熱門排行 MOST READ</div>
+          <div class="wgt__bd"><ol class="ranked" id="ranked"></ol></div>
+        </div>
+        <!-- newsletter -->
+        <div class="nl reveal">
+          <h3>每日晨報</h3>
+          <p>每天清晨，把當日最重要的六則新聞，整理成三分鐘讀完的摘要寄給你。</p>
+          <form id="nlForm" novalidate>
+            <input type="email" id="nlEmail" placeholder="你的電子郵件" aria-label="電子郵件" />
+            <button type="submit">免費訂閱</button>
+            <div class="msg" id="nlMsg" aria-live="polite"></div>
+          </form>
+        </div>
+      </aside>
+
+    </div>
+    <div class="empty" id="empty">本分類目前沒有符合的報導。</div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <h2>晨光日報</h2>
+        <p>本頁為 e-life-ai 製作之新聞編輯版型展示樣稿。所有報導、人名、數據、市場走勢皆為虛構，僅供版面與互動設計示意。</p>
+      </div>
+      <div class="foot-col"><h5>分類</h5><a href="#">要聞</a><a href="#">政治</a><a href="#">財經</a><a href="#">科技</a><a href="#">國際</a><a href="#">文化</a></div>
+      <div class="foot-col"><h5>服務</h5><a href="#">電子報</a><a href="#">會員方案</a><a href="#">手機 App</a><a href="#">RSS 訂閱</a></div>
+      <div class="foot-col"><h5>關於</h5><a href="#">編輯方針</a><a href="#">聯絡我們</a><a href="#">廣告刊登</a><a href="#">隱私政策</a></div>
+    </div>
+    <div class="foot-base">
+      <span>© 虛構紀元 晨光日報 The Morning Ledger · 版型展示樣稿</span>
+      <span>由 <a href="https://elife-ai.com">e-life-ai</a> 設計開發</span>
+    </div>
+  </div>
+</footer>
+
+<!-- BADGE -->
+<div class="badge"><span class="gd"></span>由 <a href="https://elife-ai.com">elife-ai.com</a> 打造</div>
+
+<script>
+(function(){
+  "use strict";
+  var SECNAME={all:"要聞",politics:"政治",finance:"財經",tech:"科技",world:"國際",culture:"文化"};
+
+  // ---------- DATA (fictional) ----------
+  var ART=[
+    {id:"a1",sec:"politics",lead:true,cat:"政治",h:"地方議會三讀通過數位治理條例 預計年底前上線市民服務平台",dek:"歷經多場公聽會與跨黨派協商，新條例確立線上申辦、開放資料與資安稽核三大原則，被視為地方數位轉型的重要里程碑。",by:"記者 林宛蓁",time:"08:40",fig:"bars"},
+    {id:"a2",sec:"finance",cat:"財經",h:"中小企業數位採購意願回升 第二季投資指數創近年新高",dek:"最新調查顯示，逾六成受訪企業計畫於今年內擴大雲端與自動化支出。",by:"記者 周子謙",time:"08:12",fig:"line"},
+    {id:"a3",sec:"tech",cat:"科技",h:"開源社群釋出新版協作工具 主打離線優先與端到端加密",dek:"開發團隊強調隱私設計，並承諾長期維護路線圖。",by:"記者 蔡昀澤",time:"07:55",fig:"grid"},
+    {id:"a4",sec:"world",cat:"國際",h:"多國共同發表海洋塑膠減量協議 設定十年量化目標",dek:"協議涵蓋回收、設計與跨境監測，後續細則仍待協商。",by:"國際中心 何欣怡",time:"07:30",fig:"globe"},
+    {id:"a5",sec:"culture",cat:"文化",h:"老城區書店街啟動修復計畫 結合在地策展與駐村創作",dek:"主辦單位希望以慢步調的文化路線，重新連結社區記憶。",by:"記者 郭立庭",time:"07:05",fig:"book"},
+    {id:"a6",sec:"finance",cat:"財經",h:"再生能源基金規模擴張 法人看好長線配置價值",dek:"分析師提醒，短期波動仍受政策節奏與利率環境影響。",by:"記者 周子謙",time:"06:48",fig:"line"},
+    {id:"a7",sec:"tech",cat:"科技",h:"研究團隊發表低功耗感測模組 鎖定智慧農業應用場景",dek:"模組可在田間長期運作，降低人工巡檢成本。",by:"記者 蔡昀澤",time:"06:20",fig:"chip"},
+    {id:"a8",sec:"politics",cat:"政治",h:"預算審查進入協商階段 教育與基礎建設成討論焦點",dek:"各方對分配比例仍有歧見，預計本週內提出折衷版本。",by:"記者 林宛蓁",time:"05:58",fig:"bars"},
+    {id:"a9",sec:"world",cat:"國際",h:"跨國研究團隊公布城市熱島地圖 提供綠化決策依據",dek:"資料以開放授權釋出，供各地政府免費取用。",by:"國際中心 何欣怡",time:"05:30",fig:"globe"},
+    {id:"a10",sec:"culture",cat:"文化",h:"小型獨立影展周末登場 聚焦在地紀錄片創作",dek:"主辦方安排映後座談，邀請導演與觀眾直接對話。",by:"記者 郭立庭",time:"05:10",fig:"book"},
+    {id:"a11",sec:"tech",cat:"科技",h:"資安研究員揭露常見設定疏失 呼籲企業定期盤點權限",dek:"報告整理十項最常被忽略的雲端設定，並附檢核清單。",by:"記者 蔡昀澤",time:"04:52",fig:"chip"},
+    {id:"a12",sec:"finance",cat:"財經",h:"出口數據優於預期 帶動製造業信心指數走揚",dek:"惟業者對下半年需求仍持審慎觀望態度。",by:"記者 周子謙",time:"04:30",fig:"bars"}
+  ];
+
+  var FEED_POOL=[
+    "市府宣布周末開放線上預約 系統壓力測試完成",
+    "交通局：新號誌時制將於下月起分區試行",
+    "氣象單位發布短延時強降雨注意 提醒低窪地區留意",
+    "文化園區公布暑期展覽名單 多檔免費入場",
+    "教育單位調整線上課程平台 強化無障礙設計",
+    "環保團體呼籲擴大社區回收據點覆蓋率",
+    "科技園區啟動人才媒合計畫 釋出多項實習名額",
+    "衛生單位提醒換季作息 注意室內通風",
+    "農業單位公布產季預估 供需大致平穩",
+    "圖書館延長假日開放時段 新增自習空間"
+  ];
+
+  // markets
+  var MKT=[
+    {sym:"加權",nm:"TAIEX 指數",px:19842.16,d:0.86},
+    {sym:"櫃買",nm:"OTC 指數",px:251.34,d:0.41},
+    {sym:"光纖科",nm:"虛構電子",px:412.50,d:1.92},
+    {sym:"綠能源",nm:"虛構能源",px:88.70,d:-0.74},
+    {sym:"晨資銀",nm:"虛構金融",px:64.15,d:-0.31},
+    {sym:"雲築建",nm:"虛構營建",px:130.00,d:1.05},
+    {sym:"汽電聯",nm:"虛構電動",px:276.80,d:2.34}
+  ];
+
+  var RANKED=[
+    "專題：當城市開始用資料說話，治理會變得更聰明嗎？",
+    "懶人包：一次看懂本季財報季的五個關鍵數字",
+    "觀點：開源生態的下一步，是信任而非規模",
+    "圖解：十年海洋減塑協議，到底承諾了什麼？",
+    "生活：書店街重生，城市裡慢下來的那條巷子"
+  ];
+
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var saved={};
+
+  // ---------- DATE ----------
+  function fmtDate(){
+    var d=new Date();
+    var wk=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"][d.getDay()];
+    $("#topDate").textContent="虛構紀元 "+(d.getMonth()+1)+" 月 "+d.getDate()+" 日 · "+wk+" · 數位版";
+  }
+
+  // ---------- SVG FIGURES ----------
+  function fig(kind,wide){
+    var pal={bars:"#1d4f7a",line:"#1a7a4c",grid:"#9a7b2e",globe:"#7c1010",book:"#a31515",chip:"#4a463c"};
+    var c=pal[kind]||"#1d4f7a";
+    var vb=wide?"0 0 400 225":"0 0 300 200";
+    var inner="";
+    if(kind==="bars"){
+      var hs=[60,110,80,150,120,170,95];inner='<g>';
+      for(var i=0;i<hs.length;i++){var x=30+i*48;inner+='<rect x="'+x+'" y="'+(190-hs[i])+'" width="30" height="'+hs[i]+'" fill="'+c+'" opacity="'+(0.45+i*0.07)+'"/>';}
+      inner+='</g>';
+    }else if(kind==="line"){
+      inner='<polyline fill="none" stroke="'+c+'" stroke-width="3" points="20,150 70,120 120,135 170,80 220,95 270,40 320,60 380,30"/><line x1="20" y1="190" x2="390" y2="190" stroke="#dcd8cd" stroke-width="1.5"/>';
+    }else if(kind==="grid"){
+      inner='<g fill="'+c+'">';for(var r=0;r<4;r++)for(var k=0;k<6;k++){inner+='<rect x="'+(28+k*60)+'" y="'+(28+r*45)+'" width="44" height="30" opacity="'+(0.2+((r+k)%5)*0.16)+'"/>';}inner+='</g>';
+    }else if(kind==="globe"){
+      inner='<circle cx="'+(wide?200:150)+'" cy="105" r="80" fill="none" stroke="'+c+'" stroke-width="2.5"/><ellipse cx="'+(wide?200:150)+'" cy="105" rx="35" ry="80" fill="none" stroke="'+c+'" stroke-width="1.5"/><ellipse cx="'+(wide?200:150)+'" cy="105" rx="80" ry="32" fill="none" stroke="'+c+'" stroke-width="1.5"/><line x1="'+((wide?200:150)-80)+'" y1="105" x2="'+((wide?200:150)+80)+'" y2="105" stroke="'+c+'" stroke-width="1.5"/>';
+    }else if(kind==="book"){
+      inner='<g fill="none" stroke="'+c+'" stroke-width="2.5"><rect x="'+(wide?120:80)+'" y="50" width="70" height="110"/><rect x="'+(wide?195:155)+'" y="50" width="70" height="110"/><line x1="'+(wide?155:115)+'" y1="50" x2="'+(wide?155:115)+'" y2="160"/></g>';
+    }else if(kind==="chip"){
+      inner='<g fill="none" stroke="'+c+'" stroke-width="2.5"><rect x="'+(wide?140:100)+'" y="65" width="80" height="80" rx="4"/><rect x="'+(wide?162:122)+'" y="87" width="36" height="36" fill="'+c+'" opacity="0.3"/>';
+      for(var p=0;p<5;p++){var px2=(wide?150:110)+p*16;inner+='<line x1="'+px2+'" y1="50" x2="'+px2+'" y2="65"/><line x1="'+px2+'" y1="145" x2="'+px2+'" y2="160"/>';}inner+='</g>';
+    }
+    return '<svg class="fig '+(wide?"lead":"std")+'" viewBox="'+vb+'" preserveAspectRatio="xMidYMid slice" role="img" aria-label="示意圖">'+inner+'</svg>';
+  }
+
+  // ---------- BOOKMARK ----------
+  function bmBtn(id){
+    return '<button class="bm'+(saved[id]?" on":"")+'" data-bm="'+id+'" aria-label="加入閱讀清單" title="加入閱讀清單">'+
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="'+(saved[id]?"currentColor":"none")+'" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>';
+  }
+  function refreshCount(){
+    var n=0;for(var k in saved){if(saved[k])n++;}$("#savedCount").textContent=n;
+  }
+
+  // ---------- RENDER ARTICLES ----------
+  var curSec="all",curQ="",showSavedOnly=false;
+
+  function matches(a){
+    if(showSavedOnly && !saved[a.id])return false;
+    if(curSec!=="all" && a.sec!==curSec)return false;
+    if(curQ){var q=curQ.toLowerCase();if((a.h+a.dek+a.by+a.cat).toLowerCase().indexOf(q)<0)return false;}
+    return true;
+  }
+
+  function artHTML(a,variant){
+    var figHTML=variant==="lead"?fig(a.fig,true):(variant==="full"?fig(a.fig,false):"");
+    var hClass=variant==="compact"?"":"";
+    return '<article class="art '+(variant==="lead"?"lead":"")+' '+(variant==="compact"?"compact":"")+' reveal" data-art="'+a.id+'">'+
+      figHTML+
+      '<span class="cat">'+a.cat+'</span>'+
+      '<h2><a href="#">'+a.h+'</a></h2>'+
+      '<p class="dek">'+a.dek+'</p>'+
+      '<div class="meta meta--bm"><span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'+
+        '<span class="by">'+a.by+'</span><span class="sep">·</span><time>今日 '+a.time+'</time>'+
+      '</span>'+bmBtn(a.id)+'</div>'+
+    '</article>';
+  }
+
+  function render(){
+    var list=ART.filter(matches);
+    var lead=$("#leadZone"),more=$("#leadMore"),mid=$("#midZone"),empty=$("#empty"),grid=$("#grid");
+
+    if(!list.length){
+      lead.innerHTML=more.innerHTML=mid.innerHTML="";
+      empty.classList.add("on");grid.style.display="none";return;
+    }
+    empty.classList.remove("on");grid.style.display="";
+
+    // pick lead = first leadable or first
+    var leadArt=list[0];
+    var rest=list.slice(1);
+    lead.innerHTML=artHTML(leadArt,"lead");
+    // lead more = next up to 3, full fig
+    more.innerHTML=rest.slice(0,3).map(function(a){return artHTML(a,"full");}).join("")||'<p class="dek" style="color:var(--ink-mute)">此分類沒有更多報導。</p>';
+    // mid = remaining compact
+    var midList=rest.slice(3);
+    mid.innerHTML=midList.length?midList.map(function(a){return artHTML(a,"compact");}).join(""):'<p class="dek" style="color:var(--ink-mute)">更多報導陸續更新中。</p>';
+
+    bindBM();
+    stagger();
+  }
+
+  function stagger(){
+    $$(".reveal").forEach(function(el,i){
+      el.style.animation="none";
+      // force reflow then reapply with delay
+      void el.offsetWidth;
+      el.style.animation="rise .55s cubic-bezier(.2,.7,.2,1) "+(i*0.045)+"s forwards";
+    });
+  }
+
+  function bindBM(){
+    $$("[data-bm]").forEach(function(b){
+      b.onclick=function(e){
+        e.preventDefault();e.stopPropagation();
+        var id=b.getAttribute("data-bm");
+        saved[id]=!saved[id];refreshCount();
+        if(showSavedOnly){render();}
+        else{
+          b.classList.toggle("on",saved[id]);
+          b.querySelector("svg").setAttribute("fill",saved[id]?"currentColor":"none");
+        }
+      };
+    });
+  }
+
+  // ---------- TABS ----------
+  $$(".tab").forEach(function(t){
+    t.onclick=function(){
+      $$(".tab").forEach(function(x){x.classList.remove("on");});
+      t.classList.add("on");
+      curSec=t.getAttribute("data-sec");
+      showSavedOnly=false;updateSavedBtn();
+      render();
+    };
+  });
+
+  // ---------- SAVED VIEW ----------
+  var savedBtn=$("#savedBtn");
+  function updateSavedBtn(){savedBtn.style.borderColor=showSavedOnly?"var(--accent)":"";savedBtn.style.color=showSavedOnly?"var(--accent)":"";}
+  savedBtn.onclick=function(){
+    showSavedOnly=!showSavedOnly;
+    if(showSavedOnly){$$(".tab").forEach(function(x){x.classList.remove("on");});}
+    else{$(".tab[data-sec='"+curSec+"']").classList.add("on");}
+    updateSavedBtn();render();
+  };
+
+  // ---------- SEARCH ----------
+  var sBox=$("#searchBox"),sInput=$("#searchInput");
+  $("#searchToggle").onclick=function(){
+    sBox.classList.toggle("open");
+    if(sBox.classList.contains("open"))sInput.focus();
+    else{sInput.value="";curQ="";render();}
+  };
+  sInput.oninput=function(){curQ=sInput.value.trim();render();};
+
+  // ---------- TICKER ----------
+  var TICK=[
+    {t:"NOW",h:"市政線上服務平台壓力測試完成，預計周末開放預約"},
+    {t:"08:41",h:"地方議會三讀通過數位治理條例"},
+    {t:"08:20",h:"加權指數開盤上漲 0.86%，電子權值股領漲"},
+    {t:"08:05",h:"多國共同發表海洋塑膠減量十年協議"},
+    {t:"07:50",h:"開源社群釋出新版協作工具，主打離線優先"},
+    {t:"07:32",h:"出口數據優於預期，製造業信心指數走揚"}
+  ];
+  var tView=$("#tickerView"),tIdx=0,tEls=[];
+  TICK.forEach(function(it){
+    var el=document.createElement("div");
+    el.className="ticker__line";
+    el.innerHTML='<span class="ticker__time">'+it.t+'</span><b>•</b>'+it.h;
+    tView.appendChild(el);tEls.push(el);
+  });
+  tEls[0].classList.add("on");
+  setInterval(function(){
+    tEls[tIdx].classList.remove("on");
+    tIdx=(tIdx+1)%tEls.length;
+    tEls[tIdx].classList.add("on");
+  },3600);
+
+  // ---------- LIVE FEED ----------
+  var feed=$("#liveFeed"),feedIdx=0;
+  function nowTime(){var d=new Date();return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);}
+  function addFeed(isNew){
+    var li=document.createElement("li");
+    var txt=FEED_POOL[feedIdx%FEED_POOL.length];feedIdx++;
+    li.innerHTML='<span class="tm">'+nowTime()+'</span><span class="tx">'+txt+(isNew?'<span class="new">NEW</span>':'')+'</span>';
+    feed.insertBefore(li,feed.firstChild);
+    while(feed.children.length>6)feed.removeChild(feed.lastChild);
+  }
+  for(var f=0;f<4;f++)addFeed(false);
+  setInterval(function(){addFeed(true);},5200);
+
+  // ---------- MARKETS ----------
+  var mktBody=$("#mktBody");
+  function renderMkt(){
+    mktBody.innerHTML=MKT.map(function(m){
+      var up=m.d>=0;
+      return '<tr><td><span class="sym">'+m.sym+'</span><span class="nm">'+m.nm+'</span></td>'+
+        '<td class="r px">'+m.px.toFixed(2)+'</td>'+
+        '<td class="r chg '+(up?"up":"down")+'"><span class="arr">'+(up?"▲":"▼")+'</span>'+(up?"+":"")+m.d.toFixed(2)+'%</td></tr>';
+    }).join("");
+  }
+  renderMkt();
+  setInterval(function(){
+    MKT.forEach(function(m){
+      var drift=(Math.random()-0.48)*0.25;
+      m.d=Math.max(-4.5,Math.min(4.5,m.d+drift));
+      m.px=Math.max(1,m.px*(1+drift/100));
+    });
+    renderMkt();
+    drawSpark();
+  },3000);
+
+  // ---------- SPARK CHART ----------
+  var sparkPts=[];
+  (function seed(){var base=19800;for(var i=0;i<30;i++){base+=(Math.random()-0.45)*30;sparkPts.push(base);}})();
+  function drawSpark(){
+    sparkPts.push(sparkPts[sparkPts.length-1]+(Math.random()-0.45)*30);
+    if(sparkPts.length>30)sparkPts.shift();
+    var mn=Math.min.apply(null,sparkPts),mx=Math.max.apply(null,sparkPts),rg=(mx-mn)||1;
+    var W=280,H=80,n=sparkPts.length;
+    var pts=sparkPts.map(function(v,i){var x=(i/(n-1))*W;var y=H-6-((v-mn)/rg)*(H-14);return x.toFixed(1)+","+y.toFixed(1);});
+    var up=sparkPts[n-1]>=sparkPts[0];var col=up?"#1a7a4c":"#b22323";
+    var area="0,"+H+" "+pts.join(" ")+" "+W+","+H;
+    $("#sparkChart").innerHTML=
+      '<polygon points="'+area+'" fill="'+col+'" opacity="0.08"/>'+
+      '<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+col+'" stroke-width="2"/>'+
+      '<circle cx="'+pts[n-1].split(",")[0]+'" cy="'+pts[n-1].split(",")[1]+'" r="3" fill="'+col+'"/>';
+  }
+  drawSpark();
+
+  // ---------- RANKED ----------
+  $("#ranked").innerHTML=RANKED.map(function(t,i){
+    var views=(Math.floor(Math.random()*40)+12);
+    return '<li><a class="t" href="#">'+t+'</a></li>';
+  }).map(function(html,i){
+    // inject readtime in mr line
+    return html.replace("</li>",'<div class="mr">'+(["8 分鐘前","23 分鐘前","41 分鐘前","1 小時前","2 小時前"][i])+' · '+((Math.floor(Math.random()*40)+12))+'.'+(Math.floor(Math.random()*9))+'k 次閱讀</div></li>');
+  }).join("");
+
+  // ---------- NEWSLETTER ----------
+  var nlForm=$("#nlForm"),nlEmail=$("#nlEmail"),nlMsg=$("#nlMsg");
+  nlForm.onsubmit=function(e){
+    e.preventDefault();
+    var v=nlEmail.value.trim();
+    var ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if(!v){nlMsg.className="msg no";nlMsg.textContent="請輸入電子郵件。";nlEmail.classList.add("err");return;}
+    if(!ok){nlMsg.className="msg no";nlMsg.textContent="電子郵件格式不正確，請再確認。";nlEmail.classList.add("err");return;}
+    nlEmail.classList.remove("err");
+    nlMsg.className="msg ok";nlMsg.textContent="訂閱成功！晨報將於每日清晨寄達（示意，不會真的寄信）。";
+    nlEmail.value="";
+  };
+  nlEmail.oninput=function(){nlEmail.classList.remove("err");if(nlMsg.classList.contains("no")){nlMsg.textContent="";}};
+
+  // ---------- INIT ----------
+  fmtDate();
+  render();
+  refreshCount();
+})();
+</script>
+</body>
+</html>
