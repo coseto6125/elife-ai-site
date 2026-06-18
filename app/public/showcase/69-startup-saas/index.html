@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowlane 流線｜團隊自動化工作流平台 ｜e-life-ai</title>
+<meta name="description" content="Flowlane 流線 — 為現代團隊打造的工作流自動化平台。串接你的工具、自動化重複任務、用即時儀表板掌握每一條流程。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b16;
+  --bg2:#0a1020;
+  --panel:rgba(255,255,255,.045);
+  --panel-2:rgba(255,255,255,.025);
+  --stroke:rgba(255,255,255,.09);
+  --stroke-2:rgba(255,255,255,.06);
+  --txt:#eef2fb;
+  --muted:#9aa6c4;
+  --faint:#6b7693;
+  --cyan:#38e7d8;
+  --cyan-2:#19c2ef;
+  --indigo:#6d6cff;
+  --violet:#a371ff;
+  --glow:rgba(56,231,216,.22);
+  --indigo-glow:rgba(109,108,255,.25);
+  --r:18px;
+  --maxw:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:"Be Vietnam Pro",system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.disp{font-family:"Sora",sans-serif;letter-spacing:-.02em;line-height:1.1}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+section{position:relative;z-index:2}
+
+/* ===== aurora background ===== */
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora::before{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgba(109,108,255,.30), transparent 60%),
+    radial-gradient(55% 50% at 88% 8%, rgba(25,194,239,.22), transparent 62%),
+    radial-gradient(70% 60% at 50% 105%, rgba(56,231,216,.14), transparent 60%);
+}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:drift 22s ease-in-out infinite}
+.b1{width:520px;height:520px;left:-160px;top:-120px;background:radial-gradient(circle,var(--indigo),transparent 70%)}
+.b2{width:460px;height:460px;right:-150px;top:60px;background:radial-gradient(circle,var(--cyan-2),transparent 70%);animation-delay:-7s}
+.b3{width:500px;height:500px;left:30%;top:55%;background:radial-gradient(circle,var(--cyan),transparent 70%);animation-delay:-13s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.12)}}
+.grid-lines{position:absolute;inset:0;opacity:.4;
+  background-image:linear-gradient(var(--stroke-2) 1px,transparent 1px),linear-gradient(90deg,var(--stroke-2) 1px,transparent 1px);
+  background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent 75%)}
+@media(prefers-reduced-motion:reduce){.blob{animation:none}}
+
+/* ===== layout ===== */
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em;
+  color:var(--cyan);text-transform:uppercase;
+  background:rgba(56,231,216,.08);border:1px solid rgba(56,231,216,.18);
+  padding-block:6px;padding-inline:14px;border-radius:100px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(56,231,216,.16)}
+
+/* ===== nav ===== */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);
+  background:rgba(7,11,22,.6);border-bottom:1px solid var(--stroke-2)}
+.nav-in{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-family:"Sora";font-weight:700;font-size:19px}
+.logo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--indigo),var(--cyan-2));box-shadow:0 6px 20px var(--indigo-glow)}
+.logo svg{width:20px;height:20px}
+.nav-links{display:flex;align-items:center;gap:30px;font-size:14.5px;color:var(--muted);font-weight:500}
+.nav-links a:hover{color:var(--txt)}
+.nav-cta{display:flex;align-items:center;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:"Sora";font-weight:600;
+  font-size:14.5px;border-radius:12px;padding-block:11px;padding-inline:20px;cursor:pointer;border:1px solid transparent;
+  transition:transform .18s ease,box-shadow .25s ease,background .2s}
+.btn-primary{background:linear-gradient(135deg,var(--indigo),var(--cyan-2));color:#fff;box-shadow:0 8px 26px var(--indigo-glow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 36px var(--indigo-glow)}
+.btn-ghost{background:var(--panel);border-color:var(--stroke);color:var(--txt)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.07)}
+.nav-toggle{display:none}
+@media(max-width:880px){.nav-links{display:none}.nav .login{display:none}}
+
+/* ===== reveal ===== */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.hero .rv{transition-duration:.5s}
+
+/* ===== hero ===== */
+.hero{padding-block:84px 70px;text-align:center}
+.hero h1{font-size:clamp(38px,6.4vw,72px);font-weight:800;margin-block:22px 0;max-width:14ch;margin-inline:auto;
+  color:#f6f9ff;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.hero h1 .grad{background:linear-gradient(100deg,#8cffec,#5cd6ff 48%,#a8bdff);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 16px rgba(56,231,216,.4))}
+.hero .sub{font-size:clamp(16px,2vw,19.5px);color:#c2cce4;max-width:56ch;margin-block:22px 0;margin-inline:auto}
+.hero .actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-block:34px 0}
+.btn-lg{padding-block:15px;padding-inline:28px;font-size:15.5px;border-radius:14px}
+.hero .trust{margin-block:26px 0;font-size:13.5px;color:var(--faint);display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.stars{color:#ffc46b;letter-spacing:2px}
+
+/* ===== product mockup ===== */
+.mock-wrap{max-width:1000px;margin-inline:auto;margin-block:58px 0;position:relative}
+.mock-wrap::after{content:"";position:absolute;inset:-1px;border-radius:22px;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,rgba(109,108,255,.6),rgba(56,231,216,.3),transparent 70%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.mock{border-radius:22px;overflow:hidden;border:1px solid var(--stroke);
+  background:linear-gradient(180deg,#0c1424,#080d1a);box-shadow:0 40px 100px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.02)}
+.mock-bar{display:flex;align-items:center;gap:8px;padding-block:13px;padding-inline:18px;border-bottom:1px solid var(--stroke-2);background:rgba(255,255,255,.02)}
+.mock-bar .dots{display:flex;gap:7px}
+.mock-bar .dots i{width:11px;height:11px;border-radius:50%;display:block}
+.mock-bar .dots i:nth-child(1){background:#ff6058}.mock-bar .dots i:nth-child(2){background:#ffbd2e}.mock-bar .dots i:nth-child(3){background:#28c93f}
+.mock-bar .url{margin-inline:auto;font-size:12.5px;color:var(--faint);background:rgba(255,255,255,.04);padding-block:5px;padding-inline:16px;border-radius:8px}
+.mock-body{display:grid;grid-template-columns:200px 1fr;min-height:430px}
+.mock-side{border-right:1px solid var(--stroke-2);padding:18px;background:rgba(255,255,255,.012)}
+.mock-side .sb-logo{display:flex;align-items:center;gap:9px;font-family:"Sora";font-weight:700;font-size:15px;margin-block:0 22px}
+.mock-side .sb-logo .lg{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--indigo),var(--cyan-2));display:grid;place-items:center}
+.mock-side .sb-logo .lg svg{width:15px;height:15px}
+.tabs{display:flex;flex-direction:column;gap:4px}
+.tab{display:flex;align-items:center;gap:11px;padding-block:10px;padding-inline:12px;border-radius:10px;font-size:13.5px;color:var(--muted);
+  cursor:pointer;font-weight:500;transition:.18s;border:1px solid transparent}
+.tab svg{width:17px;height:17px;opacity:.85}
+.tab:hover{background:rgba(255,255,255,.04);color:var(--txt)}
+.tab.active{background:linear-gradient(100deg,rgba(109,108,255,.18),rgba(56,231,216,.08));color:var(--txt);border-color:rgba(109,108,255,.3)}
+.tab.active svg{opacity:1}
+.mock-main{padding:24px;position:relative}
+.panel{display:none;animation:fade .4s ease}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-block:0 20px}
+.mh h4{font-size:17px;font-weight:700}
+.mh .pill{font-size:11.5px;color:var(--cyan);background:rgba(56,231,216,.1);border:1px solid rgba(56,231,216,.2);padding-block:4px;padding-inline:10px;border-radius:100px}
+/* dashboard stats */
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-block:0 18px}
+.mstat{background:var(--panel-2);border:1px solid var(--stroke-2);border-radius:12px;padding:14px}
+.mstat .k{font-size:11.5px;color:var(--faint)}
+.mstat .v{font-family:"Sora";font-weight:700;font-size:22px;margin-block:5px 0}
+.mstat .up{font-size:11.5px;color:var(--cyan);margin-block:3px 0}
+/* chart */
+.chart{height:150px;background:var(--panel-2);border:1px solid var(--stroke-2);border-radius:12px;padding:14px;position:relative}
+.chart svg{width:100%;height:100%}
+.chart .bar{transform-origin:bottom;animation:grow 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+/* kanban */
+.kb{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kcol{background:var(--panel-2);border:1px solid var(--stroke-2);border-radius:12px;padding:12px}
+.kcol .ct{font-size:12px;color:var(--muted);font-weight:600;margin-block:0 10px;display:flex;justify-content:space-between}
+.kcol .ct .n{color:var(--faint);font-weight:500}
+.kcard{background:rgba(255,255,255,.045);border:1px solid var(--stroke-2);border-radius:9px;padding:10px 11px;margin-block:0 8px;font-size:12.5px}
+.kcard .tag{display:inline-block;font-size:10px;padding-block:2px;padding-inline:8px;border-radius:6px;margin-block:7px 0;font-weight:600}
+.tg-i{background:rgba(109,108,255,.18);color:#aeadff}
+.tg-c{background:rgba(56,231,216,.14);color:var(--cyan)}
+.tg-a{background:rgba(255,196,107,.16);color:#ffc46b}
+/* automation flow */
+.flow{display:flex;flex-direction:column;gap:0}
+.fnode{display:flex;align-items:center;gap:14px;background:var(--panel-2);border:1px solid var(--stroke-2);border-radius:12px;padding:14px 16px}
+.fnode .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,rgba(109,108,255,.2),rgba(56,231,216,.12));border:1px solid var(--stroke)}
+.fnode .ic svg{width:19px;height:19px;color:var(--cyan)}
+.fnode .ft{font-size:13.5px;font-weight:600}
+.fnode .fd{font-size:12px;color:var(--faint)}
+.fconn{width:2px;height:18px;background:linear-gradient(var(--indigo),var(--cyan));margin-inline:34px;opacity:.6}
+@media(max-width:760px){.mock-body{grid-template-columns:1fr}.mock-side{display:none}.kb{grid-template-columns:1fr}.mstats{grid-template-columns:1fr}}
+
+/* ===== logos marquee ===== */
+.logos{padding-block:54px 10px;text-align:center}
+.logos .lab{font-size:13px;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-block:0 26px}
+.marquee{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mtrack{display:flex;gap:60px;width:max-content;animation:scroll 28s linear infinite}
+.mtrack span{font-family:"Sora";font-weight:700;font-size:21px;color:var(--faint);opacity:.7;white-space:nowrap;display:flex;align-items:center;gap:9px}
+.mtrack span svg{width:22px;height:22px;opacity:.6}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.marquee:hover .mtrack{animation-play-state:paused}
+
+/* ===== sections ===== */
+.sec{padding-block:80px}
+.sec-head{text-align:center;max-width:62ch;margin-inline:auto;margin-block:0 52px}
+.sec-head h2{font-size:clamp(28px,4vw,44px);font-weight:800;margin-block:16px 0}
+.sec-head p{color:var(--muted);font-size:16.5px;margin-block:16px 0}
+
+/* features */
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fcard{background:var(--panel);border:1px solid var(--stroke-2);border-radius:var(--r);padding:26px;transition:.3s;position:relative;overflow:hidden}
+.fcard::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 0% 0%,rgba(109,108,255,.1),transparent 50%);opacity:0;transition:.3s}
+.fcard:hover{transform:translateY(-4px);border-color:var(--stroke);box-shadow:0 24px 50px -24px rgba(0,0,0,.7)}
+.fcard:hover::before{opacity:1}
+.fcard .fi{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-block:0 18px;
+  background:linear-gradient(135deg,rgba(109,108,255,.22),rgba(56,231,216,.12));border:1px solid var(--stroke)}
+.fcard .fi svg{width:24px;height:24px;color:var(--cyan)}
+.fcard h3{font-size:18.5px;font-weight:700;margin-block:0 9px}
+.fcard p{font-size:14.5px;color:var(--muted)}
+@media(max-width:900px){.fgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.fgrid{grid-template-columns:1fr}}
+
+/* stat counters */
+.statsrow{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-block:8px 0}
+.scard{text-align:center;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--stroke-2);border-radius:var(--r);padding:30px 18px}
+.scard .num{font-family:"Sora";font-weight:800;font-size:clamp(30px,4vw,44px);
+  background:linear-gradient(135deg,var(--cyan),var(--indigo));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.scard .lab{font-size:13.5px;color:var(--muted);margin-block:6px 0}
+@media(max-width:760px){.statsrow{grid-template-columns:1fr 1fr}}
+
+/* testimonials */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tcard{background:var(--panel);border:1px solid var(--stroke-2);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px}
+.tcard .quote{font-size:15px;color:var(--txt);line-height:1.65}
+.tcard .who{display:flex;align-items:center;gap:12px;margin-top:auto}
+.tcard .av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:15px;color:#fff;flex-shrink:0}
+.tcard .who .nm{font-size:14px;font-weight:600}
+.tcard .who .rl{font-size:12.5px;color:var(--faint)}
+@media(max-width:900px){.tgrid{grid-template-columns:1fr}}
+
+/* pricing */
+.toggle{display:flex;align-items:center;justify-content:center;gap:14px;margin-block:0 44px}
+.toggle .lbl{font-size:14.5px;font-weight:600;color:var(--muted);transition:.2s}
+.toggle .lbl.on{color:var(--txt)}
+.switch{position:relative;width:56px;height:30px;border-radius:100px;background:var(--panel);border:1px solid var(--stroke);cursor:pointer}
+.switch .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--indigo),var(--cyan-2));transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 3px 10px var(--indigo-glow)}
+.switch.annual .knob{transform:translateX(26px)}
+.save{font-size:12px;font-weight:700;color:var(--cyan);background:rgba(56,231,216,.1);border:1px solid rgba(56,231,216,.22);padding-block:4px;padding-inline:10px;border-radius:100px}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+.pcard{background:var(--panel);border:1px solid var(--stroke-2);border-radius:var(--r);padding:30px 26px;display:flex;flex-direction:column;position:relative}
+.pcard.pop{border-color:rgba(109,108,255,.45);background:linear-gradient(180deg,rgba(109,108,255,.08),var(--panel-2));box-shadow:0 30px 70px -30px var(--indigo-glow)}
+.pcard .ptag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:700;
+  background:linear-gradient(135deg,var(--indigo),var(--cyan-2));color:#fff;padding-block:5px;padding-inline:14px;border-radius:100px;box-shadow:0 6px 18px var(--indigo-glow)}
+.pcard .pn{font-family:"Sora";font-weight:700;font-size:19px}
+.pcard .pdesc{font-size:13.5px;color:var(--muted);margin-block:6px 0}
+.pcard .price{margin-block:20px 0;display:flex;align-items:baseline;gap:4px}
+.pcard .price .cur{font-size:18px;font-weight:600;color:var(--muted)}
+.pcard .price .amt{font-family:"Sora";font-weight:800;font-size:42px;letter-spacing:-.03em;transition:.25s}
+.pcard .price .per{font-size:14px;color:var(--faint)}
+.pcard .pfeat{list-style:none;margin-block:24px 0;display:flex;flex-direction:column;gap:12px;flex:1}
+.pcard .pfeat li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted)}
+.pcard .pfeat li svg{width:18px;height:18px;color:var(--cyan);flex-shrink:0;margin-top:2px}
+.pcard .btn{width:100%;margin-block:24px 0}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}.pcard.pop{order:-1}}
+
+/* faq */
+.faq{max-width:760px;margin-inline:auto}
+.fq{border:1px solid var(--stroke-2);border-radius:14px;margin-block:0 12px;background:var(--panel-2);overflow:hidden;transition:.25s}
+.fq.open{border-color:rgba(109,108,255,.3);background:var(--panel)}
+.fq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:18px;padding-inline:22px;cursor:pointer;font-family:"Sora";font-weight:600;font-size:15.5px}
+.fq-q .ic{width:24px;height:24px;flex-shrink:0;display:grid;place-items:center;transition:transform .3s;color:var(--cyan)}
+.fq.open .fq-q .ic{transform:rotate(45deg)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.fq-a p{padding-block:0 20px;padding-inline:22px;font-size:14.5px;color:var(--muted)}
+
+/* CTA + signup */
+.cta{position:relative;overflow:hidden;border:1px solid var(--stroke);border-radius:28px;
+  background:linear-gradient(135deg,rgba(109,108,255,.16),rgba(56,231,216,.08));padding:56px 40px;text-align:center}
+.cta::before{content:"";position:absolute;inset:0;z-index:0;
+  background:radial-gradient(60% 80% at 50% 0%,rgba(109,108,255,.25),transparent 60%)}
+.cta>*{position:relative;z-index:1}
+.cta h2{font-size:clamp(26px,4vw,40px);font-weight:800}
+.cta p{color:var(--muted);font-size:16px;margin-block:14px 0;max-width:50ch;margin-inline:auto}
+.signup{display:flex;gap:10px;max-width:480px;margin-inline:auto;margin-block:30px 0;flex-wrap:wrap}
+.signup input{flex:1;min-width:200px;background:rgba(0,0,0,.3);border:1px solid var(--stroke);border-radius:13px;
+  padding-block:14px;padding-inline:18px;color:var(--txt);font-size:15px;font-family:inherit;transition:.2s}
+.signup input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,231,216,.15)}
+.signup input.err{border-color:#ff6b6b;box-shadow:0 0 0 3px rgba(255,107,107,.15)}
+.signup .btn{flex-shrink:0}
+.msg{font-size:13.5px;margin-block:12px 0;min-height:20px;transition:.2s}
+.msg.ok{color:var(--cyan)}.msg.bad{color:#ff8d8d}
+.cta .micro{font-size:13px;color:var(--faint);margin-block:6px 0}
+
+/* footer */
+.foot{border-top:1px solid var(--stroke-2);margin-block:80px 0;padding-block:48px 0}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px}
+.foot .brand{margin-block:0 14px}
+.foot .fdesc{font-size:14px;color:var(--muted);max-width:32ch}
+.foot h5{font-family:"Sora";font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin-block:0 16px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.foot ul a{font-size:14px;color:var(--muted)}
+.foot ul a:hover{color:var(--txt)}
+.foot-bot{margin-block:40px 0;padding-block:24px 36px;border-top:1px solid var(--stroke-2);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--faint)}
+.foot-bot a{color:var(--muted)}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+
+/* badge */
+.badge{position:fixed;right:18px;bottom:18px;z-index:90;display:inline-flex;align-items:center;gap:8px;
+  font-family:"Sora";font-size:13px;font-weight:600;color:var(--txt);
+  background:rgba(10,16,32,.8);backdrop-filter:blur(12px);border:1px solid var(--stroke);
+  padding-block:9px;padding-inline:14px;border-radius:100px;box-shadow:0 10px 30px -10px rgba(0,0,0,.7);transition:.2s}
+.badge:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+.badge .bd{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px var(--glow)}
+@media(max-width:520px){.badge{right:12px;bottom:12px;font-size:12px;padding-inline:12px}}
+
+@media(max-width:520px){.wrap{padding-inline:18px}.sec{padding-block:60px}.hero{padding-block:54px 50px}}
+</style>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true">
+  <div class="grid-lines"></div>
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+</div>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#">
+      <span class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h13" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="19" cy="12" r="2.4" fill="#fff"/></svg></span>
+      Flowlane
+    </a>
+    <nav class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#product">產品</a>
+      <a href="#pricing">方案</a>
+      <a href="#faq">常見問題</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="login nav-links" href="#" style="display:inline-block">登入</a>
+      <a class="btn btn-primary" href="#cta">免費試用</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero wrap">
+  <span class="eyebrow rv"><span class="dot"></span>全新 2.0 自動化引擎上線</span>
+  <h1 class="rv">讓重複的工作<br><span class="grad">自己流動起來</span></h1>
+  <p class="sub rv">Flowlane 流線是專為現代團隊打造的工作流自動化平台。串接你既有的工具、自動化每一個重複任務，並用即時儀表板掌握每一條流程的脈動。</p>
+  <div class="actions rv">
+    <a class="btn btn-primary btn-lg" href="#cta">免費開始 — 無需信用卡</a>
+    <a class="btn btn-ghost btn-lg" href="#product">觀看產品導覽</a>
+  </div>
+  <div class="trust rv">
+    <span class="stars">★★★★★</span>
+    <span>4.9／5 來自 2,400+ 團隊的真實評價</span>
+  </div>
+
+  <!-- PRODUCT MOCKUP -->
+  <div class="mock-wrap rv">
+    <div class="mock">
+      <div class="mock-bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="url">app.flowlane.io／workspace</div>
+      </div>
+      <div class="mock-body">
+        <aside class="mock-side">
+          <div class="sb-logo"><span class="lg"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h13" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg></span>Flowlane</div>
+          <div class="tabs" id="tabs">
+            <button class="tab active" data-p="dash"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/></svg>總覽儀表板</button>
+            <button class="tab" data-p="board"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="16" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="10" y="4" width="5" height="11" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="17" y="4" width="4" height="14" rx="1.5" stroke="currentColor" stroke-width="2"/></svg>任務看板</button>
+            <button class="tab" data-p="auto"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>自動化流程</button>
+          </div>
+        </aside>
+        <main class="mock-main">
+          <!-- dash -->
+          <div class="panel active" data-p="dash">
+            <div class="mh"><h4>本週流程總覽</h4><span class="pill">即時更新</span></div>
+            <div class="mstats">
+              <div class="mstat"><div class="k">已自動化任務</div><div class="v">1,284</div><div class="up">↑ 23% 較上週</div></div>
+              <div class="mstat"><div class="k">節省工時</div><div class="v">96 小時</div><div class="up">↑ 18% 較上週</div></div>
+              <div class="mstat"><div class="k">流程成功率</div><div class="v">99.4%</div><div class="up">↑ 0.6%</div></div>
+            </div>
+            <div class="chart">
+              <svg viewBox="0 0 320 120" preserveAspectRatio="none">
+                <line x1="0" y1="100" x2="320" y2="100" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+                <g fill="url(#bg)">
+                  <rect class="bar" x="14"  y="56" width="26" height="44" rx="4" style="animation-delay:.05s"/>
+                  <rect class="bar" x="54"  y="40" width="26" height="60" rx="4" style="animation-delay:.12s"/>
+                  <rect class="bar" x="94"  y="62" width="26" height="38" rx="4" style="animation-delay:.19s"/>
+                  <rect class="bar" x="134" y="30" width="26" height="70" rx="4" style="animation-delay:.26s"/>
+                  <rect class="bar" x="174" y="48" width="26" height="52" rx="4" style="animation-delay:.33s"/>
+                  <rect class="bar" x="214" y="18" width="26" height="82" rx="4" style="animation-delay:.4s"/>
+                  <rect class="bar" x="254" y="34" width="26" height="66" rx="4" style="animation-delay:.47s"/>
+                  <rect class="bar" x="294" y="24" width="22" height="76" rx="4" style="animation-delay:.54s"/>
+                </g>
+                <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38e7d8"/><stop offset="1" stop-color="#6d6cff"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+          <!-- board -->
+          <div class="panel" data-p="board">
+            <div class="mh"><h4>產品上線專案</h4><span class="pill">12 項任務</span></div>
+            <div class="kb">
+              <div class="kcol"><div class="ct">待處理 <span class="n">3</span></div>
+                <div class="kcard">撰寫發布公告<span class="tag tg-i">內容</span></div>
+                <div class="kcard">設定 A／B 測試<span class="tag tg-a">行銷</span></div>
+                <div class="kcard">更新定價頁面<span class="tag tg-i">設計</span></div>
+              </div>
+              <div class="kcol"><div class="ct">進行中 <span class="n">2</span></div>
+                <div class="kcard">整合 Webhook 通知<span class="tag tg-c">工程</span></div>
+                <div class="kcard">客戶資料遷移<span class="tag tg-c">工程</span></div>
+              </div>
+              <div class="kcol"><div class="ct">已完成 <span class="n">4</span></div>
+                <div class="kcard">設計新版儀表板<span class="tag tg-i">設計</span></div>
+                <div class="kcard">驗證自動化規則<span class="tag tg-c">工程</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- auto -->
+          <div class="panel" data-p="auto">
+            <div class="mh"><h4>新客戶歡迎流程</h4><span class="pill">已啟用</span></div>
+            <div class="flow">
+              <div class="fnode"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M22 7 12 14 2 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/></svg></span><div><div class="ft">觸發：收到新註冊</div><div class="fd">當表單提交時啟動</div></div></div>
+              <div class="fconn"></div>
+              <div class="fnode"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v6m0 8v6M2 12h6m8 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="2"/></svg></span><div><div class="ft">動作：建立 CRM 聯絡人</div><div class="fd">同步至 Salesforce</div></div></div>
+              <div class="fconn"></div>
+              <div class="fnode"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="ft">動作：寄出歡迎信</div><div class="fd">延遲 2 分鐘後發送</div></div></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<section class="logos wrap">
+  <p class="lab rv">受到成長中的團隊信賴</p>
+  <div class="marquee rv">
+    <div class="mtrack" id="marquee">
+      <span><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>Northwind</span>
+      <span><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2"/></svg>Quanta</span>
+      <span><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 21 18H3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Vireo</span>
+      <span><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Lumina 工作室</span>
+      <span><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="12" r="5" stroke="currentColor" stroke-width="2"/></svg>Orbit 科技</span>
+      <span><svg viewBox="0 0 24 24" fill="none"><path d="M4 18 12 4l8 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Apex 數位</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="sec wrap" style="padding-block:60px">
+  <div class="statsrow">
+    <div class="scard rv"><div class="num" data-count="2400" data-suffix="+">0</div><div class="lab">活躍團隊</div></div>
+    <div class="scard rv"><div class="num" data-count="14" data-suffix="M+">0</div><div class="lab">每月執行流程</div></div>
+    <div class="scard rv"><div class="num" data-count="320" data-suffix="+">0</div><div class="lab">整合工具</div></div>
+    <div class="scard rv"><div class="num" data-count="99" data-suffix="%">0</div><div class="lab">服務可用度</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec wrap" id="features">
+  <div class="sec-head rv">
+    <span class="eyebrow"><span class="dot"></span>核心功能</span>
+    <h2>一個平台，串起整個工作流</h2>
+    <p>從觸發、判斷到執行，Flowlane 把分散在各個工具裡的步驟整合成一條清楚、可視、可重複的自動化流程。</p>
+  </div>
+  <div class="fgrid">
+    <div class="fcard rv"><div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><h3>視覺化流程建構</h3><p>用拖放方式串接觸發條件與動作，無需寫一行程式碼即可打造複雜的多步驟自動化。</p></div>
+    <div class="fcard rv"><div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v6m0 8v6M2 12h6m8 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="2"/></svg></div><h3>320+ 原生整合</h3><p>Slack、Notion、Salesforce、Google Workspace 一鍵連接，並支援自訂 Webhook 串接任何 API。</p></div>
+    <div class="fcard rv"><div class="fi"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/></svg></div><h3>即時分析儀表板</h3><p>掌握每一條流程的執行次數、成功率與節省工時，異常自動告警，問題第一時間發現。</p></div>
+    <div class="fcard rv"><div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><h3>智慧排程與延遲</h3><p>設定條件式延遲、工作日排程與分批執行，讓自動化貼合真實的營運節奏。</p></div>
+    <div class="fcard rv"><div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 6v6c0 5 8 8 8 8s8-3 8-8V6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>企業級權限與稽核</h3><p>細緻的角色權限、SSO 單一登入與完整稽核紀錄，符合資安與合規要求。</p></div>
+    <div class="fcard rv"><div class="fi"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="2"/><path d="M3 20a6 6 0 0 1 12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 4a3.2 3.2 0 0 1 0 8M21 20a6 6 0 0 0-5-5.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><h3>團隊協作空間</h3><p>共享流程範本、留言討論與版本歷程，整個團隊在同一個工作區裡協作。</p></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec wrap">
+  <div class="sec-head rv">
+    <span class="eyebrow"><span class="dot"></span>客戶見證</span>
+    <h2>團隊為什麼選擇 Flowlane</h2>
+  </div>
+  <div class="tgrid">
+    <div class="tcard rv">
+      <p class="quote">「導入第一個月就把客服的工單分派完全自動化，團隊終於能把時間花在真正需要判斷的問題上。」</p>
+      <div class="who"><span class="av" style="background:linear-gradient(135deg,#6d6cff,#19c2ef)">林</span><div><div class="nm">林佩瑜</div><div class="rl">營運總監・Northwind</div></div></div>
+    </div>
+    <div class="tcard rv">
+      <p class="quote">「以前要寫腳本維護的串接，現在拖一拖就好。最驚豔的是出錯時的告警，讓我們提早避開一次資料同步事故。」</p>
+      <div class="who"><span class="av" style="background:linear-gradient(135deg,#38e7d8,#6d6cff)">張</span><div><div class="nm">張承軒</div><div class="rl">技術主管・Orbit 科技</div></div></div>
+    </div>
+    <div class="tcard rv">
+      <p class="quote">「儀表板上的『節省工時』是我向老闆證明價值最有力的數字。一季就回收了整年的訂閱費用。」</p>
+      <div class="who"><span class="av" style="background:linear-gradient(135deg,#a371ff,#38e7d8)">陳</span><div><div class="nm">陳怡君</div><div class="rl">行銷經理・Vireo</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT (anchor) -->
+<section class="sec wrap" id="product" style="padding-block:30px">
+  <div class="sec-head rv">
+    <span class="eyebrow"><span class="dot"></span>產品導覽</span>
+    <h2>切換上方分頁，看流程怎麼跑</h2>
+    <p>滑到頁面上方的產品畫面，點選側邊欄即可切換總覽儀表板、任務看板與自動化流程三種視圖。</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec wrap" id="pricing">
+  <div class="sec-head rv">
+    <span class="eyebrow"><span class="dot"></span>方案與定價</span>
+    <h2>選擇適合團隊規模的方案</h2>
+    <p>所有方案都包含核心自動化引擎。隨團隊成長隨時升級，年繳更省。</p>
+  </div>
+  <div class="toggle rv">
+    <span class="lbl on" id="lbl-m">月繳</span>
+    <div class="switch" id="switch" role="switch" aria-checked="false" tabindex="0"><span class="knob"></span></div>
+    <span class="lbl" id="lbl-y">年繳</span>
+    <span class="save">省 20%</span>
+  </div>
+  <div class="pgrid">
+    <div class="pcard rv">
+      <div class="pn">啟動版</div>
+      <div class="pdesc">適合剛起步的小團隊</div>
+      <div class="price"><span class="cur">NT$</span><span class="amt" data-m="450" data-y="360">450</span><span class="per">／月</span></div>
+      <ul class="pfeat">
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>3 名成員</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>每月 2,000 次流程執行</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>50+ 基礎整合</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>社群與電子郵件支援</li>
+      </ul>
+      <a class="btn btn-ghost" href="#cta">開始試用</a>
+    </div>
+    <div class="pcard pop rv">
+      <span class="ptag">最受歡迎</span>
+      <div class="pn">成長版</div>
+      <div class="pdesc">適合擴張中的團隊</div>
+      <div class="price"><span class="cur">NT$</span><span class="amt" data-m="1280" data-y="1024">1,280</span><span class="per">／月</span></div>
+      <ul class="pfeat">
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>15 名成員</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>每月 50,000 次流程執行</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>全部 320+ 整合與 Webhook</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>進階分析儀表板</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>優先客服支援</li>
+      </ul>
+      <a class="btn btn-primary" href="#cta">開始試用</a>
+    </div>
+    <div class="pcard rv">
+      <div class="pn">企業版</div>
+      <div class="pdesc">適合大型組織與高合規需求</div>
+      <div class="price"><span class="cur">NT$</span><span class="amt" data-m="3600" data-y="2880">3,600</span><span class="per">／月起</span></div>
+      <ul class="pfeat">
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>不限成員數</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>不限流程執行次數</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>SSO、進階權限與稽核</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>專屬客戶成功經理</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>99.9% SLA 服務保證</li>
+      </ul>
+      <a class="btn btn-ghost" href="#cta">聯絡業務</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec wrap" id="faq">
+  <div class="sec-head rv">
+    <span class="eyebrow"><span class="dot"></span>常見問題</span>
+    <h2>還有疑問嗎？</h2>
+  </div>
+  <div class="faq" id="faq">
+    <div class="fq rv"><div class="fq-q">需要會寫程式才能使用嗎？<span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></div><div class="fq-a"><p>完全不需要。Flowlane 採用視覺化拖放介面，任何人都能在幾分鐘內建好第一條自動化流程。若你是開發者，也能透過自訂程式碼步驟與 Webhook 做更進階的串接。</p></div></div>
+    <div class="fq rv"><div class="fq-q">可以隨時更換或取消方案嗎？<span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></div><div class="fq-a"><p>可以。升級即時生效，降級或取消會在當期結束時套用，不綁約、不收取任何違約金。年繳方案於到期前皆可改回月繳。</p></div></div>
+    <div class="fq rv"><div class="fq-q">我的資料安全嗎？<span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></div><div class="fq-a"><p>所有資料皆以業界標準加密儲存與傳輸。企業版另提供 SSO 單一登入、細緻權限控管與完整稽核紀錄，協助你符合內部資安與合規政策。</p></div></div>
+    <div class="fq rv"><div class="fq-q">免費試用包含哪些功能？<span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></div><div class="fq-a"><p>14 天全功能試用，包含成長版的所有功能，無需綁定信用卡。試用結束後可自由選擇方案，已建立的流程不會遺失。</p></div></div>
+    <div class="fq rv"><div class="fq-q">超過方案的執行次數會怎樣？<span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></div><div class="fq-a"><p>當用量接近上限時，系統會提前通知你。你可以選擇升級方案，或啟用按量計費，流程不會被中斷。</p></div></div>
+  </div>
+</section>
+
+<!-- CTA / SIGNUP -->
+<section class="sec wrap" id="cta">
+  <div class="cta rv">
+    <h2>讓團隊把時間留給重要的事</h2>
+    <p>留下你的工作信箱，立即開通 14 天全功能試用，5 分鐘內建好你的第一條自動化流程。</p>
+    <form class="signup" id="signup" novalidate>
+      <input type="email" id="email" placeholder="you@company.com" aria-label="工作信箱" autocomplete="email">
+      <button class="btn btn-primary btn-lg" type="submit">免費開始</button>
+    </form>
+    <div class="msg" id="msg" role="status"></div>
+    <p class="micro">無需信用卡・隨時可取消</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="wrap foot">
+  <div class="foot-grid">
+    <div>
+      <a class="brand" href="#"><span class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h13" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="19" cy="12" r="2.4" fill="#fff"/></svg></span>Flowlane</a>
+      <p class="fdesc">為現代團隊打造的工作流自動化平台，讓重複的工作自己流動起來。</p>
+    </div>
+    <div><h5>產品</h5><ul><li><a href="#features">功能</a></li><li><a href="#pricing">定價</a></li><li><a href="#product">產品導覽</a></li><li><a href="#">整合目錄</a></li></ul></div>
+    <div><h5>資源</h5><ul><li><a href="#faq">常見問題</a></li><li><a href="#">使用教學</a></li><li><a href="#">開發者文件</a></li><li><a href="#">部落格</a></li></ul></div>
+    <div><h5>公司</h5><ul><li><a href="#">關於我們</a></li><li><a href="#">聯絡業務</a></li><li><a href="#">隱私政策</a></li><li><a href="#">服務條款</a></li></ul></div>
+  </div>
+  <div class="foot-bot">
+    <span>© 2026 Flowlane 流線（示意作品）. 由 <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a> 設計與開發</span>
+    <span>此頁為 e-life-ai 作品集展示用途，產品與數據皆為虛構。</span>
+  </div>
+</footer>
+
+<a class="badge" href="https://elife-ai.com" target="_blank" rel="noopener"><span class="bd"></span>elife-ai.com</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* staggered hero reveal + scroll reveal */
+  var rvs = Array.prototype.slice.call(document.querySelectorAll(".rv"));
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+  },{threshold:.12, rootMargin:"0px 0px -40px 0px"});
+  rvs.forEach(function(el){ io.observe(el); });
+  // initial stagger for above-the-fold hero items
+  var hero = document.querySelectorAll(".hero .rv");
+  hero.forEach(function(el,i){ el.style.transitionDelay = (i*0.06)+"s"; });
+  // safety: never leave content hidden (e.g. no-scroll capture / JS-only render)
+  setTimeout(function(){ rvs.forEach(function(el){ el.classList.add("in"); }); }, 2600);
+
+  /* product mockup tab switching */
+  var tabs = document.querySelectorAll("#tabs .tab");
+  var panels = document.querySelectorAll(".mock-main .panel");
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      var p = t.getAttribute("data-p");
+      tabs.forEach(function(x){ x.classList.toggle("active", x===t); });
+      panels.forEach(function(pl){ pl.classList.toggle("active", pl.getAttribute("data-p")===p); });
+    });
+  });
+
+  /* pricing toggle */
+  var sw = document.getElementById("switch");
+  var amts = document.querySelectorAll(".amt");
+  var lblM = document.getElementById("lbl-m"), lblY = document.getElementById("lbl-y");
+  var fmt = function(n){ return n.toLocaleString("en-US"); };
+  function setPlan(annual){
+    sw.classList.toggle("annual", annual);
+    sw.setAttribute("aria-checked", annual ? "true":"false");
+    lblM.classList.toggle("on", !annual);
+    lblY.classList.toggle("on", annual);
+    amts.forEach(function(a){
+      a.textContent = fmt(parseInt(annual ? a.getAttribute("data-y") : a.getAttribute("data-m"),10));
+    });
+  }
+  sw.addEventListener("click", function(){ setPlan(!sw.classList.contains("annual")); });
+  sw.addEventListener("keydown", function(e){ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); setPlan(!sw.classList.contains("annual")); } });
+
+  /* FAQ accordion */
+  document.querySelectorAll("#faq .fq").forEach(function(fq){
+    var q = fq.querySelector(".fq-q"), a = fq.querySelector(".fq-a");
+    q.addEventListener("click", function(){
+      var open = fq.classList.contains("open");
+      document.querySelectorAll("#faq .fq").forEach(function(o){ o.classList.remove("open"); o.querySelector(".fq-a").style.maxHeight=null; });
+      if(!open){ fq.classList.add("open"); a.style.maxHeight = a.scrollHeight + "px"; }
+    });
+  });
+
+  /* animated stat counters */
+  var counted = false;
+  var statsSec = document.querySelector(".statsrow");
+  var sio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting && !counted){
+        counted = true;
+        document.querySelectorAll(".num[data-count]").forEach(function(el){
+          var target = parseInt(el.getAttribute("data-count"),10);
+          var suffix = el.getAttribute("data-suffix")||"";
+          var start = null, dur = 1400;
+          function step(ts){
+            if(!start) start = ts;
+            var p = Math.min((ts-start)/dur,1);
+            var eased = 1-Math.pow(1-p,3);
+            el.textContent = Math.round(target*eased) + suffix;
+            if(p<1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }
+    });
+  },{threshold:.4});
+  if(statsSec) sio.observe(statsSec);
+
+  /* marquee: duplicate track for seamless loop */
+  var mt = document.getElementById("marquee");
+  if(mt){ mt.innerHTML += mt.innerHTML; }
+
+  /* email signup validation */
+  var form = document.getElementById("signup");
+  var email = document.getElementById("email");
+  var msg = document.getElementById("msg");
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var v = email.value.trim();
+    if(!v){ email.classList.add("err"); msg.className="msg bad"; msg.textContent="請輸入你的工作信箱"; return; }
+    if(!re.test(v)){ email.classList.add("err"); msg.className="msg bad"; msg.textContent="信箱格式看起來不太對，再確認一下"; return; }
+    email.classList.remove("err");
+    msg.className="msg ok"; msg.textContent="✓ 開通信已寄出！請至 "+v+" 收信完成設定";
+    email.value="";
+    email.placeholder="再試一次？";
+  });
+  email.addEventListener("input", function(){ email.classList.remove("err"); });
+})();
+</script>
+</body>
+</html>
