@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LINE LIFF 訂單系統 — 報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">LINE LIFF 訂單系統</h1>
+    <p class="lead">讓貴公司客戶在 LINE 裡完成下單、訂單查詢與發票取得，免安裝 App、免帳號密碼。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26061314BBNV95</b></span>
+      <span class="chip">行業 <b>運輸業</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">期望完成 <b>2026/08/31</b></span>
+      <span class="chip">預算 <b>$100,000</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="paper">
+<div class="wrap">
+
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們對這個需求的理解</h2>
+    <p class="lead">貴公司希望讓客戶<b>透過 LINE 完成下單、查詢訂單、取得發票</b>，不必另外安裝 App、不必註冊帳號密碼。核心是一套「<b>內嵌在 LINE 裡的訂單系統</b>」：</p>
+    <ul class="plain">
+      <li>客戶在 LINE 圖文選單點一下 → 直接開啟下單頁，系統自動辨識身分、免登入</li>
+      <li>下單後隨時可在 LINE 裡查自己的訂單與狀態</li>
+      <li>訂單成立、出貨、發票開立時，系統主動用 LINE 訊息通知客戶</li>
+      <li>發票依法透過電子發票加值中心開立並寄送</li>
+    </ul>
+    <p style="margin-top:14px">技術上採用 <b>LIFF（LINE Front-end Framework）</b>，這是一個跑在 LINE App 內的網頁，最大優勢是<b>免帳密、自動辨識用戶身分</b>，最適合傳統產業、長輩或司機等不擅長記帳密碼的使用情境。</p>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>系統架構</h2>
+    <div class="flow">
+      <div class="flow-col">
+        <div class="node">LINE App<span class="sub">圖文選單入口</span></div>
+        <div class="arrow"></div>
+        <div class="node accent">LIFF 內嵌網頁<span class="sub">下單 / 訂單查詢 / 發票</span></div>
+        <div class="arrow"><span class="note">自動取得 LINE 身分，免登入</span></div>
+        <div class="node">訂單後端 API</div>
+        <div class="flow-fan">
+          <!-- flat connector: straight lines only. preserveAspectRatio=none stretches the
+               horizontal bar harmlessly (a line stays a line); right-angle corners, no arrowheads. -->
+          <svg class="flow-conn" viewBox="0 0 660 52" preserveAspectRatio="none" aria-hidden="true">
+            <path class="ln" d="M330,0 V26 M110,26 H550 M110,26 V52 M330,26 V52 M550,26 V52" />
+          </svg>
+          <div class="node">訂單資料庫</div>
+          <div class="node">LINE 推播<span class="sub">訂單 / 發票通知</span></div>
+          <div class="node">電子發票加值中心<span class="sub">合規開立 + 寄送 + 載具</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>前端（LIFF 網頁）</h3>
+      <p>下單、訂單查詢、發票三大功能頁，自動辨識 LINE 身分。</p>
+    </div>
+    <div class="card">
+      <h3>訂單後端</h3>
+      <p>訂單資料、狀態流程，以及供貴公司內部人員管理訂單的後台。</p>
+    </div>
+    <div class="card">
+      <h3>LINE 推播</h3>
+      <p>訂單成立、出貨、發票開立等關鍵節點主動通知客戶。</p>
+    </div>
+    <div class="card">
+      <h3>電子發票</h3>
+      <p>串接合規加值中心（綠界 / ezPay 等），不自行開立。</p>
+    </div>
+    <p style="margin-top:10px;color:var(--ink-2);font-size:14px">※ 本系統建構於提案方既有的 LINE 串接與訊息推播服務基礎之上，可縮短開發時程、降低後續維運成本。</p>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>功能範圍（第一階段）</h2>
+    <table>
+      <thead><tr><th class="num">#</th><th>模組</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>LIFF 下單</b></td><td>LINE 免登入辨識身分、品項／服務選擇、數量與資訊填寫、訂單送出</td></tr>
+        <tr><td class="num">2</td><td><b>訂單查詢</b></td><td>我的訂單列表、訂單詳情、即時狀態（成立／處理中／已出貨／完成）</td></tr>
+        <tr><td class="num">3</td><td><b>發票功能</b></td><td>載具歸戶、發票查詢、開立後 LINE 通知與電子發票連結</td></tr>
+        <tr><td class="num">4</td><td><b>LINE 推播</b></td><td>訂單成立、狀態變更、發票開立自動通知</td></tr>
+        <tr><td class="num">5</td><td><b>管理後台</b></td><td>貴公司內部人員查看／處理訂單、變更狀態、開立發票</td></tr>
+        <tr><td class="num">6</td><td><b>電子發票串接</b></td><td>串接加值中心 API：開立、作廢、折讓、載具</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>報價前需確認的事項</h2>
+    <p>以下幾點直接影響系統設計與工作量，懇請先行確認：</p>
+    <ol class="confirm">
+      <li>
+        <b>電子發票帳號</b>
+        <p>依台灣法規，電子發票須透過財政部電子發票整合服務平台，或經由加值服務中心（綠界 / ezPay 等）開立，<b>無法由系統自行產製</b>。貴公司是否已有加值中心帳號？若無，需先行申辦（涉及月費或交易抽成，由貴公司與加值中心簽約，此部分非開發費用範疇）。</p>
+      </li>
+      <li>
+        <b>訂單的「品項」長相</b>
+        <p>是固定商品（如電商選購）？還是「運輸服務」（起迄點、車種、時間、噸數）？兩者的下單表單與資料設計差異很大，請提供 1～2 個實際下單範例。</p>
+      </li>
+      <li>
+        <b>是否需要管理後台</b>
+        <p>貴公司出貨／內勤人員如何看單、改狀態？純靠 LINE 還是需要網頁後台？（後台是常被低估的工作量，建議納入。）</p>
+      </li>
+      <li>
+        <b>訂單量級與付款方式</b>
+        <p>每日約幾筆訂單？付款採線上金流、貨到付款或月結？<b>若需線上付款（信用卡 / LINE Pay），則為額外獨立模組，需另行評估。</b></p>
+      </li>
+      <li>
+        <b>客戶資料來源</b>
+        <p>現有客戶名單／編號如何對應到 LINE 帳號？是否需要首次綁定流程？</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>報價與分期</h2>
+    <p style="color:var(--ink-2);font-size:14px;margin-bottom:8px">※ 以下為依「第一階段範圍」之初步報價占比，正式報價於上述事項確認後出具。</p>
+    <table>
+      <thead><tr><th>階段</th><th>交付內容</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期</b><br>需求確認與設計</td><td>訂單資料模型、API 設計、LIFF 畫面流程、發票串接規格</td><td class="pct">20%</td></tr>
+        <tr><td><b>第二期</b><br>LIFF 前端 + 訂單後端</td><td>下單／查詢／發票三頁、訂單後端、LINE 串接</td><td class="pct">40%</td></tr>
+        <tr><td><b>第三期</b><br>發票 + 後台 + 推播</td><td>加值中心串接、管理後台、推播通知</td><td class="pct">30%</td></tr>
+        <tr><td><b>第四期</b><br>測試與上線</td><td>整合測試、上線部署、教育訓練文件</td><td class="pct">10%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">在以上第一階段範圍且<b>不含線上金流模組</b>的前提下，可於 <b>$100,000</b> 預算內完成。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確排除（如需，另行報價）</p>
+    <ul class="plain exclude">
+      <li>線上金流（信用卡 / LINE Pay 串接）</li>
+      <li>加值中心月費／交易抽成（由貴公司與加值中心簽約支付）</li>
+      <li>物流系統串接、車隊調度等運輸專屬模組</li>
+      <li>上線後的功能新增與長期維運（可另議維運合約）</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>時程</h2>
+    <p>期望完成日 <b>2026/08/31</b>。在「第 4 節確認事項」於 <b>2026/07 上旬</b>前回覆、並完成發票加值中心帳號申辦的前提下，時程可達成。</p>
+    <div class="callout"><b>關鍵相依：</b>發票加值中心帳號申辦若延遲，將連動影響第三期時程。建議貴公司儘早啟動申辦。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>為什麼是我們</h2>
+    <div class="why-grid">
+      <div class="card"><h3>既有 LINE 基礎</h3><p>已具備成熟的 LINE 串接、訊息推播與服務平台，本案站在既有基礎上開發，省時、穩定。</p></div>
+      <div class="card"><h3>全端一條龍</h3><p>前端、後端、資料庫、第三方 API 串接一手包辦，無轉包、溝通成本低。</p></div>
+      <div class="card"><h3>交付即可上手</h3><p>含教育訓練文件，貴公司內部人員可快速接手操作。</p></div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+</body>
+</html>

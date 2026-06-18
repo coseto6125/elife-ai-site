@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-life-ai · 工作台</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./console.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Sidebar: skill list -->
+      <aside class="sidebar">
+        <div class="side-brand">
+          <span class="logo-mark">e</span>
+          <div>
+            <span class="brand-name">e-life-ai</span>
+            <span class="brand-sub">企業 AI 工作台</span>
+          </div>
+        </div>
+
+        <div class="side-search">
+          <span class="search-ico">🔍</span>
+          <input id="search" type="text" placeholder="搜尋功能…" />
+        </div>
+
+        <nav class="side-nav" id="sideNav"></nav>
+
+        <div class="side-foot">
+          <div class="user">
+            <span class="avatar">陳</span>
+            <div>
+              <span class="user-name">陳小姐</span>
+              <span class="user-role">行政部 · 已登入</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main workspace -->
+      <main class="work">
+        <header class="work-bar">
+          <div class="bar-left">
+            <span class="work-icon" id="wIcon"></span>
+            <div>
+              <h1 id="wTitle"></h1>
+              <p id="wBlurb"></p>
+            </div>
+          </div>
+          <span class="bar-tag" id="wTag"></span>
+        </header>
+
+        <div class="work-body">
+          <section class="panel input-panel">
+            <label class="panel-label" id="wLabel"></label>
+            <textarea id="wInput" rows="12"></textarea>
+            <div class="panel-actions">
+              <button class="btn-ghost" id="wClear">清空</button>
+              <button class="btn-run" id="wRun">✨ 產生結果</button>
+            </div>
+          </section>
+
+          <section class="panel output-panel">
+            <div class="panel-head">
+              <span>AI 產出結果</span>
+              <button class="btn-ghost sm" id="wCopy" hidden>複製</button>
+            </div>
+            <div class="output" id="wOutput">
+              <div class="output-empty" id="wEmpty">
+                <span>👈</span>
+                <p>在左側輸入內容後，按「產生結果」</p>
+              </div>
+              <div class="output-loading" id="wLoading" hidden>
+                <span class="spinner"></span>
+                <p>AI 處理中…</p>
+              </div>
+              <pre class="output-text" id="wText" hidden></pre>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="./skills-data.js"></script>
+    <script src="./console.js"></script>
+  </body>
+</html>

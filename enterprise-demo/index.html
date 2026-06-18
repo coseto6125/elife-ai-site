@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-life-ai · 企業 AI 助理</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo-mark">e</span>
+        <span class="brand-name">e-life-ai</span>
+        <span class="brand-tag">企業 AI 助理</span>
+      </div>
+      <nav class="topnav">
+        <a>功能</a>
+        <a>導入流程</a>
+        <a class="nav-cta">預約諮詢</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="eyebrow">為中小企業打造 · 本地安全運行</span>
+        <h1>每天的繁瑣行政<br />交給 AI 助理，一鍵搞定</h1>
+        <p class="lede">
+          選一個功能、貼上內容、按一下，就拿到整理好的結果。<br />
+          全程在公司內部運行，資料不外流，同仁不用學新工具。
+        </p>
+        <div class="hero-actions">
+          <span class="btn-primary">預約免費諮詢</span>
+          <span class="btn-secondary">看功能介紹</span>
+        </div>
+        <div class="trust-row">
+          <span>✓ 資料不外流</span>
+          <span>✓ 免安裝、開瀏覽器就能用</span>
+          <span>✓ 可依需求擴充功能</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="skills">
+      <div class="section-head">
+        <h2>挑一個助理，立刻開始</h2>
+        <p>以下都是中小企業每天在做的事，現在交給 AI 幾秒完成。</p>
+      </div>
+      <div class="grid" id="skillGrid"></div>
+    </section>
+
+    <section class="flow">
+      <div class="section-head">
+        <h2>導入只要三步，兩週看到成效</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-no">1</span>
+          <h3>免費諮詢</h3>
+          <p>聊 15 分鐘，找出最花時間、最重複的作業。</p>
+        </div>
+        <div class="step">
+          <span class="step-no">2</span>
+          <h3>客製導入</h3>
+          <p>挑選需要的助理功能，在公司內部裝好、教會同仁。</p>
+        </div>
+        <div class="step">
+          <span class="step-no">3</span>
+          <h3>持續擴充</h3>
+          <p>用順了再加新功能，依需求逐步擴大，長期合作。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="foot-cta">
+        <h2>想知道貴公司哪些事可以自動化？</h2>
+        <span class="btn-primary lg">預約一場免費諮詢</span>
+      </div>
+      <div class="foot-bar">
+        <span>e-life-ai · 企業 AI 導入夥伴</span>
+        <span>本地安全運行 · 資料不外流</span>
+      </div>
+    </footer>
+
+    <!-- Runner overlay (demo interaction — uses canned sample output) -->
+    <div class="runner" id="runner" hidden>
+      <div class="runner-card">
+        <button class="runner-close" id="runnerClose" aria-label="關閉">×</button>
+        <div class="runner-head">
+          <span class="runner-icon" id="runIcon"></span>
+          <div>
+            <span class="card-tag" id="runTag"></span>
+            <h3 id="runTitle"></h3>
+          </div>
+        </div>
+
+        <label class="field-label" id="runLabel"></label>
+        <textarea id="runInput" rows="5"></textarea>
+
+        <button class="btn-primary run-btn" id="runBtn">✨ 產生結果</button>
+
+        <div class="result" id="runResult" hidden>
+          <div class="result-head">
+            <span>AI 產出結果</span>
+            <span class="result-copy">複製</span>
+          </div>
+          <div class="result-body" id="runOutput"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./skills-data.js"></script>
+    <script src="./render.js"></script>
+  </body>
+</html>

@@ -52,7 +52,7 @@
   <text x="80" y="700" font-family="Sora, 'Segoe UI', sans-serif" font-size="68" font-weight="800" letter-spacing="-1.5" fill="#eaf2fb">AI 客服<tspan fill="#34e3c4">／</tspan>導購機器人</text>
   <text x="82" y="752" font-family="'JetBrains Mono', monospace" font-size="27" fill="#61748a">chatbot · 智能客服 · 導購推薦</text>
 
-  <!-- small e-life.ai logo bottom-left -->
+  <!-- small e-life-ai logo bottom-left -->
   <g transform="translate(80 818)">
     <g transform="translate(20 0)">
       <g stroke="url(#edge)" stroke-width="2" opacity="0.7">
@@ -67,7 +67,7 @@
       <circle cx="12" cy="12" r="2.6" fill="#7c8cff"/>
       <circle cx="0" cy="0" r="4.4" fill="#34e3c4"/>
     </g>
-    <text x="48" y="9" font-family="Sora, 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="-0.8" fill="#eaf2fb">e-life<tspan fill="#34e3c4">.ai</tspan></text>
+    <text x="48" y="9" font-family="Sora, 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="-0.8" fill="#eaf2fb">e-life<tspan fill="#34e3c4">-ai</tspan></text>
   </g>
 
   <!-- service tag top-right -->
