@@ -1,6 +1,6 @@
 # e-life-ai — 接案形象官網
 
-硬核工程外包形象站 · **[service.e-life-ai.com](https://service.e-life-ai.com)**
+軟體開發團隊形象站 · **[service.e-life-ai.com](https://service.e-life-ai.com)**
 
 AI Agent · RAG · 程式碼圖譜 · 爬蟲 · 系統整合。
 
