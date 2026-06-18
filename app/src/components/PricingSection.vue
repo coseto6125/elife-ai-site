@@ -13,7 +13,7 @@ function go(href: string) {
   <section id="pricing" ref="root" class="section">
     <div class="wrap">
       <header class="head reveal" data-reveal>
-        <span class="eyebrow">// 04 — How We Work</span>
+        <span class="eyebrow">// 05 — How We Work</span>
         <h2 class="section-title">合作流程與方案</h2>
         <p class="section-lead">
           透明、分階段、可驗收。先把問題談清楚，再談錢，需求釐清完全免費。

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>設計範例 · 互動樣板展示 — e-life-ai</title>
+    <meta
+      name="description"
+      content="e-life-ai 設計範例：20 種產業情境的互動式前端樣板，展示設計幅度與前端功力。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-0: #070b10;
+        --bg-1: #0b1117;
+        --bg-2: #0f1620;
+        --bg-3: #141d29;
+        --line: #1d2733;
+        --line-bright: #2a3a4d;
+        --ink-0: #eaf2fb;
+        --ink-1: #9fb2c6;
+        --ink-2: #61748a;
+        --accent: #34e3c4;
+        --accent-2: #7c8cff;
+        --font-display: 'Sora', 'Noto Sans TC', sans-serif;
+        --font-mono: 'JetBrains Mono', 'Noto Sans TC', monospace;
+        --font-cjk: 'Noto Sans TC', 'Sora', sans-serif;
+        --gutter: clamp(20px, 5vw, 64px);
+        --radius: 14px;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg-0);
+        color: var(--ink-0);
+        font-family: var(--font-cjk);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        position: relative;
+        min-height: 100vh;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 64px 64px;
+        opacity: 0.25;
+        mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 70%);
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding-inline: var(--gutter);
+        position: relative;
+        z-index: 1;
+      }
+      header.top {
+        padding-top: clamp(56px, 10vw, 110px);
+        padding-bottom: clamp(40px, 6vw, 64px);
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6em;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.18rem;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        color: var(--ink-0);
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 14px var(--accent);
+      }
+      .brand-ai {
+        color: var(--accent);
+      }
+      .eyebrow {
+        display: inline-block;
+        margin-top: clamp(40px, 6vw, 64px);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        letter-spacing: -0.025em;
+        line-height: 1.08;
+        margin-top: 14px;
+      }
+      .lead {
+        color: var(--ink-1);
+        max-width: 60ch;
+        margin-top: 18px;
+        font-size: 1.02rem;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: clamp(16px, 2vw, 22px);
+        padding-bottom: clamp(56px, 9vw, 100px);
+      }
+      .card {
+        background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: clamp(22px, 2.4vw, 30px);
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        overflow: hidden;
+        transition:
+          border-color 0.4s var(--ease),
+          transform 0.4s var(--ease);
+      }
+      .card::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--card-accent, var(--accent));
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.5s var(--ease);
+      }
+      .card:hover {
+        border-color: var(--line-bright);
+        transform: translateY(-4px);
+      }
+      .card:hover::after {
+        transform: scaleY(1);
+      }
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .no {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--card-accent, var(--accent));
+      }
+      .kind {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+        color: var(--ink-2);
+        text-align: right;
+      }
+      .card-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.12rem, 1.8vw, 1.4rem);
+        letter-spacing: -0.015em;
+        margin-top: 18px;
+        line-height: 1.25;
+      }
+      .view {
+        margin-top: auto;
+        padding-top: 26px;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--ink-1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        transition: color 0.3s var(--ease);
+      }
+      .card:hover .view {
+        color: var(--card-accent, var(--accent));
+      }
+      .arrow {
+        transition: transform 0.3s var(--ease);
+      }
+      .card:hover .arrow {
+        transform: translate(2px, -2px);
+      }
+      footer.bottom {
+        border-top: 1px solid var(--line);
+        padding: clamp(28px, 4vw, 40px) 0 clamp(40px, 6vw, 60px);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--ink-2);
+      }
+      footer.bottom a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      footer.bottom a:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="brand" href="https://service.e-life-ai.com">
+          <span class="dot"></span>
+          <span>e-life<span class="brand-ai">-ai</span></span>
+        </a>
+        <span class="eyebrow">// Design Templates</span>
+        <h1>設計範例</h1>
+        <p class="lead">
+          20 種產業情境的互動式前端樣板，展示我們的設計幅度與前端功力。皆為純前端、
+          使用模擬資料的展示範本（非真實客戶產品），點開即可實際操作。
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="grid" id="grid"></div>
+      </div>
+    </main>
+
+    <footer class="bottom">
+      <div class="wrap">
+        Template by e-life-ai ·
+        <a href="https://service.e-life-ai.com">service.e-life-ai.com</a>
+      </div>
+    </footer>
+
+    <script>
+      const showcases = [
+        { no: '01', title: 'SaaS 產品著陸頁', kind: 'B2B 軟體新創', slug: '01-saas-landing' },
+        { no: '02', title: '電商商品頁', kind: '零售 / DTC 品牌', slug: '02-ecommerce' },
+        { no: '03', title: '餐廳訂位與菜單', kind: '餐飲', slug: '03-restaurant' },
+        { no: '04', title: '創意作品集', kind: '設計師 / 攝影師', slug: '04-portfolio' },
+        { no: '05', title: '企業形象官網', kind: '傳產 / B2B', slug: '05-corporate' },
+        { no: '06', title: '編輯雜誌媒體', kind: '媒體 / 內容品牌', slug: '06-editorial' },
+        { no: '07', title: 'AI 對話介面', kind: 'AI 產品', slug: '07-ai-chat' },
+        { no: '08', title: '數據分析儀表板', kind: 'SaaS 後台', slug: '08-dashboard' },
+        { no: '09', title: '活動 / 研討會', kind: '活動主辦', slug: '09-event' },
+        { no: '10', title: '個人品牌 / 講者', kind: '講師 / KOL', slug: '10-personal-brand' },
+        { no: '11', title: '房地產建案展示', kind: '建商 / 仲介', slug: '11-real-estate' },
+        { no: '12', title: '醫療診所', kind: '診所 / 醫美', slug: '12-clinic' },
+        { no: '13', title: '健身工作室', kind: '健身 / 運動品牌', slug: '13-fitness' },
+        { no: '14', title: '線上課程平台', kind: '教育 / 線上課程', slug: '14-course' },
+        { no: '15', title: 'Web3 / 加密產品', kind: '區塊鏈 / Web3', slug: '15-web3' },
+        { no: '16', title: '旅遊行程', kind: '旅行社', slug: '16-travel' },
+        { no: '17', title: '非營利募資', kind: 'NGO / 公益', slug: '17-nonprofit' },
+        { no: '18', title: 'App 下載著陸頁', kind: '行動 App', slug: '18-app-landing' },
+        { no: '19', title: '建築 / 室內設計事務所', kind: '建築事務所', slug: '19-architecture' },
+        { no: '20', title: '遊戲 / 娛樂', kind: '遊戲工作室', slug: '20-game' },
+      ]
+      const grid = document.getElementById('grid')
+      grid.innerHTML = showcases
+        .map((s, i) => {
+          const accent = i % 2 === 0 ? 'var(--accent)' : 'var(--accent-2)'
+          return `<a class="card" style="--card-accent:${accent}" href="./${s.slug}/">
+            <div class="card-top">
+              <span class="no">${s.no}</span>
+              <span class="kind">${s.kind}</span>
+            </div>
+            <h3 class="card-title">${s.title}</h3>
+            <span class="view">查看範例 <span class="arrow" aria-hidden="true">↗</span></span>
+          </a>`
+        })
+        .join('')
+    </script>
+  </body>
+</html>

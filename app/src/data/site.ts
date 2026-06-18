@@ -46,6 +46,16 @@ export interface Contact {
   href: string
 }
 
+export interface Showcase {
+  id: string
+  no: string
+  title: string
+  clientType: string
+  slug: string
+  href: string // public deployed path, e.g. /demo/showcase/<slug>/
+  accent?: string // optional accent CSS var for per-card variety
+}
+
 export const services: Service[] = [
   {
     id: 'ai',
@@ -344,4 +354,32 @@ export const techStack = [
   'Frida',
   'GDB',
   'SQLCipher',
+]
+
+/**
+ * Interactive design templates (front-end only, mock data) showcasing design
+ * range. Each lives at /demo/showcase/<slug>/ once its demo PR merges. Accents
+ * alternate within the brand palette (mint / indigo) for visual variety.
+ */
+export const showcases: Showcase[] = [
+  { id: 'saas-landing', no: '01', title: 'SaaS 產品著陸頁', clientType: 'B2B 軟體新創', slug: '01-saas-landing', href: '/demo/showcase/01-saas-landing/', accent: 'var(--accent)' },
+  { id: 'ecommerce', no: '02', title: '電商商品頁', clientType: '零售 / DTC 品牌', slug: '02-ecommerce', href: '/demo/showcase/02-ecommerce/', accent: 'var(--accent-2)' },
+  { id: 'restaurant', no: '03', title: '餐廳訂位與菜單', clientType: '餐飲', slug: '03-restaurant', href: '/demo/showcase/03-restaurant/', accent: 'var(--accent)' },
+  { id: 'portfolio', no: '04', title: '創意作品集', clientType: '設計師 / 攝影師', slug: '04-portfolio', href: '/demo/showcase/04-portfolio/', accent: 'var(--accent-2)' },
+  { id: 'corporate', no: '05', title: '企業形象官網', clientType: '傳產 / B2B', slug: '05-corporate', href: '/demo/showcase/05-corporate/', accent: 'var(--accent)' },
+  { id: 'editorial', no: '06', title: '編輯雜誌媒體', clientType: '媒體 / 內容品牌', slug: '06-editorial', href: '/demo/showcase/06-editorial/', accent: 'var(--accent-2)' },
+  { id: 'ai-chat', no: '07', title: 'AI 對話介面', clientType: 'AI 產品', slug: '07-ai-chat', href: '/demo/showcase/07-ai-chat/', accent: 'var(--accent)' },
+  { id: 'dashboard', no: '08', title: '數據分析儀表板', clientType: 'SaaS 後台', slug: '08-dashboard', href: '/demo/showcase/08-dashboard/', accent: 'var(--accent-2)' },
+  { id: 'event', no: '09', title: '活動 / 研討會', clientType: '活動主辦', slug: '09-event', href: '/demo/showcase/09-event/', accent: 'var(--accent)' },
+  { id: 'personal-brand', no: '10', title: '個人品牌 / 講者', clientType: '講師 / KOL', slug: '10-personal-brand', href: '/demo/showcase/10-personal-brand/', accent: 'var(--accent-2)' },
+  { id: 'real-estate', no: '11', title: '房地產建案展示', clientType: '建商 / 仲介', slug: '11-real-estate', href: '/demo/showcase/11-real-estate/', accent: 'var(--accent)' },
+  { id: 'clinic', no: '12', title: '醫療診所', clientType: '診所 / 醫美', slug: '12-clinic', href: '/demo/showcase/12-clinic/', accent: 'var(--accent-2)' },
+  { id: 'fitness', no: '13', title: '健身工作室', clientType: '健身 / 運動品牌', slug: '13-fitness', href: '/demo/showcase/13-fitness/', accent: 'var(--accent)' },
+  { id: 'course', no: '14', title: '線上課程平台', clientType: '教育 / 線上課程', slug: '14-course', href: '/demo/showcase/14-course/', accent: 'var(--accent-2)' },
+  { id: 'web3', no: '15', title: 'Web3 / 加密產品', clientType: '區塊鏈 / Web3', slug: '15-web3', href: '/demo/showcase/15-web3/', accent: 'var(--accent)' },
+  { id: 'travel', no: '16', title: '旅遊行程', clientType: '旅行社', slug: '16-travel', href: '/demo/showcase/16-travel/', accent: 'var(--accent-2)' },
+  { id: 'nonprofit', no: '17', title: '非營利募資', clientType: 'NGO / 公益', slug: '17-nonprofit', href: '/demo/showcase/17-nonprofit/', accent: 'var(--accent)' },
+  { id: 'app-landing', no: '18', title: 'App 下載著陸頁', clientType: '行動 App', slug: '18-app-landing', href: '/demo/showcase/18-app-landing/', accent: 'var(--accent-2)' },
+  { id: 'architecture', no: '19', title: '建築 / 室內設計事務所', clientType: '建築事務所', slug: '19-architecture', href: '/demo/showcase/19-architecture/', accent: 'var(--accent)' },
+  { id: 'game', no: '20', title: '遊戲 / 娛樂', clientType: '遊戲工作室', slug: '20-game', href: '/demo/showcase/20-game/', accent: 'var(--accent-2)' },
 ]
