@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="烈焰健身工作室 PYRE — 台北信義私人教練與團體課程基地。預約免費體驗課，從今天點燃你的訓練。重訓、HIIT、拳擊、肌力與燃脂課表一週排定。">
+<title>烈焰健身工作室 PYRE｜點燃你的極限｜e-life-ai 設計樣板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0D0D10;
+    --panel:#16161C;
+    --panel-2:#1E1E26;
+    --line:#2C2C36;
+    --heat-a:#FF6A1A;
+    --heat-b:#FF1E56;
+    --ignite:#FFD23F;
+    --text:#F2F2F5;
+    --muted:#878792;
+    --heat:linear-gradient(105deg,var(--heat-a),var(--heat-b));
+    --font-display:'Anton',sans-serif;
+    --font-data:'Oswald',sans-serif;
+    --font-body:'Noto Sans TC',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);color:var(--text);font-family:var(--font-body);
+    line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--heat-b);color:#fff}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  :focus-visible{outline:3px solid var(--ignite);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .display{font-family:var(--font-display);letter-spacing:.5px;line-height:.92;text-transform:uppercase}
+  .data{font-family:var(--font-data)}
+  .heat-text{background:var(--heat);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .eyebrow{
+    font-family:var(--font-data);font-weight:600;letter-spacing:.32em;text-transform:uppercase;
+    font-size:.74rem;color:var(--ignite);display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--heat)}
+
+  /* ---------- NAV ---------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .3s,border-color .3s}
+  header.scrolled{background:rgba(13,13,16,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:1.5rem}
+  .brand .mark{
+    width:38px;height:38px;border-radius:11px;background:var(--heat);
+    display:grid;place-items:center;font-size:1.3rem;transform:rotate(-6deg);
+    box-shadow:0 8px 24px rgba(255,30,86,.35)
+  }
+  .navlinks{display:flex;gap:34px;align-items:center}
+  .navlinks a{font-family:var(--font-data);font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-size:.86rem;color:var(--muted);transition:color .2s}
+  .navlinks a:hover{color:var(--text)}
+  .btn{
+    font-family:var(--font-data);font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    padding:13px 26px;border-radius:40px;font-size:.85rem;transition:transform .18s,box-shadow .18s;display:inline-flex;align-items:center;gap:9px
+  }
+  .btn-heat{background:var(--heat);color:#fff;box-shadow:0 10px 28px rgba(255,30,86,.34)}
+  .btn-heat:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(255,30,86,.5)}
+  .btn-ghost{border:1.5px solid var(--line);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--heat-b);transform:translateY(-3px)}
+  .nav-toggle{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 70px;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0}
+  .hero-bg .glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+  .glow-1{width:560px;height:560px;background:radial-gradient(circle,var(--heat-b),transparent 68%);top:-120px;right:-120px}
+  .glow-2{width:480px;height:480px;background:radial-gradient(circle,var(--heat-a),transparent 70%);bottom:-160px;left:-110px;opacity:.4}
+  .grid-lines{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 75% 65% at 50% 45%,#000,transparent 80%);opacity:.32}
+  .hero .wrap{position:relative;z-index:2}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:48px;align-items:center}
+  .hero h1{font-family:var(--font-display);font-size:clamp(3.4rem,9vw,7rem);text-transform:uppercase;line-height:.86;margin:22px 0 0}
+  .hero h1 .ln{display:block;overflow:hidden}
+  .hero h1 .ln span{display:block;transform:translateY(110%);animation:rise .9s cubic-bezier(.16,1,.3,1) forwards}
+  .hero h1 .ln:nth-child(2) span{animation-delay:.12s}
+  .hero h1 .ln:nth-child(3) span{animation-delay:.24s}
+  @keyframes rise{to{transform:translateY(0)}}
+  .hero .lead{color:var(--muted);font-size:1.1rem;max-width:440px;margin:26px 0 34px;opacity:0;animation:fade .8s ease .5s forwards}
+  @keyframes fade{to{opacity:1}}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fade .8s ease .65s forwards}
+  .hero-meta{display:flex;gap:30px;margin-top:42px;opacity:0;animation:fade .8s ease .8s forwards}
+  .hero-meta .m{display:flex;flex-direction:column}
+  .hero-meta .m b{font-family:var(--font-data);font-weight:700;font-size:1.9rem;color:var(--ignite);line-height:1}
+  .hero-meta .m span{font-size:.78rem;color:var(--muted);letter-spacing:.06em;margin-top:6px}
+
+  /* hero card — the energy panel */
+  .hero-card{
+    position:relative;background:linear-gradient(160deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);border-radius:24px;padding:30px;overflow:hidden;
+    opacity:0;animation:fade .9s ease .55s forwards
+  }
+  .hero-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--heat)}
+  .hero-card .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-data);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--heat-b)}
+  .pulse{width:9px;height:9px;border-radius:50%;background:var(--heat-b);box-shadow:0 0 0 0 rgba(255,30,86,.6);animation:pulse 1.8s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(255,30,86,0)}100%{box-shadow:0 0 0 0 rgba(255,30,86,0)}}
+  .hero-card h3{font-family:var(--font-display);font-size:1.7rem;margin:14px 0 4px;text-transform:uppercase}
+  .hero-card .sub{color:var(--muted);font-size:.92rem;margin-bottom:20px}
+  .bar{margin-bottom:16px}
+  .bar .top{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:.85rem;margin-bottom:6px}
+  .bar .top .v{color:var(--ignite);font-weight:600}
+  .bar .track{height:9px;background:#000;border-radius:6px;overflow:hidden}
+  .bar .fill{height:100%;background:var(--heat);width:0;border-radius:6px;transition:width 1.4s cubic-bezier(.16,1,.3,1)}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{position:relative}
+  .sec-pad{padding:96px 0}
+  .sec-head{max-width:680px;margin-bottom:48px}
+  .sec-head h2{font-family:var(--font-display);font-size:clamp(2.3rem,5.2vw,3.6rem);text-transform:uppercase;margin:16px 0 14px;line-height:.95}
+  .sec-head p{color:var(--muted);font-size:1.04rem}
+
+  /* ---------- STAT COUNTER WALL ---------- */
+  .stats{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:42px 26px;border-right:1px solid var(--line);position:relative}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:var(--font-data);font-weight:700;font-size:clamp(2.6rem,5vw,3.6rem);line-height:1;display:flex;align-items:baseline;gap:4px}
+  .stat .num .suf{font-size:1.6rem;color:var(--heat-b)}
+  .stat .lbl{font-size:.86rem;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+  .stat .ic{font-size:1.3rem;margin-bottom:14px;display:block;opacity:.85}
+
+  /* ---------- SCHEDULE (SIGNATURE) ---------- */
+  .sched-controls{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between;margin-bottom:30px}
+  .filter-group{display:flex;flex-direction:column;gap:10px}
+  .filter-group .lbl{font-family:var(--font-data);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{
+    font-family:var(--font-data);font-weight:500;letter-spacing:.04em;font-size:.86rem;
+    padding:9px 17px;border-radius:30px;border:1.5px solid var(--line);color:var(--muted);
+    transition:all .18s;display:inline-flex;align-items:center;gap:7px
+  }
+  .chip .dot{width:8px;height:8px;border-radius:50%}
+  .chip:hover{color:var(--text);border-color:var(--heat-b)}
+  .chip[aria-pressed="true"]{background:var(--heat);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(255,30,86,.3)}
+  .chip[aria-pressed="true"] .dot{background:#fff!important}
+
+  .sched-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+  .sched{display:grid;grid-template-columns:74px repeat(6,minmax(132px,1fr));min-width:860px}
+  .sched .hcell{
+    padding:16px 10px;text-align:center;font-family:var(--font-data);font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;font-size:.82rem;color:var(--text);
+    background:var(--panel-2);border-bottom:1px solid var(--line);position:sticky;top:0
+  }
+  .sched .hcell.corner{background:var(--panel-2)}
+  .sched .hcell small{display:block;color:var(--muted);font-weight:400;font-size:.7rem;margin-top:2px}
+  .sched .time{
+    padding:18px 8px;text-align:center;font-family:var(--font-data);font-weight:600;font-size:.92rem;color:var(--muted);
+    border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--panel-2)
+  }
+  .cell{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:8px;min-height:78px}
+  .cell:nth-child(7n+1){border-right:none}
+  .klass{
+    height:100%;border-radius:11px;padding:11px 12px;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel-2);transition:transform .16s,box-shadow .16s,opacity .3s,filter .3s;
+    display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden;text-align:left;width:100%
+  }
+  .klass::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--kc,var(--heat-b))}
+  .klass .kn{font-family:var(--font-data);font-weight:600;font-size:.94rem;line-height:1.15}
+  .klass .kc{font-size:.74rem;color:var(--muted)}
+  .klass .kbadge{font-family:var(--font-data);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--kc,var(--heat-b));font-weight:600}
+  .klass:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.5);border-color:var(--kc)}
+  .klass.dim{opacity:.14;filter:grayscale(.7);pointer-events:none}
+  .sched-hint{margin-top:14px;font-size:.84rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+
+  /* ---------- COACHES ---------- */
+  .coach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .coach{background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .2s,border-color .2s}
+  .coach:hover{transform:translateY(-6px);border-color:var(--heat-b)}
+  .coach .photo{height:200px;position:relative;display:grid;place-items:center;font-size:4.2rem}
+  .coach .photo .ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--panel))}
+  .coach .body{padding:20px 22px 24px}
+  .coach .body h4{font-family:var(--font-display);font-size:1.45rem;text-transform:uppercase;letter-spacing:.5px}
+  .coach .body .role{font-family:var(--font-data);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.76rem;color:var(--heat-b);margin:4px 0 12px}
+  .coach .body p{font-size:.9rem;color:var(--muted)}
+  .coach .specs{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .coach .specs span{font-family:var(--font-data);font-size:.74rem;letter-spacing:.04em;padding:5px 11px;border-radius:20px;border:1px solid var(--line);color:var(--text)}
+
+  /* ---------- PRICING ---------- */
+  .price-toggle{display:inline-flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:40px;padding:7px;margin-bottom:8px}
+  .price-toggle button{font-family:var(--font-data);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem;padding:10px 22px;border-radius:30px;color:var(--muted);transition:all .2s;position:relative}
+  .price-toggle button[aria-pressed="true"]{background:var(--heat);color:#fff}
+  .save-flag{font-family:var(--font-data);font-size:.72rem;letter-spacing:.06em;color:var(--ignite);margin-left:4px}
+  .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}
+  .plan{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:32px 28px;display:flex;flex-direction:column;position:relative;transition:transform .2s}
+  .plan:hover{transform:translateY(-5px)}
+  .plan.featured{border-color:transparent;background:linear-gradient(165deg,var(--panel-2),var(--panel));box-shadow:0 0 0 1.5px var(--heat-b),0 24px 60px rgba(255,30,86,.16)}
+  .plan .flag{position:absolute;top:-13px;left:28px;background:var(--heat);color:#fff;font-family:var(--font-data);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:5px 14px;border-radius:20px}
+  .plan h3{font-family:var(--font-display);font-size:1.7rem;text-transform:uppercase;letter-spacing:.5px}
+  .plan .ptag{color:var(--muted);font-size:.88rem;margin:6px 0 22px;min-height:42px}
+  .plan .price{font-family:var(--font-data);font-weight:700;font-size:3rem;line-height:1;display:flex;align-items:baseline;gap:3px}
+  .plan .price .cur{font-size:1.2rem;color:var(--muted)}
+  .plan .price .per{font-size:.92rem;color:var(--muted);font-weight:400;margin-left:4px}
+  .plan ul{list-style:none;margin:24px 0 28px;display:flex;flex-direction:column;gap:13px}
+  .plan li{font-size:.92rem;display:flex;gap:11px;align-items:flex-start;color:var(--text)}
+  .plan li .ck{color:var(--heat-b);font-weight:700;flex-shrink:0}
+  .plan li.off{color:var(--muted);opacity:.5}
+  .plan li.off .ck{color:var(--muted)}
+  .plan .btn{justify-content:center;margin-top:auto}
+
+  /* ---------- CTA BANNER ---------- */
+  .cta-band{position:relative;overflow:hidden;background:linear-gradient(120deg,#1a0a10,#0D0D10)}
+  .cta-band .glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,var(--heat-b),transparent 65%);filter:blur(80px);opacity:.4;top:50%;left:50%;transform:translate(-50%,-50%)}
+  .cta-band .inner{position:relative;text-align:center;max-width:680px;margin:0 auto}
+  .cta-band h2{font-family:var(--font-display);font-size:clamp(2.6rem,6vw,4.4rem);text-transform:uppercase;line-height:.92}
+  .cta-band p{color:var(--muted);font-size:1.1rem;margin:20px 0 32px}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:54px 0 34px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:36px;margin-bottom:40px}
+  .foot-grid p{color:var(--muted);font-size:.9rem;margin-top:14px;max-width:320px}
+  .foot-col h5{font-family:var(--font-data);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;color:var(--muted);margin-bottom:16px}
+  .foot-col a{display:block;color:var(--text);font-size:.92rem;margin-bottom:11px;transition:color .2s}
+  .foot-col a:hover{color:var(--heat-b)}
+  .foot-bot{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+  .foot-bot .demo{font-family:var(--font-data);letter-spacing:.06em;font-size:.84rem;color:var(--muted)}
+  .foot-bot .demo a{color:var(--ignite)}
+  .foot-bot .cc{font-size:.82rem;color:var(--muted)}
+
+  /* ---------- TOAST ---------- */
+  .toast-wrap{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:10px;width:calc(100% - 40px);max-width:380px}
+  .toast{
+    background:var(--panel-2);border:1px solid var(--line);border-left:4px solid var(--heat-b);border-radius:13px;
+    padding:14px 18px;display:flex;gap:13px;align-items:flex-start;box-shadow:0 18px 44px rgba(0,0,0,.6);
+    transform:translateY(140%);opacity:0;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s
+  }
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast .ti{font-size:1.3rem;line-height:1}
+  .toast .tc b{display:block;font-family:var(--font-data);font-weight:600;letter-spacing:.04em;font-size:.95rem}
+  .toast .tc span{font-size:.84rem;color:var(--muted)}
+
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .hero-card{max-width:460px}
+    .stat-grid{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:none}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
+    .coach-grid,.plan-grid{grid-template-columns:1fr;max-width:460px;margin-left:auto;margin-right:auto}
+    .plan-grid{margin-top:30px}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .foot-grid .foot-brand{grid-column:1/-1}
+  }
+  @media(max-width:640px){
+    .navlinks{
+      position:fixed;inset:74px 0 auto 0;background:rgba(13,13,16,.97);backdrop-filter:blur(14px);
+      flex-direction:column;gap:0;padding:10px 24px 24px;border-bottom:1px solid var(--line);
+      transform:translateY(-120%);transition:transform .32s;align-items:stretch
+    }
+    .navlinks.open{transform:translateY(0)}
+    .navlinks a{padding:15px 0;border-bottom:1px solid var(--line)}
+    .navlinks .btn{margin-top:14px;justify-content:center}
+    .nav-toggle{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--line);border-radius:11px;font-size:1.2rem}
+    .sec-pad{padding:70px 0}
+    .sched-controls{flex-direction:column;align-items:stretch}
+    .foot-grid{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    html{scroll-behavior:auto}
+    .hero h1 .ln span,.hero .lead,.hero-cta,.hero-meta,.hero-card{opacity:1!important;transform:none!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#top" aria-label="烈焰健身工作室 PYRE 首頁">
+        <span class="mark" aria-hidden="true">🔥</span>
+        <span>PYRE</span>
+      </a>
+      <div class="navlinks" id="navlinks">
+        <a href="#stats">為何選我們</a>
+        <a href="#schedule">課表</a>
+        <a href="#coaches">教練</a>
+        <a href="#pricing">方案</a>
+        <button class="btn btn-heat" data-book>預約體驗</button>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="開啟選單" aria-expanded="false">☰</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">台北 · 信義訓練基地</span>
+        <h1>
+          <span class="ln"><span>點燃</span></span>
+          <span class="ln"><span class="heat-text">你的極限</span></span>
+          <span class="ln"><span>從今天開始</span></span>
+        </h1>
+        <p class="lead">不只是健身房，是一座把你逼向更強版本的訓練基地。私人教練、團體燃脂、拳擊與肌力，從第一堂免費體驗課就開始改變。</p>
+        <div class="hero-cta">
+          <button class="btn btn-heat" data-book>免費預約體驗課 →</button>
+          <a href="#schedule" class="btn btn-ghost">看本週課表</a>
+        </div>
+        <div class="hero-meta">
+          <div class="m"><b class="data">2,400+</b><span>會員一起變強</span></div>
+          <div class="m"><b class="data">38</b><span>每週課程數</span></div>
+          <div class="m"><b class="data">4.9★</b><span>會員平均評分</span></div>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="今日訓練強度示意">
+        <span class="tag"><span class="pulse" aria-hidden="true"></span>今日課表 · 火力全開</span>
+        <h3>下肢爆發日</h3>
+        <p class="sub">深蹲 · 硬舉 · 衝刺間歇 — 由 Jeff 教練帶練</p>
+        <div class="bar"><div class="top"><span>強度</span><span class="v" data-pct="88">88%</span></div><div class="track"><div class="fill" data-w="88"></div></div></div>
+        <div class="bar"><div class="top"><span>燃脂</span><span class="v" data-pct="74">74%</span></div><div class="track"><div class="fill" data-w="74"></div></div></div>
+        <div class="bar"><div class="top"><span>本週進度</span><span class="v" data-pct="60">3 / 5 堂</span></div><div class="track"><div class="fill" data-w="60"></div></div></div>
+        <button class="btn btn-heat" data-book style="width:100%;justify-content:center;margin-top:8px">加入今日訓練</button>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats" id="stats">
+  <div class="wrap" style="padding-top:0;padding-bottom:0">
+    <div class="stat-grid" id="statGrid">
+      <div class="stat"><span class="ic" aria-hidden="true">💪</span><div class="num"><span class="cnt" data-to="2400">0</span><span class="suf">+</span></div><div class="lbl">活躍會員</div></div>
+      <div class="stat"><span class="ic" aria-hidden="true">🏋️</span><div class="num"><span class="cnt" data-to="18">0</span></div><div class="lbl">專業認證教練</div></div>
+      <div class="stat"><span class="ic" aria-hidden="true">🔥</span><div class="num"><span class="cnt" data-to="125000">0</span></div><div class="lbl">累積燃燒卡路里（千）</div></div>
+      <div class="stat"><span class="ic" aria-hidden="true">⏱️</span><div class="num"><span class="cnt" data-to="45">0</span><span class="suf">min</span></div><div class="lbl">平均課程時長</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCHEDULE (SIGNATURE) ============ -->
+<section class="sec-pad" id="schedule">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">SIGNATURE · 本週課表</span>
+      <h2>挑一堂課，<span class="heat-text">直接報名</span></h2>
+      <p>用課程類型或教練篩選，找到適合你的時段。點任何一格即可預約免費體驗。</p>
+    </div>
+
+    <div class="sched-controls reveal">
+      <div class="filter-group">
+        <span class="lbl">課程類型</span>
+        <div class="chips" id="typeChips" role="group" aria-label="依課程類型篩選">
+          <button class="chip" data-type="all" aria-pressed="true"><span class="dot" style="background:#fff"></span>全部</button>
+          <button class="chip" data-type="strength" aria-pressed="false"><span class="dot" style="background:#FF1E56"></span>重訓肌力</button>
+          <button class="chip" data-type="hiit" aria-pressed="false"><span class="dot" style="background:#FF6A1A"></span>HIIT 燃脂</button>
+          <button class="chip" data-type="boxing" aria-pressed="false"><span class="dot" style="background:#FFD23F"></span>拳擊格鬥</button>
+          <button class="chip" data-type="mobility" aria-pressed="false"><span class="dot" style="background:#36C5F0"></span>瑜伽伸展</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="lbl">教練</span>
+        <div class="chips" id="coachChips" role="group" aria-label="依教練篩選">
+          <button class="chip" data-coach="all" aria-pressed="true">所有教練</button>
+          <button class="chip" data-coach="jeff" aria-pressed="false">Jeff</button>
+          <button class="chip" data-coach="mia" aria-pressed="false">Mia</button>
+          <button class="chip" data-coach="kenji" aria-pressed="false">Kenji</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sched-scroll reveal">
+      <div class="sched" id="sched"></div>
+    </div>
+    <p class="sched-hint" id="schedHint"><span aria-hidden="true">👆</span> 顯示 <b id="schedCount" class="data" style="color:var(--ignite);margin:0 4px">0</b> 堂課 — 點選任一堂即可預約免費體驗。</p>
+  </div>
+</section>
+
+<!-- ============ COACHES ============ -->
+<section class="sec-pad" id="coaches" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">帶你變強的人</span>
+      <h2>不只督促你，<span class="heat-text">更懂你的身體</span></h2>
+      <p>每位教練都持有國際認證，平均七年以上實戰經驗，從第一堂課就為你量身設計訓練。</p>
+    </div>
+    <div class="coach-grid">
+      <article class="coach reveal">
+        <div class="photo" style="background:linear-gradient(150deg,#FF1E56,#3a0815)"><span aria-hidden="true">🏋️‍♂️</span><div class="ov"></div></div>
+        <div class="body">
+          <h4>陳冠廷 Jeff</h4>
+          <div class="role">肌力與爆發專項</div>
+          <p>前國家代表隊體能教練，專精大重量訓練與運動表現提升，帶你安全地舉得更重。</p>
+          <div class="specs"><span>NSCA-CSCS</span><span>奧林匹克舉重</span><span>傷後重返</span></div>
+        </div>
+      </article>
+      <article class="coach reveal">
+        <div class="photo" style="background:linear-gradient(150deg,#FF6A1A,#3a1808)"><span aria-hidden="true">🤸‍♀️</span><div class="ov"></div></div>
+        <div class="body">
+          <h4>林宜蓁 Mia</h4>
+          <div class="role">HIIT 與燃脂專項</div>
+          <p>高強度間歇女王，課堂節奏快、氣氛炸，最擅長幫忙減脂卡關的學員突破撞牆期。</p>
+          <div class="specs"><span>ACE-CPT</span><span>功能性訓練</span><span>體態雕塑</span></div>
+        </div>
+      </article>
+      <article class="coach reveal">
+        <div class="photo" style="background:linear-gradient(150deg,#FFD23F,#3a2c08)"><span aria-hidden="true">🥊</span><div class="ov"></div></div>
+        <div class="body">
+          <h4>佐藤健司 Kenji</h4>
+          <div class="role">拳擊與格鬥體能</div>
+          <p>職業拳擊背景，把實戰技術拆解成新手也能上手的組合，邊學技巧邊狂燒熱量。</p>
+          <div class="specs"><span>職業拳擊執照</span><span>核心穩定</span><span>反應訓練</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="sec-pad" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <span class="eyebrow" style="justify-content:center">會員方案</span>
+      <h2>找到你的<span class="heat-text">訓練節奏</span></h2>
+      <p style="margin:0 auto">隨時可升降級，不綁約。先用一堂免費體驗課感受，再決定要走多遠。</p>
+    </div>
+
+    <div style="text-align:center" class="reveal">
+      <div class="price-toggle" role="group" aria-label="切換月繳或年繳">
+        <button data-cycle="monthly" aria-pressed="true">月繳</button>
+        <button data-cycle="annual" aria-pressed="false">年繳<span class="save-flag">省 2 個月</span></button>
+      </div>
+    </div>
+
+    <div class="plan-grid">
+      <div class="plan reveal">
+        <h3>啟程</h3>
+        <p class="ptag">適合想自主訓練、偶爾上團課的你。</p>
+        <div class="price"><span class="cur">NT$</span><span class="amt" data-m="1280" data-a="1067">1,280</span><span class="per" data-per>/ 月</span></div>
+        <ul>
+          <li><span class="ck">✓</span>無限次自主重訓區</li>
+          <li><span class="ck">✓</span>每月 4 堂團體課</li>
+          <li><span class="ck">✓</span>體組成檢測 1 次／季</li>
+          <li class="off"><span class="ck">✕</span>私人教練課</li>
+          <li class="off"><span class="ck">✕</span>專屬訓練計畫</li>
+        </ul>
+        <button class="btn btn-ghost" data-book>選擇啟程</button>
+      </div>
+
+      <div class="plan featured reveal">
+        <span class="flag">最受歡迎</span>
+        <h3>燃燒</h3>
+        <p class="ptag">最多會員的選擇，團課吃到飽全力進步。</p>
+        <div class="price"><span class="cur">NT$</span><span class="amt" data-m="2480" data-a="2067">2,480</span><span class="per" data-per>/ 月</span></div>
+        <ul>
+          <li><span class="ck">✓</span>無限次自主重訓區</li>
+          <li><span class="ck">✓</span>無限次團體課</li>
+          <li><span class="ck">✓</span>每月 2 堂私人教練課</li>
+          <li><span class="ck">✓</span>體組成檢測 1 次／月</li>
+          <li><span class="ck">✓</span>專屬營養諮詢</li>
+        </ul>
+        <button class="btn btn-heat" data-book>選擇燃燒</button>
+      </div>
+
+      <div class="plan reveal">
+        <h3>極限</h3>
+        <p class="ptag">想最快看到成果、要一對一陪跑的你。</p>
+        <div class="price"><span class="cur">NT$</span><span class="amt" data-m="4980" data-a="4150">4,980</span><span class="per" data-per>/ 月</span></div>
+        <ul>
+          <li><span class="ck">✓</span>燃燒方案全部內容</li>
+          <li><span class="ck">✓</span>每月 8 堂私人教練課</li>
+          <li><span class="ck">✓</span>客製化週期訓練計畫</li>
+          <li><span class="ck">✓</span>每週進度追蹤與調整</li>
+          <li><span class="ck">✓</span>專屬置物櫃與毛巾</li>
+        </ul>
+        <button class="btn btn-ghost" data-book>選擇極限</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="cta-band sec-pad">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="inner reveal">
+      <h2>準備好<span class="heat-text">變強</span>了嗎？</h2>
+      <p>第一堂體驗課完全免費，不需綁約、不需信用卡。預約後我們會在 24 小時內與你確認時段。</p>
+      <button class="btn btn-heat" data-book style="font-size:1rem;padding:16px 34px">立即免費預約體驗 🔥</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="#top" aria-label="PYRE 首頁"><span class="mark" aria-hidden="true">🔥</span><span>PYRE</span></a>
+        <p>烈焰健身工作室。台北市信義區訓練基地，營業時間每日 06:00–23:00。把每一天都練成更強的自己。</p>
+      </div>
+      <div class="foot-col">
+        <h5>探索</h5>
+        <a href="#stats">為何選我們</a>
+        <a href="#schedule">本週課表</a>
+        <a href="#coaches">教練團隊</a>
+        <a href="#pricing">會員方案</a>
+      </div>
+      <div class="foot-col">
+        <h5>聯絡</h5>
+        <a href="#">台北市信義區松仁路 88 號</a>
+        <a href="#">(02) 2720-1688</a>
+        <a href="#">hello@pyre-fit.tw</a>
+        <a href="#">每日 06:00 – 23:00</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="demo">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+      <span class="cc">© 2026 烈焰健身工作室 PYRE（虛構品牌，僅供展示）</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $=(s,c=document)=>c.querySelector(s);
+  const $$=(s,c=document)=>[...c.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ---- nav scroll + mobile toggle ---- */
+  const hdr=$('#hdr');
+  addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>20),{passive:true});
+  const navToggle=$('#navToggle'),navlinks=$('#navlinks');
+  navToggle.addEventListener('click',()=>{
+    const open=navlinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded',open);
+    navToggle.textContent=open?'✕':'☰';
+  });
+  $$('#navlinks a').forEach(a=>a.addEventListener('click',()=>{
+    navlinks.classList.remove('open');navToggle.textContent='☰';navToggle.setAttribute('aria-expanded','false');
+  }));
+
+  /* ---- toast ---- */
+  const toastWrap=$('#toastWrap');
+  function toast(title,msg,icon='🔥'){
+    const t=document.createElement('div');
+    t.className='toast';
+    t.innerHTML=`<span class="ti">${icon}</span><div class="tc"><b></b><span></span></div>`;
+    t.querySelector('b').textContent=title;
+    t.querySelector('.tc span').textContent=msg;
+    toastWrap.appendChild(t);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450);},4200);
+  }
+  $$('[data-book]').forEach(b=>b.addEventListener('click',()=>toast('體驗課已預約 ✅','專員將在 24 小時內與你聯繫確認時段，準備好火力全開！')));
+
+  /* ---- hero bars (intensity) animate on load ---- */
+  function fillBars(){$$('.hero-card .fill').forEach(f=>{f.style.width=f.dataset.w+'%';});}
+  reduce?$$('.hero-card .fill').forEach(f=>f.style.width=f.dataset.w+'%'):setTimeout(fillBars,650);
+
+  /* ---- reveal on scroll ---- */
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  $$('.reveal').forEach(el=>io.observe(el));
+
+  /* ---- animated counters ---- */
+  function animCount(el){
+    const to=+el.dataset.to;
+    if(reduce){el.textContent=to.toLocaleString('en-US');return;}
+    const dur=1500,t0=performance.now();
+    function step(now){
+      const p=Math.min((now-t0)/dur,1);
+      const e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(to*e).toLocaleString('en-US');
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  const sio=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){animCount(e.target.querySelector('.cnt'));sio.unobserve(e.target);}}),{threshold:.4});
+  $$('#statGrid .stat').forEach(s=>sio.observe(s));
+
+  /* ============ SCHEDULE (signature) ============ */
+  const DAYS=[['一','MON'],['二','TUE'],['三','WED'],['四','THU'],['五','FRI'],['六','SAT']];
+  const TIMES=['07:00','10:00','12:30','18:00','19:30','21:00'];
+  const TYPE={
+    strength:{n:'重訓肌力',c:'#FF1E56'},
+    hiit:{n:'HIIT 燃脂',c:'#FF6A1A'},
+    boxing:{n:'拳擊格鬥',c:'#FFD23F'},
+    mobility:{n:'瑜伽伸展',c:'#36C5F0'},
+  };
+  const COACH={jeff:'Jeff',mia:'Mia',kenji:'Kenji',amy:'Amy'};
+  // [day(0-5), timeIdx(0-5), type, coach, className]
+  const CLASSES=[
+    [0,0,'strength','jeff','晨間肌力'],
+    [0,3,'hiit','mia','下班燃脂'],
+    [0,4,'boxing','kenji','拳擊入門'],
+    [1,1,'mobility','amy','活動度流動'],
+    [1,3,'strength','jeff','背肌日'],
+    [1,5,'hiit','mia','夜間衝刺'],
+    [2,0,'hiit','mia','晨燃 HIIT'],
+    [2,2,'strength','jeff','午間推系'],
+    [2,4,'boxing','kenji','格鬥體能'],
+    [3,1,'mobility','amy','深層伸展'],
+    [3,3,'boxing','kenji','拳擊組合'],
+    [3,4,'strength','jeff','下肢爆發'],
+    [4,0,'strength','jeff','晨間全身'],
+    [4,3,'hiit','mia','TGIF 燃脂'],
+    [4,5,'boxing','kenji','實戰拳擊'],
+    [5,1,'hiit','mia','週末爆汗'],
+    [5,2,'strength','jeff','週末大重量'],
+    [5,2,'mobility','amy','恢復瑜伽'],
+  ];
+  // note: two classes share [5,2]; we'll place by first-come and stack handled below
+
+  const sched=$('#sched'),schedCount=$('#schedCount');
+  let fType='all',fCoach='all';
+
+  function buildGrid(){
+    sched.innerHTML='';
+    // header row
+    const corner=document.createElement('div');
+    corner.className='hcell corner';corner.textContent='時間';
+    sched.appendChild(corner);
+    DAYS.forEach(([zh,en])=>{
+      const h=document.createElement('div');h.className='hcell';
+      h.innerHTML=`週${zh}<small>${en}</small>`;sched.appendChild(h);
+    });
+    // body rows
+    TIMES.forEach((time,ti)=>{
+      const tc=document.createElement('div');tc.className='time';tc.textContent=time;sched.appendChild(tc);
+      DAYS.forEach((d,di)=>{
+        const cell=document.createElement('div');cell.className='cell';
+        const matches=CLASSES.filter(c=>c[0]===di&&c[1]===ti);
+        matches.forEach(c=>{
+          const[,,type,coach,name]=c;
+          const t=TYPE[type];
+          const btn=document.createElement('button');
+          btn.className='klass';
+          btn.style.setProperty('--kc',t.c);
+          btn.dataset.type=type;btn.dataset.coach=coach;
+          btn.innerHTML=`<span class="kbadge">${t.n}</span><span class="kn">${name}</span><span class="kc">${COACH[coach]} 教練</span>`;
+          btn.setAttribute('aria-label',`${name}，${t.n}，${COACH[coach]} 教練，週${DAYS[di][0]} ${time}，點選預約體驗`);
+          btn.addEventListener('click',()=>toast('已選定課程 🔥',`${name} · ${COACH[coach]} 教練 · 週${DAYS[di][0]} ${time}，提交免費體驗預約！`));
+          cell.appendChild(btn);
+        });
+        sched.appendChild(cell);
+      });
+    });
+  }
+
+  function applyFilter(){
+    let shown=0;
+    $$('.klass',sched).forEach(k=>{
+      const okT=fType==='all'||k.dataset.type===fType;
+      const okC=fCoach==='all'||k.dataset.coach===fCoach;
+      const on=okT&&okC;
+      k.classList.toggle('dim',!on);
+      if(on)shown++;
+    });
+    schedCount.textContent=shown;
+  }
+
+  function wireChips(groupSel,attr,setter){
+    const group=$(groupSel);
+    group.addEventListener('click',e=>{
+      const chip=e.target.closest('.chip');if(!chip)return;
+      $$('.chip',group).forEach(c=>c.setAttribute('aria-pressed','false'));
+      chip.setAttribute('aria-pressed','true');
+      setter(chip.dataset[attr]);
+      applyFilter();
+    });
+  }
+  buildGrid();
+  wireChips('#typeChips','type',v=>fType=v);
+  wireChips('#coachChips','coach',v=>fCoach=v);
+  applyFilter();
+
+  /* ============ PRICING TOGGLE ============ */
+  const toggle=$('.price-toggle');
+  toggle.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    const annual=b.dataset.cycle==='annual';
+    $$('.price-toggle button').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    $$('.plan').forEach(p=>{
+      const amt=$('.amt',p),per=$('[data-per]',p);
+      if(!amt)return;
+      const v=annual?+amt.dataset.a:+amt.dataset.m;
+      amt.textContent=v.toLocaleString('en-US');
+      per.textContent=annual?'/ 月（年繳）':'/ 月';
+    });
+  });
+})();
+</script>
+</body>
+</html>
