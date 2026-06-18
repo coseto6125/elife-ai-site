@@ -36,7 +36,7 @@ const principles = [
         <h2 class="section-title">好溝通，也能下到底層</h2>
         <p class="lead">
           <strong>e-life-ai</strong> 是一支務實的工程團隊，後端用 Rust、Python、Go，
-          前端用 Vue、Next.js，從 AI 應用、資料系統到網站介面都能一手包辦。
+          前端用 Vue、React、Next.js，從 AI 應用、資料系統到網站介面都能一手包辦。
         </p>
         <p class="lead">
           我們相信好的合作，是<strong>把話講清楚、把品質做到位、讓你放心</strong>。

@@ -66,12 +66,12 @@ export const services: Service[] = [
     title: '全端網站與系統開發',
     summary: '從架站、網域、前端介面到後端服務完整一條龍，好看、好用，而且撐得住量。',
     bullets: [
-      'Vue 3 / Next.js / TypeScript 前端，響應式、體驗流暢',
+      'Vue 3 / React / Next.js / TypeScript 前端，響應式、體驗流暢',
       'FastAPI / Sanic 非同步後端，PostgreSQL / pgvector 資料層',
       '雲端部署：AWS（Lambda / ECS Fargate）、GCP、Docker 容器化',
       'CI/CD 自動化，從開發到上線一條龍',
     ],
-    stack: ['Vue 3', 'Next.js', 'TypeScript', 'FastAPI', 'AWS', 'GCP', 'Docker'],
+    stack: ['Vue 3', 'React', 'Next.js', 'TypeScript', 'FastAPI', 'AWS', 'GCP', 'Docker'],
   },
   {
     id: 'data',
@@ -292,7 +292,12 @@ export const techStack = [
   'TypeScript',
   // frontend
   'Vue 3',
+  'React',
   'Next.js',
+  'TanStack Router',
+  'TanStack Query',
+  'Tailwind CSS',
+  'Zustand',
   'Vite',
   // backend frameworks
   'FastAPI',

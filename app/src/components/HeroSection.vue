@@ -24,7 +24,7 @@ function go(href: string) {
 
         <p class="sub" data-h>
           <strong>e-life-ai</strong> 是一支橫跨後端與前端的系統工程團隊，
-          後端用 Rust / Python / Go，前端用 Vue / Next.js。
+          後端用 Rust / Python / Go，前端用 Vue / React / Next.js。
           專注 AI Agent、RAG、程式碼圖譜、爬蟲與系統整合，從底層到介面一條龍。
         </p>
 
@@ -52,7 +52,7 @@ function go(href: string) {
         <pre class="term-body"><span class="c-mut">$</span> <span class="c-cmd">elife</span> who-am-i --stack
 <span class="c-key">role</span>     : 系統工程團隊 / 軟體外包
 <span class="c-key">backend</span>  : <span class="c-acc">Rust</span> · <span class="c-acc">Python 3.14</span> · <span class="c-acc">Go</span>
-<span class="c-key">frontend</span> : <span class="c-acc">Vue 3</span> · <span class="c-acc">Next.js</span> · <span class="c-acc">TypeScript</span>
+<span class="c-key">frontend</span> : <span class="c-acc">Vue 3</span> · <span class="c-acc">React</span> · <span class="c-acc">Next.js</span> · <span class="c-acc">TypeScript</span>
 <span class="c-key">domains</span>  : ai-agent · rag · scraping · systems
 <span class="c-key">style</span>    : async-first, test-backed, perf-tuned
 
