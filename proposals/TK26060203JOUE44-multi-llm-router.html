@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 聚合平台（Multi-LLM Router）報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<!-- ============ 封面 header ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="../logo/logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">AI 聚合平台（Multi-LLM Router）</h1>
+    <p class="lead">使用者輸入問題，系統自動判斷最適合的 AI 模型並轉送取得最佳答案。對標 Poe / OpenRouter，但自動選模，而非手動切換。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26060203JOUE44</b></span>
+      <span class="chip">類型 <b>AI / SaaS</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">預算 <b>$100,000（可討論）</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 內容區 ============ -->
+<div class="paper">
+<div class="wrap">
+
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我對這個需求的理解</h2>
+    <p class="lead">貴方希望打造一套 <b>AI 聚合平台</b>：使用者輸入問題後，系統<b>自動判斷最適合的模型</b>並轉送，取回最佳答案。對標 Poe / OpenRouter / ChatHub，關鍵差異是<b>自動選模，而非讓使用者手動切換。</b></p>
+    <p>整套產品包含五大塊：多模型整合 → AI Router 自動選模 → ChatGPT 式聊天介面 → 使用者系統與對話紀錄 → 管理後台（用量與成本）。所有帳號與服務（OpenAI / Anthropic / Gemini / AWS / Cloudflare / GitHub）皆建立並登記於<b>貴方（發案方）名下</b>，開發者僅在開發期間以貴方授權使用，<b>交付後不保留任何系統控制權與金鑰。</b></p>
+    <p>這個方向與我平常在做的事很接近。我出貨過多 Agent 客服平台、多租戶 Agent 平台、RAG 知識庫與 LINE 客服 AI，串接 OpenAI / Anthropic / Google 等多家模型 API 也是日常，這些經驗能直接用在這個案子上。</p>
+    <div class="price-note"><b>預算定位（先講清楚）：</b>貴方已要求「MVP / 完整商業版 / 工時」三段報價。誠實地說，$100,000 對應的是一個能跑、能用、能展示的 MVP（多模型 + 自動 Router + 聊天 + 帳號 + 紀錄 + 基礎後台）。完整商業版（SaaS 訂閱制、Stripe 金流、團隊/組織、進階計費、可觀測性與 SLA）會超出此預算，第六節給出獨立報價。建議先 MVP 驗證市場，再進第二階段，這也符合貴方「先完成 MVP」的期望。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>系統架構</h2>
+    <pre class="diagram">前端  Next.js + React + Tailwind
+  對話列表 / 串流輸出 / Markdown / 帳號頁
+   │  (SSE / streaming)
+   ▼
+後端 API  FastAPI (Python)
+   ├─ AI Router（自動選模）
+   │    規則 + 輕量分類 → 選出最佳模型
+   │
+   └─ Model Adapter 層（統一介面）
+        GPT · Claude · Gemini · DeepSeek · Grok …
+        可插拔，後續易擴充
+   │
+   ├──▶ PostgreSQL    使用者 / 對話 / 用量 / 成本紀錄
+   └──▶ Redis         快取 / 串流狀態 / Router 決策快取</pre>
+    <ul class="plain">
+      <li><b>前端（Next.js）：</b>對話列表、新增/刪除聊天、歷史紀錄、串流輸出、Markdown 渲染，提供 ChatGPT 式體驗。</li>
+      <li><b>後端（FastAPI）：</b>核心是 AI Router 與 Model Adapter 層。Adapter 把各家模型 API 包成統一介面，新增模型只動一個檔，符合「保留後續新增模型能力」。</li>
+      <li><b>AI Router：</b>依問題類型選模（程式→Claude、長文→Gemini、推理→GPT、聊天→DeepSeek），規則可調整。</li>
+      <li><b>資料庫 / 快取：</b>PostgreSQL 存使用者、對話、用量、成本；Redis 做快取與串流狀態。</li>
+      <li><b>帳號與金鑰：</b>所有第三方帳號皆登記於<b>貴方名下</b>；正式金鑰存於貴方環境變數 / 密鑰管理，開發者不持有正式金鑰，交付即斷控制權。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>AI Router 的設計（產品的靈魂，也最容易做錯）</h2>
+    <p class="lead">「自動選最佳模型」聽起來簡單，做不好會<b>又貴又慢</b>。若每則訊息都先丟一次大模型問「該用哪個模型」，等於每題多付一次 LLM 成本與延遲。我的做法是分層、低成本：</p>
+    <table>
+      <thead><tr><th class="num">層級</th><th>機制</th><th>成本 / 延遲</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>規則層</b>：關鍵字、語言、長度、是否含程式碼等快速規則先判</td><td>幾乎為零</td></tr>
+        <tr><td class="num">2</td><td><b>輕量分類</b>：規則無法決定時，用最便宜的小模型做意圖分類</td><td>極低</td></tr>
+        <tr><td class="num">3</td><td><b>轉送最佳模型</b>：依分類結果轉送對應主力模型取得答案</td><td>主成本在此</td></tr>
+      </tbody>
+    </table>
+    <p>Router 規則可由後台調整（如「程式類→Claude」「推理類→GPT」），貴方日後可自行微調權重與對應關係，不必每次找開發者改 code。</p>
+    <div class="callout"><b>成本紀律：</b>「便宜模型做判斷、貴模型只在必要時用」正是 OpenRouter / Poe 類產品能規模化的關鍵，也是我與一般接案者的差異所在：我會把每一塊 token 成本算進架構。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>功能範圍（MVP，$100,000 內）</h2>
+    <table>
+      <thead><tr><th class="num">#</th><th>模組</th><th>MVP 內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>多模型整合</b></td><td>GPT / Claude / Gemini / DeepSeek 四家（Grok 可選）；Adapter 層可插拔擴充</td></tr>
+        <tr><td class="num">2</td><td><b>AI Router</b></td><td>規則 + 輕量分類自動選模；規則後台可調</td></tr>
+        <tr><td class="num">3</td><td><b>聊天介面</b></td><td>對話列表、新增/刪除、歷史紀錄、串流輸出、Markdown</td></tr>
+        <tr><td class="num">4</td><td><b>使用者系統</b></td><td>Email 註冊、Google 登入、忘記密碼、個人資料頁</td></tr>
+        <tr><td class="num">5</td><td><b>對話紀錄</b></td><td>保存問題/回答/使用模型/時間；歷史搜尋與刪除</td></tr>
+        <tr><td class="num">6</td><td><b>管理後台</b></td><td>總用戶數、提問數、API 使用量、API 成本、模型使用比例</td></tr>
+        <tr><td class="num">7</td><td><b>部署與文件</b></td><td>部署至 AWS 或 Cloudflare；交付原始碼、Git、部署文件、API 設定文件、DB Schema、架構圖</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>報價前需與貴方確認的事項</h2>
+    <ol class="confirm">
+      <li><b>後端語言：FastAPI 還是 Node.js？</b><p>需求單兩者皆可。建議 FastAPI（Python），AI / LLM 串接、Router 分類邏輯在 Python 生態最成熟，也是我的主力。若貴方團隊日後要自行維護且偏好 Node 亦可，但請先定案，這影響整體設計。</p></li>
+      <li><b>部署：AWS 還是 Cloudflare？</b><p>兩者架構差異不小（AWS 偏傳統雲、Cloudflare Workers 偏邊緣運算且對長串流/Python 後端有限制）。建議 AWS 較適合 FastAPI + PostgreSQL + Redis 的組合。請確認偏好。</p></li>
+      <li><b>「自動選模」的判定標準由誰定義？</b><p>程式→Claude、長文→Gemini 是初版規則，「最佳」的定義會隨業務調整。MVP 先交付合理預設 + 後台可調；若需以實際答題品質自動學習最佳模型（A/B、評分回饋），屬第二階段。</p></li>
+      <li><b>各家 API 帳號是否已就緒？</b><p>帳號建於貴方名下。OpenAI / Anthropic / Gemini / DeepSeek（/ xAI）是否已開通並有額度？AWS / Cloudflare / GitHub 是否已備？這些到位才能進入串接與部署。</p></li>
+      <li><b>MVP 階段的使用者規模？</b><p>預估同時在線與每日提問量，影響 Redis / DB 設計與部署規格（MVP 以可用、可展示為先，不過度為未知流量超前投資）。</p></li>
+      <li><b>是否需要串流以外的進階體驗？</b><p>例如停止生成、重新生成、切換指定模型（覆寫 Router）等，可納入 MVP 微調，請列出必須項。</p></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>報價與分期（MVP / 完整商業版 / 工時）</h2>
+    <p style="font-weight:700;color:var(--ink-0);margin-bottom:6px">6-1. MVP 報價</p>
+    <table>
+      <thead><tr><th>階段</th><th>交付內容</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期：設計與骨架</b></td><td>DB Schema、API 設計、Model Adapter 層、Router 規則框架、前端骨架</td><td class="pct">25%</td></tr>
+        <tr><td><b>第二期：核心功能</b></td><td>多模型串接、Router 自動選模、串流聊天、帳號系統</td><td class="pct">40%</td></tr>
+        <tr><td><b>第三期：紀錄與後台</b></td><td>對話紀錄/搜尋、管理後台（用量/成本/比例）</td><td class="pct">20%</td></tr>
+        <tr><td><b>第四期：部署與交付</b></td><td>部署、文件（部署/API/Schema/架構圖）、教育訓練</td><td class="pct">15%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note"><b>MVP 可於 $100,000 預算內完成</b>（四家模型 + Grok 可選 + 上述全功能）。</div>
+
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">6-2. 完整商業版（第二階段，獨立報價）</p>
+    <p>以下功能需求單列為「加分 / 完整版」項，<b>屬第二階段，不含在 $100,000 內</b>，於 MVP 驗證後另行報價：</p>
+    <ul class="plain">
+      <li>SaaS 訂閱制（方案、額度、計費週期）</li>
+      <li><b>Stripe 金流</b>整合（訂閱、發票、webhook）</li>
+      <li>團隊 / 組織帳號、角色權限</li>
+      <li>進階用量計費（依 token / 依模型計價給終端用戶）</li>
+      <li>可觀測性、告警、SLA、自動擴展</li>
+      <li>Router 進階：依實際答題品質自動學習、A/B 評測</li>
+    </ul>
+    <div class="callout"><b>提醒：</b>完整商業版的工作量主要來自訂閱計費與金流的正確性（對帳、退款、額度控管），這塊低估不得。</div>
+
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">6-3. 預估開發時間</p>
+    <table>
+      <thead><tr><th>範圍</th><th>預估工時</th></tr></thead>
+      <tbody>
+        <tr><td><b>MVP</b>（本案 $100,000）</td><td>約 <b>4～8 週</b>，依確認事項與各家帳號就緒速度微調</td></tr>
+        <tr><td><b>完整商業版</b>（第二階段）</td><td>在 MVP 之上另約 6～10 週，視訂閱/金流複雜度</td></tr>
+      </tbody>
+    </table>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確排除（MVP 範圍外，如需另議）</p>
+    <ul class="plain exclude">
+      <li>Stripe 金流與訂閱、團隊/組織、進階計費</li>
+      <li>SLA / 自動擴展、Router 自學習</li>
+      <li>各家 API 用量費用（由貴方帳號自付）</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>為什麼是我</h2>
+    <div class="why-grid">
+      <div class="card"><h3>多模型串接是我的日常</h3><p>實際出貨過多 Agent 客服平台、多租戶 Agent 平台、RAG 知識庫、LINE 客服 AI，OpenAI / Claude / Gemini 等 API 串接、串流、工具呼叫都跑在生產環境。</p></div>
+      <div class="card"><h3>懂成本，不只懂功能</h3><p>Router 的分層選模、便宜模型做判斷、Redis 快取決策，把 token 成本算進架構，這是聚合平台能不能規模化的關鍵。</p></div>
+      <div class="card"><h3>乾淨交付、無轉包</h3><p>所有帳號與金鑰登記於貴方名下、交付後不保留任何控制權；前端到後端、資料庫、第三方串接、部署一條龍，無中間商。</p></div>
+      <div class="card"><h3>先 MVP、再擴大</h3><p>每個里程碑可驗收、附測試，先用最小成本驗證產品，再決定第二階段投入；日後換人接手也不會改 A 壞 B。</p></div>
+      <div class="card"><h3>選型給你建議</h3><p>FastAPI vs Node、AWS vs Cloudflare 我會給出有理由的建議，幫你避開後續維運的坑，而非照單全收。</p></div>
+    </div>
+    <p style="margin-top:14px">相關作品、GitHub、過往案例可於洽談時提供（已隱去客戶可識別資訊）。</p>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ footer ============ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="../logo/logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+</body>
+</html>
