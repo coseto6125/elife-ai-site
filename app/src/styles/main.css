@@ -68,17 +68,10 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  /* room for the fixed bottom bar so it never covers the big footer */
+  padding-bottom: 44px;
 }
 
-/* Pin footer to the viewport bottom even when content is short */
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-#app > main {
-  flex: 1 0 auto;
-}
 
 /* Atmospheric base: faint grid + radial glow, fixed behind everything */
 body::before {

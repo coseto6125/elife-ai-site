@@ -13,9 +13,18 @@ const links = [
   { href: '#contact', label: '聯絡' },
 ]
 
-function go(href: string) {
+function scrollTo(href: string) {
   open.value = false
   document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+}
+function go(href: string) {
+  open.value = false
+  // the "聯絡" nav link opens the chat widget instead of scrolling to the form
+  if (href === '#contact' && typeof (window as any).openChat === 'function') {
+    ;(window as any).openChat()
+    return
+  }
+  scrollTo(href)
 }
 </script>
 
@@ -35,7 +44,7 @@ function go(href: string) {
           @click.prevent="go(l.href)"
           >{{ l.label }}</a
         >
-        <a class="btn btn-primary nav-cta" href="#contact" @click.prevent="go('#contact')">
+        <a class="btn btn-primary nav-cta" href="#contact" @click.prevent="scrollTo('#contact')">
           開始合作
         </a>
       </nav>

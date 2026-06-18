@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="e-life-ai 是橫跨前後端的系統工程團隊。Rust / Python / Go 後端，Vue / Next.js 前端，承接 AI Agent、RAG、全端網站、爬蟲與系統整合，從底層到介面一手包辦。"
+      content="e-life-ai 是橫跨前後端的軟體開發夥伴。Rust / Python / Go 後端，Vue / React / Next.js 前端，承接 AI Agent、RAG、全端網站、爬蟲與系統整合，從底層到介面一手包辦。"
     />
     <meta name="theme-color" content="#070b10" />
     <meta property="og:title" content="e-life-ai｜你的軟體開發夥伴" />
     <meta
       property="og:description"
-      content="AI Agent · RAG · 全端網站 · 爬蟲 · 系統整合。再難的工程，都能一起搞定。"
+      content="AI Agent · RAG · 全端網站 · 爬蟲 · 系統整合。使想像成為現實，讓我們幫你實現你的期望。"
     />
     <meta property="og:type" content="website" />
     <title>e-life-ai｜你的軟體開發夥伴 · AI / 全端 / 系統開發</title>
@@ -26,5 +26,105 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+
+    <!-- e-life-ai 接案客服聊天視窗 (enoract) — collapsed to a bubble by default -->
+    <div id="chat-widget">
+      <iframe
+        class="cw-frame"
+        src="https://e-shop-ai.com/chat/enoract/e-life-ai"
+        title="客服"
+        loading="lazy"
+      ></iframe>
+      <button class="cw-bubble" type="button" aria-label="開啟客服" aria-expanded="false">
+        <svg class="cw-ico-chat" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+        <svg class="cw-ico-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <style>
+      #chat-widget {
+        position: fixed;
+        right: 20px;
+        bottom: 60px;
+        z-index: 95;
+      }
+      .cw-frame {
+        position: absolute;
+        right: 0;
+        bottom: 70px;
+        width: 380px;
+        height: 560px;
+        border: 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+        background: #0c1420;
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+        transform-origin: bottom right;
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+      #chat-widget.open .cw-frame {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+      .cw-bubble {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 56px;
+        height: 56px;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        color: #061310;
+        background: #34e3c4;
+        box-shadow: 0 6px 20px rgba(52, 227, 196, 0.4);
+        display: grid;
+        place-items: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .cw-bubble:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 26px rgba(52, 227, 196, 0.55);
+      }
+      .cw-bubble .cw-ico-close {
+        display: none;
+      }
+      #chat-widget.open .cw-bubble .cw-ico-chat {
+        display: none;
+      }
+      #chat-widget.open .cw-bubble .cw-ico-close {
+        display: block;
+      }
+      @media (max-width: 480px) {
+        #chat-widget {
+          right: 12px;
+          bottom: 56px;
+        }
+        .cw-frame {
+          width: calc(100vw - 24px);
+          height: 70vh;
+        }
+      }
+    </style>
+    <script>
+      (function () {
+        var w = document.getElementById('chat-widget')
+        var b = w.querySelector('.cw-bubble')
+        function setOpen(open) {
+          w.classList.toggle('open', open)
+          b.setAttribute('aria-expanded', String(open))
+          b.setAttribute('aria-label', open ? '關閉客服' : '開啟客服')
+        }
+        b.addEventListener('click', function () {
+          setOpen(!w.classList.contains('open'))
+        })
+        // let in-app "聯絡" links open the chat instead of scrolling
+        window.openChat = function () {
+          setOpen(true)
+        }
+      })()
+    </script>
   </body>
 </html>

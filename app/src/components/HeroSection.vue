@@ -1,10 +1,83 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import GraphCanvas from './GraphCanvas.vue'
 import { stats } from '../data/site'
 
 function go(href: string) {
   document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
 }
+
+/* --- terminal typing animation --- */
+// `cmd` lines type out char by char (single-colour); `out` lines reveal at once
+// and may carry multi-colour token markup via v-html.
+type Line = { kind: 'cmd' | 'out' | 'blank'; text?: string; html?: string }
+
+const script: Line[] = [
+  { kind: 'cmd', text: '$ elife who-am-i --stack' },
+  { kind: 'out', html: '<span class="c-key">role</span>     : 軟體開發夥伴 / 接案外包' },
+  {
+    kind: 'out',
+    html: '<span class="c-key">backend</span>  : <span class="c-acc">Rust</span> · <span class="c-acc">Python 3.14</span> · <span class="c-acc">Go</span>',
+  },
+  {
+    kind: 'out',
+    html: '<span class="c-key">frontend</span> : <span class="c-acc">Vue 3</span> · <span class="c-acc">React</span> · <span class="c-acc">Next.js</span> · <span class="c-acc">TypeScript</span>',
+  },
+  { kind: 'out', html: '<span class="c-key">domains</span>  : ai-agent · rag · scraping · systems' },
+  { kind: 'out', html: '<span class="c-key">style</span>    : async-first, test-backed, perf-tuned' },
+  { kind: 'blank' },
+  { kind: 'cmd', text: '$ elife ecp impact --target your_problem' },
+  { kind: 'out', html: '<span class="c-ok">✓</span> resolved 14 languages' },
+  { kind: 'out', html: '<span class="c-ok">✓</span> blast-radius mapped in 28ms' },
+  { kind: 'out', html: '<span class="c-acc">→ ready.</span>' },
+]
+
+// rendered[i] holds how much of script[i] is currently visible
+const rendered = ref<{ html: string; done: boolean }[]>([])
+const activeLine = ref(0)
+let timer: ReturnType<typeof setTimeout> | undefined
+
+// colour the `$` prompt and the `elife` command inside a typed cmd line
+function styleCmd(text: string): string {
+  return text.replace(/^\$/, '<span class="c-mut">$</span>').replace(/\belife\b/, '<span class="c-cmd">elife</span>')
+}
+
+function reset() {
+  rendered.value = script.map(() => ({ html: '', done: false }))
+  activeLine.value = 0
+}
+
+function play() {
+  const i = activeLine.value
+  if (i >= script.length) {
+    // typing finished — stop here (run once per page load, no loop)
+    return
+  }
+  const line = script[i]
+  if (line.kind === 'cmd') {
+    const full = line.text ?? ''
+    const shown = rendered.value[i].html.length
+    if (shown < full.length) {
+      rendered.value[i] = { html: styleCmd(full.slice(0, shown + 1)), done: false }
+      timer = setTimeout(play, 38)
+    } else {
+      rendered.value[i].done = true
+      activeLine.value++
+      timer = setTimeout(play, 360)
+    }
+  } else {
+    // out / blank reveal instantly
+    rendered.value[i] = { html: line.html ?? '', done: true }
+    activeLine.value++
+    timer = setTimeout(play, line.kind === 'blank' ? 120 : 220)
+  }
+}
+
+onMounted(() => {
+  reset()
+  timer = setTimeout(play, 500)
+})
+onBeforeUnmount(() => clearTimeout(timer))
 </script>
 
 <template>
@@ -18,12 +91,12 @@ function go(href: string) {
         </div>
 
         <h1 class="title" data-h>
-          再<span class="hl">難的工程</span><br />
-          都能一起搞定。
+          使<span class="hl">想像成為現實</span>，<br />
+          讓我們幫你實現你的期望。
         </h1>
 
         <p class="sub" data-h>
-          <strong>e-life-ai</strong> 是一支橫跨後端與前端的系統工程團隊，
+          <strong>e-life-ai</strong> 是橫跨後端與前端的軟體開發夥伴，
           後端用 Rust / Python / Go，前端用 Vue / React / Next.js。
           專注 AI Agent、RAG、程式碼圖譜、爬蟲與系統整合，從底層到介面一條龍。
         </p>
@@ -49,17 +122,10 @@ function go(href: string) {
           <span /><span /><span />
           <em>~/e-life-ai — zsh</em>
         </div>
-        <pre class="term-body"><span class="c-mut">$</span> <span class="c-cmd">elife</span> who-am-i --stack
-<span class="c-key">role</span>     : 系統工程團隊 / 軟體外包
-<span class="c-key">backend</span>  : <span class="c-acc">Rust</span> · <span class="c-acc">Python 3.14</span> · <span class="c-acc">Go</span>
-<span class="c-key">frontend</span> : <span class="c-acc">Vue 3</span> · <span class="c-acc">React</span> · <span class="c-acc">Next.js</span> · <span class="c-acc">TypeScript</span>
-<span class="c-key">domains</span>  : ai-agent · rag · scraping · systems
-<span class="c-key">style</span>    : async-first, test-backed, perf-tuned
-
-<span class="c-mut">$</span> <span class="c-cmd">elife</span> ecp impact --target your_problem
-<span class="c-ok">✓</span> resolved 14 languages
-<span class="c-ok">✓</span> blast-radius mapped in 28ms
-<span class="c-acc">→ ready.</span> <span class="cursor">▋</span></pre>
+        <pre class="term-body"><template v-for="(r, i) in rendered" :key="i"><span v-html="r.html" /><span
+              v-if="i === activeLine || (i === rendered.length - 1 && r.done)"
+              class="cursor"
+            >▋</span><br v-if="i < rendered.length - 1" /></template></pre>
       </aside>
     </div>
 
@@ -125,9 +191,9 @@ function go(href: string) {
 .title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.4rem, 6.4vw, 4.5rem);
-  line-height: 1.04;
-  letter-spacing: -0.035em;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   margin: 22px 0 0;
 }
 .hl {
@@ -231,27 +297,30 @@ function go(href: string) {
 }
 .term-body {
   font-family: var(--font-mono);
-  font-size: clamp(0.74rem, 1vw, 0.86rem);
-  line-height: 1.85;
-  padding: 22px 22px 26px;
+  font-size: clamp(0.86rem, 1.2vw, 1.02rem);
+  line-height: 1.9;
+  padding: 26px 26px 30px;
   color: var(--ink-1);
   white-space: pre-wrap;
   word-break: break-word;
+  /* hold height steady so looping typing doesn't jolt the layout */
+  min-height: 18em;
 }
-.c-mut {
+/* token colours are injected via v-html, so scoped attrs don't reach them — pierce with :deep() */
+.term-body :deep(.c-mut) {
   color: var(--ink-2);
 }
-.c-cmd {
+.term-body :deep(.c-cmd) {
   color: var(--ink-0);
   font-weight: 600;
 }
-.c-key {
+.term-body :deep(.c-key) {
   color: var(--accent-2);
 }
-.c-acc {
+.term-body :deep(.c-acc) {
   color: var(--accent);
 }
-.c-ok {
+.term-body :deep(.c-ok) {
   color: var(--accent);
 }
 .cursor {

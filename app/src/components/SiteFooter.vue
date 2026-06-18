@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const year = new Date().getFullYear()
 function go(href: string) {
+  // "聯絡" opens the chat widget instead of scrolling to the form
+  if (href === '#contact' && typeof (window as any).openChat === 'function') {
+    ;(window as any).openChat()
+    return
+  }
   document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
@@ -9,7 +14,7 @@ function go(href: string) {
   <footer class="footer">
     <div class="wrap foot-grid">
       <div class="foot-brand">
-        <span class="brand"><span class="dot" />e-life<span class="ai">-ai</span></span>
+        <span class="brand"><span class="dot" /><span class="brand-name">e-life<span class="ai">-ai</span></span></span>
         <p>再難的工程，都能一起搞定。</p>
         <span class="mono">service.e-life-ai.com</span>
       </div>
@@ -28,6 +33,21 @@ function go(href: string) {
       <span class="mono">built with Vue · Vite · ❤ for hard problems</span>
     </div>
   </footer>
+
+  <!-- always-on slim dock pinned to the viewport bottom -->
+  <div class="dock">
+    <div class="wrap dock-row">
+      <a href="#top" class="dock-brand" @click.prevent="go('#top')">
+        <span class="dot" /><span class="brand-name">e-life<span class="ai">-ai</span></span>
+      </a>
+      <nav class="dock-links">
+        <a href="#services" @click.prevent="go('#services')">服務</a>
+        <a href="#work" @click.prevent="go('#work')">作品</a>
+        <a href="#about" @click.prevent="go('#about')">關於</a>
+        <a href="#contact" @click.prevent="go('#contact')">聯絡</a>
+      </nav>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -127,5 +147,54 @@ function go(href: string) {
   padding-top: 28px;
   font-size: 0.8rem;
   color: var(--ink-2);
+}
+
+/* always-on slim dock */
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  background: rgba(7, 11, 16, 0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-top: 1px solid var(--line);
+}
+.dock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+.dock-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.dock-brand .dot {
+  width: 7px;
+  height: 7px;
+}
+.dock-links {
+  display: flex;
+  gap: clamp(16px, 2.2vw, 26px);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+.dock-links a {
+  color: var(--ink-1);
+  transition: color 0.25s var(--ease);
+}
+.dock-links a:hover {
+  color: var(--accent);
+}
+@media (max-width: 520px) {
+  .dock-links {
+    gap: 14px;
+    font-size: 0.78rem;
+  }
 }
 </style>

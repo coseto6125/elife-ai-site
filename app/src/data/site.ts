@@ -90,7 +90,7 @@ export const services: Service[] = [
     id: 'systems',
     index: '04',
     title: '系統工程與技術顧問',
-    summary: '效能熱點、協定逆向、程式碼圖譜，交給能下到底層的團隊。',
+    summary: '效能熱點、協定逆向、程式碼圖譜，交給真的能下到底層的人。',
     bullets: [
       '14 種語言的程式碼結構圖譜與影響面分析（tree-sitter + Rust）',
       '協定層逆向與訊息送達驗證（Frida hook、記憶體解密）',
@@ -111,7 +111,7 @@ export const services: Service[] = [
       'LLM 用量最佳化，token 消耗可省 70–90%，月費有感下降',
       '可觀測性與告警把關，異常即時發現，避免燒錢空轉',
     ],
-    stack: ['OCI', 'Docker', 'cachebox', 'msgspec', 'Cloudflare', 'systemd'],
+    stack: ['GCP', 'OCI', 'Docker', 'cachebox', 'msgspec', 'Cloudflare', 'systemd'],
   },
 ]
 
@@ -131,18 +131,18 @@ export const cases: CaseStudy[] = [
     metric: { value: '40–60%', label: '回應加速' },
   },
   {
-    id: 'ecp',
-    name: 'ECP — 程式碼圖譜引擎',
-    kind: '系統工程 / 開發者工具',
+    id: 'enoract',
+    name: 'Enoract — 多租戶 Agent 平台',
+    kind: 'AI / 資料圖譜',
     blurb:
-      '為 AI Agent 打造的符號級程式碼圖譜，回答「誰呼叫了 X」「這次改動的影響面」，毫秒級查詢。',
+      'fork-first 多租戶 LLM agent 平台，零拷貝商品圖譜 + 圖像搜尋，知識擷取準確率 99.7%。',
     highlights: [
-      '14 種語言統一 parser，單次 DFS 走訪將重建開銷降約 7%',
-      'diff 驅動的影響面分析與間接派發偵測',
-      '2000+ 分析器測試與 1000+ CLI 測試全綠',
+      'rkyv 二進位格式上的 Cypher 查詢，零拷貝抽取',
+      '以圖搜圖（ONNX，免 PyO3）+ CJK 模糊比對',
+      'free-threaded Python 3.14、import-linter 強制模組邊界',
     ],
-    stack: ['Rust', 'tree-sitter', 'PostgreSQL', 'Cypher', 'Protobuf'],
-    metric: { value: '14', label: '支援語言數' },
+    stack: ['Python 3.14', 'Sanic', 'psqlpy', 'polars', 'ONNX'],
+    metric: { value: '99.7%', label: '知識擷取準確率' },
   },
   {
     id: 'eywa',
@@ -170,6 +170,7 @@ export const cases: CaseStudy[] = [
       '健康監控、崩潰退避、多 session 持久運行',
     ],
     stack: ['Rust', 'tokio', 'Axum', 'Frida', 'SQLCipher'],
+    metric: { value: 'OS 層', label: '送達驗證，杜絕假成功' },
   },
   {
     id: 'pricecompare',
@@ -183,20 +184,21 @@ export const cases: CaseStudy[] = [
       'cachebox 快取層與全非同步架構，毫秒級併發查詢',
     ],
     stack: ['Python 3.13', 'FastMCP', 'never-primp', 'regex-rs', 'msgspec'],
+    metric: { value: '10×', label: '快過無頭瀏覽器' },
   },
   {
-    id: 'enoract',
-    name: 'Enoract — 多租戶 Agent 平台',
-    kind: 'AI / 資料圖譜',
+    id: 'ecp',
+    name: 'ECP — 程式碼圖譜引擎',
+    kind: '系統工程 / 開發者工具',
     blurb:
-      'fork-first 多租戶 LLM agent 平台，零拷貝商品圖譜 + DINOv2 圖像搜尋，價格抽取準確率 99.7%。',
+      '為 AI Agent 打造的符號級程式碼圖譜，回答「誰呼叫了 X」「這次改動的影響面」，毫秒級查詢。',
     highlights: [
-      'rkyv 二進位格式上的 Cypher 查詢，零拷貝抽取',
-      'DINOv2 圖像搜尋（ONNX，免 PyO3）+ CJK 模糊比對',
-      'free-threaded Python 3.14、import-linter 強制模組邊界',
+      '14 種語言統一 parser，單次 DFS 走訪將重建開銷降約 7%',
+      'diff 驅動的影響面分析與間接派發偵測',
+      '2000+ 分析器測試與 1000+ CLI 測試全綠',
     ],
-    stack: ['Python 3.14', 'Sanic', 'psqlpy', 'polars', 'ONNX'],
-    metric: { value: '99.7%', label: '價格抽取準確率' },
+    stack: ['Rust', 'tree-sitter', 'PostgreSQL', 'Cypher', 'Protobuf'],
+    metric: { value: '4.8×', label: '符號查詢快過 CodeGraph' },
   },
 ]
 
@@ -280,7 +282,7 @@ export const contacts: Contact[] = [
 export const stats = [
   { value: '20+', label: '生產級專案上線' },
   { value: '60%+', label: 'AI 客服回應加速' },
-  { value: '99.7%', label: '資料抽取準確率' },
+  { value: '99.7%', label: '知識擷取準確率' },
   { value: '7×24', label: '穩定維運不斷線' },
 ]
 
