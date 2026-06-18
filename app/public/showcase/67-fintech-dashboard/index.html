@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Lumen Capital｜智慧資產儀表板 ｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0e17;
+    --bg-2: #0e1320;
+    --panel: #121929;
+    --panel-2: #161e30;
+    --line: #1f2a40;
+    --line-soft: #18223563;
+    --txt: #e8edf7;
+    --txt-2: #9aa7c2;
+    --txt-3: #5f6e8c;
+    --accent: #2ee6a6;
+    --accent-2: #14b885;
+    --accent-glow: #2ee6a633;
+    --blue: #4f8cff;
+    --red: #ff5d6c;
+    --amber: #ffb547;
+    --violet: #9b7bff;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 0 #ffffff08 inset, 0 12px 36px -12px #00000080;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --disp: 'Space Grotesk', system-ui, sans-serif;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+  }
+  html[data-theme="light"] {
+    --bg: #eef1f7;
+    --bg-2: #e6eaf2;
+    --panel: #ffffff;
+    --panel-2: #f6f8fc;
+    --line: #dde3ee;
+    --line-soft: #e9edf5;
+    --txt: #131a29;
+    --txt-2: #54607a;
+    --txt-3: #8b97b0;
+    --accent: #0bbd84;
+    --accent-2: #0aa173;
+    --accent-glow: #0bbd8422;
+    --blue: #2f6dff;
+    --shadow: 0 1px 0 #ffffff inset, 0 10px 30px -14px #1b274d33;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(900px 500px at 88% -8%, var(--accent-glow), transparent 60%),
+      radial-gradient(700px 480px at 5% 0%, #4f8cff14, transparent 55%),
+      var(--bg);
+    color: var(--txt);
+    font-family: var(--disp);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .num { font-family: var(--mono); font-feature-settings: "tnum" 1; letter-spacing: -0.01em; }
+  .pos { color: var(--accent); }
+  .neg { color: var(--red); }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 14px;
+    padding-block: 14px; padding-inline: clamp(16px, 4vw, 40px);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.02em; font-size: 18px; }
+  .logo {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(150deg, var(--accent), var(--blue));
+    display: grid; place-items: center; color: #051018; font-weight: 700; font-size: 15px;
+    box-shadow: 0 0 0 1px #ffffff1a inset, 0 6px 16px -6px var(--accent);
+  }
+  .nav-links { display: flex; gap: 4px; margin-left: 18px; }
+  .nav-links a {
+    color: var(--txt-2); text-decoration: none; font-size: 14px; font-weight: 500;
+    padding-block: 7px; padding-inline: 12px; border-radius: 8px;
+  }
+  .nav-links a:hover { color: var(--txt); background: var(--panel-2); }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .theme-btn, .cta {
+    font-family: var(--disp); font-weight: 600; cursor: pointer; border: none;
+    border-radius: 10px; font-size: 14px;
+  }
+  .theme-btn {
+    width: 38px; height: 38px; display: grid; place-items: center;
+    background: var(--panel-2); color: var(--txt); border: 1px solid var(--line);
+    font-size: 16px;
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+  .cta {
+    padding-block: 10px; padding-inline: 18px;
+    background: linear-gradient(150deg, var(--accent), var(--accent-2));
+    color: #04140e; box-shadow: 0 8px 22px -10px var(--accent);
+  }
+  .cta:hover { filter: brightness(1.06); }
+  .cta.ghost { background: transparent; color: var(--txt); border: 1px solid var(--line); box-shadow: none; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding-block: clamp(40px, 7vw, 84px); padding-inline: clamp(16px, 4vw, 40px);
+    text-align: center; max-width: 880px; margin-inline: auto;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding-block: 6px; padding-inline: 14px; border-radius: 999px;
+    background: var(--accent-glow); color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-size: 13px; font-weight: 600; margin-bottom: 22px;
+  }
+  .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 58px); font-weight: 700; letter-spacing: -0.035em;
+    line-height: 1.05; margin-bottom: 18px;
+  }
+  .hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { color: var(--txt-2); font-size: clamp(15px, 2.4vw, 18px); max-width: 620px; margin-inline: auto; margin-bottom: 28px; }
+  .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .hero-cta .cta { padding-block: 12px; padding-inline: 24px; font-size: 15px; }
+
+  /* ---------- DASHBOARD SHELL ---------- */
+  .dash {
+    max-width: 1280px; margin-inline: auto;
+    padding-block: 0 80px; padding-inline: clamp(12px, 4vw, 40px);
+  }
+  .frame {
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line); border-radius: 22px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .frame-top {
+    display: flex; align-items: center; gap: 10px;
+    padding-block: 12px; padding-inline: 16px;
+    border-bottom: 1px solid var(--line); background: var(--bg-2);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .dots i:nth-child(1){ background:#ff5f57; } .dots i:nth-child(2){ background:#febc2e; } .dots i:nth-child(3){ background:#28c840; }
+  .frame-url {
+    margin-left: 8px; font-family: var(--mono); font-size: 12px; color: var(--txt-3);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding-block: 5px; padding-inline: 12px; flex: 1; max-width: 360px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .frame-tag { margin-left: auto; font-size: 12px; color: var(--accent); font-weight: 600; }
+  .dash-body { padding: clamp(14px, 2.4vw, 24px); }
+
+  .dash-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  .dash-head .label { color: var(--txt-3); font-size: 13px; font-weight: 500; }
+  .dash-head .total { font-size: clamp(28px, 5vw, 40px); font-weight: 700; letter-spacing: -0.03em; }
+  .dash-head .sub { color: var(--txt-2); font-size: 14px; margin-top: 2px; }
+  .seg { display: inline-flex; background: var(--bg-2); border: 1px solid var(--line); border-radius: 11px; padding: 4px; gap: 2px; }
+  .seg button {
+    font-family: var(--mono); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: none; background: transparent; color: var(--txt-2);
+    padding-block: 7px; padding-inline: 14px; border-radius: 8px; transition: .18s;
+  }
+  .seg button.on { background: var(--accent); color: #04140e; font-weight: 600; }
+  .seg button:not(.on):hover { color: var(--txt); }
+
+  /* KPI cards */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .kpi {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-sm);
+    padding-block: 16px; padding-inline: 16px; position: relative; overflow: hidden;
+  }
+  .kpi::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-glow), transparent); }
+  .kpi .k-label { color: var(--txt-3); font-size: 12.5px; font-weight: 500; display: flex; align-items: center; gap: 7px; }
+  .kpi .k-icon { width: 22px; height: 22px; border-radius: 7px; display: grid; place-items: center; background: var(--bg-2); }
+  .kpi .k-val { font-size: 24px; font-weight: 700; margin-top: 10px; letter-spacing: -0.02em; }
+  .kpi .k-delta { font-size: 12.5px; font-weight: 600; margin-top: 5px; display: inline-flex; align-items: center; gap: 5px; }
+  .kpi .spark { position: absolute; right: 12px; bottom: 10px; opacity: .8; }
+
+  /* chart grid */
+  .grid-main { display: grid; grid-template-columns: 1.9fr 1fr; gap: 12px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px;
+  }
+  .card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .card-h h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .card-h .legend { display: flex; gap: 12px; font-size: 12px; color: var(--txt-2); }
+  .card-h .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .card-h .legend i { width: 9px; height: 9px; border-radius: 3px; display: block; }
+
+  .chart-wrap { position: relative; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .tooltip {
+    position: absolute; pointer-events: none; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding-block: 8px; padding-inline: 11px; font-size: 12px;
+    transform: translate(-50%, -120%); transition: opacity .12s; opacity: 0;
+    backdrop-filter: blur(8px); box-shadow: var(--shadow); white-space: nowrap;
+  }
+  .tooltip .tt-d { color: var(--txt-3); font-size: 11px; }
+  .tooltip .tt-v { font-family: var(--mono); font-weight: 600; font-size: 14px; margin-top: 2px; }
+
+  /* donut */
+  .donut-wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .donut-center { text-align: center; }
+  .alloc-list { flex: 1; min-width: 140px; display: flex; flex-direction: column; gap: 9px; }
+  .alloc-row { display: flex; align-items: center; gap: 9px; font-size: 13px; cursor: default; padding: 4px; border-radius: 8px; transition: .15s; }
+  .alloc-row:hover { background: var(--bg-2); }
+  .alloc-row .dot2 { width: 11px; height: 11px; border-radius: 4px; flex: none; }
+  .alloc-row .a-name { color: var(--txt-2); flex: 1; }
+  .alloc-row .a-pct { font-family: var(--mono); font-weight: 600; }
+
+  /* lower grid */
+  .grid-lower { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; margin-top: 12px; }
+
+  /* transactions */
+  .tx-tools { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .tx-search {
+    flex: 1; min-width: 140px; display: flex; align-items: center; gap: 8px;
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 9px;
+    padding-block: 8px; padding-inline: 11px;
+  }
+  .tx-search input { background: none; border: none; outline: none; color: var(--txt); font-family: var(--disp); font-size: 13px; width: 100%; }
+  .tx-search input::placeholder { color: var(--txt-3); }
+  .filter-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-size: 12.5px; font-family: var(--mono); cursor: pointer; border: 1px solid var(--line);
+    background: var(--bg-2); color: var(--txt-2); border-radius: 8px; padding-block: 7px; padding-inline: 12px;
+  }
+  .chip.on { background: var(--accent-glow); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+  .tx-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 460px; }
+  th { text-align: left; font-size: 11.5px; color: var(--txt-3); font-weight: 500; text-transform: uppercase; letter-spacing: .04em; padding-block: 8px; padding-inline: 10px; border-bottom: 1px solid var(--line); }
+  th.r, td.r { text-align: right; }
+  td { padding-block: 12px; padding-inline: 10px; font-size: 13.5px; border-bottom: 1px solid var(--line-soft); }
+  tbody tr:hover { background: var(--bg-2); }
+  .tx-merchant { display: flex; align-items: center; gap: 10px; }
+  .tx-av { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; }
+  .tx-cat { display: inline-block; font-size: 11.5px; padding-block: 3px; padding-inline: 9px; border-radius: 999px; background: var(--bg-2); color: var(--txt-2); border: 1px solid var(--line); }
+  .tx-amt { font-family: var(--mono); font-weight: 600; }
+  .empty { text-align: center; color: var(--txt-3); padding: 28px; font-size: 13px; }
+
+  /* accounts list */
+  .acct { display: flex; align-items: center; gap: 12px; padding-block: 13px; border-bottom: 1px solid var(--line-soft); }
+  .acct:last-child { border-bottom: none; }
+  .acct .a-ic { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
+  .acct .a-meta { flex: 1; min-width: 0; }
+  .acct .a-t { font-size: 14px; font-weight: 600; }
+  .acct .a-s { font-size: 12px; color: var(--txt-3); font-family: var(--mono); }
+  .acct .a-bal { text-align: right; }
+  .acct .a-bal .b { font-family: var(--mono); font-weight: 600; font-size: 14px; }
+  .acct .a-bal .d { font-size: 12px; font-weight: 600; }
+
+  /* ---------- MODAL ---------- */
+  .overlay {
+    position: fixed; inset: 0; z-index: 100; display: none;
+    background: #03060c99; backdrop-filter: blur(5px);
+    align-items: center; justify-content: center; padding: 18px;
+  }
+  .overlay.open { display: flex; animation: fade .2s; }
+  @keyframes fade { from { opacity: 0; } }
+  .modal {
+    width: 100%; max-width: 420px;
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow);
+    padding: 24px; animation: rise .24s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes rise { from { transform: translateY(14px); opacity: 0; } }
+  .modal h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
+  .modal .m-sub { color: var(--txt-2); font-size: 13.5px; margin-top: 4px; margin-bottom: 18px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12.5px; color: var(--txt-2); font-weight: 500; margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px;
+    color: var(--txt); font-family: var(--disp); font-size: 14px; padding-block: 11px; padding-inline: 13px; outline: none;
+  }
+  .field input.num-in { font-family: var(--mono); font-weight: 600; }
+  .field input:focus, .field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .field .err { color: var(--red); font-size: 12px; margin-top: 6px; display: none; }
+  .field.bad input { border-color: var(--red); }
+  .field.bad .err { display: block; }
+  .m-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .m-actions button { flex: 1; padding-block: 12px; border-radius: 11px; font-family: var(--disp); font-weight: 600; font-size: 14px; cursor: pointer; }
+  .m-toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--accent); color: #04140e; font-weight: 600; font-size: 14px;
+    padding-block: 12px; padding-inline: 20px; border-radius: 12px; z-index: 200;
+    box-shadow: 0 12px 30px -8px var(--accent); opacity: 0; transition: .3s; pointer-events: none;
+  }
+  .m-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* footer */
+  footer {
+    border-top: 1px solid var(--line); padding-block: 28px; padding-inline: clamp(16px, 4vw, 40px);
+    display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    color: var(--txt-3); font-size: 13px;
+  }
+  footer .f-brand { color: var(--txt-2); font-weight: 600; }
+
+  /* badge */
+  .badge {
+    position: fixed; right: 16px; bottom: 16px; z-index: 150;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: color-mix(in srgb, var(--panel) 90%, transparent);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding-block: 8px; padding-inline: 14px; font-size: 12.5px; font-weight: 600;
+    color: var(--txt); text-decoration: none; backdrop-filter: blur(10px);
+    box-shadow: 0 8px 22px -10px #00000080;
+  }
+  .badge:hover { border-color: var(--accent); color: var(--accent); }
+  .badge .bd { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+  @media (max-width: 980px) {
+    .grid-main, .grid-lower { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 560px) {
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .hero-cta { flex-direction: column; }
+    .badge { right: 12px; bottom: 12px; padding-inline: 11px; font-size: 12px; }
+    .frame-url { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><span class="logo">L</span>Lumen<span style="color:var(--txt-3);font-weight:500">Capital</span></div>
+  <div class="nav-links">
+    <a href="#">總覽</a><a href="#">投資組合</a><a href="#">交易</a><a href="#">分析</a>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn" title="切換主題">◐</button>
+    <button class="cta" id="openTransfer">轉帳匯款</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="pill"><span class="dot"></span>即時資產同步 · 全台 28 萬名用戶信賴</span>
+  <h1>讓每一筆資金<br /><span class="grad">都看得清楚</span></h1>
+  <p>Lumen Capital 將你的銀行帳戶、投資與加密資產整合於單一儀表板，提供即時數據視覺化、智慧資產配置建議與毫秒級風險監控。</p>
+  <div class="hero-cta">
+    <button class="cta" id="openTransfer2">免費開立帳戶</button>
+    <button class="cta ghost">觀看產品導覽</button>
+  </div>
+</header>
+
+<section class="dash">
+  <div class="frame">
+    <div class="frame-top">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="frame-url">app.lumencapital.tw/dashboard</div>
+      <div class="frame-tag">● LIVE</div>
+    </div>
+    <div class="dash-body">
+
+      <div class="dash-head">
+        <div>
+          <div class="label">總資產淨值 (NT$)</div>
+          <div class="total num" id="totalVal">$0</div>
+          <div class="sub">較昨日 <span class="num pos" id="totalDelta">+$0 (0.00%)</span></div>
+        </div>
+        <div class="seg" id="seg">
+          <button data-tf="1D">1D</button>
+          <button data-tf="1W">1W</button>
+          <button data-tf="1M" class="on">1M</button>
+          <button data-tf="1Y">1Y</button>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div class="kpis" id="kpis"></div>
+
+      <!-- main grid -->
+      <div class="grid-main">
+        <div class="card">
+          <div class="card-h">
+            <h3>資產淨值走勢</h3>
+            <div class="legend">
+              <span><i style="background:var(--accent)"></i>淨值</span>
+              <span><i style="background:var(--blue)"></i>投入本金</span>
+            </div>
+          </div>
+          <div class="chart-wrap" id="lineWrap">
+            <svg id="lineChart" viewBox="0 0 720 280" preserveAspectRatio="none" role="img" aria-label="資產淨值走勢圖"></svg>
+            <div class="tooltip" id="lineTip"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>資產配置</h3></div>
+          <div class="donut-wrap">
+            <svg id="donut" viewBox="0 0 180 180" width="160" height="160" style="flex:none" role="img" aria-label="資產配置圓環圖"></svg>
+            <div class="alloc-list" id="allocList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- lower grid -->
+      <div class="grid-lower">
+        <div class="card">
+          <div class="card-h"><h3>近期交易</h3></div>
+          <div class="tx-tools">
+            <div class="tx-search">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--txt-3)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="txSearch" placeholder="搜尋商家或類別…" />
+            </div>
+            <div class="filter-chips" id="txChips">
+              <button class="chip on" data-f="all">全部</button>
+              <button class="chip" data-f="收入">收入</button>
+              <button class="chip" data-f="投資">投資</button>
+              <button class="chip" data-f="餐飲">餐飲</button>
+              <button class="chip" data-f="訂閱">訂閱</button>
+            </div>
+          </div>
+          <div class="tx-scroll">
+            <table>
+              <thead><tr><th>商家</th><th>類別</th><th>日期</th><th class="r">金額</th></tr></thead>
+              <tbody id="txBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>連結帳戶</h3></div>
+          <div id="acctList"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 <span class="f-brand">Lumen Capital</span> · 虛構展示產品，非真實金融服務</div>
+  <div>由 <span class="f-brand">e-life-ai</span> 設計與開發</div>
+</footer>
+
+<a class="badge" href="https://elife-ai.com" target="_blank" rel="noopener"><span class="bd"></span>elife-ai.com</a>
+
+<!-- transfer modal -->
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="轉帳匯款">
+    <h3>轉帳匯款</h3>
+    <div class="m-sub">資金將於數秒內到達，毫秒級風控守護每筆交易。</div>
+    <div class="field" id="f-acct">
+      <label>轉出帳戶</label>
+      <select id="fromAcct">
+        <option value="2840193">主要支票帳戶 · 餘額 $1,284,930</option>
+        <option value="58210">高利活儲 · 餘額 $580,210</option>
+        <option value="0">投資現金 · 餘額 $0</option>
+      </select>
+    </div>
+    <div class="field" id="f-to">
+      <label>收款人帳號</label>
+      <input id="toAcct" inputmode="numeric" class="num-in" placeholder="例如 700-12345678901" />
+      <div class="err">請輸入有效的收款帳號（至少 8 碼數字）。</div>
+    </div>
+    <div class="field" id="f-amt">
+      <label>金額 (NT$)</label>
+      <input id="amt" inputmode="decimal" class="num-in" placeholder="0" />
+      <div class="err" id="amtErr">請輸入大於 0 且不超過可用餘額的金額。</div>
+    </div>
+    <div class="m-actions">
+      <button class="cta ghost" id="cancelTransfer">取消</button>
+      <button class="cta" id="confirmTransfer">確認轉帳</button>
+    </div>
+  </div>
+</div>
+<div class="m-toast" id="toast">✓ 轉帳成功送出</div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const NT = n => "$" + Math.round(n).toLocaleString("en-US");
+  const pct = n => (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
+
+  /* ---------- THEME ---------- */
+  $("#themeBtn").onclick = () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", cur === "light" ? "dark" : "light");
+    drawLine(); drawDonut();
+  };
+
+  /* ---------- DATA GEN ---------- */
+  const TF = { "1D": 48, "1W": 56, "1M": 60, "1Y": 52 };
+  const SEED = { "1D": 0.004, "1W": 0.012, "1M": 0.03, "1Y": 0.11 };
+  let mulberry = (a) => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+
+  const BASE = 4185000; // total net worth base
+  function genSeries(tf) {
+    const n = TF[tf], rnd = mulberry(tf.charCodeAt(0) * 99 + n);
+    const vol = SEED[tf], pts = [];
+    let v = BASE * (1 - vol * 1.4);
+    const principal = BASE * 0.82;
+    for (let i = 0; i < n; i++) {
+      const drift = vol / n * BASE * 1.7;
+      v += drift + (rnd() - 0.46) * BASE * vol * 0.5;
+      pts.push({ v: Math.max(v, BASE * 0.3), p: principal + i / n * (BASE * 0.05) });
+    }
+    // force last point near current animated total
+    return pts;
+  }
+
+  const TF_LABELS = {
+    "1D": i => { const h = Math.floor(i / 2); return `${String(9 + Math.floor(h)).padStart(2,"0")}:${i % 2 ? "30" : "00"}`; },
+    "1W": i => { const d = ["週一","週二","週三","週四","週五","週六","週日"]; return d[Math.floor(i / 8) % 7]; },
+    "1M": i => `06/${String(Math.max(1, Math.round(i / 2))).padStart(2,"0")}`,
+    "1Y": i => { const m = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]; return m[Math.floor(i / 4.4) % 12]; },
+  };
+
+  let curTF = "1M", series = genSeries(curTF);
+
+  /* ---------- LINE CHART ---------- */
+  const W = 720, H = 280, PAD_L = 8, PAD_R = 8, PAD_T = 18, PAD_B = 26;
+  const svg = $("#lineChart"), tip = $("#lineTip"), wrap = $("#lineWrap");
+
+  function scales(s) {
+    const vals = s.flatMap(d => [d.v, d.p]);
+    let min = Math.min(...vals), max = Math.max(...vals);
+    const padR = (max - min) * 0.18 || max * 0.1;
+    min -= padR; max += padR;
+    const x = i => PAD_L + (i / (s.length - 1)) * (W - PAD_L - PAD_R);
+    const y = v => PAD_T + (1 - (v - min) / (max - min)) * (H - PAD_T - PAD_B);
+    return { x, y, min, max };
+  }
+
+  function path(s, key, sc) {
+    return s.map((d, i) => `${i ? "L" : "M"}${sc.x(i).toFixed(1)} ${sc.y(d[key]).toFixed(1)}`).join(" ");
+  }
+
+  function drawLine(animate = false) {
+    const sc = scales(series);
+    const area = `${path(series, "v", sc)} L${sc.x(series.length - 1)} ${H - PAD_B} L${sc.x(0)} ${H - PAD_B} Z`;
+    const grid = [0, .25, .5, .75, 1].map(t => {
+      const yy = (PAD_T + t * (H - PAD_T - PAD_B)).toFixed(1);
+      const val = sc.max - t * (sc.max - sc.min);
+      return `<line x1="0" y1="${yy}" x2="${W}" y2="${yy}" stroke="var(--line-soft)" stroke-width="1"/>
+              <text x="2" y="${yy - 4}" fill="var(--txt-3)" font-size="10" font-family="var(--mono)">${NT(val)}</text>`;
+    }).join("");
+    // x labels
+    const xl = [0, Math.floor(series.length / 4), Math.floor(series.length / 2), Math.floor(series.length * 3 / 4), series.length - 1]
+      .map(i => `<text x="${sc.x(i).toFixed(1)}" y="${H - 6}" fill="var(--txt-3)" font-size="10" text-anchor="middle" font-family="var(--mono)">${TF_LABELS[curTF](i)}</text>`).join("");
+
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="aFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--accent)" stop-opacity="0.32"/>
+          <stop offset="1" stop-color="var(--accent)" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      ${grid}${xl}
+      <path d="${area}" fill="url(#aFill)" class="ar"/>
+      <path d="${path(series, "p", sc)}" fill="none" stroke="var(--blue)" stroke-width="1.6" stroke-dasharray="4 5" opacity="0.7"/>
+      <path d="${path(series, "v", sc)}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)" class="ln"/>
+      <g id="cross" style="opacity:0">
+        <line id="cx" y1="${PAD_T}" y2="${H - PAD_B}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>
+        <circle id="cdot" r="5" fill="var(--accent)" stroke="var(--panel)" stroke-width="2"/>
+      </g>`;
+    if (animate) {
+      const ln = svg.querySelector(".ln"), L = ln.getTotalLength();
+      ln.style.strokeDasharray = L; ln.style.strokeDashoffset = L;
+      ln.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 900, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" });
+      svg.querySelector(".ar").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, fill: "forwards" });
+    }
+    svg._sc = sc;
+  }
+
+  // hover crosshair + tooltip
+  function moveTip(clientX) {
+    const r = svg.getBoundingClientRect(), sc = svg._sc;
+    const rel = (clientX - r.left) / r.width * W;
+    let i = Math.round((rel - PAD_L) / (W - PAD_L - PAD_R) * (series.length - 1));
+    i = Math.max(0, Math.min(series.length - 1, i));
+    const d = series[i], cross = $("#cross", svg);
+    cross.style.opacity = 1;
+    $("#cx", svg).setAttribute("x1", sc.x(i)); $("#cx", svg).setAttribute("x2", sc.x(i));
+    $("#cdot", svg).setAttribute("cx", sc.x(i)); $("#cdot", svg).setAttribute("cy", sc.y(d.v));
+    tip.style.opacity = 1;
+    tip.style.left = (sc.x(i) / W * r.width) + "px";
+    tip.style.top = (sc.y(d.v) / H * r.height) + "px";
+    tip.innerHTML = `<div class="tt-d">${TF_LABELS[curTF](i)}</div><div class="tt-v pos">${NT(d.v)}</div>`;
+  }
+  wrap.addEventListener("pointermove", e => moveTip(e.clientX));
+  wrap.addEventListener("pointerleave", () => { tip.style.opacity = 0; const c = $("#cross", svg); if (c) c.style.opacity = 0; });
+
+  /* ---------- SEG SWITCHER ---------- */
+  $("#seg").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("#seg button").forEach(x => x.classList.remove("on")); b.classList.add("on");
+    curTF = b.dataset.tf; series = genSeries(curTF);
+    drawLine(true); updateHeadFromSeries();
+  });
+
+  /* ---------- KPI CARDS ---------- */
+  const kpiDefs = [
+    { id: "k1", label: "本月報酬率", icon: "▲", val: 12.84, fmt: v => pct(v).replace("+", "+"), delta: "+2.3%", up: true, color: "var(--accent)", spark: [4,6,5,8,7,10,9,13] },
+    { id: "k2", label: "可用現金", icon: "$", val: 1865140, fmt: NT, delta: "+$42,300", up: true, color: "var(--blue)", spark: [8,7,9,8,10,9,11,12] },
+    { id: "k3", label: "持倉檔數", icon: "≡", val: 34, fmt: v => Math.round(v), delta: "+2 檔", up: true, color: "var(--violet)", spark: [5,6,6,7,7,8,8,9] },
+    { id: "k4", label: "風險指數", icon: "◆", val: 38.2, fmt: v => v.toFixed(1), delta: "-1.4", up: false, color: "var(--amber)", spark: [9,8,8,7,6,7,6,5] },
+  ];
+  function sparkPath(arr) {
+    const w = 56, h = 20, mn = Math.min(...arr), mx = Math.max(...arr);
+    return arr.map((v, i) => `${i ? "L" : "M"}${(i / (arr.length - 1) * w).toFixed(1)} ${(h - (v - mn) / (mx - mn || 1) * h).toFixed(1)}`).join(" ");
+  }
+  function renderKpis() {
+    $("#kpis").innerHTML = kpiDefs.map(k => `
+      <div class="kpi">
+        <div class="k-label"><span class="k-icon" style="color:${k.color}">${k.icon}</span>${k.label}</div>
+        <div class="k-val num" id="${k.id}">—</div>
+        <div class="k-delta ${k.up ? "pos" : "neg"}">${k.up ? "▲" : "▼"} ${k.delta}</div>
+        <svg class="spark" width="56" height="20" viewBox="0 0 56 20"><path d="${sparkPath(k.spark)}" fill="none" stroke="${k.color}" stroke-width="1.6" opacity="0.85"/></svg>
+      </div>`).join("");
+  }
+
+  /* ---------- DONUT ---------- */
+  const alloc = [
+    { name: "股票", pct: 42, color: "var(--accent)" },
+    { name: "ETF 指數", pct: 24, color: "var(--blue)" },
+    { name: "債券", pct: 16, color: "var(--violet)" },
+    { name: "加密資產", pct: 11, color: "var(--amber)" },
+    { name: "現金", pct: 7, color: "var(--txt-3)" },
+  ];
+  let hoverSeg = -1;
+  function drawDonut() {
+    const cx = 90, cy = 90, r = 64, sw = 22, C = 2 * Math.PI * r;
+    let off = 0;
+    const segs = alloc.map((a, i) => {
+      const len = a.pct / 100 * C;
+      const dash = `${len} ${C - len}`;
+      const isH = hoverSeg === i;
+      const seg = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${a.color}" stroke-width="${isH ? sw + 5 : sw}"
+        stroke-dasharray="${dash}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"
+        style="transition:stroke-width .18s; cursor:pointer" data-i="${i}"/>`;
+      off += len; return seg;
+    }).join("");
+    const center = hoverSeg >= 0
+      ? `<text x="${cx}" y="${cy - 4}" text-anchor="middle" fill="var(--txt-2)" font-size="12" font-family="var(--disp)">${alloc[hoverSeg].name}</text>
+         <text x="${cx}" y="${cy + 16}" text-anchor="middle" fill="${alloc[hoverSeg].color}" font-size="20" font-weight="700" font-family="var(--mono)">${alloc[hoverSeg].pct}%</text>`
+      : `<text x="${cx}" y="${cy - 4}" text-anchor="middle" fill="var(--txt-3)" font-size="11" font-family="var(--disp)">總配置</text>
+         <text x="${cx}" y="${cy + 16}" text-anchor="middle" fill="var(--txt)" font-size="20" font-weight="700" font-family="var(--mono)">100%</text>`;
+    $("#donut").innerHTML = segs + center;
+    $$("#donut circle").forEach(c => {
+      c.onpointerenter = () => { hoverSeg = +c.dataset.i; drawDonut(); };
+      c.onpointerleave = () => { hoverSeg = -1; drawDonut(); };
+    });
+  }
+  function renderAlloc() {
+    $("#allocList").innerHTML = alloc.map((a, i) => `
+      <div class="alloc-row" data-i="${i}">
+        <span class="dot2" style="background:${a.color}"></span>
+        <span class="a-name">${a.name}</span>
+        <span class="a-pct">${a.pct}%</span>
+      </div>`).join("");
+    $$("#allocList .alloc-row").forEach(row => {
+      row.onpointerenter = () => { hoverSeg = +row.dataset.i; drawDonut(); };
+      row.onpointerleave = () => { hoverSeg = -1; drawDonut(); };
+    });
+  }
+
+  /* ---------- TRANSACTIONS ---------- */
+  const txData = [
+    { m: "台積電 2330", cat: "投資", date: "06/18", amt: -185000, ic: "台", col: "var(--blue)" },
+    { m: "薪資轉入 · 華碩", cat: "收入", date: "06/17", amt: 142800, ic: "薪", col: "var(--accent)" },
+    { m: "鼎泰豐 信義店", cat: "餐飲", date: "06/16", amt: -2480, ic: "鼎", col: "var(--amber)" },
+    { m: "Netflix 高級方案", cat: "訂閱", date: "06/15", amt: -390, ic: "N", col: "var(--red)" },
+    { m: "0050 元大台灣50", cat: "投資", date: "06/15", amt: -60000, ic: "0", col: "var(--blue)" },
+    { m: "股利入帳 · 中華電", cat: "收入", date: "06/14", amt: 8650, ic: "息", col: "var(--accent)" },
+    { m: "Spotify Premium", cat: "訂閱", date: "06/13", amt: -149, ic: "S", col: "var(--violet)" },
+    { m: "路易莎咖啡", cat: "餐飲", date: "06/13", amt: -135, ic: "咖", col: "var(--amber)" },
+    { m: "比特幣 BTC", cat: "投資", date: "06/12", amt: -45000, ic: "₿", col: "var(--amber)" },
+    { m: "全聯福利中心", cat: "餐飲", date: "06/11", amt: -1860, ic: "全", col: "var(--amber)" },
+  ];
+  let txFilter = "all", txQuery = "";
+  function renderTx() {
+    const rows = txData.filter(t =>
+      (txFilter === "all" || t.cat === txFilter) &&
+      (t.m + t.cat).toLowerCase().includes(txQuery.toLowerCase())
+    );
+    if (!rows.length) { $("#txBody").innerHTML = `<tr><td colspan="4" class="empty">查無符合的交易</td></tr>`; return; }
+    $("#txBody").innerHTML = rows.map(t => `
+      <tr>
+        <td><div class="tx-merchant">
+          <span class="tx-av" style="background:color-mix(in srgb, ${t.col} 22%, transparent); color:${t.col}">${t.ic}</span>
+          ${t.m}</div></td>
+        <td><span class="tx-cat">${t.cat}</span></td>
+        <td class="num" style="color:var(--txt-2)">${t.date}</td>
+        <td class="r tx-amt ${t.amt >= 0 ? "pos" : ""}">${t.amt >= 0 ? "+" : "−"}${NT(Math.abs(t.amt))}</td>
+      </tr>`).join("");
+  }
+  $("#txSearch").addEventListener("input", e => { txQuery = e.target.value; renderTx(); });
+  $("#txChips").addEventListener("click", e => {
+    const c = e.target.closest(".chip"); if (!c) return;
+    $$("#txChips .chip").forEach(x => x.classList.remove("on")); c.classList.add("on");
+    txFilter = c.dataset.f; renderTx();
+  });
+
+  /* ---------- ACCOUNTS ---------- */
+  const accts = [
+    { t: "主要支票帳戶", s: "•••• 4821", bal: 1284930, d: "+0.4%", up: true, ic: "支", col: "var(--accent)" },
+    { t: "高利活儲", s: "•••• 9037", bal: 580210, d: "+1.9%", up: true, ic: "儲", col: "var(--blue)" },
+    { t: "證券投資戶", s: "•••• 1156", bal: 2218600, d: "+3.2%", up: true, ic: "證", col: "var(--violet)" },
+    { t: "加密資產錢包", s: "0x7f…2ac", bal: 101400, d: "−2.1%", up: false, ic: "₿", col: "var(--amber)" },
+  ];
+  function renderAccts() {
+    $("#acctList").innerHTML = accts.map(a => `
+      <div class="acct">
+        <span class="a-ic" style="background:color-mix(in srgb,${a.col} 20%, transparent); color:${a.col}">${a.ic}</span>
+        <div class="a-meta"><div class="a-t">${a.t}</div><div class="a-s">${a.s}</div></div>
+        <div class="a-bal"><div class="b num">${NT(a.bal)}</div><div class="d ${a.up ? "pos" : "neg"}">${a.d}</div></div>
+      </div>`).join("");
+  }
+
+  /* ---------- HEADER TOTAL + LIVE TICKING ---------- */
+  let totalCur = BASE, totalDelta = BASE * 0.0123;
+  function setHead(v, dv) {
+    $("#totalVal").textContent = NT(v);
+    const p = dv / (v - dv) * 100;
+    const el = $("#totalDelta");
+    el.textContent = `${dv >= 0 ? "+" : "−"}${NT(Math.abs(dv))} (${pct(p).replace("+","+")})`;
+    el.className = "num " + (dv >= 0 ? "pos" : "neg");
+  }
+  function updateHeadFromSeries() {
+    const last = series[series.length - 1].v, first = series[0].v;
+    totalCur = last; totalDelta = last - first;
+    setHead(totalCur, totalDelta);
+  }
+
+  // animated count-up for KPI + total
+  function animTo(el, from, to, fmt, dur = 900) {
+    const t0 = performance.now();
+    (function step(t) {
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(from + (to - from) * e);
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+
+  /* ---------- LIVE TICK (mock) ---------- */
+  function tick() {
+    // total drifts
+    const jitter = (Math.random() - 0.46) * BASE * 0.0006;
+    totalCur += jitter; totalDelta += jitter * 0.6;
+    setHead(totalCur, totalDelta);
+    // KPI subtle moves
+    kpiDefs[1].val += (Math.random() - 0.45) * 1800; // cash
+    kpiDefs[0].val += (Math.random() - 0.48) * 0.06; // return %
+    kpiDefs[3].val += (Math.random() - 0.5) * 0.3;   // risk
+    $("#k2").textContent = NT(kpiDefs[1].val);
+    $("#k1").textContent = pct(kpiDefs[0].val);
+    $("#k4").textContent = kpiDefs[3].val.toFixed(1);
+    // pulse last point
+  }
+
+  /* ---------- MODAL ---------- */
+  const overlay = $("#overlay");
+  const openModal = () => { overlay.classList.add("open"); setTimeout(() => $("#toAcct").focus(), 50); };
+  const closeModal = () => { overlay.classList.remove("open"); ["f-to","f-amt"].forEach(id => $("#"+id).classList.remove("bad")); };
+  $("#openTransfer").onclick = openModal;
+  $("#openTransfer2").onclick = openModal;
+  $("#cancelTransfer").onclick = closeModal;
+  overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+  $("#confirmTransfer").onclick = () => {
+    const toAcct = $("#toAcct").value.replace(/\D/g, "");
+    const amtRaw = $("#amt").value.replace(/[^\d.]/g, "");
+    const amt = parseFloat(amtRaw);
+    const avail = parseInt($("#fromAcct").value, 10);
+    let ok = true;
+    if (toAcct.length < 8) { $("#f-to").classList.add("bad"); ok = false; } else $("#f-to").classList.remove("bad");
+    const amtErr = $("#amtErr");
+    if (!(amt > 0)) { amtErr.textContent = "請輸入大於 0 的金額。"; $("#f-amt").classList.add("bad"); ok = false; }
+    else if (amt > avail) { amtErr.textContent = `金額超過可用餘額 ${NT(avail)}。`; $("#f-amt").classList.add("bad"); ok = false; }
+    else $("#f-amt").classList.remove("bad");
+    if (!ok) return;
+    closeModal();
+    const toast = $("#toast");
+    toast.textContent = `✓ 已送出 ${NT(amt)} 轉帳`;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2600);
+    $("#toAcct").value = ""; $("#amt").value = "";
+    // reflect: bump cash kpi down
+    totalCur -= 0; // net worth unaffected (internal transfer feel)
+  };
+
+  /* ---------- INIT ---------- */
+  function init() {
+    renderKpis(); renderAlloc(); drawDonut(); renderTx(); renderAccts();
+    drawLine(true); updateHeadFromSeries();
+    // animate KPI numbers in
+    animTo($("#k1"), 0, kpiDefs[0].val, pct);
+    animTo($("#k2"), 0, kpiDefs[1].val, NT);
+    animTo($("#k3"), 0, kpiDefs[2].val, v => Math.round(v));
+    animTo($("#k4"), 0, kpiDefs[3].val, v => v.toFixed(1));
+    animTo($("#totalVal"), BASE * 0.94, totalCur, NT, 1100);
+    setInterval(tick, 2400);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(init); else window.addEventListener("load", init);
+  // safety: ensure init even if fonts hang
+  setTimeout(() => { if (!$("#k1").textContent || $("#k1").textContent === "—") init(); }, 1500);
+})();
+</script>
+</body>
+</html>
