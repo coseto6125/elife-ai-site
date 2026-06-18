@@ -70,6 +70,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Pin footer to the viewport bottom even when content is short */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+#app > main {
+  flex: 1 0 auto;
+}
+
 /* Atmospheric base: faint grid + radial glow, fixed behind everything */
 body::before {
   content: '';

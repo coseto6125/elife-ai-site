@@ -59,7 +59,7 @@ const principles = [
     <!-- tech marquee -->
     <div class="marquee reveal" data-reveal aria-hidden="true">
       <div class="track">
-        <span v-for="t in [...techStack, ...techStack]" :key="t" class="chip">{{ t }}</span>
+        <span v-for="(t, i) in [...techStack, ...techStack]" :key="i" class="chip">{{ t }}</span>
       </div>
     </div>
   </section>

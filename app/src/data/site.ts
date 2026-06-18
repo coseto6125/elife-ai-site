@@ -283,19 +283,33 @@ export const stats = [
 ]
 
 export const techStack = [
+  // languages
   'Rust',
   'Python 3.14',
   'Go',
   'TypeScript',
+  // frontend
   'Vue 3',
   'Next.js',
   'Vite',
-  'tree-sitter',
-  'tokio',
+  // backend frameworks
   'FastAPI',
   'Sanic',
+  'tokio',
+  'tree-sitter',
+  // AI / LLM
   'LangChain',
   'LangGraph',
+  'MCP',
+  'Anthropic',
+  'OpenAI',
+  'Gemini',
+  'Ollama',
+  'NVIDIA NIM',
+  'llama.cpp',
+  'bge-m3',
+  'Langfuse',
+  // data / retrieval
   'PostgreSQL',
   'pgvector',
   'FAISS',
@@ -303,7 +317,22 @@ export const techStack = [
   'polars',
   'msgspec',
   'ONNX',
+  'Redis',
+  'rkyv',
+  'Cypher',
+  // scraping
+  'never-primp',
+  'patchright',
+  // cloud / infra
+  'AWS',
+  'GCP',
+  'OCI',
+  'Cloudflare',
   'Docker',
-  'AWS Lambda',
+  'systemd',
+  'GitHub Actions',
+  // systems / reverse engineering
   'Frida',
+  'GDB',
+  'SQLCipher',
 ]

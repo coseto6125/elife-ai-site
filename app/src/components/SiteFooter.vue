@@ -9,7 +9,7 @@ function go(href: string) {
   <footer class="footer">
     <div class="wrap foot-grid">
       <div class="foot-brand">
-        <span class="brand">e-life<span class="ai">-ai</span></span>
+        <span class="brand"><span class="dot" />e-life<span class="ai">-ai</span></span>
         <p>再難的工程，都能一起搞定。</p>
         <span class="mono">service.e-life-ai.com</span>
       </div>
@@ -47,9 +47,21 @@ function go(href: string) {
   border-bottom: 1px solid var(--line);
 }
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.4rem;
+}
+/* echoes the pulsing dot in the header brand */
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent);
+  animation: pulse 2.6s var(--ease-in-out) infinite;
 }
 .ai {
   color: var(--accent);
@@ -74,11 +86,38 @@ function go(href: string) {
   font-size: 0.88rem;
 }
 .foot-links a {
+  position: relative;
   color: var(--ink-1);
   transition: color 0.25s var(--ease);
 }
 .foot-links a:hover {
-  color: var(--accent);
+  color: var(--ink-0);
+}
+/* echoes the nav link underline-on-hover in the header */
+.foot-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s var(--ease);
+}
+.foot-links a:hover::after {
+  width: 100%;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
 }
 .foot-bottom {
   display: flex;
