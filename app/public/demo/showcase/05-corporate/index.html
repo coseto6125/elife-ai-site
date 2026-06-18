@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>鼎宸精密 HONGCHEN — 精密金屬製造與整合解決方案</title>
+<meta name="description" content="鼎宸精密 1986 年創立，深耕航太、半導體與醫療精密金屬零組件製造，全球三大據點、年出貨逾兩千萬件。企業形象範例頁面。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Libre+Franklin:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   鼎宸精密 HONGCHEN — Corporate / Enterprise site (showcase #05)
+   Aesthetic: deep maritime navy + precise champagne-gold accents,
+   architectural grid, hairline rules, generous structure.
+   Display in Spectral (humanist serif, authoritative), UI/body in
+   Libre Franklin (grotesque) + Noto Sans TC. Restrained motion,
+   premium B2B trust signalling — engineered, not templated.
+   ============================================================ */
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --navy:#0c1a2b;        /* deep maritime navy */
+  --navy-2:#0f2236;      /* panel */
+  --navy-3:#15304a;      /* raised */
+  --ink:#1a242f;
+  --paper:#f6f4ef;       /* warm porcelain */
+  --paper-2:#efeae0;
+  --gold:#c8a45c;        /* champagne gold */
+  --gold-bright:#e0c483;
+  --gold-deep:#a8853f;
+  --steel:#7d8a99;       /* muted body on dark */
+  --steel-d:#5a6b7d;
+  --slate:#41566b;       /* body on light */
+  --line-d:rgba(255,255,255,.10);
+  --line-d2:rgba(255,255,255,.06);
+  --line-l:rgba(12,26,43,.13);
+  --line-l2:rgba(12,26,43,.07);
+  --shadow:0 24px 60px -28px rgba(12,26,43,.45);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Libre Franklin','Noto Sans TC',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.serif{font-family:'Spectral','Noto Sans TC',serif;font-weight:400;letter-spacing:-.01em}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+.eyebrow{
+  font-family:'Libre Franklin',sans-serif;
+  font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-deep);display:inline-flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+.eyebrow.on-dark{color:var(--gold-bright)}
+.eyebrow.center{justify-content:center}
+
+/* ---------- Header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:all .45s var(--ease);
+  border-bottom:1px solid transparent;
+}
+header .bar{
+  display:flex;align-items:center;justify-content:space-between;
+  height:84px;transition:height .45s var(--ease);
+}
+header.scrolled{
+  background:rgba(246,244,239,.86);
+  backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid var(--line-l);
+}
+header.scrolled .bar{height:64px}
+.brand{display:flex;align-items:center;gap:13px;color:var(--paper);transition:color .45s var(--ease)}
+header.scrolled .brand{color:var(--navy)}
+.brand .mark{width:34px;height:34px;flex:none}
+.brand .name{font-family:'Spectral',serif;font-size:21px;font-weight:500;letter-spacing:.02em;line-height:1}
+.brand .sub{font-size:10px;letter-spacing:.32em;color:var(--gold);font-weight:600;display:block;margin-top:3px}
+nav.main{display:flex;align-items:center;gap:36px}
+nav.main a{
+  font-size:14px;font-weight:500;color:rgba(255,255,255,.82);
+  position:relative;padding:4px 0;transition:color .3s;
+}
+header.scrolled nav.main a{color:var(--slate)}
+nav.main a::after{
+  content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;
+  background:var(--gold);transition:width .35s var(--ease);
+}
+nav.main a:hover{color:var(--gold-bright)}
+header.scrolled nav.main a:hover{color:var(--navy)}
+nav.main a:hover::after{width:100%}
+.nav-cta{
+  border:1px solid rgba(255,255,255,.32);color:var(--paper)!important;
+  padding:10px 22px;border-radius:1px;font-size:13px;font-weight:600;
+  letter-spacing:.04em;transition:all .35s var(--ease);
+}
+header.scrolled .nav-cta{border-color:var(--navy);color:var(--navy)!important}
+.nav-cta:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)!important}
+header.scrolled .nav-cta:hover{color:var(--navy)!important}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:6px}
+.burger span{width:24px;height:2px;background:var(--paper);transition:.3s}
+header.scrolled .burger span{background:var(--navy)}
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;background:var(--navy);color:var(--paper);
+  padding:172px 0 110px;overflow:hidden;
+}
+.hero .grid-bg{
+  position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(var(--line-d2) 1px,transparent 1px),linear-gradient(90deg,var(--line-d2) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 40%,#000 30%,transparent 80%);
+          mask-image:radial-gradient(ellipse 80% 70% at 70% 40%,#000 30%,transparent 80%);
+}
+.hero .glow{
+  position:absolute;top:-10%;right:-8%;width:620px;height:620px;
+  background:radial-gradient(circle,rgba(200,164,92,.16),transparent 62%);
+  pointer-events:none;
+}
+.hero-inner{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center}
+.hero h1{
+  font-size:clamp(40px,5.6vw,76px);line-height:1.04;letter-spacing:-.02em;
+  margin:26px 0 28px;font-weight:400;
+}
+.hero h1 em{font-style:italic;color:var(--gold-bright)}
+.hero p.lead{font-size:18px;color:var(--steel);max-width:520px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 30px;border-radius:1px;font-size:14px;font-weight:600;
+  letter-spacing:.03em;cursor:pointer;border:1px solid transparent;
+  transition:all .35s var(--ease);font-family:'Libre Franklin',sans-serif;
+}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:var(--gold-bright);transform:translateY(-2px)}
+.btn-ghost{border-color:rgba(255,255,255,.26);color:var(--paper)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-bright)}
+.btn svg{width:16px;height:16px}
+
+/* hero facility SVG card */
+.hero-art{
+  position:relative;border:1px solid var(--line-d);background:linear-gradient(160deg,var(--navy-2),var(--navy));
+  border-radius:2px;padding:26px;box-shadow:0 40px 80px -40px rgba(0,0,0,.6);
+}
+.hero-art .tag{
+  position:absolute;top:-12px;left:24px;background:var(--gold);color:var(--navy);
+  font-size:11px;font-weight:700;letter-spacing:.14em;padding:5px 12px;border-radius:1px;
+}
+.hero-art svg{display:block;width:100%;height:auto}
+.hero-art .cap{display:flex;justify-content:space-between;margin-top:18px;font-size:12px;color:var(--steel-d);letter-spacing:.04em}
+
+/* trust strip */
+.trust{border-top:1px solid var(--line-d);margin-top:80px;padding-top:36px;position:relative}
+.trust .lbl{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--steel-d);margin-bottom:22px}
+.logos{display:flex;flex-wrap:wrap;gap:48px;align-items:center}
+.logos .lg{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.04em;font-size:15px;transition:color .3s}
+.logos .lg:hover{color:var(--gold-bright)}
+.logos .lg svg{width:22px;height:22px;flex:none}
+
+/* ---------- Sections ---------- */
+section{position:relative}
+.pad{padding:118px 0}
+.pad-t{padding-top:118px}
+.sec-head{max-width:680px;margin-bottom:64px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.sec-head h2{font-size:clamp(30px,3.6vw,46px);line-height:1.12;margin:18px 0 18px;letter-spacing:-.02em}
+.sec-head p{color:var(--slate);font-size:17px;font-weight:300}
+.dark{background:var(--navy);color:var(--paper)}
+.dark .sec-head p{color:var(--steel)}
+.dark .sec-head h2{color:var(--paper)}
+
+/* ---------- Stats ---------- */
+.stats{background:var(--navy-2);color:var(--paper);position:relative;overflow:hidden}
+.stats .grid-bg{position:absolute;inset:0;opacity:.4;
+  background-image:linear-gradient(90deg,var(--line-d2) 1px,transparent 1px);background-size:25% 100%}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);position:relative}
+.stat{padding:18px 30px;border-left:1px solid var(--line-d)}
+.stat:first-child{border-left:0;padding-left:0}
+.stat .num{font-family:'Spectral',serif;font-size:clamp(44px,5vw,64px);font-weight:500;line-height:1;color:var(--gold-bright);letter-spacing:-.02em}
+.stat .num .suf{font-size:.45em;color:var(--gold);margin-left:4px;font-weight:600}
+.stat .lbl{font-size:14px;color:var(--steel);margin-top:14px;font-weight:400;letter-spacing:.02em}
+
+/* ---------- Solutions (tabs) ---------- */
+.tabs-nav{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line-l);margin-bottom:54px}
+.tab-btn{
+  appearance:none;background:none;border:0;cursor:pointer;
+  font-family:'Libre Franklin',sans-serif;font-size:16px;font-weight:500;color:var(--slate);
+  padding:18px 26px;position:relative;transition:color .3s;display:flex;align-items:center;gap:11px;
+}
+.tab-btn .n{font-family:'Spectral',serif;font-size:14px;color:var(--gold-deep);font-style:italic}
+.tab-btn::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:var(--gold);transition:width .4s var(--ease)}
+.tab-btn:hover{color:var(--navy)}
+.tab-btn.active{color:var(--navy);font-weight:600}
+.tab-btn.active::after{width:100%}
+.tab-panel{display:none}
+.tab-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;animation:fade .55s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tab-panel h3{font-size:30px;line-height:1.18;margin-bottom:20px}
+.tab-panel .pl{color:var(--slate);font-size:16.5px;font-weight:300;margin-bottom:26px}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:16px}
+.feat-list li{display:flex;gap:14px;font-size:15px;color:var(--ink)}
+.feat-list li svg{width:20px;height:20px;flex:none;color:var(--gold-deep);margin-top:2px}
+.panel-art{border:1px solid var(--line-l);border-radius:2px;background:linear-gradient(150deg,#fff,var(--paper-2));padding:30px;box-shadow:var(--shadow)}
+.panel-art svg{display:block;width:100%;height:auto}
+.panel-stat{display:flex;gap:32px;margin-top:24px;padding-top:24px;border-top:1px solid var(--line-l)}
+.panel-stat .ps .v{font-family:'Spectral',serif;font-size:30px;color:var(--navy);font-weight:500;line-height:1}
+.panel-stat .ps .k{font-size:12.5px;color:var(--slate);margin-top:6px}
+
+/* ---------- Timeline ---------- */
+.timeline{position:relative;max-width:900px;margin:0 auto;padding-left:8px}
+.timeline::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--line-d)}
+.tl-item{position:relative;padding:0 0 56px 56px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:"";position:absolute;left:2.5px;top:6px;width:12px;height:12px;border-radius:50%;
+  background:var(--navy);border:2px solid var(--gold);box-shadow:0 0 0 5px var(--navy-2);
+}
+.tl-year{font-family:'Spectral',serif;font-size:26px;color:var(--gold-bright);font-weight:500;font-style:italic;line-height:1}
+.tl-item h3{font-size:19px;color:var(--paper);margin:12px 0 8px;font-family:'Libre Franklin',sans-serif;font-weight:600;letter-spacing:0}
+.tl-item p{color:var(--steel);font-size:15px;font-weight:300;max-width:560px}
+
+/* ---------- Leadership ---------- */
+.leaders{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.leader{border:1px solid var(--line-l);border-radius:2px;overflow:hidden;background:#fff;transition:all .4s var(--ease)}
+.leader:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.leader .ph{height:230px;position:relative;overflow:hidden}
+.leader .ph svg{position:absolute;inset:0;width:100%;height:100%}
+.leader .body{padding:24px 26px 28px}
+.leader .nm{font-family:'Spectral',serif;font-size:22px;color:var(--navy);font-weight:500}
+.leader .ro{font-size:13px;color:var(--gold-deep);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:6px 0 14px}
+.leader .bio{font-size:14px;color:var(--slate);font-weight:300;line-height:1.65}
+
+/* ---------- News (filterable) ---------- */
+.news-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-bottom:42px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.fchip{
+  appearance:none;border:1px solid var(--line-l);background:none;cursor:pointer;
+  font-family:'Libre Franklin',sans-serif;font-size:13px;font-weight:500;color:var(--slate);
+  padding:9px 18px;border-radius:40px;transition:all .3s;
+}
+.fchip:hover{border-color:var(--navy);color:var(--navy)}
+.fchip.active{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+.news-list{display:flex;flex-direction:column}
+.news-item{
+  display:grid;grid-template-columns:140px 1fr auto;gap:30px;align-items:center;
+  padding:26px 4px;border-top:1px solid var(--line-l);transition:all .35s var(--ease);
+}
+.news-item:last-child{border-bottom:1px solid var(--line-l)}
+.news-item:hover{background:var(--paper-2);padding-left:18px;padding-right:18px}
+.news-item .date{font-family:'Spectral',serif;font-size:15px;color:var(--slate);font-style:italic}
+.news-item .cat{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--gold-deep);display:block;margin-bottom:7px}
+.news-item .ttl{font-size:18px;color:var(--navy);font-weight:500;font-family:'Spectral',serif}
+.news-item .arrow{color:var(--gold-deep);opacity:0;transform:translateX(-8px);transition:all .35s}
+.news-item:hover .arrow{opacity:1;transform:none}
+.news-item.hide{display:none}
+
+/* ---------- FAQ / accordion ---------- */
+.acc{max-width:880px;margin:0 auto}
+.acc-item{border-bottom:1px solid var(--line-d)}
+.acc-q{
+  width:100%;background:none;border:0;cursor:pointer;text-align:left;
+  display:flex;justify-content:space-between;align-items:center;gap:24px;
+  padding:26px 0;font-family:'Spectral',serif;font-size:20px;color:var(--paper);font-weight:400;
+}
+.acc-q .ic{flex:none;width:30px;height:30px;border:1px solid var(--line-d);border-radius:50%;position:relative;transition:all .4s var(--ease)}
+.acc-q .ic::before,.acc-q .ic::after{content:"";position:absolute;background:var(--gold-bright);transition:transform .4s var(--ease)}
+.acc-q .ic::before{left:50%;top:8px;bottom:8px;width:1.5px;transform:translateX(-50%)}
+.acc-q .ic::after{top:50%;left:8px;right:8px;height:1.5px;transform:translateY(-50%)}
+.acc-item.open .acc-q .ic{background:var(--gold);border-color:var(--gold)}
+.acc-item.open .acc-q .ic::before{transform:translateX(-50%) scaleY(0)}
+.acc-item.open .acc-q .ic::after{background:var(--navy)}
+.acc-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.acc-a p{color:var(--steel);font-size:15.5px;font-weight:300;padding:0 0 28px;max-width:680px;line-height:1.75}
+
+/* ---------- CTA ---------- */
+.cta{background:linear-gradient(150deg,var(--navy-3),var(--navy));text-align:center;color:var(--paper);position:relative;overflow:hidden}
+.cta .glow{position:absolute;bottom:-30%;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(circle,rgba(200,164,92,.18),transparent 65%)}
+.cta h2{font-size:clamp(32px,4vw,52px);line-height:1.1;position:relative;margin:20px auto 22px;max-width:780px}
+.cta p{color:var(--steel);font-size:17px;position:relative;max-width:560px;margin:0 auto 38px;font-weight:300}
+
+/* ---------- Footer ---------- */
+footer.site{background:var(--navy);color:var(--paper);padding:80px 0 0;border-top:1px solid var(--line-d)}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px}
+.foot-grid .brand{color:var(--paper);align-items:flex-start}
+.foot-about{color:var(--steel);font-size:14.5px;font-weight:300;max-width:320px;margin-top:22px;line-height:1.7}
+.foot-col h4{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-family:'Libre Franklin',sans-serif;font-weight:600}
+.foot-col a{display:block;color:var(--steel);font-size:14.5px;margin-bottom:13px;font-weight:300;transition:color .3s}
+.foot-col a:hover{color:var(--gold-bright)}
+.foot-bottom{border-top:1px solid var(--line-d2);padding:26px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--steel-d)}
+/* e-life-ai template credit strip */
+.credit{background:#08131f;border-top:1px solid var(--line-d2)}
+.credit .wrap{display:flex;justify-content:center;align-items:center;gap:10px;padding:16px 40px;font-size:12.5px;color:var(--steel-d);letter-spacing:.03em}
+.credit .dot{width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.credit a{color:var(--gold);font-weight:600}
+
+/* ---------- scroll reveal ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+
+/* ---------- mobile menu ---------- */
+.mobile-menu{
+  position:fixed;inset:0;z-index:99;background:var(--navy);
+  display:flex;flex-direction:column;justify-content:center;gap:8px;padding:40px;
+  transform:translateX(100%);transition:transform .5s var(--ease);
+}
+.mobile-menu.open{transform:none}
+.mobile-menu a{font-family:'Spectral',serif;font-size:30px;color:var(--paper);padding:12px 0;border-bottom:1px solid var(--line-d2)}
+.mobile-menu a:last-child{border:0;color:var(--gold-bright)}
+
+/* ---------- responsive ---------- */
+@media(max-width:980px){
+  .wrap{padding:0 24px}
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .hero-art{max-width:520px}
+  .stats-row{grid-template-columns:1fr 1fr;gap:0}
+  .stat{border-left:0;border-top:1px solid var(--line-d);padding:26px 22px}
+  .stat:first-child{padding-left:22px}
+  .stat:nth-child(2){border-left:1px solid var(--line-d)}
+  .stat:nth-child(4){border-left:1px solid var(--line-d)}
+  .tab-panel.active{grid-template-columns:1fr;gap:36px}
+  .leaders{grid-template-columns:1fr;max-width:440px;margin:0 auto}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:36px}
+  nav.main,.nav-cta{display:none}
+  .burger{display:flex}
+}
+@media(max-width:560px){
+  .pad{padding:84px 0}
+  .news-item{grid-template-columns:1fr;gap:8px}
+  .news-item .arrow{display:none}
+  .foot-grid{grid-template-columns:1fr}
+  .credit .wrap{flex-wrap:wrap;text-align:center}
+  .hero{padding:140px 0 80px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="hdr">
+  <div class="wrap bar">
+    <a href="#top" class="brand" aria-label="鼎宸精密">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="36" height="36" rx="2" stroke="#c8a45c" stroke-width="1.5"/>
+        <path d="M11 28V12h7c4 0 7 3 7 8s-3 8-7 8h-7Z" stroke="#c8a45c" stroke-width="2"/>
+        <path d="M27 12v16" stroke="#e0c483" stroke-width="2"/>
+        <circle cx="31" cy="13" r="1.6" fill="#e0c483"/>
+      </svg>
+      <span>
+        <span class="name">鼎宸精密</span>
+        <span class="sub">HONGCHEN PRECISION</span>
+      </span>
+    </a>
+    <nav class="main">
+      <a href="#about">關於我們</a>
+      <a href="#solutions">解決方案</a>
+      <a href="#history">公司沿革</a>
+      <a href="#leaders">經營團隊</a>
+      <a href="#news">最新消息</a>
+      <a href="#contact" class="nav-cta">聯繫我們</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="選單"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mmenu">
+  <a href="#about">關於我們</a>
+  <a href="#solutions">解決方案</a>
+  <a href="#history">公司沿革</a>
+  <a href="#leaders">經營團隊</a>
+  <a href="#news">最新消息</a>
+  <a href="#contact">聯繫我們</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow on-dark">精密金屬製造 · 自 1986</span>
+        <h1>以毫米級的精度，<br><em>承載</em>世界級的信任。</h1>
+        <p class="lead">鼎宸精密深耕航太、半導體與醫療領域的關鍵金屬零組件製造。三十九年來，我們以一致的品質、可追溯的供應鏈，與全球領導品牌共同打造每一個關鍵環節。</p>
+        <div class="hero-actions">
+          <a href="#solutions" class="btn btn-gold">探索解決方案
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-ghost">索取產能簡介</a>
+        </div>
+      </div>
+      <!-- facility / capability illustration -->
+      <div class="hero-art reveal">
+        <span class="tag">全球營運網絡</span>
+        <svg viewBox="0 0 420 280" role="img" aria-label="全球據點分布示意圖">
+          <defs>
+            <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#15304a"/><stop offset="1" stop-color="#0c1a2b"/>
+            </linearGradient>
+          </defs>
+          <rect width="420" height="280" rx="2" fill="url(#seaG)"/>
+          <!-- abstract continents -->
+          <g fill="rgba(125,138,153,.18)" stroke="rgba(200,164,92,.25)" stroke-width=".7">
+            <path d="M40 90c20-14 60-18 86-8 18 7 14 28 2 40-16 16-50 22-72 12-18-8-22-32-16-44Z"/>
+            <path d="M150 130c14-20 50-26 78-14 22 9 20 34 4 48-18 16-54 16-74 2-14-10-16-26-8-36Z"/>
+            <path d="M250 70c24-10 58-6 78 10 14 11 8 30-6 38-22 12-54 8-72-6-14-11-12-34 0-42Z"/>
+            <path d="M300 150c16-8 40-4 52 8 9 9 4 24-8 30-16 8-38 4-48-8-8-9-6-24 4-30Z"/>
+          </g>
+          <!-- HQ + node arcs -->
+          <g stroke="#c8a45c" stroke-width="1.1" fill="none" opacity=".7">
+            <path d="M95 110 C150 40 230 50 290 96" stroke-dasharray="3 4"/>
+            <path d="M95 110 C160 150 250 170 320 168" stroke-dasharray="3 4"/>
+          </g>
+          <g>
+            <circle cx="95" cy="110" r="6" fill="#e0c483"/><circle cx="95" cy="110" r="11" fill="none" stroke="#e0c483" stroke-width="1" opacity=".5"/>
+            <circle cx="290" cy="96" r="4.5" fill="#c8a45c"/>
+            <circle cx="320" cy="168" r="4.5" fill="#c8a45c"/>
+          </g>
+          <text x="95" y="134" fill="#e0c483" font-family="Libre Franklin" font-size="10" font-weight="600" text-anchor="middle">台灣 · 總部</text>
+          <text x="290" y="84" fill="#7d8a99" font-family="Libre Franklin" font-size="9.5" text-anchor="middle">德國廠</text>
+          <text x="320" y="186" fill="#7d8a99" font-family="Libre Franklin" font-size="9.5" text-anchor="middle">美國廠</text>
+        </svg>
+        <div class="cap"><span>3 大製造據點 · 11 國服務</span><span>ISO 9001 / AS9100D</span></div>
+      </div>
+    </div>
+
+    <!-- trust strip -->
+    <div class="trust reveal">
+      <div class="lbl">受全球領導品牌信賴</div>
+      <div class="logos">
+        <span class="lg"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v10M7 9.5v5M17 9.5v5" stroke="currentColor" stroke-width="1.5"/></svg>AeroNexus</span>
+        <span class="lg"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3.4" stroke="currentColor" stroke-width="1.5"/></svg>Siltron</span>
+        <span class="lg"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.5"/></svg>Medvantis</span>
+        <span class="lg"><svg viewBox="0 0 24 24" fill="none"><path d="M4 18 10 6l4 8 2-4 4 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Kraftwerk</span>
+        <span class="lg"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M4 7l8 4 8-4M4 17l8-4 8 4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>OrbitalGT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats pad" id="about">
+  <div class="grid-bg"></div>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow on-dark">關於鼎宸</span>
+      <h2 style="color:var(--paper)">數字，是我們最沉穩的承諾。</h2>
+      <p>從一座桃園的小型加工廠，到橫跨三洲的精密製造夥伴——鼎宸的每一項數據，都來自日復一日的工藝累積與品質堅持。</p>
+    </div>
+    <div class="stats-row reveal" id="statsRow">
+      <div class="stat">
+        <div class="num"><span class="cnt" data-to="1986" data-raw="1">1986</span></div>
+        <div class="lbl">創立年份 · 39 年深耕</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span class="cnt" data-to="2400">0</span><span class="suf">+ 家</span></div>
+        <div class="lbl">全球合作客戶</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span class="cnt" data-to="3">0</span><span class="suf"> 洲</span></div>
+        <div class="lbl">製造與服務據點</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span class="cnt" data-to="2150" data-fmt="m">0</span><span class="suf">萬件</span></div>
+        <div class="lbl">年出貨量 · 良率 99.7%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOLUTIONS (tabs) ============ -->
+<section class="pad" id="solutions">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">解決方案</span>
+      <h2>為每一個關鍵產業，量身打造的精密整合。</h2>
+      <p>從設計協作、原型試製到量產交付，鼎宸提供端到端的金屬製造解決方案，對應各產業最嚴苛的規格要求。</p>
+    </div>
+
+    <div class="tabs-nav reveal" role="tablist">
+      <button class="tab-btn active" data-tab="aero" role="tab"><span class="n">01</span>航太結構件</button>
+      <button class="tab-btn" data-tab="semi" role="tab"><span class="n">02</span>半導體零組件</button>
+      <button class="tab-btn" data-tab="med" role="tab"><span class="n">03</span>醫療精密件</button>
+      <button class="tab-btn" data-tab="energy" role="tab"><span class="n">04</span>綠能與儲能</button>
+    </div>
+
+    <div class="tab-panel active" data-panel="aero">
+      <div class="reveal">
+        <h3>航太結構件 —<br>每一克重量，都經得起天空的考驗。</h3>
+        <p class="pl">針對鈦合金與鋁合金結構件，提供五軸 CNC 精密加工與全程序可追溯品保，符合 AS9100D 與 NADCAP 製程認證。</p>
+        <ul class="feat-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>五軸同動 CNC，公差控制達 ±5μm</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>鈦/鋁/Inconel 高強度材料專精</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>每件附完整 FAIR 首件檢驗報告</li>
+        </ul>
+      </div>
+      <div class="panel-art reveal d1">
+        <svg viewBox="0 0 380 220" role="img" aria-label="航太結構件示意">
+          <rect width="380" height="220" rx="2" fill="#0f2236"/>
+          <g stroke="#c8a45c" stroke-width="1.3" fill="none">
+            <path d="M60 160 L190 50 L320 160 Z" opacity=".55"/>
+            <path d="M100 160 L190 90 L280 160" opacity=".8"/>
+            <path d="M190 50 V160" stroke-dasharray="4 4" opacity=".5"/>
+          </g>
+          <circle cx="190" cy="90" r="5" fill="#e0c483"/>
+          <text x="190" y="200" fill="#7d8a99" font-family="Libre Franklin" font-size="11" text-anchor="middle">五軸加工 · 鈦合金翼肋結構</text>
+        </svg>
+        <div class="panel-stat">
+          <div class="ps"><div class="v">±5μm</div><div class="k">加工公差</div></div>
+          <div class="ps"><div class="v">NADCAP</div><div class="k">製程認證</div></div>
+          <div class="ps"><div class="v">100%</div><div class="k">可追溯性</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="semi">
+      <div class="reveal">
+        <h3>半導體零組件 —<br>在奈米的世界，潔淨即是品質。</h3>
+        <p class="pl">提供真空腔體、氣體輸送與晶圓承載相關精密金屬件，全程於 Class 1000 無塵環境組裝，滿足先進製程的潔淨度要求。</p>
+        <ul class="feat-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>電解拋光表面，粗糙度 Ra ≤ 0.2μm</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Class 1000 無塵室組裝與包裝</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>氦氣檢漏，氣密性達 10⁻⁹ mbar·L/s</li>
+        </ul>
+      </div>
+      <div class="panel-art reveal d1">
+        <svg viewBox="0 0 380 220" role="img" aria-label="半導體腔體示意">
+          <rect width="380" height="220" rx="2" fill="#0f2236"/>
+          <g stroke="#c8a45c" stroke-width="1.2" fill="none">
+            <circle cx="190" cy="110" r="70" opacity=".5"/>
+            <circle cx="190" cy="110" r="46" opacity=".8"/>
+            <circle cx="190" cy="110" r="22" stroke="#e0c483"/>
+            <path d="M190 18v24M190 178v24M82 110h24M274 110h24" />
+          </g>
+          <circle cx="190" cy="110" r="6" fill="#e0c483"/>
+          <text x="190" y="208" fill="#7d8a99" font-family="Libre Franklin" font-size="11" text-anchor="middle">真空製程腔體 · 電解拋光</text>
+        </svg>
+        <div class="panel-stat">
+          <div class="ps"><div class="v">Ra 0.2</div><div class="k">表面粗糙度</div></div>
+          <div class="ps"><div class="v">Class 1K</div><div class="k">無塵組裝</div></div>
+          <div class="ps"><div class="v">10⁻⁹</div><div class="k">氣密等級</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="med">
+      <div class="reveal">
+        <h3>醫療精密件 —<br>關乎生命的零件，零容錯。</h3>
+        <p class="pl">骨科植入物、手術器械與微創導管零件之精密製造，符合 ISO 13485 醫材品質系統與生物相容性驗證。</p>
+        <ul class="feat-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>ISO 13485 醫療器材品質系統</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>醫療級鈦與不鏽鋼，生物相容驗證</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>UDI 單件序號追溯，批次完整存檔</li>
+        </ul>
+      </div>
+      <div class="panel-art reveal d1">
+        <svg viewBox="0 0 380 220" role="img" aria-label="醫療精密件示意">
+          <rect width="380" height="220" rx="2" fill="#0f2236"/>
+          <g stroke="#c8a45c" stroke-width="1.3" fill="none">
+            <path d="M120 60 q70 -20 140 0 q-30 60 -70 100 q-40 -40 -70 -100Z" opacity=".55"/>
+            <path d="M155 78 h70 M150 102 h80 M158 126 h64" stroke="#e0c483" opacity=".8"/>
+          </g>
+          <text x="190" y="200" fill="#7d8a99" font-family="Libre Franklin" font-size="11" text-anchor="middle">骨科植入物 · 醫療級鈦合金</text>
+        </svg>
+        <div class="panel-stat">
+          <div class="ps"><div class="v">ISO 13485</div><div class="k">醫材認證</div></div>
+          <div class="ps"><div class="v">UDI</div><div class="k">單件追溯</div></div>
+          <div class="ps"><div class="v">Ti-6Al-4V</div><div class="k">醫療級材料</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="energy">
+      <div class="reveal">
+        <h3>綠能與儲能 —<br>為下一個世代，鍛造可靠的能源骨架。</h3>
+        <p class="pl">風力發電結構件、電池模組殼體與氫能設備關鍵金屬件，協助客戶在能源轉型中加速量產與降本。</p>
+        <ul class="feat-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>大型結構件焊接與表面防蝕處理</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>電池殼體輕量化設計與量產</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>碳足跡盤查，符合 CBAM 申報需求</li>
+        </ul>
+      </div>
+      <div class="panel-art reveal d1">
+        <svg viewBox="0 0 380 220" role="img" aria-label="綠能儲能示意">
+          <rect width="380" height="220" rx="2" fill="#0f2236"/>
+          <g stroke="#c8a45c" stroke-width="1.3" fill="none">
+            <path d="M190 130 V60" />
+            <g stroke="#e0c483"><path d="M190 60 l34 -18M190 60 l-34 -18M190 60 l0 -38"/></g>
+            <circle cx="190" cy="60" r="5" fill="#e0c483"/>
+            <rect x="150" y="130" width="80" height="50" rx="3" opacity=".7"/>
+            <path d="M165 130v50M180 130v50M200 130v50M215 130v50" opacity=".5"/>
+          </g>
+          <text x="190" y="206" fill="#7d8a99" font-family="Libre Franklin" font-size="11" text-anchor="middle">風電結構件 · 儲能模組殼體</text>
+        </svg>
+        <div class="panel-stat">
+          <div class="ps"><div class="v">CBAM</div><div class="k">碳足跡盤查</div></div>
+          <div class="ps"><div class="v">-32%</div><div class="k">輕量化成效</div></div>
+          <div class="ps"><div class="v">25 yr</div><div class="k">防蝕壽命</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section class="dark pad" id="history">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow on-dark center">公司沿革</span>
+      <h2>三十九年，一條未曾鬆懈的精度曲線。</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-year">1986</div>
+        <h3>桃園起家</h3>
+        <p>創辦人林鼎宸於桃園龜山設立第一座 CNC 加工廠，以五台車床承接工具機零件代工，奠定精密加工根基。</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">1998</div>
+        <h3>取得 ISO 9001，跨入航太供應鏈</h3>
+        <p>導入品質管理系統並通過國際航太大廠合格供應商稽核，正式成為一階結構件供應商。</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2009</div>
+        <h3>設立德國服務中心</h3>
+        <p>於斯圖加特設立歐洲營運據點，貼近航太與汽車客戶，提供在地化技術支援與快速試製。</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2016</div>
+        <h3>進軍半導體與醫療精密件</h3>
+        <p>建置 Class 1000 無塵廠房並取得 ISO 13485，跨足半導體腔體與醫療植入物製造。</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2021</div>
+        <h3>美國廠落成 · 智慧製造轉型</h3>
+        <p>於亞利桑那設立北美製造基地，並導入數位孿生與 MES 系統，實現生產全程可視化。</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2025</div>
+        <h3>淨零路徑啟動</h3>
+        <p>發布 2040 碳中和路徑圖，三大據點導入再生能源，並通過 CBAM 碳足跡盤查與第三方驗證。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEADERSHIP ============ -->
+<section class="pad" id="leaders">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">經營團隊</span>
+      <h2>引領鼎宸的，是專注與遠見。</h2>
+      <p>跨越工程、營運與永續的領導陣容，將工藝堅持與全球視野，轉化為長期穩健的成長。</p>
+    </div>
+    <div class="leaders">
+      <div class="leader reveal">
+        <div class="ph"><svg viewBox="0 0 300 230" preserveAspectRatio="xMidYMid slice"><rect width="300" height="230" fill="#15304a"/><circle cx="150" cy="92" r="46" fill="#1d3d5c"/><path d="M70 230c0-46 36-72 80-72s80 26 80 72Z" fill="#1d3d5c"/><circle cx="150" cy="92" r="46" fill="none" stroke="#c8a45c" stroke-width="1.4" opacity=".7"/></svg></div>
+        <div class="body">
+          <div class="nm">林宥辰</div>
+          <div class="ro">董事長暨執行長</div>
+          <p class="bio">創辦人之子，麻省理工機械工程碩士。2015 年接班後推動數位轉型與全球佈局，主張「品質是企業的良心」。</p>
+        </div>
+      </div>
+      <div class="leader reveal d1">
+        <div class="ph"><svg viewBox="0 0 300 230" preserveAspectRatio="xMidYMid slice"><rect width="300" height="230" fill="#15304a"/><circle cx="150" cy="92" r="46" fill="#1d3d5c"/><path d="M70 230c0-46 36-72 80-72s80 26 80 72Z" fill="#1d3d5c"/><circle cx="150" cy="92" r="46" fill="none" stroke="#c8a45c" stroke-width="1.4" opacity=".7"/></svg></div>
+        <div class="body">
+          <div class="nm">陳慧珊</div>
+          <div class="ro">營運長 COO</div>
+          <p class="bio">深耕精密製造營運二十餘年，主導三廠生產整合與供應鏈韌性策略，將整體交期準確率提升至 98.6%。</p>
+        </div>
+      </div>
+      <div class="leader reveal d2">
+        <div class="ph"><svg viewBox="0 0 300 230" preserveAspectRatio="xMidYMid slice"><rect width="300" height="230" fill="#15304a"/><circle cx="150" cy="92" r="46" fill="#1d3d5c"/><path d="M70 230c0-46 36-72 80-72s80 26 80 72Z" fill="#1d3d5c"/><circle cx="150" cy="92" r="46" fill="none" stroke="#c8a45c" stroke-width="1.4" opacity=".7"/></svg></div>
+        <div class="body">
+          <div class="nm">Daniel Vogt</div>
+          <div class="ro">技術長 CTO</div>
+          <p class="bio">前歐洲航太集團研發主管，專精材料工程與增材製造，帶領鼎宸建立五軸與金屬 3D 列印的技術護城河。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWS (filterable) ============ -->
+<section class="dark pad" id="news" style="background:var(--navy-2)">
+  <div class="wrap">
+    <div class="news-head reveal">
+      <div>
+        <span class="eyebrow on-dark">最新消息</span>
+        <h2 class="serif" style="font-size:clamp(28px,3.4vw,42px);color:var(--paper);margin-top:16px">投資人與企業動態</h2>
+      </div>
+      <div class="filters" id="filters">
+        <button class="fchip active" data-cat="all">全部</button>
+        <button class="fchip" data-cat="ir">投資人關係</button>
+        <button class="fchip" data-cat="biz">營運訊息</button>
+        <button class="fchip" data-cat="esg">永續 ESG</button>
+      </div>
+    </div>
+    <div class="news-list" id="newsList">
+      <a class="news-item" data-cat="ir">
+        <span class="date">2026.05.14</span>
+        <span><span class="cat">投資人關係</span><span class="ttl">鼎宸精密公布 2026 第一季財報，營收年增 18.4%</span></span>
+        <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="news-item" data-cat="biz">
+        <span class="date">2026.04.02</span>
+        <span><span class="cat">營運訊息</span><span class="ttl">美國亞利桑那廠第二期擴建動工，年產能將再增 35%</span></span>
+        <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="news-item" data-cat="esg">
+        <span class="date">2026.03.20</span>
+        <span><span class="cat">永續 ESG</span><span class="ttl">通過 SBTi 科學基礎減量目標審查，承諾 2040 達成碳中和</span></span>
+        <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="news-item" data-cat="biz">
+        <span class="date">2026.02.11</span>
+        <span><span class="cat">營運訊息</span><span class="ttl">與半導體大廠 Siltron 簽署三年長約，深化先進製程合作</span></span>
+        <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="news-item" data-cat="ir">
+        <span class="date">2026.01.08</span>
+        <span><span class="cat">投資人關係</span><span class="ttl">董事會通過 2025 年度股利政策，配發現金股利每股 6.2 元</span></span>
+        <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="news-item" data-cat="esg">
+        <span class="date">2025.12.03</span>
+        <span><span class="cat">永續 ESG</span><span class="ttl">榮獲台灣企業永續獎「製造業白金級」肯定</span></span>
+        <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ / accordion ============ -->
+<section class="dark pad" id="faq">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow on-dark center">投資人 · 法遵常見問題</span>
+      <h2 style="color:var(--paper)">關於治理與合作，您可能想了解</h2>
+    </div>
+    <div class="acc" id="acc">
+      <div class="acc-item open">
+        <button class="acc-q">鼎宸精密的公司治理架構為何？<span class="ic"></span></button>
+        <div class="acc-a"><p>本公司設有獨立董事過半之董事會，下轄審計委員會與薪酬委員會，並設置永續發展委員會。所有重大決策皆依公司治理守則及內部控制制度執行，並定期揭露於公開資訊觀測站。</p></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-q">如何成為鼎宸的合格供應商？<span class="ic"></span></button>
+        <div class="acc-a"><p>供應商須通過本公司之品質系統稽核（含 ISO 9001 / IATF 16949 文件審查）、樣品試做與現場製程評鑑三階段。完整流程約六至八週，歡迎透過「聯繫我們」提交供應商資料表。</p></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-q">貴公司的資訊安全與營業秘密保護措施？<span class="ic"></span></button>
+        <div class="acc-a"><p>鼎宸通過 ISO 27001 資訊安全管理系統認證，採取分層存取控管、圖檔加密與供應鏈保密協議（NDA）。涉及客戶機敏設計之專案，皆於獨立隔離網段執行並全程稽核紀錄。</p></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-q">鼎宸的永續與淨零承諾如何落實？<span class="ic"></span></button>
+        <div class="acc-a"><p>我們已通過 SBTi 科學基礎減量目標審查，承諾於 2040 年達成營運碳中和。三大據點逐步導入再生能源並完成 CBAM 碳足跡盤查，相關進度詳載於年度永續報告書。</p></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-q">最小起訂量與交期如何安排？<span class="ic"></span></button>
+        <div class="acc-a"><p>視產品複雜度與材料而定，原型試製不設最小量；量產專案則依年需求量規劃排程。一般標準件交期為 4–6 週，急單可透過專屬窗口協調快速通道。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta pad" id="contact">
+  <div class="glow"></div>
+  <div class="wrap">
+    <span class="eyebrow on-dark center reveal">開啟合作</span>
+    <h2 class="reveal">讓我們一起，把您的關鍵零件<br>做到無可取代。</h2>
+    <p class="reveal">無論是新專案的可行性評估、產能洽詢，或供應商合作——鼎宸的工程團隊樂於與您深入討論。</p>
+    <div class="hero-actions reveal" style="justify-content:center">
+      <a href="#top" class="btn btn-gold">預約技術洽談
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#top" class="btn btn-ghost">下載企業簡介 PDF</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="brand">
+          <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x="2" y="2" width="36" height="36" rx="2" stroke="#c8a45c" stroke-width="1.5"/>
+            <path d="M11 28V12h7c4 0 7 3 7 8s-3 8-7 8h-7Z" stroke="#c8a45c" stroke-width="2"/>
+            <path d="M27 12v16" stroke="#e0c483" stroke-width="2"/>
+          </svg>
+          <span><span class="name">鼎宸精密</span><span class="sub">HONGCHEN PRECISION</span></span>
+        </a>
+        <p class="foot-about">鼎宸精密工業股份有限公司｜以毫米級精度，承載世界級信任。深耕航太、半導體與醫療精密金屬製造，三大據點服務全球客戶。</p>
+      </div>
+      <div class="foot-col">
+        <h4>公司</h4>
+        <a href="#about">關於我們</a>
+        <a href="#history">公司沿革</a>
+        <a href="#leaders">經營團隊</a>
+        <a href="#news">最新消息</a>
+      </div>
+      <div class="foot-col">
+        <h4>解決方案</h4>
+        <a href="#solutions">航太結構件</a>
+        <a href="#solutions">半導體零組件</a>
+        <a href="#solutions">醫療精密件</a>
+        <a href="#solutions">綠能與儲能</a>
+      </div>
+      <div class="foot-col">
+        <h4>聯繫</h4>
+        <a href="#contact">桃園市龜山區工業一路 168 號</a>
+        <a href="#contact">+886 3 350 0000</a>
+        <a href="#contact">contact@hongchen.example</a>
+        <a href="#faq">投資人關係</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 鼎宸精密工業股份有限公司 HONGCHEN PRECISION. 統一編號 12345678．保留一切權利。</span>
+      <span>隱私權政策 · 法律聲明 · ISO 9001 / AS9100D / ISO 13485</span>
+    </div>
+  </div>
+  <!-- e-life-ai template credit -->
+  <div class="credit">
+    <div class="wrap">
+      <span>Template by</span>
+      <span class="dot"></span>
+      <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai · service.e-life-ai.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ----- sticky header condense -----
+  var hdr=document.getElementById('hdr');
+  function onScroll(){ hdr.classList.toggle('scrolled', window.scrollY>40); }
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+
+  // ----- mobile menu -----
+  var burger=document.getElementById('burger'), mmenu=document.getElementById('mmenu');
+  burger.addEventListener('click',function(){ mmenu.classList.toggle('open'); });
+  mmenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ mmenu.classList.remove('open'); }); });
+
+  // ----- scroll reveal -----
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.16,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // ----- animated stat counters -----
+  function easeOut(t){ return 1-Math.pow(1-t,3); }
+  function animateCount(el){
+    var to=parseFloat(el.getAttribute('data-to'));
+    var raw=el.getAttribute('data-raw'); // 1 = plain integer (e.g. year, no grouping)
+    var dur=1700, start=null;
+    function tick(ts){
+      if(!start) start=ts;
+      var p=Math.min((ts-start)/dur,1), val=Math.round(to*easeOut(p));
+      el.textContent = raw ? String(val) : val.toLocaleString('en-US');
+      if(p<1) requestAnimationFrame(tick);
+      else el.textContent = raw ? String(to) : to.toLocaleString('en-US');
+    }
+    requestAnimationFrame(tick);
+  }
+  var statsRow=document.getElementById('statsRow'), counted=false;
+  var sio=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !counted){
+        counted=true;
+        document.querySelectorAll('.cnt').forEach(animateCount);
+        sio.disconnect();
+      }
+    });
+  },{threshold:.4});
+  if(statsRow) sio.observe(statsRow);
+
+  // ----- solutions tabs -----
+  var tabBtns=document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var key=btn.getAttribute('data-tab');
+      tabBtns.forEach(function(b){ b.classList.toggle('active', b===btn); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){
+        var on = p.getAttribute('data-panel')===key;
+        p.classList.toggle('active', on);
+        if(on) p.querySelectorAll('.reveal').forEach(function(r){ r.classList.add('in'); });
+      });
+    });
+  });
+
+  // ----- news filter -----
+  var fchips=document.querySelectorAll('.fchip'), newsItems=document.querySelectorAll('#newsList .news-item');
+  fchips.forEach(function(chip){
+    chip.addEventListener('click',function(){
+      var cat=chip.getAttribute('data-cat');
+      fchips.forEach(function(c){ c.classList.toggle('active', c===chip); });
+      newsItems.forEach(function(it){
+        it.classList.toggle('hide', !(cat==='all' || it.getAttribute('data-cat')===cat));
+      });
+    });
+  });
+
+  // ----- FAQ accordion -----
+  document.querySelectorAll('.acc-item').forEach(function(item){
+    var q=item.querySelector('.acc-q'), a=item.querySelector('.acc-a');
+    function setOpen(open){
+      item.classList.toggle('open',open);
+      a.style.maxHeight = open ? a.scrollHeight+'px' : '0px';
+    }
+    setOpen(item.classList.contains('open'));
+    q.addEventListener('click',function(){
+      var willOpen=!item.classList.contains('open');
+      document.querySelectorAll('.acc-item').forEach(function(o){
+        if(o!==item){ o.classList.remove('open'); o.querySelector('.acc-a').style.maxHeight='0px'; }
+      });
+      setOpen(willOpen);
+    });
+  });
+  window.addEventListener('resize',function(){
+    var open=document.querySelector('.acc-item.open .acc-a');
+    if(open) open.style.maxHeight=open.scrollHeight+'px';
+  });
+})();
+</script>
+</body>
+</html>
