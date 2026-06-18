@@ -22,6 +22,7 @@ useReveal('root', { stagger: 110 })
           v-for="s in services"
           :key="s.id"
           class="card reveal"
+          :class="{ bonus: s.bonus }"
           data-reveal
         >
           <div class="card-top">
@@ -83,6 +84,20 @@ useReveal('root', { stagger: 110 })
 .card:hover .arrow {
   color: var(--accent);
   transform: translate(3px, -3px);
+}
+
+/* bonus = value-add service: spans the full row, set apart from the 4 core cards */
+.bonus {
+  grid-column: 1 / -1;
+  border-color: var(--accent-line);
+  background:
+    radial-gradient(600px 240px at 100% 0%, var(--accent-soft), transparent 70%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
+.bonus .num {
+  padding: 2px 9px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
 }
 
 .card-top {

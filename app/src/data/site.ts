@@ -10,6 +10,7 @@ export interface Service {
   summary: string
   bullets: string[]
   stack: string[]
+  bonus?: boolean // value-add service, rendered as a full-width highlighted card
 }
 
 export interface CaseStudy {
@@ -100,8 +101,9 @@ export const services: Service[] = [
   },
   {
     id: 'cost',
-    index: '05',
+    index: 'BONUS',
     title: '維運成本最佳化',
+    bonus: true,
     summary: '無論硬體或軟體，用最小的花費撐起長期穩定運作，讓系統上線後養得起、跑得久。',
     bullets: [
       '架構選型直接砍掉冗餘雲端帳單，善用免費額度與自架資源',
@@ -212,7 +214,7 @@ export const steps: Step[] = [
   {
     no: '03',
     title: '迭代交付',
-    desc: '小步快跑、每個里程碑可驗收。新功能附測試，bug 先補回歸測試再修。',
+    desc: '小步快跑、每個里程碑可驗收。每次迭代都附完整測試覆蓋舊有場景，即便日後換人接手，也不會改 A 壞 B。',
   },
   {
     no: '04',
@@ -277,7 +279,7 @@ export const contacts: Contact[] = [
 
 export const stats = [
   { value: '20+', label: '生產級專案上線' },
-  { value: '40–60%', label: 'AI 客服回應加速' },
+  { value: '60%+', label: 'AI 客服回應加速' },
   { value: '99.7%', label: '資料抽取準確率' },
   { value: '7×24', label: '穩定維運不斷線' },
 ]

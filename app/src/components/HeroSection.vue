@@ -179,6 +179,7 @@ function go(href: string) {
   font-size: clamp(1.4rem, 2.6vw, 2rem);
   color: var(--ink-0);
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 .stat-l {
   display: block;
