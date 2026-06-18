@@ -46,6 +46,16 @@ export interface Contact {
   href: string
 }
 
+export interface ShowcaseItem {
+  id: string
+  number: string // display number, e.g. "61"
+  title: string
+  slug: string // NN-slug path segment
+  desc: string
+  tags: string[]
+  href: string // relative demo path, works on the deployed domain
+}
+
 export const services: Service[] = [
   {
     id: 'ai',
@@ -278,6 +288,158 @@ export const contacts: Contact[] = [
     href: 'https://github.com/coseto6125',
   },
 ]
+
+// Standalone, interactive design-demo templates deployed under /showcase/.
+// Each entry links to a self-contained page; href is relative so it resolves
+// on the deployed domain (service.e-life-ai.com/showcase/{slug}/).
+const showcaseRaw: Omit<ShowcaseItem, 'id' | 'href'>[] = [
+  {
+    number: '61',
+    slug: '61-futuristic-ai-lab',
+    title: '未來主義 AI 實驗室',
+    desc: '深空 sci-fi 介面、終端機與即時數據儀表。',
+    tags: ['sci-fi', '深色', '數據視覺化'],
+  },
+  {
+    number: '62',
+    slug: '62-luxury-jewelry',
+    title: '奢華精品珠寶',
+    desc: '高級珠寶精品店、訂製配置器與預約。',
+    tags: ['精品', '電商', '優雅'],
+  },
+  {
+    number: '63',
+    slug: '63-japanese-editorial',
+    title: '日系極簡雜誌',
+    desc: '和紙留白、直書與明朝體文化季刊。',
+    tags: ['編輯', '極簡', '日系'],
+  },
+  {
+    number: '64',
+    slug: '64-brutalist-portfolio',
+    title: '野獸派作品集',
+    desc: '原始高對比、超大字與硬邊框。',
+    tags: ['野獸派', '創意', '大膽'],
+  },
+  {
+    number: '65',
+    slug: '65-retro-arcade',
+    title: '復古街機遊戲',
+    desc: '80/90s CRT、可玩小遊戲與點陣風。',
+    tags: ['復古', '遊戲', '互動'],
+  },
+  {
+    number: '66',
+    slug: '66-organic-eco',
+    title: '有機自然永續',
+    desc: '苔綠有機形狀、產品配方與環境影響。',
+    tags: ['永續', '品牌', '自然'],
+  },
+  {
+    number: '67',
+    slug: '67-fintech-dashboard',
+    title: '金融科技儀表板',
+    desc: '深色 fintech、SVG 圖表與轉帳流程。',
+    tags: ['金融', '儀表板', 'SaaS'],
+  },
+  {
+    number: '68',
+    slug: '68-specialty-coffee',
+    title: '精品咖啡烘焙',
+    desc: '牛皮紙質感、沖煮指南與訂閱。',
+    tags: ['餐飲', '品牌', '電商'],
+  },
+  {
+    number: '69',
+    slug: '69-startup-saas',
+    title: '新創 SaaS 著陸頁',
+    desc: 'aurora 漸層、產品 mockup 與定價。',
+    tags: ['SaaS', '著陸頁', '產品'],
+  },
+  {
+    number: '70',
+    slug: '70-immersive-travel',
+    title: '沉浸式旅遊行程',
+    desc: '電影感 SVG 風景、視差與行程估價。',
+    tags: ['旅遊', '視差', '沉浸'],
+  },
+  {
+    number: '71',
+    slug: '71-fitness-energetic',
+    title: '健身運動高能',
+    desc: '電光色高能、課表與訓練計畫。',
+    tags: ['健身', '高能', '動態'],
+  },
+  {
+    number: '72',
+    slug: '72-fashion-ecommerce',
+    title: '時尚電商品牌',
+    desc: 'editorial 時尚店、購物車與快速檢視。',
+    tags: ['時尚', '電商', 'editorial'],
+  },
+  {
+    number: '73',
+    slug: '73-medical-clinic',
+    title: '醫療診所信賴',
+    desc: '沉穩 teal、四步預約掛號流程。',
+    tags: ['醫療', '信賴', '預約'],
+  },
+  {
+    number: '74',
+    slug: '74-music-festival',
+    title: '音樂節活動',
+    desc: '霓虹海報、倒數計時與卡司票券。',
+    tags: ['活動', '霓虹', '倒數'],
+  },
+  {
+    number: '75',
+    slug: '75-architecture-studio',
+    title: '建築工作室',
+    desc: 'Swiss 精準、SVG 建築線稿索引。',
+    tags: ['建築', '極簡', '作品集'],
+  },
+  {
+    number: '76',
+    slug: '76-edtech-platform',
+    title: '教育課程平台',
+    desc: '友善明亮、互動課綱與測驗。',
+    tags: ['教育', '互動', '平台'],
+  },
+  {
+    number: '77',
+    slug: '77-web3-cyberpunk',
+    title: 'Web3 賽博龐克',
+    desc: 'glitch 故障、連接錢包與 NFT 鑄造。',
+    tags: ['web3', '賽博龐克', 'glitch'],
+  },
+  {
+    number: '78',
+    slug: '78-artisan-craft',
+    title: '手作工藝品牌',
+    desc: '侘寂手作、客製配置與製程故事。',
+    tags: ['工藝', '品牌', '溫暖'],
+  },
+  {
+    number: '79',
+    slug: '79-news-editorial',
+    title: '新聞編輯媒體',
+    desc: '多欄報刊、突發 ticker 與即時 feed。',
+    tags: ['新聞', '編輯', '資訊密集'],
+  },
+  {
+    number: '80',
+    slug: '80-personal-kol',
+    title: '個人 KOL 品牌',
+    desc: 'sunset 創作者中心、社群數據與合作。',
+    tags: ['創作者', '個人品牌', '社群'],
+  },
+]
+
+export const showcase: ShowcaseItem[] = showcaseRaw.map((s) => ({
+  ...s,
+  id: s.slug,
+  href: `/showcase/${s.slug}/`,
+}))
 
 export const stats = [
   { value: '20+', label: '生產級專案上線' },
