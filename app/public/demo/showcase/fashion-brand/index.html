@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VÉRITÉ ATELIER — 2026 春夏系列「靜默」｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="VÉRITÉ ATELIER｜台灣設計師服飾。2026 春夏系列「靜默 Le Silence」，以東方留白遇見巴黎極簡剪裁。瀏覽橫向 lookbook、切換單品色系、加入購物袋。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+TC:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121110;        /* 墨黑 主色 */
+    --ink-soft:#2a2825;   /* 次深 */
+    --bone:#EDEAE3;       /* 冷骨白 底 */
+    --bone-d:#E3DFD6;     /* 骨白偏深 */
+    --ash:#9A968D;        /* 灰褐 中性文字 */
+    --accent:#6B5E4E;     /* 唯一 muted accent：泥褐 */
+    --line:rgba(18,17,16,.16);
+    --line-strong:rgba(18,17,16,.5);
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --ease-io:cubic-bezier(.83,0,.17,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  }
+  body{
+    font-family:"Noto Serif TC","Bodoni Moda",serif;
+    color:var(--ink);
+    background:var(--bone);
+    line-height:1.7;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .display{font-family:"Bodoni Moda",serif;font-weight:400;letter-spacing:.005em}
+  .util{font-family:"Archivo",sans-serif;font-weight:400}
+  .mono-label{font-family:"Archivo",sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.34em;font-size:.62rem;color:var(--ash)}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block;max-width:100%}
+  ::selection{background:var(--ink);color:var(--bone)}
+  :focus-visible{outline:1.5px solid var(--ink);outline-offset:3px}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+  /* ---------- 結構 ---------- */
+  .wrap{max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,72px)}
+  .rule{height:1px;background:var(--line);width:100%}
+
+  /* ---------- 導覽 ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,72px);
+    mix-blend-mode:difference;color:#fff;
+    transition:padding .4s var(--ease);
+  }
+  .nav .brand{font-family:"Bodoni Moda",serif;font-size:1.05rem;letter-spacing:.42em;font-weight:500;padding-left:.42em}
+  .nav nav{display:flex;gap:30px}
+  .nav nav a{font-family:"Archivo",sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;position:relative}
+  .nav nav a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1px;background:currentColor;transition:width .4s var(--ease)}
+  .nav nav a:hover::after,.nav nav a:focus-visible::after{width:100%}
+  .nav-right{display:flex;align-items:center;gap:26px}
+  .bag-btn{font-family:"Archivo",sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+  .bag-count{display:inline-grid;place-items:center;min-width:18px;height:18px;border:1px solid currentColor;border-radius:50%;font-size:.6rem;letter-spacing:0;padding:0 4px}
+  @media(max-width:760px){.nav nav{display:none}}
+
+  /* ---------- HERO：oversized kinetic type ---------- */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    padding:130px clamp(20px,5vw,72px) 56px;position:relative;
+  }
+  .hero-eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:clamp(20px,4vh,48px)}
+  .hero-eyebrow .ln{flex:0 0 56px;height:1px;background:var(--line-strong)}
+  .hero-type{position:relative}
+  .hero-type h1{
+    font-family:"Noto Serif TC","Bodoni Moda",serif;font-weight:300;
+    font-size:clamp(3rem,15vw,13.5rem);line-height:.98;
+    letter-spacing:.01em;color:var(--ink);
+  }
+  .hero-type h1 .row{display:block;overflow:hidden;padding-bottom:.04em}
+  .hero-type h1 .row span{display:block;transform:translateY(105%);transition:transform 1s var(--ease-io)}
+  .hero-type h1 .it{font-style:italic;font-weight:400;color:var(--accent)}
+  .loaded .hero-type h1 .row span{transform:translateY(0)}
+  .hero-type h1 .row:nth-child(2) span{transition-delay:.09s}
+  .hero-type h1 .row:nth-child(3) span{transition-delay:.18s}
+  .hero-foot{
+    margin-top:clamp(28px,6vh,64px);display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+    opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease) .5s,transform 1s var(--ease) .5s;
+  }
+  .loaded .hero-foot{opacity:1;transform:none}
+  .hero-foot p{max-width:36ch;font-size:.98rem;color:var(--ink-soft);line-height:1.85}
+  .hero-cta{display:inline-flex;align-items:center;gap:12px;font-family:"Archivo",sans-serif;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:6px;transition:gap .4s var(--ease)}
+  .hero-cta:hover{gap:20px}
+  .hero-cta .arr{transition:transform .4s var(--ease)}
+  .hero-cta:hover .arr{transform:translateX(4px)}
+  .hero-scroll{position:absolute;left:clamp(20px,5vw,72px);bottom:26px;display:flex;align-items:center;gap:10px;color:var(--ash)}
+  .hero-scroll .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2.4s var(--ease) infinite}
+  @keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.4)}}
+  @media(max-width:760px){.hero-scroll{display:none}}
+
+  /* ---------- 區段標題 ---------- */
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:clamp(56px,9vh,112px) 0 clamp(28px,5vh,52px)}
+  .sec-head .idx{font-family:"Archivo",sans-serif;font-weight:300;font-size:.72rem;letter-spacing:.2em;color:var(--ash)}
+  .sec-head h2{font-family:"Bodoni Moda",serif;font-weight:400;font-size:clamp(1.9rem,5vw,3.4rem);line-height:1;letter-spacing:-.01em}
+  .sec-head h2 em{font-style:italic;color:var(--accent)}
+  .sec-head .note{font-size:.9rem;color:var(--ash);max-width:30ch}
+
+  /* ---------- LOOKBOOK：橫向滾動 signature ---------- */
+  .lookbook{padding-bottom:clamp(48px,8vh,96px)}
+  .lb-controls{display:flex;align-items:center;gap:14px;margin-left:auto}
+  .lb-progress{width:84px;height:1px;background:var(--line);position:relative;overflow:hidden}
+  .lb-progress i{position:absolute;left:0;top:0;height:100%;width:24%;background:var(--ink);transition:left .25s var(--ease),width .25s var(--ease)}
+  .lb-arrow{width:42px;height:42px;border:1px solid var(--line-strong);border-radius:50%;display:grid;place-items:center;transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease)}
+  .lb-arrow:hover:not(:disabled){background:var(--ink);color:var(--bone);border-color:var(--ink)}
+  .lb-arrow:disabled{opacity:.28;cursor:not-allowed}
+  .lb-track{
+    display:flex;gap:clamp(16px,2.4vw,30px);overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:6px clamp(20px,5vw,72px) 30px;margin:0 calc(-1*clamp(20px,5vw,72px));
+    cursor:grab;scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .lb-track::-webkit-scrollbar{display:none}
+  .lb-track.dragging{cursor:grabbing;scroll-snap-type:none}
+  .look{
+    flex:0 0 clamp(260px,38vw,420px);scroll-snap-align:start;position:relative;
+    user-select:none;
+  }
+  .look-frame{position:relative;aspect-ratio:3/4.2;overflow:hidden;background:var(--ink)}
+  .look-frame .duo{position:absolute;inset:0;transition:transform 1.2s var(--ease),filter .6s var(--ease)}
+  .look:hover .look-frame .duo{transform:scale(1.05)}
+  /* duotone 漸層構成的「服裝campaign影像」 */
+  .look-frame .figure{position:absolute;inset:0;mix-blend-mode:luminosity;opacity:.92}
+  .look-no{position:absolute;top:16px;left:16px;font-family:"Archivo",sans-serif;font-size:.68rem;letter-spacing:.2em;color:rgba(255,255,255,.85);z-index:3}
+  .look-reveal{
+    position:absolute;left:0;right:0;bottom:0;padding:20px 18px;z-index:3;
+    background:linear-gradient(to top,rgba(10,9,8,.92),rgba(10,9,8,.4) 60%,transparent);
+    color:var(--bone);transform:translateY(calc(100% - 64px));transition:transform .55s var(--ease-io);
+  }
+  .look:hover .look-reveal,.look:focus-within .look-reveal{transform:translateY(0)}
+  .look-reveal .tier{font-family:"Archivo",sans-serif;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(237,234,227,.7)}
+  .look-reveal h3{font-family:"Bodoni Moda",serif;font-weight:400;font-size:1.5rem;line-height:1.1;margin:6px 0 4px}
+  .look-items{list-style:none;margin:14px 0 16px;display:flex;flex-direction:column;gap:7px;opacity:0;transition:opacity .5s var(--ease) .12s}
+  .look:hover .look-items,.look:focus-within .look-items{opacity:1}
+  .look-items li{display:flex;justify-content:space-between;gap:14px;font-family:"Archivo",sans-serif;font-size:.78rem;color:rgba(237,234,227,.86);border-top:1px solid rgba(237,234,227,.16);padding-top:7px}
+  .look-items li .px{color:#fff;font-variant-numeric:tabular-nums}
+  .look-qv{font-family:"Archivo",sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid rgba(237,234,227,.5);padding-bottom:5px;color:var(--bone)}
+  .look-qv:hover{gap:14px}
+  .look-meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px}
+  .look-meta .name{font-family:"Bodoni Moda",serif;font-size:1rem}
+  .look-meta .px{font-family:"Archivo",sans-serif;font-size:.82rem;color:var(--ash);font-variant-numeric:tabular-nums}
+  .lb-hint{font-family:"Archivo",sans-serif;font-size:.68rem;letter-spacing:.14em;color:var(--ash);text-transform:uppercase;display:flex;align-items:center;gap:8px;padding-top:6px}
+
+  /* ---------- 單品（色彩變體切換）---------- */
+  .product{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,88px);align-items:center;padding-bottom:clamp(56px,9vh,112px)}
+  .product-visual{position:relative;aspect-ratio:4/5;background:var(--ink);overflow:hidden}
+  .product-visual .pview{position:absolute;inset:0;transition:opacity .7s var(--ease)}
+  .product-visual .figure{position:absolute;inset:0;mix-blend-mode:luminosity;opacity:.9}
+  .product-tag{position:absolute;top:18px;left:18px;font-family:"Archivo",sans-serif;font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+  .product-info .mono-label{margin-bottom:18px;display:block}
+  .product-info h2{font-family:"Bodoni Moda",serif;font-weight:400;font-size:clamp(2rem,5vw,3.3rem);line-height:1.02;letter-spacing:-.01em}
+  .product-info h2 em{font-style:italic;color:var(--accent)}
+  .product-info .desc{margin:22px 0 4px;color:var(--ink-soft);max-width:42ch;line-height:1.9;font-size:1rem}
+  .product-price{font-family:"Bodoni Moda",serif;font-size:1.5rem;margin:26px 0 6px}
+  .swatch-label{font-family:"Archivo",sans-serif;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin:24px 0 12px;display:flex;gap:10px}
+  .swatch-label b{font-weight:500;color:var(--ink);letter-spacing:.04em}
+  .swatches{display:flex;gap:12px}
+  .swatch{width:30px;height:30px;border-radius:50%;position:relative;transition:transform .3s var(--ease)}
+  .swatch::after{content:"";position:absolute;inset:-5px;border:1px solid var(--ink);border-radius:50%;opacity:0;transition:opacity .3s var(--ease)}
+  .swatch[aria-pressed="true"]::after{opacity:1}
+  .swatch:hover{transform:scale(1.08)}
+  .sizes{display:flex;gap:10px;margin:26px 0 0;flex-wrap:wrap}
+  .size{min-width:46px;padding:9px 4px;border:1px solid var(--line-strong);font-family:"Archivo",sans-serif;font-size:.8rem;letter-spacing:.06em;text-align:center;transition:background .3s var(--ease),color .3s var(--ease)}
+  .size[aria-pressed="true"]{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+  .size:disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+  .btn-bag{margin-top:30px;width:100%;background:var(--ink);color:var(--bone);font-family:"Archivo",sans-serif;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;padding:18px;display:flex;align-items:center;justify-content:center;gap:14px;transition:background .4s var(--ease)}
+  .btn-bag:hover{background:var(--accent)}
+  .btn-bag .arr{transition:transform .4s var(--ease)}
+  .btn-bag:hover .arr{transform:translateX(5px)}
+  @media(max-width:820px){.product{grid-template-columns:1fr;gap:30px}}
+
+  /* ---------- 理念 / 工作室 ---------- */
+  .ethos{padding:clamp(64px,11vh,140px) 0;border-top:1px solid var(--line)}
+  .ethos-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(28px,7vw,100px)}
+  .ethos .mono-label{display:block;margin-bottom:16px}
+  .ethos h2{font-family:"Bodoni Moda",serif;font-weight:400;font-size:clamp(1.7rem,4.4vw,3rem);line-height:1.12;letter-spacing:-.005em}
+  .ethos h2 em{font-style:italic;color:var(--accent)}
+  .ethos .body p{color:var(--ink-soft);line-height:2;font-size:1.02rem;margin-bottom:1.2em;max-width:54ch}
+  .ethos-stats{display:flex;gap:clamp(28px,6vw,72px);margin-top:44px;flex-wrap:wrap}
+  .ethos-stats .st .n{font-family:"Bodoni Moda",serif;font-size:2.2rem;line-height:1}
+  .ethos-stats .st .l{font-family:"Archivo",sans-serif;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin-top:8px}
+  @media(max-width:820px){.ethos-grid{grid-template-columns:1fr;gap:24px}}
+
+  /* ---------- 預約 / CTA ---------- */
+  .atelier{background:var(--ink);color:var(--bone);padding:clamp(64px,12vh,150px) 0;text-align:center}
+  .atelier .mono-label{color:rgba(237,234,227,.55)}
+  .atelier h2{font-family:"Bodoni Moda",serif;font-weight:400;font-size:clamp(2.4rem,8vw,6rem);line-height:.98;letter-spacing:-.015em;margin:22px auto 0;max-width:14ch}
+  .atelier h2 em{font-style:italic;color:#bdae97}
+  .atelier p{color:rgba(237,234,227,.7);max-width:42ch;margin:30px auto 0;line-height:1.9}
+  .atelier .at-cta{margin-top:42px;display:inline-flex;align-items:center;gap:14px;border:1px solid rgba(237,234,227,.4);padding:18px 40px;font-family:"Archivo",sans-serif;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;transition:background .4s var(--ease),color .4s var(--ease)}
+  .atelier .at-cta:hover{background:var(--bone);color:var(--ink)}
+
+  /* ---------- Footer ---------- */
+  footer{padding:clamp(48px,7vh,80px) 0 36px}
+  .foot-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:40px;border-bottom:1px solid var(--line)}
+  .foot-brand{font-family:"Bodoni Moda",serif;font-size:clamp(1.8rem,6vw,3.2rem);letter-spacing:.04em}
+  .foot-cols{display:flex;gap:clamp(32px,6vw,80px);flex-wrap:wrap}
+  .foot-cols .col h4{font-family:"Archivo",sans-serif;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin-bottom:14px}
+  .foot-cols .col a,.foot-cols .col p{display:block;font-size:.9rem;color:var(--ink-soft);margin-bottom:8px;transition:color .3s var(--ease)}
+  .foot-cols .col a:hover{color:var(--accent)}
+  .foot-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;align-items:center}
+  .foot-bottom .demo-note{font-family:"Archivo",sans-serif;font-size:.74rem;letter-spacing:.06em;color:var(--ash)}
+  .foot-bottom .demo-note a{color:var(--ink);border-bottom:1px solid var(--accent);padding-bottom:1px}
+  .foot-bottom .cc{font-family:"Archivo",sans-serif;font-size:.7rem;letter-spacing:.1em;color:var(--ash)}
+
+  /* ---------- Quick-view Modal ---------- */
+  .modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:24px}
+  .modal.open{display:grid}
+  .modal-bg{position:absolute;inset:0;background:rgba(14,13,12,.62);backdrop-filter:blur(4px);opacity:0;transition:opacity .4s var(--ease)}
+  .modal.open .modal-bg{opacity:1}
+  .modal-card{position:relative;z-index:2;background:var(--bone);max-width:880px;width:100%;max-height:88vh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(18px) scale(.99);opacity:0;transition:transform .5s var(--ease-io),opacity .4s var(--ease)}
+  .modal.open .modal-card{transform:none;opacity:1}
+  .modal-visual{position:relative;background:var(--ink);min-height:340px}
+  .modal-visual .figure{position:absolute;inset:0;mix-blend-mode:luminosity;opacity:.9}
+  .modal-body{padding:clamp(24px,4vw,44px);display:flex;flex-direction:column}
+  .modal-close{position:absolute;top:14px;right:14px;z-index:5;width:38px;height:38px;border:1px solid var(--line-strong);border-radius:50%;display:grid;place-items:center;background:var(--bone);transition:background .3s var(--ease),color .3s var(--ease)}
+  .modal-close:hover{background:var(--ink);color:var(--bone)}
+  .modal-body .tier{font-family:"Archivo",sans-serif;font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ash)}
+  .modal-body h3{font-family:"Bodoni Moda",serif;font-weight:400;font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.05;margin:12px 0 14px}
+  .modal-body .mdesc{color:var(--ink-soft);line-height:1.9;font-size:.95rem}
+  .modal-items{list-style:none;margin:22px 0;border-top:1px solid var(--line)}
+  .modal-items li{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-family:"Archivo",sans-serif;font-size:.85rem}
+  .modal-items li .px{font-variant-numeric:tabular-nums;color:var(--ash)}
+  .modal-body .btn-bag{margin-top:auto}
+  @media(max-width:680px){.modal-card{grid-template-columns:1fr;max-height:90vh}.modal-visual{min-height:240px}}
+
+  /* ---------- Toast ---------- */
+  .toast-wrap{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:120;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+  .toast{background:var(--ink);color:var(--bone);padding:15px 26px;display:flex;align-items:center;gap:16px;min-width:280px;
+    transform:translateY(24px);opacity:0;transition:transform .5s var(--ease-io),opacity .4s var(--ease)}
+  .toast.show{transform:none;opacity:1}
+  .toast .t-txt{font-family:"Archivo",sans-serif;font-size:.8rem;letter-spacing:.04em}
+  .toast .t-txt b{font-weight:500}
+  .toast .t-bar{margin-left:auto;font-family:"Bodoni Moda",serif;font-size:.95rem;color:#bdae97}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="#top" class="brand">VÉRITÉ</a>
+  <nav aria-label="主導覽">
+    <a href="#lookbook">系列</a>
+    <a href="#signature">單品</a>
+    <a href="#ethos">工作室</a>
+    <a href="#atelier">預約</a>
+  </nav>
+  <div class="nav-right">
+    <button class="bag-btn" id="bagToggle" aria-label="購物袋">
+      購物袋 <span class="bag-count" id="bagCount">0</span>
+    </button>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ============ HERO ============ -->
+<section class="hero wrap">
+  <div class="hero-eyebrow">
+    <span class="ln"></span>
+    <span class="mono-label">2026 春夏系列 — No. 07 「靜默 LE SILENCE」</span>
+  </div>
+  <div class="hero-type">
+    <h1 class="display">
+      <span class="row"><span>留白</span></span>
+      <span class="row"><span>是一種</span></span>
+      <span class="row"><span class="it">語言。</span></span>
+    </h1>
+  </div>
+  <div class="hero-foot">
+    <p>VÉRITÉ ATELIER 以東方的「無」遇見巴黎的剪裁。本季只做十四件——每一件都為了被穿一輩子而生。</p>
+    <a href="#lookbook" class="hero-cta">進入系列 <span class="arr">→</span></a>
+  </div>
+  <div class="hero-scroll">
+    <span class="dot"></span>
+    <span class="mono-label" style="letter-spacing:.2em">向下捲動</span>
+  </div>
+</section>
+
+<!-- ============ LOOKBOOK（橫向滾動 signature）============ -->
+<section class="lookbook wrap" id="lookbook">
+  <div class="sec-head" style="padding-bottom:clamp(20px,4vh,40px)">
+    <div>
+      <div class="idx">（一）系列圖輯</div>
+      <h2 class="display">Lookbook — <em>靜默</em></h2>
+    </div>
+    <div class="lb-controls">
+      <div class="lb-progress" aria-hidden="true"><i id="lbBar"></i></div>
+      <button class="lb-arrow" id="lbPrev" aria-label="上一組造型" disabled>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="lb-arrow" id="lbNext" aria-label="下一組造型">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="lb-track" id="lbTrack" tabindex="0" role="region" aria-label="橫向系列圖輯，可拖曳或使用左右方向鍵瀏覽">
+    <!-- looks 由 JS 注入 -->
+  </div>
+  <div class="wrap" style="padding:0;margin-top:4px">
+    <span class="lb-hint">拖曳 · 方向鍵 · 或點箭頭瀏覽 — 滑過卡片揭露單品</span>
+  </div>
+</section>
+
+<!-- ============ 單品（色彩變體切換）============ -->
+<section class="wrap" id="signature">
+  <div class="sec-head">
+    <div>
+      <div class="idx">（二）本季主件</div>
+      <h2 class="display">經典 · <em>重製</em></h2>
+    </div>
+    <p class="note">「無垢」風衣——可拆襯裡、雙面穿著，一件抵三季。</p>
+  </div>
+
+  <div class="product reveal">
+    <div class="product-visual" id="prodVisual">
+      <div class="pview" id="prodView"></div>
+      <svg class="figure" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none">
+          <path d="M150 80 L130 150 L120 360 L160 470 L200 470 L195 200 Z"/>
+          <path d="M250 80 L270 150 L280 360 L240 470 L200 470 L205 200 Z"/>
+          <path d="M150 80 Q200 60 250 80 L240 130 Q200 110 160 130 Z"/>
+          <path d="M130 150 L90 280 M270 150 L310 280"/>
+          <line x1="200" y1="110" x2="200" y2="460"/>
+        </g>
+      </svg>
+      <span class="product-tag" id="prodTag">色：墨 / NOIR</span>
+    </div>
+    <div class="product-info">
+      <span class="mono-label">物件 No. 01 — 春夏 2026</span>
+      <h2 class="display">無垢 <em>風衣</em></h2>
+      <p class="desc">義大利精梳棉斜紋，水洗後的霧面手感。隱藏式門襟、可拆羊毛襯裡，從台北的梅雨到京都的初秋都合宜。在台中工作室手工製作，限量 60 件。</p>
+      <div class="product-price util" id="prodPrice">NT$ 18,800</div>
+
+      <div class="swatch-label">顏色 — <b id="swatchName">墨 NOIR</b></div>
+      <div class="swatches" role="group" aria-label="選擇顏色">
+        <button class="swatch" data-color="noir" data-name="墨 NOIR" data-grad="linear-gradient(150deg,#2b2926,#0e0d0c 70%)" style="background:linear-gradient(150deg,#2b2926,#0e0d0c)" aria-pressed="true" aria-label="墨 NOIR"></button>
+        <button class="swatch" data-color="bone" data-name="骨 OS" data-grad="linear-gradient(150deg,#f2efe8,#cfc9bd 75%)" style="background:linear-gradient(150deg,#f2efe8,#cfc9bd)" aria-pressed="false" aria-label="骨 OS"></button>
+        <button class="swatch" data-color="clay" data-name="泥 ARGILE" data-grad="linear-gradient(150deg,#8c7c66,#544733 78%)" style="background:linear-gradient(150deg,#8c7c66,#544733)" aria-pressed="false" aria-label="泥 ARGILE"></button>
+        <button class="swatch" data-color="sage" data-name="霧綠 SAUGE" data-grad="linear-gradient(150deg,#8d978a,#4f594c 78%)" style="background:linear-gradient(150deg,#8d978a,#4f594c)" aria-pressed="false" aria-label="霧綠 SAUGE"></button>
+      </div>
+
+      <div class="swatch-label" style="margin-top:26px">尺寸 — <b id="sizeName">請選擇</b></div>
+      <div class="sizes" role="group" aria-label="選擇尺寸">
+        <button class="size" data-size="XS" aria-pressed="false">XS</button>
+        <button class="size" data-size="S" aria-pressed="false">S</button>
+        <button class="size" data-size="M" aria-pressed="false">M</button>
+        <button class="size" data-size="L" aria-pressed="false">L</button>
+        <button class="size" data-size="XL" aria-pressed="false" disabled aria-label="XL 已售罄">XL</button>
+      </div>
+
+      <button class="btn-bag" id="prodBag">加入購物袋 <span class="arr">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 理念 / 工作室 ============ -->
+<section class="ethos" id="ethos">
+  <div class="wrap">
+    <div class="ethos-grid">
+      <div class="reveal">
+        <span class="mono-label">工作室 — 台中</span>
+        <h2 class="display">少，<br>但<em>長久</em>。</h2>
+      </div>
+      <div class="body reveal">
+        <p>我們不追季節，只追究一件衣服能陪你多久。每一季只發表十四件主件，版型反覆修改超過半年，直到它在身上像呼吸一樣自然。</p>
+        <p>布料來自日本與義大利的小型織廠，可追溯到每一綑紗。剩布全數回收再製成內襯與包裝，零浪費是底線，不是行銷。</p>
+        <div class="ethos-stats">
+          <div class="st"><div class="n display">14</div><div class="l">每季主件</div></div>
+          <div class="st"><div class="n display">100%</div><div class="l">台灣手工製作</div></div>
+          <div class="st"><div class="n display">10<span style="font-size:1.1rem">年</span></div><div class="l">修補保固</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 預約 / CTA ============ -->
+<section class="atelier" id="atelier">
+  <div class="wrap">
+    <span class="mono-label">私人預約 — BY APPOINTMENT</span>
+    <h2 class="display">親自<em>感受</em>布料的重量</h2>
+    <p>台中工作室僅接受預約。一對一量身、試穿本季全系列，並由設計師親自說明每一件的故事。</p>
+    <a href="#" class="at-cta" id="bookCta">預約看件 <span class="arr">→</span></a>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer class="wrap" id="footer">
+  <div class="foot-top">
+    <div class="foot-brand display">VÉRITÉ ATELIER</div>
+    <div class="foot-cols">
+      <div class="col">
+        <h4>系列</h4>
+        <a href="#lookbook">2026 春夏「靜默」</a>
+        <a href="#signature">主件單品</a>
+        <a href="#">永久經典</a>
+        <a href="#">配件</a>
+      </div>
+      <div class="col">
+        <h4>服務</h4>
+        <a href="#atelier">私人預約</a>
+        <a href="#">量身訂製</a>
+        <a href="#">十年修補</a>
+        <a href="#">保養指南</a>
+      </div>
+      <div class="col">
+        <h4>聯絡</h4>
+        <p>台中市西區美村路 1 段</p>
+        <a href="mailto:atelier@verite.example">atelier@verite.example</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="demo-note">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+    <span class="cc">© 2026 VÉRITÉ ATELIER — 虛構品牌．純為展示</span>
+  </div>
+</footer>
+
+<!-- ============ Quick-view Modal ============ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card">
+    <button class="modal-close" data-close aria-label="關閉">
+      <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4" fill="none"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-visual" id="modalVisual">
+      <svg class="figure" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none">
+          <path d="M150 80 L130 150 L120 360 L160 470 L200 470 L195 200 Z"/>
+          <path d="M250 80 L270 150 L280 360 L240 470 L200 470 L205 200 Z"/>
+          <path d="M150 80 Q200 60 250 80 L240 130 Q200 110 160 130 Z"/>
+          <line x1="200" y1="110" x2="200" y2="460"/>
+        </g>
+      </svg>
+    </div>
+    <div class="modal-body">
+      <span class="tier" id="modalTier">LOOK 01</span>
+      <h3 class="display" id="modalTitle">造型</h3>
+      <p class="mdesc" id="modalDesc"></p>
+      <ul class="modal-items" id="modalItems"></ul>
+      <button class="btn-bag" id="modalBag">整組加入購物袋 <span class="arr">→</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add('js');
+  window.addEventListener('load',()=>document.body.classList.add('loaded'));
+  // 若 reduced motion，仍立即顯示 hero
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.body.classList.add('loaded');}
+
+  /* ---------- 資料：本季 lookbook ---------- */
+  const looks=[
+    {tier:'LOOK 01 — 開場',name:'霧晨',grad:'linear-gradient(155deg,#3a352e 0%,#16140f 60%,#0c0b09 100%)',
+     desc:'以一件「無垢」風衣開場，內搭高領針織，沉入灰階的層次裡。整套是本季的呼吸節奏——慢、克制、留白。',
+     items:[['「無垢」風衣 / 墨',18800],['美麗諾高領針織 / 炭',6200],['寬版直筒褲 / 墨',7800]]},
+    {tier:'LOOK 02',name:'素箋',grad:'linear-gradient(155deg,#e6e1d6 0%,#b8b1a3 55%,#7d766a 100%)',
+     desc:'整身骨白，唯有腰間一道泥色繫帶作為標點。最難的不是顏色，是讓白保持乾淨。',
+     items:[['雙面亞麻襯衫 / 骨',5600],['高腰寬褲 / 骨',7200],['手織腰帶 / 泥',2400]]},
+    {tier:'LOOK 03',name:'墨痕',grad:'linear-gradient(155deg,#26241f 0%,#0e0d0b 70%,#070605 100%)',
+     desc:'全黑造型的關鍵在材質的對比——霧面羊毛大衣，配上微光的絲質內裡，光線替你說話。',
+     items:[['落肩羊毛大衣 / 墨',24600],['絲質貼身背心 / 墨',4800],['錐形西裝褲 / 墨',8400]]},
+    {tier:'LOOK 04',name:'苔影',grad:'linear-gradient(155deg,#8d978a 0%,#566051 55%,#2c3128 100%)',
+     desc:'霧綠是本季唯一的色彩冒險，取自雨後的苔。剪裁刻意寬鬆，讓顏色自己呼吸。',
+     items:[['oversize 西裝外套 / 霧綠',16800],['絲棉長裙 / 霧綠',9200],['軟革樂福鞋 / 墨',8800]]},
+    {tier:'LOOK 05',name:'土壤',grad:'linear-gradient(155deg,#8c7c66 0%,#5b4d39 55%,#2e2619 100%)',
+     desc:'泥色的層疊，像把土壤穿在身上。粗織與細棉交錯，是質地的對話而非顏色的喧嘩。',
+     items:[['粗織針織外套 / 泥',12400],['高領細棉上衣 / 骨',4600],['打褶長褲 / 泥',8200]]},
+    {tier:'LOOK 06 — 終曲',name:'夜白',grad:'linear-gradient(155deg,#cfc9bd 0%,#5d574c 60%,#15130f 100%)',
+     desc:'以骨白漸入墨黑收尾，是這季「靜默」的一句結語：所有對比，最終都歸於安靜。',
+     items:[['長版罩衫 / 骨',9800],['絲質寬褲 / 墨',8600],['結構手拿包 / 墨',7400]]},
+  ];
+
+  const fmt=n=>'NT$ '+n.toLocaleString('en-US');
+
+  /* ---------- 建構 lookbook ---------- */
+  const track=document.getElementById('lbTrack');
+  const figureSVG=`<svg class="figure" viewBox="0 0 400 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g stroke="rgba(255,255,255,.45)" stroke-width="1" fill="none"><path d="M150 70 L128 150 L116 400 L162 540 L200 540 L196 210 Z"/><path d="M250 70 L272 150 L284 400 L238 540 L200 540 L204 210 Z"/><path d="M150 70 Q200 48 250 70 L238 124 Q200 102 162 124 Z"/><path d="M128 150 L82 300 M272 150 L318 300"/><circle cx="200" cy="50" r="22"/><line x1="200" y1="100" x2="200" y2="530"/></g></svg>`;
+
+  looks.forEach((lk,i)=>{
+    const li=lk.items.map(it=>`<li><span>${it[0]}</span><span class="px">${fmt(it[1])}</span></li>`).join('');
+    const total=lk.items.reduce((s,it)=>s+it[1],0);
+    const el=document.createElement('article');
+    el.className='look';
+    el.innerHTML=`
+      <div class="look-frame">
+        <div class="duo" style="background:${lk.grad}"></div>
+        ${figureSVG}
+        <span class="look-no util">${String(i+1).padStart(2,'0')} / ${String(looks.length).padStart(2,'0')}</span>
+        <div class="look-reveal">
+          <span class="tier">${lk.tier}</span>
+          <h3 class="display">${lk.name}</h3>
+          <ul class="look-items">${li}</ul>
+          <button class="look-qv" data-look="${i}">快速檢視 <span aria-hidden="true">+</span></button>
+        </div>
+      </div>
+      <div class="look-meta">
+        <span class="name display">${lk.name}</span>
+        <span class="px util">整組 ${fmt(total)}</span>
+      </div>`;
+    track.appendChild(el);
+  });
+
+  /* ---------- lookbook 滾動控制 ---------- */
+  const prev=document.getElementById('lbPrev'),next=document.getElementById('lbNext'),bar=document.getElementById('lbBar');
+  const step=()=>{const c=track.querySelector('.look');return c?c.offsetWidth+parseFloat(getComputedStyle(track).gap||'24'):320;};
+  function updateProgress(){
+    const max=track.scrollWidth-track.clientWidth;
+    const ratio=max>0?track.scrollLeft/max:0;
+    const w=24;
+    bar.style.width=w+'%';
+    bar.style.left=(ratio*(100-w))+'%';
+    prev.disabled=track.scrollLeft<=2;
+    next.disabled=track.scrollLeft>=max-2;
+  }
+  prev.addEventListener('click',()=>track.scrollBy({left:-step(),behavior:'smooth'}));
+  next.addEventListener('click',()=>track.scrollBy({left:step(),behavior:'smooth'}));
+  track.addEventListener('scroll',updateProgress,{passive:true});
+  track.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'){e.preventDefault();track.scrollBy({left:step(),behavior:'smooth'});}
+    if(e.key==='ArrowLeft'){e.preventDefault();track.scrollBy({left:-step(),behavior:'smooth'});}
+  });
+  // 拖曳
+  let down=false,sx=0,sl=0,moved=false;
+  track.addEventListener('pointerdown',e=>{down=true;moved=false;sx=e.clientX;sl=track.scrollLeft;track.classList.add('dragging');});
+  track.addEventListener('pointermove',e=>{if(!down)return;const d=e.clientX-sx;if(Math.abs(d)>4)moved=true;track.scrollLeft=sl-d;});
+  const endDrag=()=>{down=false;track.classList.remove('dragging');updateProgress();};
+  track.addEventListener('pointerup',endDrag);
+  track.addEventListener('pointerleave',endDrag);
+  track.addEventListener('pointercancel',endDrag);
+  // 拖曳後抑制誤觸 quick-view
+  track.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();}},true);
+  updateProgress();
+  window.addEventListener('resize',updateProgress);
+
+  /* ---------- 商品色彩變體 ---------- */
+  let bag=0,curColor='墨 NOIR',curSize=null;
+  const prodView=document.getElementById('prodView'),prodTag=document.getElementById('prodTag'),swName=document.getElementById('swatchName');
+  prodView.style.background='linear-gradient(150deg,#2b2926,#0e0d0c 70%)';
+  document.querySelectorAll('.swatch').forEach(sw=>{
+    sw.addEventListener('click',()=>{
+      document.querySelectorAll('.swatch').forEach(s=>s.setAttribute('aria-pressed','false'));
+      sw.setAttribute('aria-pressed','true');
+      prodView.style.background=sw.dataset.grad;
+      curColor=sw.dataset.name;
+      swName.textContent=curColor;
+      prodTag.textContent='色：'+curColor.split(' ')[0]+' / '+(curColor.split(' ')[1]||'');
+    });
+  });
+  // 尺寸
+  const sizeName=document.getElementById('sizeName');
+  document.querySelectorAll('.size:not(:disabled)').forEach(sz=>{
+    sz.addEventListener('click',()=>{
+      document.querySelectorAll('.size').forEach(s=>s.setAttribute('aria-pressed','false'));
+      sz.setAttribute('aria-pressed','true');
+      curSize=sz.dataset.size;sizeName.textContent=curSize;
+    });
+  });
+
+  /* ---------- 購物袋 + Toast ---------- */
+  const bagCount=document.getElementById('bagCount'),toastWrap=document.getElementById('toastWrap');
+  function setBag(n){bag=n;bagCount.textContent=bag;}
+  function toast(msg,sub){
+    const t=document.createElement('div');t.className='toast';
+    t.innerHTML=`<span class="t-txt">${msg}</span><span class="t-bar">${sub||''}</span>`;
+    toastWrap.appendChild(t);
+    requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),500);},2800);
+  }
+  document.getElementById('prodBag').addEventListener('click',()=>{
+    if(!curSize){toast('請先選擇尺寸','—');return;}
+    setBag(bag+1);
+    toast(`已加入 · 無垢風衣 / ${curColor.split(' ')[0]}`,`尺寸 ${curSize}`);
+  });
+  document.getElementById('bagToggle').addEventListener('click',()=>{
+    toast(bag?`購物袋內有 ${bag} 件單品`:'購物袋是空的','袋');
+  });
+  document.getElementById('bookCta').addEventListener('click',e=>{e.preventDefault();toast('已記下您的預約意向','✓');});
+
+  /* ---------- Quick-view Modal ---------- */
+  const modal=document.getElementById('modal'),mVisual=document.getElementById('modalVisual'),
+        mTier=document.getElementById('modalTier'),mTitle=document.getElementById('modalTitle'),
+        mDesc=document.getElementById('modalDesc'),mItems=document.getElementById('modalItems'),mBag=document.getElementById('modalBag');
+  let lastFocus=null,curLook=0;
+  function openModal(i){
+    const lk=looks[i];curLook=i;
+    mVisual.style.background=lk.grad;
+    mTier.textContent=lk.tier;
+    mTitle.textContent=lk.name;
+    mDesc.textContent=lk.desc;
+    mItems.innerHTML=lk.items.map(it=>`<li><span>${it[0]}</span><span class="px">${fmt(it[1])}</span></li>`).join('');
+    lastFocus=document.activeElement;
+    modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    modal.querySelector('.modal-close').focus();
+  }
+  function closeModal(){
+    modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    if(lastFocus)lastFocus.focus();
+  }
+  track.addEventListener('click',e=>{
+    const b=e.target.closest('.look-qv');if(b){openModal(+b.dataset.look);}
+  });
+  modal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeModal));
+  mBag.addEventListener('click',()=>{
+    const lk=looks[curLook];setBag(bag+lk.items.length);
+    closeModal();
+    toast(`整組加入 · ${lk.name}（${lk.items.length} 件）`,lk.tier.split(' ')[1]||'');
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();
+    // focus trap
+    if(e.key==='Tab'&&modal.classList.contains('open')){
+      const f=modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+      if(!f.length)return;
+      const first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  });
+
+  /* ---------- scroll reveal ---------- */
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+  },{threshold:.16});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
