@@ -12,22 +12,6 @@ function go(href: string) {
 
 <template>
   <footer class="footer">
-    <div class="wrap foot-grid">
-      <div class="foot-brand">
-        <span class="brand"><span class="dot" /><span class="brand-name">e-life<span class="ai">-ai</span></span></span>
-        <p>再難的工程，都能一起搞定。</p>
-        <span class="mono">service.e-life-ai.com</span>
-      </div>
-
-      <nav class="foot-links">
-        <a href="#services" @click.prevent="go('#services')">服務</a>
-        <a href="#work" @click.prevent="go('#work')">作品</a>
-        <a href="#about" @click.prevent="go('#about')">關於</a>
-        <a href="#pricing" @click.prevent="go('#pricing')">合作</a>
-        <a href="#contact" @click.prevent="go('#contact')">聯絡</a>
-      </nav>
-    </div>
-
     <div class="wrap foot-bottom">
       <span>© {{ year }} e-life-ai · All rights reserved.</span>
       <span class="mono">built with Vue · Vite · ❤ for hard problems</span>
@@ -53,26 +37,10 @@ function go(href: string) {
 <style scoped>
 .footer {
   border-top: 1px solid var(--line);
-  padding-top: clamp(48px, 7vw, 72px);
+  padding-top: 36px;
   padding-bottom: 32px;
   background:
     radial-gradient(700px 300px at 50% 0%, rgba(52, 227, 196, 0.05), transparent 70%);
-}
-.foot-grid {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 32px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--line);
-}
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.4rem;
 }
 /* echoes the pulsing dot in the header brand */
 .dot {
@@ -86,46 +54,10 @@ function go(href: string) {
 .ai {
   color: var(--accent);
 }
-.foot-brand p {
-  color: var(--ink-1);
-  margin-top: 12px;
-  max-width: 32ch;
-}
 .mono {
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--ink-2);
-  display: inline-block;
-  margin-top: 14px;
-}
-.foot-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-}
-.foot-links a {
-  position: relative;
-  color: var(--ink-1);
-  transition: color 0.25s var(--ease);
-}
-.foot-links a:hover {
-  color: var(--ink-0);
-}
-/* echoes the nav link underline-on-hover in the header */
-.foot-links a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.3s var(--ease);
-}
-.foot-links a:hover::after {
-  width: 100%;
 }
 
 @keyframes pulse {
@@ -141,10 +73,10 @@ function go(href: string) {
 }
 .foot-bottom {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-top: 28px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
   font-size: 0.8rem;
   color: var(--ink-2);
 }

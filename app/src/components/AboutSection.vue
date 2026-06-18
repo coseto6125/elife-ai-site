@@ -133,7 +133,9 @@ const principles = [
   display: flex;
   gap: 14px;
   width: max-content;
-  animation: scroll 38s linear infinite;
+  /* slower so the longer chip list scrolls smoothly without feeling choppy */
+  animation: scroll 72s linear infinite;
+  will-change: transform;
 }
 .marquee:hover .track {
   animation-play-state: paused;
