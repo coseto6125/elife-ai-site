@@ -12,7 +12,7 @@
     <meta property="og:title" content="e-life-ai｜你的軟體開發夥伴" />
     <meta
       property="og:description"
-      content="AI Agent · RAG · 全端網站 · 爬蟲 · 系統整合。使想像成為現實，我們，一起實現期望。"
+      content="AI Agent · RAG · 全端網站 · 爬蟲 · 系統整合。使想像成為現實，我們，一起攜手實現期望。"
     />
     <meta property="og:type" content="website" />
     <title>e-life-ai｜你的軟體開發夥伴 · AI / 全端 / 系統開發</title>
@@ -31,7 +31,7 @@
     <div id="chat-widget">
       <iframe
         class="cw-frame"
-        src="https://e-shop-ai.com/chat/enoract/e-life-ai"
+        data-src="https://e-shop-ai.com/chat/enoract/e-life-ai"
         title="客服"
         loading="lazy"
       ></iframe>
@@ -112,7 +112,10 @@
       (function () {
         var w = document.getElementById('chat-widget')
         var b = w.querySelector('.cw-bubble')
+        var frame = w.querySelector('.cw-frame')
         function setOpen(open) {
+          // fetch the third-party chat app only on first open, not on page load
+          if (open && !frame.src) frame.src = frame.dataset.src
           w.classList.toggle('open', open)
           b.setAttribute('aria-expanded', String(open))
           b.setAttribute('aria-label', open ? '關閉客服' : '開啟客服')

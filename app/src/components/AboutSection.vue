@@ -4,6 +4,9 @@ import { useReveal } from '../composables/useReveal'
 
 useReveal('root', { stagger: 120 })
 
+// doubled once for the seamless marquee loop; hoisted so it isn't rebuilt per render
+const marqueeChips = [...techStack, ...techStack]
+
 const principles = [
   {
     k: '非同步優先',
@@ -63,7 +66,7 @@ const principles = [
     <!-- tech marquee -->
     <div class="marquee reveal" data-reveal aria-hidden="true">
       <div class="track">
-        <span v-for="(t, i) in [...techStack, ...techStack]" :key="i" class="chip">{{ t }}</span>
+        <span v-for="(t, i) in marqueeChips" :key="i" class="chip">{{ t }}</span>
       </div>
     </div>
   </section>

@@ -54,6 +54,7 @@ onMounted(() => {
     }))
   }
 
+  const LINK2 = LINK * LINK
   let t = 0
   function frame() {
     if (!running) return
@@ -67,8 +68,10 @@ onMounted(() => {
         const b = nodes[j]
         const dx = a.x - b.x
         const dy = a.y - b.y
-        const d = Math.hypot(dx, dy)
-        if (d < LINK) {
+        // squared-distance gate avoids sqrt for the majority of far pairs
+        const d2 = dx * dx + dy * dy
+        if (d2 < LINK2) {
+          const d = Math.sqrt(d2)
           const o = (1 - d / LINK) * 0.4
           ctx.strokeStyle = `rgba(${edge}, ${o * 0.5})`
           ctx.lineWidth = 0.6
@@ -124,9 +127,16 @@ onMounted(() => {
     cancelAnimationFrame(raf)
   } else {
     const io = new IntersectionObserver((e) => {
-      running = e[0].isIntersecting
-      if (running) frame()
-      else cancelAnimationFrame(raf)
+      if (e[0].isIntersecting) {
+        // guard against stacking a second rAF chain on a true→true re-fire
+        if (!running) {
+          running = true
+          frame()
+        }
+      } else {
+        running = false
+        cancelAnimationFrame(raf)
+      }
     })
     io.observe(cv)
     onBeforeUnmount(() => io.disconnect())
