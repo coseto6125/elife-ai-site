@@ -63,7 +63,7 @@ export const services: Service[] = [
     id: 'fullstack',
     index: '02',
     title: '全端網站與系統開發',
-    summary: '從前端介面到後端服務一手包辦，好看、好用，而且撐得住量。',
+    summary: '從架站、網域、前端介面到後端服務完整一條龍，好看、好用，而且撐得住量。',
     bullets: [
       'Vue 3 / Next.js / TypeScript 前端，響應式、體驗流暢',
       'FastAPI / Sanic 非同步後端，PostgreSQL / pgvector 資料層',
@@ -263,10 +263,10 @@ export const contacts: Contact[] = [
 ]
 
 export const stats = [
-  { value: '14', label: '程式碼圖譜支援語言' },
-  { value: '前+後', label: '全端一手包辦' },
   { value: '20+', label: '生產級專案上線' },
+  { value: '40–60%', label: 'AI 客服回應加速' },
   { value: '99.7%', label: '資料抽取準確率' },
+  { value: '7×24', label: '穩定維運不斷線' },
 ]
 
 export const techStack = [
