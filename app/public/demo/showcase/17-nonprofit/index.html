@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>暖光協會 Lumière — 讓每個孩子都有明天</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;800;900&family=Onest:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=Iansui&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2c2118;
+  --ink-soft:#5a4a3b;
+  --cream:#fbf4e9;
+  --cream-2:#f5ead7;
+  --paper:#fffaf2;
+  --sun:#f5a623;
+  --sun-deep:#e08515;
+  --coral:#ee6c4d;
+  --coral-deep:#d9482a;
+  --leaf:#3a8a6e;
+  --leaf-deep:#2a6b54;
+  --sky:#7fb5d6;
+  --plum:#6b4a6b;
+  --line:rgba(44,33,24,.12);
+  --shadow:rgba(80,55,30,.16);
+  --display:"Gabarito","Iansui",system-ui,sans-serif;
+  --sans:"Onest","Iansui",system-ui,sans-serif;
+  --serif:"Lora","Iansui",serif;
+  --cjk:"Iansui","Onest",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.cjk{font-family:var(--cjk)}
+h1,h2,h3,h4,.display{font-family:var(--display);line-height:1.08;letter-spacing:-.01em}
+.serif{font-family:var(--serif)}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+.eyebrow{font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:var(--coral-deep)}
+.sec{padding:96px 0}
+@media(max-width:720px){.sec{padding:64px 0}}
+
+/* soft paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.4;
+  background-image:radial-gradient(circle at 30% 20%,rgba(245,166,35,.05),transparent 60%),radial-gradient(circle at 80% 70%,rgba(238,108,77,.05),transparent 55%);
+}
+
+/* ---------- NAV ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;transition:.3s;padding:18px 0}
+nav.scrolled{background:rgba(251,244,233,.86);backdrop-filter:blur(14px);box-shadow:0 6px 26px -18px var(--shadow);padding:12px 0}
+.nav-in{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.28rem}
+.logo .mark{width:38px;height:38px;flex:none}
+.nav-links{display:flex;gap:30px;align-items:center;font-weight:600;font-size:.95rem}
+.nav-links a{opacity:.82;transition:.2s}
+.nav-links a:hover{opacity:1;color:var(--coral-deep)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;border-radius:999px;transition:transform .2s,box-shadow .2s;font-family:var(--display)}
+.btn-pri{background:var(--coral);color:#fff;padding:12px 24px;box-shadow:0 12px 26px -12px rgba(217,72,42,.7)}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 18px 32px -12px rgba(217,72,42,.8)}
+.btn-ghost{border:1.5px solid var(--ink);padding:11px 22px}
+.btn-ghost:hover{background:var(--ink);color:var(--cream)}
+.nav-toggle{display:none;font-size:1.5rem}
+@media(max-width:880px){.nav-links{display:none}.nav-toggle{display:block}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:150px 0 70px;overflow:hidden}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center;position:relative;z-index:2}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:800}
+.hero h1 .hl{color:var(--coral-deep);position:relative}
+.hero h1 .hl svg{position:absolute;left:-2%;bottom:-14px;width:104%}
+.hero p.lead{font-size:1.18rem;color:var(--ink-soft);margin:26px 0 32px;max-width:30em}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-trust{margin-top:34px;display:flex;align-items:center;gap:16px;font-size:.9rem;color:var(--ink-soft)}
+.avatars{display:flex}
+.avatars span{width:38px;height:38px;border-radius:50%;border:3px solid var(--cream);margin-left:-12px;display:grid;place-items:center;font-size:1.1rem}
+.avatars span:first-child{margin-left:0}
+
+/* hero illustration */
+.hero-art{position:relative}
+.hero-card{background:var(--paper);border-radius:26px;padding:22px;box-shadow:0 30px 60px -28px var(--shadow);border:1px solid var(--line);position:relative;z-index:2}
+.scene{border-radius:18px;overflow:hidden;display:block;width:100%}
+.float-badge{position:absolute;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:0 18px 36px -18px var(--shadow);display:flex;align-items:center;gap:10px;font-weight:700;z-index:5;border:1px solid var(--line)}
+.fb-1{top:-18px;right:-12px;animation:floaty 5s ease-in-out infinite}
+.fb-2{bottom:30px;left:-26px;animation:floaty 6s ease-in-out infinite .8s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.fb-ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:1.1rem;flex:none}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:40px}.hero{padding:128px 0 50px}.float-badge{display:none}}
+
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--cream-2);overflow:hidden;padding:16px 0;margin-top:50px}
+.marquee-track{display:flex;gap:60px;white-space:nowrap;animation:scrollx 28s linear infinite;font-family:var(--display);font-weight:700;color:var(--ink-soft);opacity:.7;font-size:1.05rem}
+.marquee-track span{display:inline-flex;align-items:center;gap:60px}
+@keyframes scrollx{to{transform:translateX(-50%)}}
+
+/* ---------- SECTION HEADERS ---------- */
+.sec-head{max-width:640px;margin:0 auto 54px;text-align:center}
+.sec-head h2{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;margin:14px 0}
+.sec-head p{color:var(--ink-soft);font-size:1.08rem}
+
+/* ---------- IMPACT STATS ---------- */
+.impact{background:var(--ink);color:var(--cream);position:relative;overflow:hidden}
+.impact .eyebrow{color:var(--sun)}
+.impact .sec-head h2{color:var(--cream)}
+.impact .sec-head p{color:rgba(251,244,233,.7)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stat{text-align:center;padding:30px 16px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.stat .num{font-family:var(--display);font-weight:900;font-size:clamp(2.4rem,5vw,3.4rem);color:var(--sun);line-height:1}
+.stat .lbl{margin-top:10px;font-size:.95rem;color:rgba(251,244,233,.78)}
+@media(max-width:720px){.stats{grid-template-columns:1fr 1fr;gap:16px}}
+
+/* ---------- PROGRESS / FUNDRAISE ---------- */
+.fund{background:linear-gradient(160deg,var(--cream-2),var(--cream))}
+.fund-card{background:var(--paper);border-radius:28px;padding:42px;box-shadow:0 30px 70px -36px var(--shadow);border:1px solid var(--line);max-width:860px;margin:0 auto}
+.fund-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:22px}
+.fund-top h3{font-size:1.7rem;font-weight:800}
+.fund-raised{font-family:var(--display);font-weight:900;font-size:2.4rem;color:var(--leaf-deep);line-height:1}
+.fund-goal{color:var(--ink-soft);font-size:.95rem}
+.bar{height:18px;border-radius:999px;background:var(--cream-2);overflow:hidden;border:1px solid var(--line)}
+.bar > i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--sun),var(--coral));transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+.fund-meta{display:flex;justify-content:space-between;margin-top:14px;font-size:.94rem;color:var(--ink-soft);flex-wrap:wrap;gap:10px}
+.fund-meta b{color:var(--ink)}
+
+/* ---------- DONATE WIDGET ---------- */
+.donate{background:var(--ink);color:var(--cream)}
+.donate .eyebrow{color:var(--sun)}
+.donate-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:center}
+.donate-copy h2{font-size:clamp(2rem,4.5vw,3rem);color:var(--cream);font-weight:800;margin-bottom:18px}
+.donate-copy p{color:rgba(251,244,233,.78);font-size:1.06rem;margin-bottom:24px}
+.donate-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.donate-list li{display:flex;gap:12px;align-items:flex-start;color:rgba(251,244,233,.9)}
+.donate-list .ck{width:26px;height:26px;border-radius:50%;background:var(--leaf);display:grid;place-items:center;flex:none;color:#fff;font-weight:800;font-size:.85rem}
+.widget{background:var(--paper);color:var(--ink);border-radius:26px;padding:32px;box-shadow:0 40px 80px -30px rgba(0,0,0,.5)}
+.toggle{display:flex;background:var(--cream-2);border-radius:999px;padding:5px;margin-bottom:22px}
+.toggle button{flex:1;padding:11px;border-radius:999px;font-weight:700;font-family:var(--display);color:var(--ink-soft);transition:.25s}
+.toggle button.on{background:var(--coral);color:#fff;box-shadow:0 8px 18px -8px rgba(217,72,42,.7)}
+.amt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.amt{padding:16px 8px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font-weight:800;font-family:var(--display);font-size:1.1rem;transition:.2s;text-align:center}
+.amt:hover{border-color:var(--coral)}
+.amt.on{border-color:var(--coral);background:#fff6ee;color:var(--coral-deep);box-shadow:0 6px 16px -8px rgba(238,108,77,.5)}
+.amt small{display:block;font-family:var(--sans);font-weight:600;font-size:.7rem;color:var(--ink-soft);margin-top:2px}
+.custom-wrap{position:relative;margin-bottom:18px}
+.custom-wrap span{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--ink-soft)}
+.custom-wrap input{width:100%;padding:15px 16px 15px 40px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font-size:1.05rem;font-weight:700;outline:none;transition:.2s}
+.custom-wrap input:focus{border-color:var(--coral)}
+.provides{background:linear-gradient(135deg,#fff6ee,#fdeede);border:1px dashed var(--coral);border-radius:14px;padding:14px 16px;font-size:.95rem;margin-bottom:20px;display:flex;gap:10px;align-items:center}
+.provides .pi{font-size:1.5rem}
+.provides b{color:var(--coral-deep)}
+.donate-btn{width:100%;background:var(--coral);color:#fff;padding:16px;border-radius:14px;font-weight:800;font-family:var(--display);font-size:1.12rem;box-shadow:0 14px 28px -12px rgba(217,72,42,.7);transition:transform .2s}
+.donate-btn:hover{transform:translateY(-2px)}
+.donate-note{text-align:center;font-size:.8rem;color:var(--ink-soft);margin-top:12px}
+.thanks{text-align:center;padding:18px 6px}
+.thanks .heart{width:80px;height:80px;margin:0 auto 14px;animation:pop .6s cubic-bezier(.2,1.3,.5,1)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.thanks h3{font-size:1.6rem;font-weight:800;margin-bottom:8px}
+.thanks p{color:var(--ink-soft)}
+.thanks .resum{margin-top:18px;color:var(--coral-deep);font-weight:700;text-decoration:underline;font-size:.92rem}
+@media(max-width:880px){.donate-grid{grid-template-columns:1fr;gap:34px}}
+
+/* ---------- PROGRAMS ---------- */
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:38px}
+.tab{padding:10px 22px;border-radius:999px;border:1.5px solid var(--line);font-weight:700;font-family:var(--display);background:var(--paper);transition:.2s}
+.tab:hover{border-color:var(--coral)}
+.tab.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.prog{background:var(--paper);border-radius:22px;overflow:hidden;border:1px solid var(--line);box-shadow:0 18px 44px -30px var(--shadow);transition:transform .3s,box-shadow .3s;opacity:0;transform:translateY(18px)}
+.prog.show{opacity:1;transform:none}
+.prog:hover{transform:translateY(-6px);box-shadow:0 30px 56px -30px var(--shadow)}
+.prog-top{height:150px;position:relative;display:grid;place-items:center}
+.prog-tag{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.92);padding:5px 12px;border-radius:999px;font-size:.74rem;font-weight:800;font-family:var(--display)}
+.prog-body{padding:22px}
+.prog-body h3{font-size:1.28rem;font-weight:800;margin-bottom:8px}
+.prog-body p{color:var(--ink-soft);font-size:.95rem;margin-bottom:14px}
+.prog-link{font-weight:800;font-family:var(--display);color:var(--coral-deep);display:inline-flex;gap:6px;align-items:center;transition:gap .2s}
+.prog:hover .prog-link{gap:11px}
+@media(max-width:880px){.prog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.prog-grid{grid-template-columns:1fr}}
+
+/* ---------- STORY ---------- */
+.story{background:linear-gradient(160deg,var(--cream-2),var(--cream))}
+.story-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:50px;align-items:center}
+.story-art{border-radius:26px;overflow:hidden;box-shadow:0 30px 60px -30px var(--shadow);border:6px solid #fff}
+.story-q{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2rem);line-height:1.45;font-style:italic;color:var(--ink);margin-bottom:22px}
+.story-who{display:flex;align-items:center;gap:14px}
+.story-who .ava{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.6rem;flex:none}
+.story-who b{display:block;font-family:var(--display);font-size:1.05rem}
+.story-who span{font-size:.9rem;color:var(--ink-soft)}
+@media(max-width:880px){.story-grid{grid-template-columns:1fr;gap:30px}}
+
+/* ---------- TESTIMONIAL CARDS ---------- */
+.voices{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.voice{background:var(--paper);border-radius:20px;padding:26px;border:1px solid var(--line);box-shadow:0 16px 40px -30px var(--shadow)}
+.voice .stars{color:var(--sun);margin-bottom:12px;letter-spacing:2px}
+.voice p{font-size:.98rem;color:var(--ink-soft);margin-bottom:18px}
+.voice .by{display:flex;align-items:center;gap:12px}
+.voice .by .ava{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;flex:none}
+.voice .by b{font-family:var(--display);font-size:.96rem;display:block}
+.voice .by span{font-size:.82rem;color:var(--ink-soft)}
+@media(max-width:880px){.voices{grid-template-columns:1fr}}
+
+/* ---------- SIGNUP ---------- */
+.signup{background:var(--coral);color:#fff;position:relative;overflow:hidden}
+.signup-in{position:relative;z-index:2;max-width:640px;margin:0 auto;text-align:center}
+.signup h2{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;color:#fff;margin-bottom:14px}
+.signup p{color:rgba(255,255,255,.9);font-size:1.06rem;margin-bottom:30px}
+.signup-form{display:flex;gap:12px;background:#fff;border-radius:16px;padding:8px;box-shadow:0 24px 50px -24px rgba(0,0,0,.4);flex-wrap:wrap}
+.signup-form input{flex:1;min-width:180px;border:none;padding:14px 16px;font-size:1rem;border-radius:12px;outline:none;color:var(--ink);background:transparent}
+.signup-form button{background:var(--ink);color:#fff;padding:14px 28px;border-radius:12px;font-weight:800;font-family:var(--display);transition:transform .2s}
+.signup-form button:hover{transform:translateY(-2px)}
+.signup .err{color:#fff3e0;font-weight:700;margin-top:12px;min-height:1.2em;text-align:left;padding-left:12px;display:none}
+.signup-ok{display:none;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);border-radius:16px;padding:26px;animation:pop .5s}
+.signup-ok b{font-size:1.3rem;font-family:var(--display)}
+.signup-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:.85rem;color:rgba(255,255,255,.85)}
+.signup-tags span{background:rgba(255,255,255,.16);padding:5px 14px;border-radius:999px}
+
+/* ---------- FOOTER ---------- */
+footer{background:var(--ink);color:rgba(251,244,233,.7);padding:64px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;margin-bottom:46px}
+.foot-grid h4{color:var(--cream);font-family:var(--display);font-weight:800;margin-bottom:16px;font-size:1.02rem}
+.foot-grid a{display:block;padding:5px 0;transition:.2s}
+.foot-grid a:hover{color:var(--sun)}
+.foot-brand .logo{color:var(--cream);margin-bottom:14px}
+.foot-brand p{max-width:28em;font-size:.94rem;line-height:1.7}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:.85rem}
+.foot-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:7px 14px;border-radius:999px;color:var(--cream);font-weight:600}
+.foot-badge b{color:var(--sun)}
+@media(max-width:880px){.foot-grid{grid-template-columns:1fr 1fr}}
+
+/* demo note */
+.demo-note{position:fixed;bottom:14px;left:14px;z-index:1200;background:rgba(44,33,24,.92);color:var(--cream);font-size:.72rem;padding:7px 13px;border-radius:999px;font-weight:600;box-shadow:0 8px 22px -10px rgba(0,0,0,.5)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--leaf-deep);color:#fff;padding:14px 22px;border-radius:14px;font-weight:700;box-shadow:0 18px 40px -16px rgba(0,0,0,.4);z-index:2000;transition:transform .4s cubic-bezier(.2,1.2,.4,1);font-family:var(--display)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="demo-note">示範用途 · Demo Template</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo">
+      <svg class="mark" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="22" fill="#f5a623"/>
+        <path d="M24 12c5 4 9 8 9 14a9 9 0 1 1-18 0c0-6 4-10 9-14z" fill="#ee6c4d"/>
+        <circle cx="24" cy="27" r="4.5" fill="#fffaf2"/>
+      </svg>
+      暖光協會
+    </a>
+    <div class="nav-links">
+      <a href="#impact">我們的影響</a>
+      <a href="#programs">服務計畫</a>
+      <a href="#story">真實故事</a>
+      <a href="#join">加入我們</a>
+      <a href="#donate" class="btn btn-pri">捐款支持</a>
+    </div>
+    <button class="nav-toggle" onclick="document.querySelector('#donate').scrollIntoView({behavior:'smooth'})">❤</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-blob" style="width:420px;height:420px;background:#f5a623;top:-120px;left:-120px"></div>
+  <div class="hero-blob" style="width:340px;height:340px;background:#ee6c4d;bottom:-100px;right:-80px"></div>
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <span class="eyebrow">為偏鄉孩子點一盞燈</span>
+      <h1>讓每個孩子<br>都有<span class="hl">明天<svg viewBox="0 0 200 20" fill="none"><path d="M3 14c40-10 120-12 194-6" stroke="#ee6c4d" stroke-width="6" stroke-linecap="round"/></svg></span>。</h1>
+      <p class="lead cjk">暖光協會陪伴台灣偏鄉與弱勢家庭的孩子，提供課後輔導、營養支持與心理陪伴。每一份捐款，都是孩子人生裡一道照進來的光。</p>
+      <div class="hero-cta">
+        <a href="#donate" class="btn btn-pri">立即捐款 →</a>
+        <a href="#story" class="btn btn-ghost">看他們的故事</a>
+      </div>
+      <div class="hero-trust">
+        <div class="avatars">
+          <span style="background:#ffd9a0">👧</span>
+          <span style="background:#ffc4b3">👦</span>
+          <span style="background:#bfe3d4">🧒</span>
+          <span style="background:#cfe3f0">👶</span>
+        </div>
+        <span class="cjk">已有 <b style="color:var(--ink)">8,240+</b> 位善心夥伴與我們同行</span>
+      </div>
+    </div>
+    <div class="hero-art reveal">
+      <div class="hero-card">
+        <svg class="scene" viewBox="0 0 480 360" role="img" aria-label="社區孩子在陽光下">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6b0"/><stop offset="1" stop-color="#ffd28a"/></linearGradient>
+            <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ed8b6"/><stop offset="1" stop-color="#6fbf93"/></linearGradient>
+          </defs>
+          <rect width="480" height="360" fill="url(#sky)"/>
+          <circle cx="380" cy="80" r="46" fill="#fff3d0"/><circle cx="380" cy="80" r="34" fill="#ffd87a"/>
+          <g stroke="#ffd87a" stroke-width="4" stroke-linecap="round"><path d="M380 16v-12M380 156v12M448 80h12M300 80h-12M428 32l8-8M324 128l-8 8M428 128l8 8M324 32l-8-8"/></g>
+          <!-- hills -->
+          <path d="M0 250 Q120 200 260 240 T480 230 V360 H0Z" fill="#bfe6cb"/>
+          <path d="M0 290 Q140 250 300 285 T480 280 V360 H0Z" fill="url(#ground)"/>
+          <!-- tree -->
+          <rect x="64" y="220" width="14" height="70" rx="6" fill="#9a6b3f"/>
+          <circle cx="71" cy="205" r="36" fill="#3a8a6e"/><circle cx="46" cy="220" r="24" fill="#4d9d80"/><circle cx="96" cy="222" r="24" fill="#4d9d80"/>
+          <!-- kids -->
+          <g transform="translate(200 250)">
+            <circle cx="0" cy="-44" r="16" fill="#ffd9a0"/><rect x="-14" y="-30" width="28" height="46" rx="13" fill="#ee6c4d"/>
+            <circle cx="-5" cy="-46" r="2.2" fill="#2c2118"/><circle cx="5" cy="-46" r="2.2" fill="#2c2118"/><path d="M-5 -38q5 5 10 0" stroke="#2c2118" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(252 256)">
+            <circle cx="0" cy="-40" r="14" fill="#f7c8a8"/><rect x="-12" y="-28" width="24" height="42" rx="11" fill="#7fb5d6"/>
+            <circle cx="-4" cy="-42" r="2" fill="#2c2118"/><circle cx="4" cy="-42" r="2" fill="#2c2118"/><path d="M-4 -35q4 4 8 0" stroke="#2c2118" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(300 262)">
+            <circle cx="0" cy="-38" r="13" fill="#ffd9a0"/><rect x="-11" y="-26" width="22" height="40" rx="10" fill="#f5a623"/>
+            <circle cx="-4" cy="-40" r="2" fill="#2c2118"/><circle cx="4" cy="-40" r="2" fill="#2c2118"/><path d="M-4 -33q4 4 8 0" stroke="#2c2118" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- birds -->
+          <g stroke="#d9482a" stroke-width="3" fill="none" stroke-linecap="round"><path d="M120 70q8-8 16 0q8-8 16 0"/><path d="M170 100q6-6 12 0q6-6 12 0"/></g>
+        </svg>
+      </div>
+      <div class="float-badge fb-1"><div class="fb-ico" style="background:#fdeede">🍱</div><div><div style="font-size:1.05rem">3,600 份</div><div style="font-size:.74rem;font-weight:600;color:var(--ink-soft)">每月供餐</div></div></div>
+      <div class="float-badge fb-2"><div class="fb-ico" style="background:#e3f3ea">📚</div><div><div style="font-size:1.05rem">62 個</div><div style="font-size:.74rem;font-weight:600;color:var(--ink-soft)">陪讀據點</div></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span><b>陪伴</b> · <b>教育</b> · <b>溫飽</b> · <b>希望</b> · <b>尊嚴</b> · <b>愛</b> · <b>陪伴</b> · <b>教育</b> · <b>溫飽</b> · <b>希望</b> · <b>尊嚴</b> · <b>愛</b> · </span>
+    <span aria-hidden="true"><b>陪伴</b> · <b>教育</b> · <b>溫飽</b> · <b>希望</b> · <b>尊嚴</b> · <b>愛</b> · <b>陪伴</b> · <b>教育</b> · <b>溫飽</b> · <b>希望</b> · <b>尊嚴</b> · <b>愛</b> · </span>
+  </div>
+</div>
+
+<!-- IMPACT STATS -->
+<section class="impact sec" id="impact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">過去一年，我們一起做到</span>
+      <h2>數字背後，是一個個被接住的人生</h2>
+      <p class="cjk">這些不只是統計，是 2,800 個孩子真實的成長與笑容。</p>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><div class="num" data-count="2841" data-suffix="">0</div><div class="lbl cjk">受助孩子人數</div></div>
+      <div class="stat reveal"><div class="num" data-count="186420" data-suffix="">0</div><div class="lbl cjk">提供營養餐食（份）</div></div>
+      <div class="stat reveal"><div class="num" data-count="62" data-suffix="">0</div><div class="lbl cjk">偏鄉陪讀據點</div></div>
+      <div class="stat reveal"><div class="num" data-count="94" data-suffix="%">0</div><div class="lbl cjk">孩子順利升學比例</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDRAISE PROGRESS -->
+<section class="fund sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">2026 冬季募款計畫</span>
+      <h2>「溫暖過冬」緊急募款</h2>
+      <p class="cjk">為山區 12 個據點的孩子募集冬衣、暖氣與寒假供餐。我們離目標只差最後一哩路。</p>
+    </div>
+    <div class="fund-card reveal">
+      <div class="fund-top">
+        <div>
+          <h3 class="cjk">溫暖過冬募款</h3>
+          <div class="fund-goal cjk">目標 NT$ <span id="goalTxt">2,000,000</span></div>
+        </div>
+        <div style="text-align:right">
+          <div class="fund-raised">NT$ <span id="raisedTxt">0</span></div>
+          <div class="fund-goal cjk">已募得</div>
+        </div>
+      </div>
+      <div class="bar"><i id="fundBar" data-pct="83"></i></div>
+      <div class="fund-meta">
+        <span class="cjk">已達成 <b id="pctTxt">0%</b></span>
+        <span class="cjk">👥 <b id="donorTxt">0</b> 位捐款人</span>
+        <span class="cjk">⏳ 距結束剩 <b>18</b> 天</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE WIDGET -->
+<section class="donate sec" id="donate">
+  <div class="wrap donate-grid">
+    <div class="donate-copy reveal">
+      <span class="eyebrow">你的善意，立刻看見改變</span>
+      <h2>一筆捐款，<br>一個被照亮的明天</h2>
+      <p class="cjk">100% 的捐款都會用於孩子的照顧與教育。我們每季公開財務報告，讓你清楚看見每一塊錢去了哪裡。</p>
+      <ul class="donate-list cjk">
+        <li><span class="ck">✓</span><span>定期定額，讓孩子的陪伴不中斷</span></li>
+        <li><span class="ck">✓</span><span>捐款收據可全額抵稅</span></li>
+        <li><span class="ck">✓</span><span>每月收到孩子的成長近況與信件</span></li>
+      </ul>
+    </div>
+
+    <div class="widget reveal">
+      <div id="formArea">
+        <div class="toggle">
+          <button id="tOnce" class="on" onclick="setFreq('once')">單次捐款</button>
+          <button id="tMonthly" onclick="setFreq('monthly')">每月定額</button>
+        </div>
+        <div class="amt-grid" id="amtGrid">
+          <button class="amt" data-amt="300">$300<small>一日溫飽</small></button>
+          <button class="amt on" data-amt="500">$500<small>一週午餐</small></button>
+          <button class="amt" data-amt="1000">$1,000<small>課輔教材</small></button>
+          <button class="amt" data-amt="2000">$2,000<small>一月陪讀</small></button>
+          <button class="amt" data-amt="3600">$3,600<small>認養一童</small></button>
+          <button class="amt" data-amt="6000">$6,000<small>守護到底</small></button>
+        </div>
+        <div class="custom-wrap">
+          <span>NT$</span>
+          <input type="number" id="customAmt" placeholder="自訂金額" min="1" inputmode="numeric">
+        </div>
+        <div class="provides">
+          <span class="pi" id="provIco">🍱</span>
+          <div class="cjk">您的 <b id="provAmt">NT$500</b> <span id="provFreq"></span>可以提供 <b id="provTxt">一名孩子一週的營養午餐</b></div>
+        </div>
+        <button class="donate-btn" id="donateBtn" onclick="doDonate()">捐出 <span id="btnAmt">NT$500</span> ❤</button>
+        <div class="donate-note cjk">🔒 模擬付款流程 · 本頁為示範用途，不會真實扣款</div>
+      </div>
+
+      <div class="thanks" id="thanksArea" style="display:none">
+        <svg class="heart" viewBox="0 0 100 100"><path d="M50 86C20 64 8 48 8 32a22 22 0 0 1 42-9 22 22 0 0 1 42 9c0 16-12 32-42 54z" fill="#ee6c4d"/></svg>
+        <h3 class="cjk">謝謝你，<span id="tkAmt"></span></h3>
+        <p class="cjk" id="tkMsg"></p>
+        <a class="resum" onclick="resetDonate()">再捐一次</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="sec" id="programs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">我們的服務計畫</span>
+      <h2>從一頓飯，到一整個未來</h2>
+      <p class="cjk">針對孩子不同階段的需要，我們提供完整而長期的陪伴。</p>
+    </div>
+    <div class="tabs reveal" id="tabs">
+      <button class="tab on" data-f="all">全部</button>
+      <button class="tab" data-f="edu">教育</button>
+      <button class="tab" data-f="care">照顧</button>
+      <button class="tab" data-f="comm">社區</button>
+    </div>
+    <div class="prog-grid" id="progGrid"></div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story sec" id="story">
+  <div class="wrap story-grid">
+    <div class="story-art reveal">
+      <svg viewBox="0 0 400 440" role="img" aria-label="小宇的肖像">
+        <defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe1a8"/><stop offset="1" stop-color="#ffc28a"/></linearGradient></defs>
+        <rect width="400" height="440" fill="url(#bg2)"/>
+        <circle cx="200" cy="300" r="150" fill="#ffd28a"/>
+        <g transform="translate(200 240)">
+          <ellipse cx="0" cy="150" rx="110" ry="80" fill="#3a8a6e"/>
+          <rect x="-70" y="40" width="140" height="120" rx="40" fill="#ee6c4d"/>
+          <circle cx="0" cy="-10" r="70" fill="#ffd9a0"/>
+          <path d="M-70 -20a70 70 0 0 1 140 0q0-60-70-60t-70 60z" fill="#3a2a1c"/>
+          <circle cx="-26" cy="-12" r="6" fill="#2c2118"/><circle cx="26" cy="-12" r="6" fill="#2c2118"/>
+          <circle cx="-40" cy="12" r="10" fill="#ffb3a0" opacity=".6"/><circle cx="40" cy="12" r="10" fill="#ffb3a0" opacity=".6"/>
+          <path d="M-22 24q22 24 44 0" stroke="#2c2118" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">一個真實的孩子</span>
+      <div class="story-q cjk">「以前放學沒地方去，肚子餓就忍著。是陪讀班的老師教我寫功課、陪我吃晚餐。現在我想當老師，去陪其他像我一樣的孩子。」</div>
+      <div class="story-who">
+        <div class="ava" style="background:#ffd9a0">🧒</div>
+        <div>
+          <b class="cjk">小宇，12 歲</b>
+          <span class="cjk">南投山區「螢火蟲陪讀班」第三年學員</span>
+        </div>
+      </div>
+      <a href="#donate" class="btn btn-pri" style="margin-top:28px">成為下一個孩子的光 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">捐款人怎麼說</span>
+      <h2>因為相信，所以同行</h2>
+    </div>
+    <div class="voices">
+      <div class="voice reveal">
+        <div class="stars">★★★★★</div>
+        <p class="cjk">「每個月看到孩子寄來的畫和信，是我這一年最暖心的事。錢花在刀口上，看得見。」</p>
+        <div class="by"><div class="ava" style="background:#fdeede">👩</div><div><b class="cjk">林小姐</b><span class="cjk">定期定額捐款人 · 2 年</span></div></div>
+      </div>
+      <div class="voice reveal">
+        <div class="stars">★★★★★</div>
+        <p class="cjk">「公司一起認養了五個孩子。財報透明、聯絡用心，是我合作過最值得信賴的團隊。」</p>
+        <div class="by"><div class="ava" style="background:#e3f3ea">👨</div><div><b class="cjk">陳先生</b><span class="cjk">企業夥伴 · 永續部門</span></div></div>
+      </div>
+      <div class="voice reveal">
+        <div class="stars">★★★★★</div>
+        <p class="cjk">「當志工的那個夏天改變了我。孩子的笑容，比任何回報都珍貴。」</p>
+        <div class="by"><div class="ava" style="background:#cfe3f0">🧑</div><div><b class="cjk">黃同學</b><span class="cjk">暑期陪讀志工</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNUP -->
+<section class="signup sec" id="join">
+  <div class="hero-blob" style="width:300px;height:300px;background:#fff;opacity:.12;top:-80px;left:8%"></div>
+  <div class="hero-blob" style="width:240px;height:240px;background:#fff;opacity:.1;bottom:-60px;right:10%"></div>
+  <div class="wrap signup-in reveal">
+    <span class="eyebrow" style="color:#fff3e0">加入暖光行動</span>
+    <h2>一起，成為孩子的後盾</h2>
+    <p class="cjk">留下信箱，接收孩子的成長故事、志工招募與活動消息。我們不會寄送垃圾信。</p>
+    <form class="signup-form" id="signupForm" novalidate>
+      <input type="text" id="suName" placeholder="你的名字" aria-label="名字">
+      <input type="email" id="suEmail" placeholder="電子信箱" aria-label="電子信箱">
+      <button type="submit">訂閱電子報</button>
+    </form>
+    <div class="err" id="suErr"></div>
+    <div class="signup-ok" id="suOk">
+      <b class="cjk">🎉 歡迎加入暖光！</b>
+      <p class="cjk" style="margin-top:8px">確認信已寄出（模擬），期待與你一起點亮更多孩子的明天。</p>
+    </div>
+    <div class="signup-tags">
+      <span class="cjk">📩 每月一封故事信</span>
+      <span class="cjk">🙋 志工優先通知</span>
+      <span class="cjk">🚫 隨時可取消</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="logo">
+          <svg class="mark" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="#f5a623"/><path d="M24 12c5 4 9 8 9 14a9 9 0 1 1-18 0c0-6 4-10 9-14z" fill="#ee6c4d"/><circle cx="24" cy="27" r="4.5" fill="#fffaf2"/></svg>
+          暖光協會
+        </a>
+        <p class="cjk">暖光社會福利協會是一個虛構的非營利組織（示範內容），致力陪伴台灣偏鄉與弱勢家庭的孩子，讓教育與溫飽不再是奢求。</p>
+      </div>
+      <div>
+        <h4 class="cjk">關於我們</h4>
+        <a href="#impact" class="cjk">我們的影響</a>
+        <a href="#programs" class="cjk">服務計畫</a>
+        <a href="#story" class="cjk">真實故事</a>
+        <a href="#" class="cjk">財務報告</a>
+      </div>
+      <div>
+        <h4 class="cjk">支持方式</h4>
+        <a href="#donate" class="cjk">線上捐款</a>
+        <a href="#join" class="cjk">成為志工</a>
+        <a href="#" class="cjk">企業合作</a>
+        <a href="#" class="cjk">遺產捐贈</a>
+      </div>
+      <div>
+        <h4 class="cjk">聯絡</h4>
+        <a href="#" class="cjk">service@lumiere.org.tw</a>
+        <a href="#" class="cjk">02-2345-6789</a>
+        <a href="#" class="cjk">台北市中正區暖光路 1 號</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="cjk">© 2026 暖光社會福利協會（示範用途）· 統一編號 00000000</span>
+      <a class="foot-badge" href="https://service.e-life-ai.com" target="_blank" rel="noopener">Template by <b>e-life-ai</b> · service.e-life-ai.com</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">已加入捐款 ❤</div>
+
+<script>
+// ---------- NAV scroll ----------
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>30));
+
+// ---------- Reveal ----------
+const ro=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// ---------- Count-up ----------
+function animCount(el){
+  const target=+el.dataset.count, suf=el.dataset.suffix||'', dur=1600, t0=performance.now();
+  function step(now){
+    const p=Math.min((now-t0)/dur,1), e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e).toLocaleString('en-US')+suf;
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const co=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){animCount(e.target);co.unobserve(e.target)}})},{threshold:.5});
+document.querySelectorAll('.num[data-count]').forEach(el=>co.observe(el));
+
+// ---------- Fundraise bar ----------
+const goal=2000000, donors=1473;
+const fundBar=document.getElementById('fundBar');
+const fo=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+  const pct=+fundBar.dataset.pct;
+  requestAnimationFrame(()=>fundBar.style.width=pct+'%');
+  const raised=Math.round(goal*pct/100), t0=performance.now();
+  (function tick(now){const p=Math.min((now-t0)/1600,1),e=1-Math.pow(1-p,3);
+    document.getElementById('raisedTxt').textContent=Math.round(raised*e).toLocaleString('en-US');
+    document.getElementById('pctTxt').textContent=Math.round(pct*e)+'%';
+    document.getElementById('donorTxt').textContent=Math.round(donors*e).toLocaleString('en-US');
+    if(p<1)requestAnimationFrame(tick);})(performance.now());
+  fo.unobserve(e.target);
+}})},{threshold:.4});
+fo.observe(fundBar);
+
+// ---------- Donate widget ----------
+let freq='once', amount=500;
+const tiers=[
+  {max:300, ico:'🍚', txt:'一名孩子一天的溫飽'},
+  {max:500, ico:'🍱', txt:'一名孩子一週的營養午餐'},
+  {max:1000,ico:'📚', txt:'一名孩子整學期的課輔教材'},
+  {max:2000,ico:'✏️', txt:'一名孩子一個月的陪讀課程'},
+  {max:3600,ico:'🧒', txt:'認養一名孩子一個月的全方位照顧'},
+  {max:Infinity,ico:'🌟', txt:'守護多名孩子，給他們長久的陪伴'}
+];
+function fmt(n){return 'NT$'+(+n).toLocaleString('en-US')}
+function freqTxt(){return freq==='monthly'?'每月':''}
+function updateProvides(){
+  const tier=tiers.find(t=>amount<=t.max)||tiers[tiers.length-1];
+  document.getElementById('provIco').textContent=tier.ico;
+  document.getElementById('provTxt').textContent=tier.txt;
+  document.getElementById('provAmt').textContent=fmt(amount);
+  document.getElementById('provFreq').textContent=freq==='monthly'?'每月 ':'';
+  document.getElementById('btnAmt').textContent=fmt(amount)+(freq==='monthly'?' / 月':'');
+}
+function setFreq(f){
+  freq=f;
+  document.getElementById('tOnce').classList.toggle('on',f==='once');
+  document.getElementById('tMonthly').classList.toggle('on',f==='monthly');
+  updateProvides();
+}
+document.querySelectorAll('.amt').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.amt').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  amount=+b.dataset.amt;
+  document.getElementById('customAmt').value='';
+  updateProvides();
+}));
+document.getElementById('customAmt').addEventListener('input',e=>{
+  const v=parseInt(e.target.value,10);
+  if(v>0){amount=v;document.querySelectorAll('.amt').forEach(x=>x.classList.remove('on'));updateProvides();}
+});
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function doDonate(){
+  if(!(amount>0)){showToast('請輸入有效金額');return;}
+  document.getElementById('formArea').style.display='none';
+  const ta=document.getElementById('thanksArea');
+  ta.style.display='block';
+  document.getElementById('tkAmt').textContent=fmt(amount)+(freq==='monthly'?'（每月）':'');
+  const tier=tiers.find(t=>amount<=t.max)||tiers[tiers.length-1];
+  document.getElementById('tkMsg').textContent='你的捐款將提供'+tier.txt+'。我們已寄出收據（模擬）到你的信箱。';
+  showToast('感謝你的 '+fmt(amount)+' 捐款 ❤');
+}
+function resetDonate(){
+  document.getElementById('thanksArea').style.display='none';
+  document.getElementById('formArea').style.display='block';
+}
+updateProvides();
+
+// ---------- Programs ----------
+const programs=[
+  {f:'edu', tag:'教育',ico:'📚',c:'#fdeede',h:'螢火蟲陪讀班',d:'課後一對一輔導與晚餐陪伴，讓孩子放學後有溫暖的去處與穩定的學習。'},
+  {f:'care',tag:'照顧',ico:'🍱',c:'#e3f3ea',h:'營養供餐計畫',d:'與在地店家合作，每日供應熱食，確保沒有孩子餓著肚子上學。'},
+  {f:'care',tag:'照顧',ico:'💛',c:'#fff0d6',h:'心理陪伴方案',d:'專業社工與心理師定期駐點，陪伴經歷創傷與失落的孩子重新站起來。'},
+  {f:'edu', tag:'教育',ico:'🎨',c:'#e7e0f0',h:'多元才藝啟蒙',d:'音樂、繪畫與運動課程，讓偏鄉孩子也有機會探索天賦、找到自信。'},
+  {f:'comm',tag:'社區',ico:'🏡',c:'#dcecf5',h:'家庭支持服務',d:'協助弱勢家長就業與資源連結，從根本改善孩子的成長環境。'},
+  {f:'comm',tag:'社區',ico:'🤝',c:'#ffe5dd',h:'社區志工網絡',d:'招募並培訓在地志工，建立長久陪伴孩子的社區守護圈。'}
+];
+const grid=document.getElementById('progGrid');
+function renderProg(filter){
+  grid.innerHTML='';
+  programs.filter(p=>filter==='all'||p.f===filter).forEach((p,i)=>{
+    const el=document.createElement('div');
+    el.className='prog';
+    el.innerHTML=`<div class="prog-top" style="background:${p.c}"><span class="prog-tag cjk">${p.tag}</span><span style="font-size:3.4rem">${p.ico}</span></div>
+      <div class="prog-body"><h3 class="cjk">${p.h}</h3><p class="cjk">${p.d}</p><a class="prog-link cjk" href="#donate">支持這項計畫 →</a></div>`;
+    grid.appendChild(el);
+    setTimeout(()=>el.classList.add('show'),60*i+40);
+  });
+}
+document.querySelectorAll('#tabs .tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  renderProg(t.dataset.f);
+}));
+renderProg('all');
+
+// ---------- Signup ----------
+document.getElementById('signupForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('suName').value.trim();
+  const email=document.getElementById('suEmail').value.trim();
+  const err=document.getElementById('suErr');
+  err.style.display='none';
+  if(!name){err.textContent='請輸入你的名字';err.style.display='block';return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='請輸入有效的電子信箱';err.style.display='block';return;}
+  document.getElementById('signupForm').style.display='none';
+  document.getElementById('suOk').style.display='block';
+});
+</script>
+</body>
+</html>
