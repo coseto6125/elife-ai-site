@@ -56,10 +56,10 @@
         <div class="arrow"><span class="note">自動取得 LINE 身分，免登入</span></div>
         <div class="node">訂單後端 API</div>
         <div class="flow-fan">
-          <!-- flat connector: straight lines only. preserveAspectRatio=none stretches the
-               horizontal bar harmlessly (a line stays a line); right-angle corners, no arrowheads. -->
+          <!-- straight-line connector (preserveAspectRatio=none only stretches straight lines, no distortion);
+               arrowheads are CSS triangles on each branch node top, so they never get stretched. -->
           <svg class="flow-conn" viewBox="0 0 660 52" preserveAspectRatio="none" aria-hidden="true">
-            <path class="ln" d="M330,0 V26 M110,26 H550 M110,26 V52 M330,26 V52 M550,26 V52" />
+            <path class="ln" d="M330,0 V26 M110,26 H550 M110,26 V47 M330,26 V47 M550,26 V47" />
           </svg>
           <div class="node">訂單資料庫</div>
           <div class="node">LINE 推播<span class="sub">訂單 / 發票通知</span></div>
