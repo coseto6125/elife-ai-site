@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>晴和診所 Serenity Clinic｜以安心為本的家庭醫療｜e-life-ai</title>
+<meta name="description" content="晴和診所 — 結合家醫、眼科、皮膚與身心照護的整合型診所。線上預約、專業團隊、溫柔守護每一次就診。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Figtree:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --teal-900:#0c3b3a;
+    --teal-700:#15605d;
+    --teal-500:#2a8d87;
+    --teal-300:#7cc4bd;
+    --sky:#9fd4e0;
+    --sage:#cfe6dd;
+    --cream:#f6f4ee;
+    --cream-2:#fbfaf6;
+    --ink:#1c2b2a;
+    --ink-soft:#4a5e5c;
+    --line:#e3e8e3;
+    --gold:#d9a86c;
+    --shadow:0 18px 50px -28px rgba(12,59,58,.45);
+    --shadow-sm:0 8px 24px -16px rgba(12,59,58,.4);
+    --r:22px;
+    --r-sm:14px;
+    --serif:"Noto Serif TC",serif;
+    --sans:"Figtree","Noto Sans TC",-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:var(--serif);letter-spacing:.01em}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block}
+  ::selection{background:var(--teal-300);color:var(--teal-900)}
+
+  /* ---------- bg decoration ---------- */
+  .blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.5;z-index:0;pointer-events:none}
+  .blob.a{width:520px;height:520px;background:radial-gradient(circle,#bfe5dd,transparent 70%);top:-160px;right:-120px}
+  .blob.b{width:460px;height:460px;background:radial-gradient(circle,#cfe6ef,transparent 70%);top:60%;left:-180px}
+
+  .wrap{max-width:1180px;margin-inline:auto;padding-inline:24px}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:60;
+    backdrop-filter:blur(14px);
+    background:rgba(246,244,238,.82);
+    border-block-end:1px solid rgba(227,232,227,.8);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding-block:16px;gap:16px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:700;font-size:1.18rem;color:var(--teal-900)}
+  .brand .mk{width:38px;height:38px;flex:none;display:grid;place-items:center;background:var(--teal-700);border-radius:12px;box-shadow:var(--shadow-sm)}
+  .brand small{display:block;font-family:var(--sans);font-weight:500;font-size:.62rem;letter-spacing:.22em;color:var(--teal-500);text-transform:uppercase}
+  .nav-links{display:flex;align-items:center;gap:30px;font-size:.93rem;font-weight:500;color:var(--ink-soft)}
+  .nav-links a{position:relative;transition:color .2s}
+  .nav-links a:hover{color:var(--teal-700)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--teal-500);border-radius:2px;transition:width .25s}
+  .nav-links a:hover::after{width:100%}
+  .btn{
+    font-family:var(--sans);font-weight:600;font-size:.92rem;
+    border:none;cursor:pointer;border-radius:999px;
+    padding-block:12px;padding-inline:24px;
+    transition:transform .2s,box-shadow .2s,background .2s;
+  }
+  .btn-primary{background:var(--teal-700);color:#fff;box-shadow:var(--shadow-sm)}
+  .btn-primary:hover{background:var(--teal-900);transform:translateY(-2px);box-shadow:var(--shadow)}
+  .btn-ghost{background:#fff;color:var(--teal-700);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--teal-300);transform:translateY(-2px)}
+  .nav-cta{display:flex;gap:10px}
+  .burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px}
+  .burger span{width:24px;height:2px;background:var(--teal-900);border-radius:2px}
+
+  /* ---------- hero ---------- */
+  header{position:relative;z-index:1;padding-block:78px 60px}
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);
+    padding-block:7px;padding-inline:14px;border-radius:999px;
+    font-size:.82rem;font-weight:600;color:var(--teal-700);
+    box-shadow:var(--shadow-sm);
+  }
+  .pill .dot{width:8px;height:8px;border-radius:50%;background:#3fb98f;box-shadow:0 0 0 4px rgba(63,185,143,.18)}
+  .hero h1{font-size:clamp(2.3rem,4.6vw,3.5rem);line-height:1.18;color:var(--teal-900);margin-block:22px 18px;font-weight:700}
+  .hero h1 em{font-style:normal;color:var(--teal-500);position:relative}
+  .hero p.lead{font-size:1.08rem;color:var(--ink-soft);max-width:34ch;margin-block-end:30px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-trust{display:flex;gap:26px;margin-block-start:38px;flex-wrap:wrap}
+  .hero-trust .t{display:flex;flex-direction:column}
+  .hero-trust .t b{font-family:var(--serif);font-size:1.7rem;color:var(--teal-900);font-weight:700}
+  .hero-trust .t span{font-size:.82rem;color:var(--ink-soft)}
+
+  /* hero art */
+  .hero-art{position:relative}
+  .hero-card{
+    background:linear-gradient(165deg,#fff,#f3faf8);
+    border:1px solid var(--line);border-radius:30px;
+    padding:30px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .hero-card::before{content:"";position:absolute;inset:-40%;background:radial-gradient(circle at 70% 20%,rgba(124,196,189,.25),transparent 55%)}
+  .hc-row{display:flex;align-items:center;gap:14px;position:relative;padding-block:14px;border-block-end:1px dashed var(--line)}
+  .hc-row:last-child{border:none;padding-block-end:0}
+  .hc-row:first-child{padding-block-start:0}
+  .hc-ic{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;background:var(--sage);color:var(--teal-700)}
+  .hc-ic.b{background:#dcefe5}.hc-ic.c{background:#dfeef4}.hc-ic.d{background:#f3e7d6;color:var(--gold)}
+  .hc-row b{display:block;font-weight:600;color:var(--teal-900);font-size:.98rem;font-family:var(--serif)}
+  .hc-row span{font-size:.8rem;color:var(--ink-soft)}
+  .hc-row .ok{margin-left:auto;font-size:.74rem;font-weight:700;color:#3fb98f;background:#e8f6ef;padding-block:4px;padding-inline:10px;border-radius:999px}
+  .float-badge{
+    position:absolute;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding-block:11px;padding-inline:15px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;
+    font-size:.82rem;font-weight:600;color:var(--teal-900);
+  }
+  .float-badge.heart{top:-22px;right:18px}
+  .float-badge.heart svg{color:#e07a8a}
+  .float-badge.cal{bottom:-20px;left:-14px}
+  .float-badge.cal svg{color:var(--teal-500)}
+
+  /* ---------- section shells ---------- */
+  section{position:relative;z-index:1;padding-block:64px}
+  .sec-head{text-align:center;max-width:600px;margin-inline:auto;margin-block-end:46px}
+  .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-500)}
+  .sec-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem);color:var(--teal-900);margin-block:12px 14px}
+  .sec-head p{color:var(--ink-soft)}
+
+  /* ---------- services ---------- */
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .svc{
+    background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r);
+    padding:26px;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s;
+    position:relative;overflow:hidden;
+  }
+  .svc:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--teal-300)}
+  .svc-ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--sage);color:var(--teal-700);margin-block-end:16px;transition:background .25s}
+  .svc:nth-child(2) .svc-ic{background:#dfeef4}
+  .svc:nth-child(3) .svc-ic{background:#f3e7d6;color:var(--gold)}
+  .svc:nth-child(4) .svc-ic{background:#e6efe2;color:#5b9c6a}
+  .svc:nth-child(5) .svc-ic{background:#f1e4ec;color:#c074a0}
+  .svc:nth-child(6) .svc-ic{background:#e9eef6;color:#5d77b5}
+  .svc h3{font-size:1.22rem;color:var(--teal-900);margin-block-end:8px}
+  .svc p{font-size:.9rem;color:var(--ink-soft);margin-block-end:14px}
+  .svc-more{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .svc.open .svc-more{max-height:200px}
+  .svc-more ul{list-style:none;border-block-start:1px dashed var(--line);padding-block-start:14px;display:flex;flex-direction:column;gap:8px}
+  .svc-more li{font-size:.85rem;color:var(--ink-soft);display:flex;gap:8px;align-items:flex-start}
+  .svc-more li svg{flex:none;margin-block-start:3px;color:var(--teal-500)}
+  .svc-toggle{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--teal-700)}
+  .svc-toggle svg{transition:transform .3s}
+  .svc.open .svc-toggle svg{transform:rotate(180deg)}
+
+  /* ---------- doctors ---------- */
+  #team{background:linear-gradient(180deg,transparent,#eef4f0 30%,#eef4f0 70%,transparent)}
+  .doc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .doc{
+    background:#fff;border:1px solid var(--line);border-radius:var(--r);
+    padding:24px;text-align:center;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;
+  }
+  .doc:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+  .doc-av{width:92px;height:92px;border-radius:50%;margin-inline:auto;margin-block-end:14px;display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:1.8rem;color:#fff;position:relative}
+  .doc h3{font-size:1.12rem;color:var(--teal-900)}
+  .doc .role{font-size:.82rem;color:var(--teal-500);font-weight:600;margin-block:3px 12px}
+  .doc-bio{font-size:.84rem;color:var(--ink-soft);max-height:0;overflow:hidden;transition:max-height .4s,opacity .3s;opacity:0}
+  .doc:hover .doc-bio{max-height:120px;opacity:1}
+  .doc-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-block-start:12px}
+  .doc-tags span{font-size:.72rem;background:var(--sage);color:var(--teal-700);padding-block:3px;padding-inline:9px;border-radius:999px}
+
+  /* ---------- booking ---------- */
+  #booking{}
+  .book-shell{
+    background:linear-gradient(165deg,var(--teal-900),#0e4744);
+    border-radius:32px;padding:clamp(26px,4vw,48px);color:#eaf3f1;
+    box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .book-shell::before{content:"";position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(124,196,189,.22),transparent 70%);top:-120px;right:-80px}
+  .book-shell::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(159,212,224,.16),transparent 70%);bottom:-120px;left:-60px}
+  .book-head{position:relative;text-align:center;margin-block-end:30px}
+  .book-head .eyebrow{color:var(--teal-300)}
+  .book-head h2{color:#fff;font-size:clamp(1.7rem,3vw,2.3rem);margin-block:10px 6px}
+  .book-head p{color:#bcd6d2;font-size:.95rem}
+
+  .steps{display:flex;justify-content:center;gap:0;margin-block:0 32px;position:relative;flex-wrap:wrap}
+  .step{display:flex;align-items:center;gap:10px;position:relative}
+  .step .num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.9rem;background:rgba(255,255,255,.12);color:#9fc3be;border:1px solid rgba(255,255,255,.2);transition:.3s}
+  .step.active .num{background:var(--teal-300);color:var(--teal-900);border-color:var(--teal-300)}
+  .step.done .num{background:#3fb98f;color:#fff;border-color:#3fb98f}
+  .step .lbl{font-size:.84rem;color:#9fc3be;font-weight:600;transition:.3s}
+  .step.active .lbl,.step.done .lbl{color:#fff}
+  .step .bar{width:36px;height:2px;background:rgba(255,255,255,.18);margin-inline:14px;border-radius:2px}
+  .step.done .bar{background:#3fb98f}
+
+  .book-panel{
+    position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:22px;padding:clamp(20px,3vw,32px);min-height:280px;
+  }
+  .panel{display:none;animation:fade .4s ease}
+  .panel.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .panel h3{color:#fff;font-size:1.15rem;margin-block-end:18px;font-family:var(--serif)}
+
+  .opt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .opt{
+    background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);border-radius:16px;
+    padding:18px;cursor:pointer;transition:.2s;display:flex;gap:13px;align-items:center;
+  }
+  .opt:hover{border-color:var(--teal-300);background:rgba(124,196,189,.1)}
+  .opt.sel{border-color:var(--teal-300);background:rgba(124,196,189,.16);box-shadow:0 0 0 3px rgba(124,196,189,.18)}
+  .opt-ic{width:42px;height:42px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(124,196,189,.18);color:var(--teal-300);font-family:var(--serif);font-weight:700;font-size:1.15rem}
+  .opt b{display:block;color:#fff;font-size:.96rem;font-family:var(--serif)}
+  .opt span{font-size:.78rem;color:#a9cac5}
+
+  .doc-pick{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .doc-pick .opt b{font-weight:600}
+
+  .date-row{display:flex;gap:10px;overflow-x:auto;padding-block-end:8px;margin-block-end:20px;scrollbar-width:thin}
+  .date-chip{
+    flex:none;min-width:74px;text-align:center;background:rgba(255,255,255,.06);
+    border:1.5px solid rgba(255,255,255,.14);border-radius:14px;padding-block:12px;padding-inline:6px;cursor:pointer;transition:.2s;
+  }
+  .date-chip:hover{border-color:var(--teal-300)}
+  .date-chip.sel{background:var(--teal-300);border-color:var(--teal-300);color:var(--teal-900)}
+  .date-chip .dw{font-size:.74rem;opacity:.85}
+  .date-chip .dd{font-size:1.25rem;font-weight:700;font-family:var(--serif);line-height:1.2}
+  .date-chip .dm{font-size:.7rem;opacity:.75}
+
+  .slot-label{font-size:.82rem;color:#a9cac5;margin-block:14px 10px;font-weight:600}
+  .slot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .slot{
+    background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);border-radius:12px;
+    padding-block:11px;text-align:center;cursor:pointer;font-size:.9rem;font-weight:600;color:#dceeeb;transition:.18s;
+  }
+  .slot:hover:not(.taken){border-color:var(--teal-300);transform:translateY(-2px)}
+  .slot.sel{background:var(--teal-300);border-color:var(--teal-300);color:var(--teal-900)}
+  .slot.taken{opacity:.32;cursor:not-allowed;text-decoration:line-through}
+
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-block-end:14px}
+  .field label{display:block;font-size:.8rem;color:#bcd6d2;margin-block-end:6px;font-weight:600}
+  .field input{
+    width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.16);
+    border-radius:12px;padding-block:12px;padding-inline:14px;color:#fff;font-family:var(--sans);font-size:.95rem;transition:.2s;
+  }
+  .field input::placeholder{color:#86a8a3}
+  .field input:focus{outline:none;border-color:var(--teal-300);background:rgba(124,196,189,.1)}
+  .field input.err{border-color:#e8847f;background:rgba(232,132,127,.1)}
+  .field .msg{font-size:.72rem;color:#f0a39f;margin-block-start:5px;display:none}
+  .field.bad .msg{display:block}
+
+  .summary{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;margin-block-start:16px}
+  .summary .sr{display:flex;justify-content:space-between;padding-block:8px;border-block-end:1px dashed rgba(255,255,255,.12);font-size:.9rem}
+  .summary .sr:last-child{border:none}
+  .summary .sr span{color:#a9cac5}
+  .summary .sr b{color:#fff;font-weight:600}
+
+  .panel-nav{display:flex;justify-content:space-between;gap:12px;margin-block-start:24px;position:relative}
+  .btn-back{background:rgba(255,255,255,.1);color:#dceeeb}
+  .btn-back:hover{background:rgba(255,255,255,.16)}
+  .btn-next{background:var(--teal-300);color:var(--teal-900)}
+  .btn-next:hover{background:#9ad6cf;transform:translateY(-2px)}
+  .btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+  .booked{text-align:center;padding-block:20px}
+  .booked .chk{width:80px;height:80px;border-radius:50%;background:rgba(63,185,143,.18);display:grid;place-items:center;margin-inline:auto;margin-block-end:18px;animation:pop .5s cubic-bezier(.2,1.4,.5,1)}
+  @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+  .booked h3{font-size:1.5rem}
+  .booked p{color:#bcd6d2;margin-block:8px 0}
+  .booked .code{display:inline-block;margin-block-start:14px;background:rgba(124,196,189,.14);border:1px dashed var(--teal-300);border-radius:12px;padding-block:10px;padding-inline:20px;font-family:var(--serif);font-size:1.1rem;color:var(--teal-300);letter-spacing:.08em}
+
+  /* ---------- stats ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .stat{text-align:center;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r);padding-block:30px;padding-inline:14px}
+  .stat .ic{width:50px;height:50px;border-radius:14px;background:var(--sage);color:var(--teal-700);display:grid;place-items:center;margin-inline:auto;margin-block-end:14px}
+  .stat b{display:block;font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--teal-900);line-height:1}
+  .stat span{font-size:.86rem;color:var(--ink-soft);margin-block-start:6px;display:block}
+
+  /* ---------- faq ---------- */
+  .faq-list{max-width:760px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+  .faq{background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;transition:border-color .2s}
+  .faq.open{border-color:var(--teal-300)}
+  .faq-q{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-block:18px;padding-inline:22px;cursor:pointer;font-weight:600;color:var(--teal-900);font-family:var(--serif);font-size:1.02rem}
+  .faq-q .pm{width:26px;height:26px;flex:none;border-radius:50%;background:var(--sage);color:var(--teal-700);display:grid;place-items:center;transition:.3s;font-size:1.2rem;line-height:1}
+  .faq.open .pm{background:var(--teal-700);color:#fff;transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .faq-a p{padding-block:0 20px;padding-inline:22px;color:var(--ink-soft);font-size:.92rem}
+
+  /* ---------- cta ---------- */
+  .cta-band{background:linear-gradient(135deg,var(--teal-700),var(--teal-900));border-radius:32px;padding:clamp(36px,5vw,60px);text-align:center;color:#fff;position:relative;overflow:hidden}
+  .cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(124,196,189,.2),transparent 50%)}
+  .cta-band h2{font-size:clamp(1.8rem,3.5vw,2.6rem);position:relative;margin-block-end:14px}
+  .cta-band p{color:#cfe6df;position:relative;margin-block-end:28px;max-width:46ch;margin-inline:auto}
+  .cta-band .btn-primary{background:#fff;color:var(--teal-900);position:relative}
+  .cta-band .btn-primary:hover{background:var(--sage)}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--teal-900);color:#bcd6d2;padding-block:54px 30px;position:relative;z-index:1}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:34px;margin-block-end:36px}
+  footer .brand{color:#fff}
+  footer .brand small{color:var(--teal-300)}
+  .foot-grid p{font-size:.88rem;margin-block-start:14px;max-width:32ch}
+  .foot-col h4{font-family:var(--serif);color:#fff;font-size:1rem;margin-block-end:14px}
+  .foot-col a,.foot-col li{display:block;font-size:.88rem;margin-block-end:9px;color:#a9cac5;transition:color .2s;list-style:none}
+  .foot-col a:hover{color:#fff}
+  .foot-bot{border-block-start:1px solid rgba(255,255,255,.12);padding-block-start:22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.82rem;color:#86a8a3}
+  .foot-bot a{color:var(--teal-300)}
+
+  /* ---------- elife badge ---------- */
+  .elife-badge{
+    position:fixed;bottom:18px;right:18px;z-index:90;
+    display:flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    border:1px solid var(--line);border-radius:999px;
+    padding-block:8px;padding-inline:14px;box-shadow:var(--shadow);
+    font-size:.78rem;font-weight:600;color:var(--teal-800,var(--teal-700));
+    transition:transform .2s,box-shadow .2s;
+  }
+  .elife-badge:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .elife-badge .bd{width:9px;height:9px;border-radius:50%;background:var(--teal-500);box-shadow:0 0 0 4px rgba(42,141,135,.16)}
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:980px){
+    .hero{grid-template-columns:1fr;gap:40px}
+    .hero p.lead{max-width:none}
+    .svc-grid{grid-template-columns:repeat(2,1fr)}
+    .doc-grid{grid-template-columns:repeat(2,1fr)}
+    .stat-grid{grid-template-columns:repeat(2,1fr)}
+    .opt-grid{grid-template-columns:repeat(2,1fr)}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:680px){
+    .nav-links{display:none}
+    .nav-cta .btn-ghost{display:none}
+    .burger{display:flex}
+    header{padding-block:48px 36px}
+    .svc-grid,.doc-grid,.stat-grid,.opt-grid,.doc-pick{grid-template-columns:1fr}
+    .slot-grid{grid-template-columns:repeat(3,1fr)}
+    .form-row{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .steps{gap:0}
+    .step .bar{width:18px;margin-inline:7px}
+    .step .lbl{display:none}
+    .hero-trust{gap:18px}
+  }
+  @media(max-width:400px){
+    .wrap{padding-inline:16px}
+    .slot-grid{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="blob a"></div>
+<div class="blob b"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="mk">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5C.8 9.6 2 6 5.2 6c2 0 3.2 1.3 3.8 2.3C9.6 7.3 10.8 6 12.8 6c.7 0 1.3.15 1.8.4"/><path d="M14 14h2.5l1.5-3 2 6 1.5-3H24"/></svg>
+      </span>
+      晴和診所
+      <small>Serenity Clinic</small>
+    </a>
+    <div class="nav-links">
+      <a href="#services">診療科別</a>
+      <a href="#team">醫療團隊</a>
+      <a href="#booking">線上預約</a>
+      <a href="#stats">關於我們</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="nav-cta">
+      <a href="tel:+886222345678" class="btn btn-ghost">02-2234-5678</a>
+      <a href="#booking" class="btn btn-primary">立即預約</a>
+      <button class="burger" aria-label="選單"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+<!-- HERO -->
+<header>
+  <div class="hero">
+    <div class="hero-text rv">
+      <span class="pill"><span class="dot"></span>今日尚有 14 個門診名額</span>
+      <h1>把每一次就診，<br/>都變成<em>安心的時刻</em></h1>
+      <p class="lead">晴和診所結合家庭醫學、眼科、皮膚與身心照護，用溫柔而專業的方式，陪你與家人守護每一天的健康。</p>
+      <div class="hero-cta">
+        <a href="#booking" class="btn btn-primary">
+          線上預約看診 &nbsp;→
+        </a>
+        <a href="#services" class="btn btn-ghost">瀏覽診療科別</a>
+      </div>
+      <div class="hero-trust">
+        <div class="t"><b>16<small style="font-size:1rem">年</small></b><span>深耕社區醫療</span></div>
+        <div class="t"><b>8<small style="font-size:1rem">位</small></b><span>各科主治醫師</span></div>
+        <div class="t"><b>98<small style="font-size:1rem">%</small></b><span>病患滿意度</span></div>
+      </div>
+    </div>
+
+    <div class="hero-art rv">
+      <div class="float-badge heart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5C.8 9.6 2 6 5.5 6 7.5 6 9 7.3 12 10c3-2.7 4.5-4 6.5-4C22 6 23.2 9.6 21.5 12.5 19 16.65 12 21 12 21z"/></svg>
+        溫柔守護
+      </div>
+      <div class="float-badge cal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg>
+        即時預約確認
+      </div>
+      <div class="hero-card">
+        <div class="hc-row">
+          <span class="hc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 14c1.5-1.5 3-3 3-6a4 4 0 0 0-8 0 4 4 0 0 0-8 0c0 3 1.5 4.5 3 6l5 5z"/></svg></span>
+          <div><b>家庭醫學科</b><span>週一至週六 · 全日門診</span></div>
+          <span class="ok">開診中</span>
+        </div>
+        <div class="hc-row">
+          <span class="hc-ic c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <div><b>眼科</b><span>近視防控 · 乾眼門診</span></div>
+          <span class="ok">開診中</span>
+        </div>
+        <div class="hc-row">
+          <span class="hc-ic b"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 13s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span>
+          <div><b>皮膚科</b><span>醫美諮詢 · 皮膚保養</span></div>
+          <span class="ok">開診中</span>
+        </div>
+        <div class="hc-row">
+          <span class="hc-ic d"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M5 12a7 7 0 0 0 14 0M12 19v3"/></svg></span>
+          <div><b>身心健康諮詢</b><span>需事先預約 · 完全保密</span></div>
+          <span class="ok">預約制</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Our Services</span>
+      <h2>整合型診療科別</h2>
+      <p>從日常感冒到專科照護，一站式守護全家健康。點擊卡片展開詳細服務內容。</p>
+    </div>
+    <div class="svc-grid">
+      <article class="svc rv" tabindex="0">
+        <div class="svc-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0 4 4h2M12 8a4 4 0 0 1-4 4H6"/><path d="M12 22a8 8 0 0 0 8-8H4a8 8 0 0 0 8 8z"/></svg></div>
+        <h3>家庭醫學科</h3>
+        <p>感冒、慢性病管理、健康檢查與全家人的第一線守護。</p>
+        <span class="svc-toggle">查看服務 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg></span>
+        <div class="svc-more"><ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>急慢性病診療與用藥諮詢</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>三高（血壓、血糖、血脂）追蹤</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>成人預防保健與疫苗接種</li>
+        </ul></div>
+      </article>
+
+      <article class="svc rv" tabindex="0">
+        <div class="svc-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>眼科</h3>
+        <p>兒童近視防控、乾眼症與全方位視力健康照護。</p>
+        <span class="svc-toggle">查看服務 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg></span>
+        <div class="svc-more"><ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>兒童近視防控與角膜塑型</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>乾眼症評估與治療</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>白內障、青光眼定期檢查</li>
+        </ul></div>
+      </article>
+
+      <article class="svc rv" tabindex="0">
+        <div class="svc-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+        <h3>皮膚科 · 醫美</h3>
+        <p>從青春痘到醫學美容，給肌膚溫和而科學的呵護。</p>
+        <span class="svc-toggle">查看服務 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg></span>
+        <div class="svc-more"><ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>痘痘、濕疹、過敏性皮膚診療</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>雷射除斑與膚質改善諮詢</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>個人化保養計畫</li>
+        </ul></div>
+      </article>
+
+      <article class="svc rv" tabindex="0">
+        <div class="svc-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11V6a3 3 0 0 1 6 0v5"/><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M12 15v2"/></svg></div>
+        <h3>兒童健康</h3>
+        <p>陪伴孩子成長，從疫苗到發展評估的貼心照護。</p>
+        <span class="svc-toggle">查看服務 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg></span>
+        <div class="svc-more"><ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>嬰幼兒疫苗接種與諮詢</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>兒童生長與發展評估</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>常見兒科疾病診療</li>
+        </ul></div>
+      </article>
+
+      <article class="svc rv" tabindex="0">
+        <div class="svc-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M5 12a7 7 0 0 0 14 0M12 19v3"/></svg></div>
+        <h3>身心健康諮詢</h3>
+        <p>失眠、壓力與情緒困擾，提供安心保密的對談空間。</p>
+        <span class="svc-toggle">查看服務 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg></span>
+        <div class="svc-more"><ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>失眠與睡眠品質評估</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>壓力、焦慮與情緒支持</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>完全保密的一對一諮詢</li>
+        </ul></div>
+      </article>
+
+      <article class="svc rv" tabindex="0">
+        <div class="svc-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2H9v3H6v2h3v3h2V7h3V5h-3z"/><path d="M3 13h4l2 5 4-12 2 7h6"/></svg></div>
+        <h3>健康檢查</h3>
+        <p>客製化健檢方案，及早發現、安心守護長期健康。</p>
+        <span class="svc-toggle">查看服務 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg></span>
+        <div class="svc-more"><ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>成人基礎與進階健檢套組</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>癌症篩檢與心血管評估</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>檢後一對一報告解說</li>
+        </ul></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Our Doctors</span>
+      <h2>用心傾聽的醫療團隊</h2>
+      <p>每位醫師都相信，好的醫療從好好聽你說話開始。將滑鼠移到卡片上認識他們。</p>
+    </div>
+    <div class="doc-grid">
+      <article class="doc rv">
+        <div class="doc-av" style="background:linear-gradient(135deg,#2a8d87,#15605d)">林</div>
+        <h3>林晴和 醫師</h3>
+        <div class="role">院長 · 家庭醫學科</div>
+        <p class="doc-bio">台大醫學系畢業，專注社區整合醫療超過 16 年，相信溫柔的陪伴是最好的處方。</p>
+        <div class="doc-tags"><span>家醫</span><span>慢性病</span></div>
+      </article>
+      <article class="doc rv">
+        <div class="doc-av" style="background:linear-gradient(135deg,#5d77b5,#3d5694)">陳</div>
+        <h3>陳柏宇 醫師</h3>
+        <div class="role">眼科主治醫師</div>
+        <p class="doc-bio">兒童近視防控專家，擅長以耐心引導小朋友完成檢查，深受家長信賴。</p>
+        <div class="doc-tags"><span>眼科</span><span>近視防控</span></div>
+      </article>
+      <article class="doc rv">
+        <div class="doc-av" style="background:linear-gradient(135deg,#c074a0,#9a4f7c)">吳</div>
+        <h3>吳沛恩 醫師</h3>
+        <div class="role">皮膚科 · 醫美</div>
+        <p class="doc-bio">主張「自然而健康」的肌膚照護，提供量身打造的保養與治療建議。</p>
+        <div class="doc-tags"><span>皮膚</span><span>醫美</span></div>
+      </article>
+      <article class="doc rv">
+        <div class="doc-av" style="background:linear-gradient(135deg,#5b9c6a,#3f7a4f)">張</div>
+        <h3>張語安 醫師</h3>
+        <div class="role">身心科諮詢醫師</div>
+        <p class="doc-bio">擅長失眠與壓力調適，營造安心、不被評價的對談空間，陪你慢慢好起來。</p>
+        <div class="doc-tags"><span>身心</span><span>睡眠</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="wrap">
+    <div class="book-shell rv">
+      <div class="book-head">
+        <span class="eyebrow">Online Booking</span>
+        <h2>四步驟，輕鬆完成預約</h2>
+        <p>選科別 → 選醫師 → 選時段 → 填資料，整個過程不到一分鐘。</p>
+      </div>
+
+      <div class="steps">
+        <div class="step active" data-step="1"><span class="num">1</span><span class="lbl">選擇科別</span></div>
+        <span class="bar"></span>
+        <div class="step" data-step="2"><span class="num">2</span><span class="lbl">選擇醫師</span></div>
+        <span class="bar"></span>
+        <div class="step" data-step="3"><span class="num">3</span><span class="lbl">選擇時段</span></div>
+        <span class="bar"></span>
+        <div class="step" data-step="4"><span class="num">4</span><span class="lbl">確認資料</span></div>
+      </div>
+
+      <div class="book-panel">
+        <!-- STEP 1 -->
+        <div class="panel show" data-panel="1">
+          <h3>請選擇就診科別</h3>
+          <div class="opt-grid" id="svcOpts">
+            <div class="opt" data-val="家庭醫學科"><span class="opt-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 14c1.5-1.5 3-3 3-6a4 4 0 0 0-8 0 4 4 0 0 0-8 0c0 3 1.5 4.5 3 6l5 5z"/></svg></span><div><b>家庭醫學科</b><span>一般門診</span></div></div>
+            <div class="opt" data-val="眼科"><span class="opt-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><div><b>眼科</b><span>視力照護</span></div></div>
+            <div class="opt" data-val="皮膚科"><span class="opt-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span><div><b>皮膚科</b><span>醫美諮詢</span></div></div>
+            <div class="opt" data-val="兒童健康"><span class="opt-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11V6a3 3 0 0 1 6 0v5"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg></span><div><b>兒童健康</b><span>小兒門診</span></div></div>
+            <div class="opt" data-val="身心諮詢"><span class="opt-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M5 12a7 7 0 0 0 14 0M12 19v3"/></svg></span><div><b>身心諮詢</b><span>需預約</span></div></div>
+            <div class="opt" data-val="健康檢查"><span class="opt-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h4l2 5 4-12 2 7h6"/></svg></span><div><b>健康檢查</b><span>健檢套組</span></div></div>
+          </div>
+          <div class="panel-nav">
+            <span></span>
+            <button class="btn btn-next" data-next disabled>下一步 →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="panel" data-panel="2">
+          <h3>請選擇看診醫師</h3>
+          <div class="doc-pick" id="docOpts">
+            <div class="opt" data-val="林晴和 醫師"><span class="opt-ic">林</span><div><b>林晴和 醫師</b><span>院長 · 家醫科</span></div></div>
+            <div class="opt" data-val="陳柏宇 醫師"><span class="opt-ic">陳</span><div><b>陳柏宇 醫師</b><span>眼科主治</span></div></div>
+            <div class="opt" data-val="吳沛恩 醫師"><span class="opt-ic">吳</span><div><b>吳沛恩 醫師</b><span>皮膚科 · 醫美</span></div></div>
+            <div class="opt" data-val="張語安 醫師"><span class="opt-ic">張</span><div><b>張語安 醫師</b><span>身心科諮詢</span></div></div>
+            <div class="opt" data-val="不指定，安排最近名額"><span class="opt-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span><div><b>不指定醫師</b><span>安排最近名額</span></div></div>
+          </div>
+          <div class="panel-nav">
+            <button class="btn btn-back" data-back>← 上一步</button>
+            <button class="btn btn-next" data-next disabled>下一步 →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="panel" data-panel="3">
+          <h3>請選擇看診日期與時段</h3>
+          <div class="date-row" id="dateRow"></div>
+          <div class="slot-label">上午門診</div>
+          <div class="slot-grid" id="slotAM"></div>
+          <div class="slot-label">下午門診</div>
+          <div class="slot-grid" id="slotPM"></div>
+          <div class="panel-nav">
+            <button class="btn btn-back" data-back>← 上一步</button>
+            <button class="btn btn-next" data-next disabled>下一步 →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="panel" data-panel="4">
+          <h3>確認您的預約資料</h3>
+          <div class="form-row">
+            <div class="field" id="f-name">
+              <label>姓名 *</label>
+              <input type="text" placeholder="請輸入您的姓名" id="inName"/>
+              <div class="msg">請輸入姓名</div>
+            </div>
+            <div class="field" id="f-phone">
+              <label>手機號碼 *</label>
+              <input type="tel" placeholder="例：0912-345-678" id="inPhone"/>
+              <div class="msg">請輸入有效的手機號碼（09 開頭，10 碼）</div>
+            </div>
+          </div>
+          <div class="field" id="f-note" style="margin-block-end:4px">
+            <label>想先告訴醫師的事（選填）</label>
+            <input type="text" placeholder="例：最近常頭痛、想諮詢健檢項目…" id="inNote"/>
+          </div>
+          <div class="summary" id="summary"></div>
+          <div class="panel-nav">
+            <button class="btn btn-back" data-back>← 上一步</button>
+            <button class="btn btn-next" id="confirmBtn">確認預約 ✓</button>
+          </div>
+        </div>
+
+        <!-- DONE -->
+        <div class="panel" data-panel="5">
+          <div class="booked">
+            <div class="chk"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3fb98f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <h3 style="color:#fff">預約成功！</h3>
+            <p id="doneMsg">我們已收到您的預約，將於門診前以簡訊提醒。</p>
+            <div class="code" id="bookCode">SC-000000</div>
+            <div style="margin-block-start:22px">
+              <button class="btn btn-next" id="againBtn" style="display:inline-block">再預約一次</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">By The Numbers</span>
+      <h2>數字背後，是一份份信任</h2>
+      <p>16 年來，晴和診所陪伴社區大小家庭，把專業化作日常的安心。</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat rv">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></span>
+        <b class="count" data-target="16">0</b><span>年社區醫療經驗</span>
+      </div>
+      <div class="stat rv">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <b class="count" data-target="120" data-suffix="K+">0</b><span>累積服務病患</span>
+      </div>
+      <div class="stat rv">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 15.4 6.8 18l1-5.8L3.5 8.1l5.9-.9z"/></svg></span>
+        <b class="count" data-target="98" data-suffix="%">0</b><span>病患滿意度</span>
+      </div>
+      <div class="stat rv">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-4.35-9.5-8.5C.8 9.6 2 6 5.5 6 7.5 6 9 7.3 12 10c3-2.7 4.5-4 6.5-4C22 6 23.2 9.6 21.5 12.5 19 16.65 12 21 12 21z"/></svg></span>
+        <b class="count" data-target="8">0</b><span>位專科醫師團隊</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">FAQ</span>
+      <h2>常見問題</h2>
+      <p>關於看診、預約與費用，這裡先為你解答。</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq rv"><div class="faq-q">線上預約後，還需要再打電話確認嗎？<span class="pm">+</span></div><div class="faq-a"><p>不需要。完成線上預約後系統會立即顯示預約編號，並於門診前一天以簡訊提醒，您只要準時到診即可。</p></div></div>
+      <div class="faq rv"><div class="faq-q">初診需要攜帶哪些證件？<span class="pm">+</span></div><div class="faq-a"><p>初診請攜帶健保卡與身分證件；若有過往就醫紀錄或正在服用的藥物，建議一併帶來，方便醫師完整評估。</p></div></div>
+      <div class="faq rv"><div class="faq-q">看診費用如何計算？有自費項目嗎？<span class="pm">+</span></div><div class="faq-a"><p>一般門診依健保規定收取部分負擔。醫學美容、特定健檢與部分身心諮詢屬自費項目，所有費用都會於療程前清楚說明，絕不額外收費。</p></div></div>
+      <div class="faq rv"><div class="faq-q">可以指定醫師看診嗎？<span class="pm">+</span></div><div class="faq-a"><p>當然可以。線上預約時即可選擇指定醫師；若該時段已額滿，系統會推薦其他可看診時段，或為您安排同科別醫師。</p></div></div>
+      <div class="faq rv"><div class="faq-q">身心諮詢的內容會被保密嗎？<span class="pm">+</span></div><div class="faq-a"><p>會。所有諮詢內容皆受醫療保密規範保護，採一對一獨立空間進行，請安心與醫師分享您的狀況。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="wrap">
+    <div class="cta-band rv">
+      <h2>讓健康，從一次安心的預約開始</h2>
+      <p>無論是例行回診或第一次就醫，晴和診所都準備好，溫柔地接住你。</p>
+      <a href="#booking" class="btn btn-primary">立即線上預約 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="mk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5C.8 9.6 2 6 5.2 6c2 0 3.2 1.3 3.8 2.3C9.6 7.3 10.8 6 12.8 6c.7 0 1.3.15 1.8.4"/><path d="M14 14h2.5l1.5-3 2 6 1.5-3H24"/></svg></span>
+          晴和診所<small>Serenity Clinic</small>
+        </a>
+        <p>結合家醫、眼科、皮膚與身心照護的整合型診所，用溫柔而專業，守護你與家人的每一天。</p>
+      </div>
+      <div class="foot-col">
+        <h4>診療科別</h4>
+        <a href="#services">家庭醫學科</a>
+        <a href="#services">眼科</a>
+        <a href="#services">皮膚科 · 醫美</a>
+        <a href="#services">身心健康諮詢</a>
+      </div>
+      <div class="foot-col">
+        <h4>快速連結</h4>
+        <a href="#team">醫療團隊</a>
+        <a href="#booking">線上預約</a>
+        <a href="#stats">關於我們</a>
+        <a href="#faq">常見問題</a>
+      </div>
+      <div class="foot-col">
+        <h4>聯絡與門診時間</h4>
+        <ul>
+          <li>台北市大安區安和路二段 88 號</li>
+          <li>02-2234-5678</li>
+          <li>週一至週六 09:00–21:00</li>
+          <li>週日及國定假日休診</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 晴和診所 Serenity Clinic．本網站為展示用途之虛構診所。</span>
+      <span>Website crafted by <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ELIFE BADGE -->
+<a class="elife-badge" href="https://elife-ai.com" target="_blank" rel="noopener" title="本作品由 e-life-ai 設計">
+  <span class="bd"></span>elife-ai.com
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- reveal on scroll ---------- */
+  const io = new IntersectionObserver((es)=>{
+    es.forEach((e,i)=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }});
+  },{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll(".rv").forEach((el,i)=>{ el.style.transitionDelay=(i%6*60)+"ms"; io.observe(el); });
+
+  /* ---------- mobile burger (simple smooth-scroll-friendly) ---------- */
+  const burger=document.querySelector(".burger");
+  if(burger){ burger.addEventListener("click",()=>{ document.getElementById("booking").scrollIntoView({behavior:"smooth"}); }); }
+
+  /* ---------- services accordion ---------- */
+  document.querySelectorAll(".svc").forEach(card=>{
+    const toggle=()=>card.classList.toggle("open");
+    card.addEventListener("click",toggle);
+    card.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); }});
+  });
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll(".faq").forEach(f=>{
+    const q=f.querySelector(".faq-q"), a=f.querySelector(".faq-a");
+    q.addEventListener("click",()=>{
+      const open=f.classList.contains("open");
+      document.querySelectorAll(".faq").forEach(x=>{x.classList.remove("open");x.querySelector(".faq-a").style.maxHeight=null;});
+      if(!open){ f.classList.add("open"); a.style.maxHeight=a.scrollHeight+"px"; }
+    });
+  });
+
+  /* ---------- animated counters ---------- */
+  const counted=new Set();
+  const cio=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting && !counted.has(e.target)){
+        counted.add(e.target);
+        const el=e.target, target=+el.dataset.target, suffix=el.dataset.suffix||"";
+        let cur=0, dur=1400, t0=performance.now();
+        const tick=(t)=>{ const p=Math.min((t-t0)/dur,1); const e2=1-Math.pow(1-p,3); el.textContent=Math.round(target*e2)+suffix; if(p<1)requestAnimationFrame(tick); };
+        requestAnimationFrame(tick);
+      }
+    });
+  },{threshold:.5});
+  document.querySelectorAll(".count").forEach(c=>cio.observe(c));
+
+  /* ---------- BOOKING FLOW ---------- */
+  const state={step:1,service:null,doctor:null,date:null,slot:null};
+  const panels=document.querySelectorAll(".panel");
+  const steps=document.querySelectorAll(".step");
+
+  function showStep(n){
+    state.step=n;
+    panels.forEach(p=>p.classList.toggle("show",+p.dataset.panel===n));
+    steps.forEach(s=>{
+      const sn=+s.dataset.step;
+      s.classList.toggle("active",sn===n);
+      s.classList.toggle("done",sn<n);
+    });
+    refreshNext();
+  }
+
+  function refreshNext(){
+    // step1 next
+    const n1=document.querySelector('[data-panel="1"] [data-next]');
+    if(n1)n1.disabled=!state.service;
+    const n2=document.querySelector('[data-panel="2"] [data-next]');
+    if(n2)n2.disabled=!state.doctor;
+    const n3=document.querySelector('[data-panel="3"] [data-next]');
+    if(n3)n3.disabled=!(state.date&&state.slot);
+  }
+
+  // single-select helper
+  function bindSelect(containerId, key, next){
+    const c=document.getElementById(containerId);
+    c.querySelectorAll(".opt").forEach(o=>{
+      o.addEventListener("click",()=>{
+        c.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
+        o.classList.add("sel");
+        state[key]=o.dataset.val;
+        refreshNext();
+      });
+    });
+  }
+  bindSelect("svcOpts","service");
+  bindSelect("docOpts","doctor");
+
+  // dates: build next 7 open days (skip Sundays)
+  const dateRow=document.getElementById("dateRow");
+  const WD=["週日","週一","週二","週三","週四","週五","週六"];
+  const days=[]; let d=new Date(); let added=0;
+  while(added<7){
+    if(d.getDay()!==0){ days.push(new Date(d)); added++; }
+    d=new Date(d.getTime()+86400000);
+  }
+  days.forEach((dt,i)=>{
+    const chip=document.createElement("div");
+    chip.className="date-chip";
+    chip.dataset.val=`${dt.getMonth()+1}/${dt.getDate()}（${WD[dt.getDay()]}）`;
+    chip.innerHTML=`<div class="dw">${WD[dt.getDay()]}</div><div class="dd">${dt.getDate()}</div><div class="dm">${dt.getMonth()+1}月</div>`;
+    chip.addEventListener("click",()=>{
+      dateRow.querySelectorAll(".date-chip").forEach(x=>x.classList.remove("sel"));
+      chip.classList.add("sel");
+      state.date=chip.dataset.val;
+      state.slot=null;
+      buildSlots(i);
+      document.querySelectorAll('[data-panel="3"] .slot.sel').forEach(s=>s.classList.remove("sel"));
+      refreshNext();
+    });
+    dateRow.appendChild(chip);
+  });
+
+  const AM=["09:00","09:30","10:00","10:30","11:00","11:30"];
+  const PM=["14:00","14:30","15:00","16:00","18:30","19:00","19:30","20:00"];
+  function buildSlots(seed){
+    const slotAM=document.getElementById("slotAM"), slotPM=document.getElementById("slotPM");
+    slotAM.innerHTML=""; slotPM.innerHTML="";
+    const render=(arr,box,off)=>{
+      arr.forEach((t,k)=>{
+        const taken=((seed*7+k*3+off)%5)===0; // deterministic pseudo-random
+        const s=document.createElement("div");
+        s.className="slot"+(taken?" taken":"");
+        s.textContent=t;
+        if(!taken){
+          s.addEventListener("click",()=>{
+            document.querySelectorAll('[data-panel="3"] .slot.sel').forEach(x=>x.classList.remove("sel"));
+            s.classList.add("sel");
+            state.slot=t;
+            refreshNext();
+          });
+        }
+        box.appendChild(s);
+      });
+    };
+    render(AM,slotAM,0); render(PM,slotPM,1);
+  }
+
+  function buildSummary(){
+    const s=document.getElementById("summary");
+    s.innerHTML=`
+      <div class="sr"><span>就診科別</span><b>${state.service||"—"}</b></div>
+      <div class="sr"><span>看診醫師</span><b>${state.doctor||"—"}</b></div>
+      <div class="sr"><span>看診日期</span><b>${state.date||"—"}</b></div>
+      <div class="sr"><span>看診時段</span><b>${state.slot||"—"}</b></div>`;
+  }
+
+  // go() = showStep + summary refresh on step 4
+  function go(n){ showStep(n); if(n===4)buildSummary(); }
+
+  // nav buttons (confirmBtn has its own handler below; skip here)
+  document.querySelectorAll("[data-next]").forEach(b=>{
+    if(b.id==="confirmBtn")return;
+    b.addEventListener("click",()=>{ if(!b.disabled)go(state.step+1); });
+  });
+  document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",()=>go(state.step-1)));
+
+  // confirm (validate name + phone)
+  document.getElementById("confirmBtn").addEventListener("click",()=>{
+    const name=document.getElementById("inName"), phone=document.getElementById("inPhone");
+    const fn=document.getElementById("f-name"), fp=document.getElementById("f-phone");
+    let ok=true;
+    if(!name.value.trim()){ fn.classList.add("bad"); name.classList.add("err"); ok=false; } else { fn.classList.remove("bad"); name.classList.remove("err"); }
+    if(!/^09\d{2}-?\d{3}-?\d{3}$/.test(phone.value.trim())){ fp.classList.add("bad"); phone.classList.add("err"); ok=false; } else { fp.classList.remove("bad"); phone.classList.remove("err"); }
+    if(!ok)return;
+    document.getElementById("bookCode").textContent="SC-"+Math.floor(100000+Math.random()*900000);
+    document.getElementById("doneMsg").textContent=`${name.value.trim()} 您好，已為您預約 ${state.service}・${state.doctor}・${state.date} ${state.slot}，門診前將以簡訊提醒。`;
+    go(5);
+  });
+
+  // live clear errors
+  ["inName","inPhone"].forEach(id=>{
+    document.getElementById(id).addEventListener("input",e=>{
+      e.target.classList.remove("err");
+      e.target.closest(".field").classList.remove("bad");
+    });
+  });
+
+  // again
+  document.getElementById("againBtn").addEventListener("click",()=>{
+    state.service=state.doctor=state.date=state.slot=null;
+    document.querySelectorAll(".opt.sel,.date-chip.sel,.slot.sel").forEach(x=>x.classList.remove("sel"));
+    document.getElementById("inName").value="";
+    document.getElementById("inPhone").value="";
+    document.getElementById("inNote").value="";
+    document.getElementById("slotAM").innerHTML="";
+    document.getElementById("slotPM").innerHTML="";
+    refreshNext();
+    go(1);
+  });
+
+  refreshNext();
+})();
+</script>
+</body>
+</html>
