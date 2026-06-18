@@ -98,6 +98,19 @@ export const services: Service[] = [
     ],
     stack: ['Rust', 'tree-sitter', 'tokio', 'Frida', 'SQLCipher', 'Cypher'],
   },
+  {
+    id: 'cost',
+    index: '05',
+    title: '維運成本最佳化',
+    summary: '無論硬體或軟體，用最小的花費撐起長期穩定運作，讓系統上線後養得起、跑得久。',
+    bullets: [
+      '架構選型直接砍掉冗餘雲端帳單，善用免費額度與自架資源',
+      '程式層省成本：in-process 零 IPC、快取與非同步壓低運算開銷',
+      'LLM 用量最佳化，token 消耗可省 70–90%，月費有感下降',
+      '可觀測性與告警把關，異常即時發現，避免燒錢空轉',
+    ],
+    stack: ['OCI', 'Docker', 'cachebox', 'msgspec', 'Cloudflare', 'systemd'],
+  },
 ]
 
 export const cases: CaseStudy[] = [
