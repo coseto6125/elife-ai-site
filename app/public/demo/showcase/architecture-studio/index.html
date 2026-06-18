@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>疊白建築事務所 — 空間作為一種秩序｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="疊白建築事務所｜以模矩秩序與自然材質設計住宅、商空與公共建築。瀏覽作品索引、案例研究與設計哲學，預約洽談您的空間。本頁為 e-life-ai 製作之前端設計樣板。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Expanded:wght@600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEAE3;
+    --paper-2:#E4E0D7;
+    --ink:#1A1B1C;
+    --concrete:#8E8A80;
+    --line:#CBC6BA;
+    --line-2:#D8D3C8;
+    --accent:#205C68;
+    --accent-soft:#3A7C88;
+    --maxw:1320px;
+    --gut:clamp(16px,3.2vw,40px);
+    --col-gap:clamp(12px,1.6vw,22px);
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:17px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  button{font-family:inherit;cursor:pointer}
+
+  .mono{font-family:"Space Mono",ui-monospace,monospace}
+  .disp{font-family:"Archivo Expanded","Archivo",sans-serif}
+  .sans{font-family:"Archivo",system-ui,sans-serif}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
+
+  /* ===== drafting grid overlay ===== */
+  .gridlines{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut);
+    display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+    opacity:.5;
+  }
+  .gridlines span{border-left:1px solid var(--line-2)}
+  .gridlines span:last-child{border-right:1px solid var(--line-2)}
+  @media(max-width:760px){ .gridlines span:nth-child(n+5){display:none} }
+
+  /* ===== top bar ===== */
+  header.bar{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brandmark{display:flex;align-items:center;gap:11px;font-weight:700}
+  .brandmark .logo{
+    width:26px;height:26px;flex:none;position:relative;
+  }
+  .brandmark .logo::before,.brandmark .logo::after{
+    content:"";position:absolute;inset:0;border:1.6px solid var(--ink);
+  }
+  .brandmark .logo::after{transform:translate(5px,5px);border-color:var(--accent)}
+  .brandmark b{font-family:"Archivo Expanded",sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em}
+  .nav{display:flex;gap:26px;align-items:center}
+  .nav a{font-family:"Archivo",sans-serif;font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--concrete);transition:color .2s}
+  .nav a:hover{color:var(--ink)}
+  .nav .cta{
+    color:var(--paper);background:var(--ink);padding:9px 16px;
+    border-radius:0;letter-spacing:.04em;transition:background .25s var(--ease);
+  }
+  .nav .cta:hover{background:var(--accent)}
+  @media(max-width:760px){ .nav a:not(.cta){display:none} }
+
+  /* ===== hero ===== */
+  .hero{position:relative;z-index:1;padding-top:clamp(40px,7vw,86px);padding-bottom:clamp(36px,5vw,64px)}
+  .hero .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);align-items:end}
+  .eyebrow{
+    grid-column:1/-1;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.08em;
+    color:var(--concrete);border-bottom:1px solid var(--line);
+    padding-bottom:14px;margin-bottom:clamp(22px,3.4vw,44px);
+  }
+  .hero h1{
+    grid-column:1/-1;
+    font-family:"Archivo Expanded",sans-serif;font-weight:800;
+    font-size:clamp(46px,11vw,148px);line-height:.92;letter-spacing:-.02em;
+    text-transform:none;
+  }
+  .hero h1 .ln{display:block;overflow:hidden}
+  .hero h1 .ln i{display:inline-block;font-style:normal;transform:translateY(106%);transition:transform .9s var(--ease)}
+  .hero h1 .ln.alt{color:var(--accent)}
+  .reveal-in .hero h1 .ln i{transform:translateY(0)}
+  .hero .lede{
+    grid-column:1/8;margin-top:clamp(26px,3.2vw,42px);
+    font-size:clamp(18px,2vw,22px);line-height:1.5;max-width:50ch;color:#33342f;
+  }
+  .hero .lede em{font-style:italic;color:var(--accent)}
+  .hero .meta{
+    grid-column:9/13;margin-top:clamp(26px,3.2vw,42px);align-self:start;
+  }
+  .hero .meta dl{display:grid;gap:13px}
+  .hero .meta .row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:11px}
+  .hero .meta dt{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--concrete);text-transform:uppercase}
+  .hero .meta dd{font-family:"Archivo",sans-serif;font-weight:600;font-size:14px;text-align:right}
+  @media(max-width:860px){
+    .hero .lede{grid-column:1/-1}
+    .hero .meta{grid-column:1/-1;margin-top:26px}
+  }
+  /* kinetic counter row */
+  .counter{
+    grid-column:1/-1;margin-top:clamp(34px,4.6vw,66px);
+    display:grid;grid-template-columns:repeat(4,1fr);gap:var(--col-gap);
+    border-top:1px solid var(--ink);padding-top:20px;
+  }
+  .counter .c .n{font-family:"Archivo Expanded",sans-serif;font-weight:700;font-size:clamp(30px,4.4vw,56px);line-height:1;letter-spacing:-.01em}
+  .counter .c .n sup{font-size:.42em;vertical-align:super;color:var(--accent);font-weight:600}
+  .counter .c .l{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.05em;color:var(--concrete);margin-top:9px}
+  @media(max-width:640px){ .counter{grid-template-columns:repeat(2,1fr);row-gap:24px} }
+
+  /* ===== section frame ===== */
+  section{position:relative;z-index:1}
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    border-top:1px solid var(--ink);padding-top:16px;margin-bottom:clamp(26px,3.4vw,42px);
+  }
+  .sec-head .idx{font-family:"Space Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:.08em}
+  .sec-head h2{font-family:"Archivo Expanded",sans-serif;font-weight:700;font-size:clamp(24px,3.4vw,40px);letter-spacing:-.01em;line-height:1}
+  .sec-head p{font-size:15px;color:var(--concrete);max-width:36ch;text-align:right;margin-left:auto}
+  @media(max-width:640px){ .sec-head p{text-align:left;margin-left:0} }
+
+  /* ===== INDEX (signature) ===== */
+  .index{padding-block:clamp(48px,7vw,96px)}
+  .filters{
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:26px;
+  }
+  .filters .lab{font-family:"Space Mono",monospace;font-size:11px;color:var(--concrete);letter-spacing:.06em;margin-right:6px}
+  .chip{
+    font-family:"Archivo",sans-serif;font-size:13px;font-weight:500;
+    padding:7px 15px;border:1px solid var(--line);background:transparent;color:#3a3b36;
+    border-radius:999px;transition:all .22s var(--ease);
+  }
+  .chip:hover{border-color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip .ct{font-family:"Space Mono",monospace;font-size:10px;opacity:.6;margin-left:6px}
+
+  .projects{
+    display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+  }
+  .card{
+    grid-column:span 4;position:relative;
+    background:var(--paper-2);border:1px solid var(--line);
+    text-align:left;color:var(--ink);overflow:hidden;
+    transition:transform .55s var(--ease),opacity .45s var(--ease),border-color .25s;
+    display:flex;flex-direction:column;
+  }
+  /* deliberate asymmetry — feature tiles span wider */
+  .card.span6{grid-column:span 6}
+  .card.span8{grid-column:span 8}
+  .card:hover{border-color:var(--ink)}
+  .card.is-hidden{display:none}
+  .card.fade{opacity:0;transform:translateY(14px)}
+  @media(max-width:860px){ .card,.card.span6,.card.span8{grid-column:span 6} }
+  @media(max-width:540px){ .card,.card.span6,.card.span8{grid-column:span 12} }
+
+  .card .vis{
+    position:relative;aspect-ratio:4/3;width:100%;overflow:hidden;
+  }
+  .card.span6 .vis,.card.span8 .vis{aspect-ratio:16/9}
+  .card .vis::after{ /* duotone texture: glazing mullions */
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(90deg,rgba(0,0,0,.10) 1px,transparent 1px),
+                     linear-gradient(0deg,rgba(0,0,0,.07) 1px,transparent 1px);
+    background-size:42px 100%,100% 64px;mix-blend-mode:multiply;opacity:.6;
+    transition:opacity .4s;
+  }
+  .card:hover .vis::after{opacity:.85}
+  .card .vis .num{
+    position:absolute;left:14px;bottom:8px;z-index:2;
+    font-family:"Archivo Expanded",sans-serif;font-weight:800;
+    font-size:clamp(40px,7vw,84px);line-height:.8;color:rgba(255,255,255,.9);
+    letter-spacing:-.02em;text-shadow:0 1px 18px rgba(0,0,0,.25);
+    transition:transform .5s var(--ease);
+  }
+  .card:hover .vis .num{transform:translateY(-3px)}
+  .card .vis .tag{
+    position:absolute;right:12px;top:12px;z-index:2;
+    font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.06em;
+    color:var(--paper);background:rgba(20,20,20,.55);padding:4px 9px;backdrop-filter:blur(2px);
+  }
+  /* duotone "photographs" */
+  .v-concrete{background:linear-gradient(155deg,#b8b3a8 0%,#7d7a72 48%,#4f4d48 100%)}
+  .v-glass{background:linear-gradient(150deg,#7fa6ab 0%,#3d6f78 55%,#204047 100%)}
+  .v-timber{background:linear-gradient(155deg,#c9a47a 0%,#9c7245 52%,#5e4326 100%)}
+  .v-stone{background:linear-gradient(150deg,#cfcabc 0%,#9b9583 55%,#615d52 100%)}
+  .v-night{background:linear-gradient(155deg,#48555b 0%,#293439 55%,#15191c 100%)}
+
+  .card .body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .card .ti{font-family:"Archivo Expanded",sans-serif;font-weight:700;font-size:clamp(18px,1.5vw,22px);letter-spacing:-.01em;line-height:1.1}
+  .card .sub{font-size:14.5px;color:#54554f;line-height:1.4}
+  .card .foot{
+    margin-top:auto;display:flex;justify-content:space-between;gap:10px;
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--concrete);
+    border-top:1px solid var(--line);padding-top:11px;
+  }
+  .card .open{
+    align-self:flex-start;font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;
+    color:var(--accent);display:inline-flex;align-items:center;gap:6px;
+  }
+  .card .open .ar{transition:transform .25s var(--ease)}
+  .card:hover .open .ar{transform:translateX(4px)}
+
+  .index .empty{
+    grid-column:1/-1;display:none;padding:50px 0;text-align:center;color:var(--concrete);
+    font-family:"Space Mono",monospace;font-size:13px;border:1px dashed var(--line);
+  }
+  .index .empty.show{display:block}
+
+  /* ===== philosophy / process ===== */
+  .philo{padding-block:clamp(48px,7vw,96px);background:var(--ink);color:var(--paper);position:relative;z-index:1}
+  .philo .wrap{position:relative}
+  .philo .sec-head{border-top-color:var(--accent-soft)}
+  .philo .sec-head h2,.philo .sec-head .idx{color:var(--paper)}
+  .philo .sec-head .idx{color:var(--accent-soft)}
+  .philo .sec-head p{color:#a9a59b}
+  .philo .quote{
+    font-family:"Newsreader",serif;font-style:italic;
+    font-size:clamp(24px,4vw,46px);line-height:1.22;max-width:20ch;margin-bottom:clamp(36px,5vw,64px);
+  }
+  .philo .quote b{font-style:normal;color:var(--accent-soft)}
+  .pillars{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap)}
+  .pillar{grid-column:span 4;border-top:1px solid #3a3b36;padding-top:18px}
+  @media(max-width:760px){ .pillar{grid-column:span 12} }
+  .pillar .pn{font-family:"Space Mono",monospace;font-size:12px;color:var(--accent-soft);letter-spacing:.06em}
+  .pillar h3{font-family:"Archivo",sans-serif;font-weight:600;font-size:19px;margin:12px 0 8px}
+  .pillar p{font-size:15.5px;color:#bdb9af;line-height:1.5}
+
+  /* ===== awards strip ===== */
+  .awards{padding-block:clamp(44px,6vw,80px)}
+  .award-list{display:grid;gap:0}
+  .award{
+    display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:baseline;
+    border-top:1px solid var(--line);padding:18px 0;transition:padding-left .3s var(--ease),background .3s;
+  }
+  .award:last-child{border-bottom:1px solid var(--line)}
+  .award:hover{padding-left:14px;background:linear-gradient(90deg,var(--paper-2),transparent)}
+  .award .yr{font-family:"Space Mono",monospace;font-size:13px;color:var(--accent)}
+  .award .nm{font-family:"Archivo Expanded",sans-serif;font-weight:600;font-size:clamp(17px,2vw,23px)}
+  .award .nm small{display:block;font-family:"Newsreader",serif;font-weight:400;font-size:14px;color:var(--concrete);font-style:italic;margin-top:3px}
+  .award .org{font-family:"Space Mono",monospace;font-size:12px;color:var(--concrete);text-align:right}
+  @media(max-width:640px){ .award{grid-template-columns:auto 1fr} .award .org{display:none} }
+
+  /* ===== enquiry ===== */
+  .enquire{padding-block:clamp(48px,7vw,96px)}
+  .enquire .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap)}
+  .enquire .lead{grid-column:1/6}
+  .enquire .lead h2{font-family:"Archivo Expanded",sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,58px);line-height:.98;letter-spacing:-.02em}
+  .enquire .lead p{margin-top:18px;font-size:16.5px;color:#54554f;max-width:34ch}
+  .enquire .lead .addr{margin-top:26px;font-family:"Space Mono",monospace;font-size:12.5px;line-height:1.9;color:var(--concrete)}
+  .enquire .lead .addr b{color:var(--ink);font-weight:700}
+  form{grid-column:7/13;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){ .enquire .lead{grid-column:1/-1} form{grid-column:1/-1;margin-top:30px} }
+  @media(max-width:560px){ form{grid-template-columns:1fr} }
+  .field{display:flex;flex-direction:column;gap:7px}
+  .field.full{grid-column:1/-1}
+  .field label{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.05em;color:var(--concrete);text-transform:uppercase}
+  .field input,.field select,.field textarea{
+    font-family:"Archivo",sans-serif;font-size:15px;color:var(--ink);
+    background:var(--paper-2);border:1px solid var(--line);padding:12px 13px;border-radius:0;
+    transition:border-color .2s,background .2s;width:100%;min-width:0;
+  }
+  .field textarea{resize:vertical;min-height:96px}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:#fff;outline:none}
+  .submit{
+    grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .submit button{
+    font-family:"Archivo Expanded",sans-serif;font-weight:700;font-size:15px;letter-spacing:.02em;
+    background:var(--ink);color:var(--paper);border:none;padding:15px 30px;
+    display:inline-flex;align-items:center;gap:10px;transition:background .25s var(--ease);
+  }
+  .submit button:hover{background:var(--accent)}
+  .submit .note{font-family:"Space Mono",monospace;font-size:11px;color:var(--concrete)}
+
+  /* ===== footer ===== */
+  footer{border-top:1px solid var(--ink);padding-block:clamp(36px,5vw,56px);position:relative;z-index:1}
+  footer .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);align-items:start}
+  footer .big{grid-column:1/8;font-family:"Archivo Expanded",sans-serif;font-weight:800;font-size:clamp(28px,5vw,64px);line-height:.95;letter-spacing:-.02em}
+  footer .right{grid-column:9/13}
+  footer .right .li{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:11px 0;font-family:"Archivo",sans-serif;font-size:13px}
+  footer .right .li span:first-child{color:var(--concrete)}
+  footer .credit{
+    grid-column:1/-1;margin-top:clamp(34px,4vw,52px);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:"Space Mono",monospace;font-size:11.5px;color:var(--concrete);letter-spacing:.04em;
+    border-top:1px solid var(--line);padding-top:18px;
+  }
+  footer .credit a{color:var(--accent);font-weight:700}
+  @media(max-width:760px){ footer .big{grid-column:1/-1} footer .right{grid-column:1/-1;margin-top:26px} }
+
+  /* ===== case study overlay ===== */
+  .study{
+    position:fixed;inset:0;z-index:100;display:none;
+    background:color-mix(in srgb,var(--ink) 55%,transparent);backdrop-filter:blur(3px);
+  }
+  .study.open{display:block}
+  .study .panel{
+    position:absolute;top:0;right:0;height:100%;width:min(720px,100%);
+    background:var(--paper);border-left:1px solid var(--ink);
+    overflow-y:auto;transform:translateX(100%);transition:transform .5s var(--ease);
+  }
+  .study.open .panel{transform:translateX(0)}
+  .study .phero{aspect-ratio:16/10;position:relative;overflow:hidden}
+  .study .phero::after{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(90deg,rgba(0,0,0,.10) 1px,transparent 1px);
+    background-size:54px 100%;mix-blend-mode:multiply;opacity:.6;
+  }
+  .study .phero .pn{position:absolute;left:24px;bottom:14px;color:rgba(255,255,255,.92);font-family:"Archivo Expanded",sans-serif;font-weight:800;font-size:clamp(54px,11vw,110px);line-height:.78;letter-spacing:-.02em}
+  .study .pclose{
+    position:absolute;right:18px;top:18px;z-index:3;
+    width:42px;height:42px;border:1px solid rgba(255,255,255,.6);background:rgba(20,20,20,.35);
+    color:#fff;font-size:20px;line-height:1;display:grid;place-items:center;backdrop-filter:blur(3px);
+    transition:background .2s;
+  }
+  .study .pclose:hover{background:var(--ink)}
+  /* sticky meta */
+  .study .pmeta{
+    position:sticky;top:0;z-index:2;background:var(--paper);
+    border-bottom:1px solid var(--line);
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  }
+  .study .pmeta .m{padding:13px 16px}
+  .study .pmeta .m + .m{border-left:1px solid var(--line)}
+  .study .pmeta dt{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.05em;color:var(--concrete);text-transform:uppercase}
+  .study .pmeta dd{font-family:"Archivo",sans-serif;font-weight:600;font-size:14px;margin-top:5px}
+  @media(max-width:520px){ .study .pmeta{grid-template-columns:repeat(2,1fr)} .study .pmeta .m:nth-child(3){border-left:none} }
+  .study .pbody{padding:clamp(22px,4vw,40px)}
+  .study .pbody .ptitle{font-family:"Archivo Expanded",sans-serif;font-weight:800;font-size:clamp(26px,4vw,40px);line-height:1.04;letter-spacing:-.01em;margin-bottom:18px}
+  .study .pbody p{font-size:16.5px;line-height:1.65;color:#33342f;margin-bottom:16px}
+  .study .pbody p em{color:var(--accent);font-style:italic}
+  .study .pbody .facts{margin-top:24px;border-top:1px solid var(--line)}
+  .study .pbody .facts .f{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:12px 0;font-size:14.5px}
+  .study .pbody .facts .f dt{font-family:"Space Mono",monospace;font-size:12px;color:var(--concrete)}
+  .study .pbody .facts .f dd{font-family:"Archivo",sans-serif;font-weight:500;text-align:right}
+
+  /* ===== toast ===== */
+  .toast{
+    position:fixed;left:50%;bottom:30px;transform:translate(-50%,140%);
+    z-index:120;background:var(--ink);color:var(--paper);
+    padding:15px 22px;display:flex;align-items:center;gap:13px;max-width:90vw;
+    border-left:3px solid var(--accent);transition:transform .5s var(--ease);
+  }
+  .toast.show{transform:translate(-50%,0)}
+  .toast .tk{font-family:"Archivo Expanded",sans-serif;font-weight:700;font-size:14px}
+  .toast .tm{font-family:"Archivo",sans-serif;font-size:13.5px;color:#cfcabc}
+
+  @media(prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+    .hero h1 .ln i{transform:none}
+    .study .panel{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="gridlines" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brandmark" href="#top" aria-label="疊白建築事務所 首頁">
+      <span class="logo" aria-hidden="true"></span>
+      <b>疊白 DIE-BAI</b>
+    </a>
+    <nav class="nav" aria-label="主導覽">
+      <a href="#index">作品索引</a>
+      <a href="#philo">設計哲學</a>
+      <a href="#awards">獲獎紀錄</a>
+      <a class="cta sans" href="#enquire">預約洽談</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="grid">
+      <div class="eyebrow mono">
+        <span>疊白建築・室內設計事務所</span>
+        <span>EST. 2009 ／ 臺北・台中</span>
+        <span>24°08′N 120°40′E</span>
+      </div>
+      <h1>
+        <span class="ln"><i>空間</i></span>
+        <span class="ln"><i>作為一種</i></span>
+        <span class="ln alt"><i>秩序。</i></span>
+      </h1>
+      <p class="lede">
+        我們以模矩、光線與真實材料工作。混凝土、玻璃與原木在格線裡找到各自的位置——
+        建築不是裝飾的堆疊，而是<em>讓生活有跡可循的結構</em>。
+      </p>
+      <div class="meta">
+        <dl>
+          <div class="row"><dt>專業</dt><dd>建築設計 ／ 室內設計</dd></div>
+          <div class="row"><dt>規模</dt><dd>住宅・商空・公共</dd></div>
+          <div class="row"><dt>主持</dt><dd>林沂柔 ・ 高世德</dd></div>
+        </dl>
+      </div>
+
+      <div class="counter">
+        <div class="c"><div class="n disp" data-count="138">0</div><div class="l">完成案件・件</div></div>
+        <div class="c"><div class="n disp" data-count="15">0<sup>年</sup></div><div class="l">執業年資</div></div>
+        <div class="c"><div class="n disp" data-count="9">0</div><div class="l">設計獎項</div></div>
+        <div class="c"><div class="n disp" data-count="42">0<sup>萬</sup></div><div class="l">累計設計面積・m²</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INDEX (signature) ===== -->
+<section class="index" id="index">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="idx mono">01 — INDEX</div>
+        <h2>作品索引</h2>
+      </div>
+      <p>依類型與年份重新編排格線。點選任一案件查看完整案例研究。</p>
+    </div>
+
+    <div class="filters" role="group" aria-label="作品篩選">
+      <span class="lab">TYPE ／ 類型</span>
+      <button class="chip" data-filter="all" aria-pressed="true">全部<span class="ct">9</span></button>
+      <button class="chip" data-filter="residential" aria-pressed="false">住宅<span class="ct">4</span></button>
+      <button class="chip" data-filter="commercial" aria-pressed="false">商空<span class="ct">3</span></button>
+      <button class="chip" data-filter="public" aria-pressed="false">公共<span class="ct">2</span></button>
+    </div>
+
+    <div class="projects" id="projects"><!-- cards injected --></div>
+    <div class="empty" id="empty">此類型尚無作品。試試其他篩選。</div>
+  </div>
+</section>
+
+<!-- ===== PHILOSOPHY ===== -->
+<section class="philo" id="philo">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="idx mono">02 — PRACTICE</div>
+        <h2>設計哲學</h2>
+      </div>
+      <p>三項貫穿每個案件的工作原則。</p>
+    </div>
+    <p class="quote">「好的建築，是把<b>限制</b>翻譯成<b>秩序</b>，再把秩序翻譯成<b>生活</b>。」</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pn mono">P-01</div>
+        <h3>模矩先行</h3>
+        <p>每個案子從一張格線開始。柱距、開窗、傢俱尺度共用同一套模矩，讓空間在比例上彼此呼應，而非各自為政。</p>
+      </div>
+      <div class="pillar">
+        <div class="pn mono">P-02</div>
+        <h3>材料誠實</h3>
+        <p>混凝土就是混凝土，木頭就是木頭。我們不貼皮、不仿造，讓材料以原本的紋理與重量被使用，並隨時間自然變化。</p>
+      </div>
+      <div class="pillar">
+        <div class="pn mono">P-03</div>
+        <h3>光是隱形的牆</h3>
+        <p>在配置動線之前，先配置光。日照角度、天井與反射面決定了空間的情緒，比任何裝飾都更持久。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AWARDS ===== -->
+<section class="awards" id="awards">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="idx mono">03 — RECOGNITION</div>
+        <h2>獲獎紀錄</h2>
+      </div>
+      <p>近年受國內外設計組織肯定的代表性獎項。</p>
+    </div>
+    <div class="award-list">
+      <div class="award">
+        <span class="yr mono">2024</span>
+        <span class="nm disp">疊水之家 — 住宅首獎<small>Residential Architecture of the Year</small></span>
+        <span class="org mono">TID AWARD</span>
+      </div>
+      <div class="award">
+        <span class="yr mono">2023</span>
+        <span class="nm disp">霧峰光井圖書館 — 金獎<small>Public Space, Gold</small></span>
+        <span class="org mono">GOLDEN PIN DESIGN</span>
+      </div>
+      <div class="award">
+        <span class="yr mono">2023</span>
+        <span class="nm disp">RÉN 選物所 — 商空評審特別獎<small>Retail Interior, Special Mention</small></span>
+        <span class="org mono">iF DESIGN AWARD</span>
+      </div>
+      <div class="award">
+        <span class="yr mono">2022</span>
+        <span class="nm disp">山徑混凝土宅 — 入圍<small>Single House, Finalist</small></span>
+        <span class="org mono">DEZEEN AWARDS</span>
+      </div>
+      <div class="award">
+        <span class="yr mono">2021</span>
+        <span class="nm disp">年度新銳建築事務所<small>Emerging Practice of the Year</small></span>
+        <span class="org mono">ADA 新銳建築獎</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ENQUIRE ===== -->
+<section class="enquire" id="enquire">
+  <div class="wrap">
+    <div class="grid">
+      <div class="lead">
+        <h2>把您的<br>限制交給我們。</h2>
+        <p>從一塊基地、一間老屋，到一份品牌的空間想像——告訴我們您的條件，我們回覆一份初步的方向與時程。</p>
+        <div class="addr">
+          <b>臺北工作室</b><br>
+          臺北市大安區建國南路二段 18 巷 5 號 3F<br>
+          <b>台中工作室</b><br>
+          臺中市西區美村路一段 117 號<br>
+          <br>
+          studio@die-bai.example ／ +886 2 2700 0000
+        </div>
+      </div>
+      <form id="enquiryForm" novalidate>
+        <div class="field">
+          <label for="f-name">您的稱呼</label>
+          <input id="f-name" name="name" type="text" placeholder="王小姐 / 陳先生" required>
+        </div>
+        <div class="field">
+          <label for="f-phone">聯絡電話</label>
+          <input id="f-phone" name="phone" type="tel" placeholder="09xx-xxx-xxx" required>
+        </div>
+        <div class="field">
+          <label for="f-type">案件類型</label>
+          <select id="f-type" name="type" required>
+            <option value="">請選擇</option>
+            <option>住宅・自地自建</option>
+            <option>住宅・室內裝修</option>
+            <option>商業空間</option>
+            <option>公共・其他</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-budget">概估預算</label>
+          <select id="f-budget" name="budget">
+            <option value="">尚未確定</option>
+            <option>300 萬以下</option>
+            <option>300 – 800 萬</option>
+            <option>800 – 2000 萬</option>
+            <option>2000 萬以上</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="f-msg">基地條件與需求</label>
+          <textarea id="f-msg" name="message" placeholder="基地位置、坪數、屋齡，以及您最在意的事⋯⋯"></textarea>
+        </div>
+        <div class="submit">
+          <button type="submit">送出洽談需求 <span aria-hidden="true">→</span></button>
+          <span class="note">我們將於 3 個工作天內回覆</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="big">空間<br>作為秩序。</div>
+      <div class="right">
+        <div class="li"><span>作品索引</span><a href="#index">9 件代表作</a></div>
+        <div class="li"><span>聯絡</span><a href="#enquire">預約洽談 →</a></div>
+        <div class="li"><span>Instagram</span><span>@diebai.studio</span></div>
+        <div class="li"><span>統一編號</span><span>00-000000</span></div>
+      </div>
+      <div class="credit">
+        <span>© 2026 疊白建築・室內設計事務所（虛構作品集示例）</span>
+        <span>設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== CASE STUDY OVERLAY ===== -->
+<div class="study" id="study" role="dialog" aria-modal="true" aria-labelledby="studyTitle">
+  <div class="panel" id="studyPanel">
+    <div class="phero" id="studyHero">
+      <button class="pclose" id="studyClose" aria-label="關閉案例研究">✕</button>
+      <div class="pn disp" id="studyNum">00</div>
+    </div>
+    <dl class="pmeta" id="studyMeta"></dl>
+    <div class="pbody" id="studyBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="tk">已收到</span>
+  <span class="tm" id="toastMsg">需求已送出，我們會盡快與您聯繫。</span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- project data ---------- */
+  var PROJECTS = [
+    {num:"01", cat:"residential", catLabel:"住宅", size:"span8", vis:"v-concrete",
+     title:"疊水之家", place:"新北・淡水", year:"2024", area:"248 m²",
+     sub:"沿坡地疊落的三層清水模住宅，以水院串連起居與書房。",
+     status:"已完工", program:"單棟住宅", team:"林沂柔",
+     body:["基地是一塊面海的緩坡，落差近四米。我們沒有把地填平，而是<em>順著等高線把房子疊上去</em>——每一層退縮半個模矩，讓屋頂成為上一層的庭院。",
+           "清水混凝土在這裡不是風格，而是結構與表面的同一件事。模板的木紋被刻意保留，讓粗獷的材料在海風裡慢慢長出自己的痕跡。",
+           "中央的水院引入反射光，把樓梯間照亮。傍晚時，水面把夕陽折射進室內，整個家像被點亮了一次。"]},
+    {num:"02", cat:"commercial", catLabel:"商空", size:"span4", vis:"v-timber",
+     title:"RÉN 選物所", place:"臺北・赤峰街", year:"2023", area:"96 m²",
+     sub:"老屋改造的選物店，以原木層架重構動線。",
+     status:"已完工", program:"零售空間", team:"高世德",
+     body:["一棟五十年的街屋，天花低、採光差。我們拆掉後加的夾層，<em>還原老屋本來的高度</em>，再以一組可重組的原木層架重新定義動線。",
+           "層架本身就是牆、是展台、也是燈具的載體。模矩化的設計讓店主能隨季節重新排列，空間因此會隨商品一起呼吸。"]},
+    {num:"03", cat:"public", catLabel:"公共", size:"span6", vis:"v-glass",
+     title:"霧峰光井圖書館", place:"臺中・霧峰", year:"2023", area:"1,820 m²",
+     sub:"以九個天井為核心的社區圖書館，把自然光帶進每個閱讀角落。",
+     status:"已完工", program:"公共建築", team:"林沂柔・高世德",
+     body:["閱讀需要光，但不要刺眼的光。我們在屋頂開了<em>九個朝北的天井</em>，讓柔和均勻的漫射光從上方落下，整天幾乎不需要開燈。",
+           "平面是一張清楚的格線：書庫、閱讀、活動三種尺度的房間共用同一套柱網，孩子與長者都能憑直覺找到自己的位置。",
+           "玻璃帷幕與深出簷處理了西曬，也讓圖書館在夜裡像一盞點亮社區的燈。"]},
+    {num:"04", cat:"residential", catLabel:"住宅", size:"span4", vis:"v-stone",
+     title:"山徑混凝土宅", place:"新竹・寶山", year:"2022", area:"176 m²",
+     sub:"嵌入山徑的單層住宅，用一道長牆把家與山隔開又連結。",
+     status:"已完工", program:"單棟住宅", team:"高世德",
+     body:["一道四十公尺長的混凝土牆，是這個家的脊椎。牆的一側是私密的臥房，另一側<em>整面開向竹林</em>，把山景框成一幅會動的畫。",
+           "屋主想要安靜。我們用厚牆與小窗處理朝路面的一側，再把生活完全打開朝向後山——隱私與開闊在同一個屋頂下並存。"]},
+    {num:"05", cat:"commercial", catLabel:"商空", size:"span4", vis:"v-night",
+     title:"靜置咖啡 旗艦店", place:"臺北・信義", year:"2022", area:"132 m²",
+     sub:"以黑鐵與磨石子打造的咖啡空間，吧台是唯一的舞台。",
+     status:"已完工", program:"餐飲空間", team:"林沂柔",
+     body:["品牌的核心是一杯手沖，所以空間的核心是一座<em>島狀吧台</em>。我們把所有動線收攏在它四周，讓沖煮成為被環繞的儀式。",
+           "黑鐵、磨石子與暖光，三種材料就構成了全部。克制讓咖啡本身成為空間裡最亮的東西。"]},
+    {num:"06", cat:"residential", catLabel:"住宅", size:"span4", vis:"v-timber",
+     title:"雙院長屋", place:"臺南・北區", year:"2021", area:"210 m²",
+     sub:"以前後兩座院子組織的長型街屋翻新。",
+     status:"已完工", program:"室內裝修", team:"高世德",
+     body:["臺南典型的長型街屋，最大的問題是中段沒有光。我們在前後各留一座院子，<em>把中央打通成一條光的走廊</em>，風與光從此貫穿整棟。",
+           "原本的紅磚被保留下來，與新的木作並置。新與舊不互相掩飾，而是清楚地說明這棟房子的兩段時間。"]},
+    {num:"07", cat:"public", catLabel:"公共", size:"span8", vis:"v-glass",
+     title:"溪畔候車亭群", place:"宜蘭・冬山", year:"2021", area:"6 處・各 24 m²",
+     sub:"沿河自行車道的六座模矩候車亭，一套構件、六種地景。",
+     status:"已完工", program:"公共設施", team:"林沂柔・高世德",
+     body:["六個地點、六種地形，但我們只設計了<em>一套構件</em>。鋼構模矩可以在工廠預製、現場快速組立，再依每個基地的方位調整開口。",
+           "同一個系統，因為面對不同的山與水，呈現出六種完全不同的表情。標準化不等於單調——它讓在地的差異被看得更清楚。"]},
+    {num:"08", cat:"commercial", catLabel:"商空", size:"span4", vis:"v-stone",
+     title:"摺紙辦公室", place:"臺北・內湖", year:"2020", area:"420 m²",
+     sub:"以摺板天花整合照明與聲學的開放式辦公空間。",
+     status:"已完工", program:"辦公空間", team:"高世德",
+     body:["開放式辦公室最難的是噪音。我們把天花<em>摺成連續的斜面</em>，每一摺都藏著吸音材與線形燈具，讓聲音被打散、光被柔化。",
+           "結構即是裝飾，裝飾即是設備。一個動作同時解決了三件事，這正是我們相信的效率。"]},
+    {num:"09", cat:"residential", catLabel:"住宅", size:"span4", vis:"v-concrete",
+     title:"灰階公寓", place:"臺北・大安", year:"2020", area:"99 m²",
+     sub:"以七種灰階構成的都會小宅，用材質取代隔間。",
+     status:"已完工", program:"室內裝修", team:"林沂柔",
+     body:["三十坪的都會公寓，加隔間只會更小。我們改用<em>七種深淺不同的灰</em>——地坪、牆面、櫃體各自一階，靠材質的層次而非牆來分區。",
+           "沒有多餘的色彩，空間反而安靜下來。光在一天裡走過這些灰階，房子也跟著換了好幾種表情。"]}
+  ];
+
+  /* ---------- render cards ---------- */
+  var grid = document.getElementById("projects");
+  function cardHTML(p){
+    var span = p.size==="span8"?"span8":(p.size==="span6"?"span6":"");
+    return '<button class="card '+span+'" data-cat="'+p.cat+'" data-num="'+p.num+'" aria-label="查看案例：'+p.title+'">'
+      + '<span class="vis '+p.vis+'">'
+      +   '<span class="tag mono">'+p.catLabel+' ／ '+p.year+'</span>'
+      +   '<span class="num">'+p.num+'</span>'
+      + '</span>'
+      + '<span class="body">'
+      +   '<span class="ti">'+p.title+'</span>'
+      +   '<span class="sub">'+p.sub+'</span>'
+      +   '<span class="foot"><span>'+p.place+'</span><span>'+p.area+'</span></span>'
+      +   '<span class="open">案例研究 <span class="ar">→</span></span>'
+      + '</span>'
+      + '</button>';
+  }
+  grid.innerHTML = PROJECTS.map(cardHTML).join("");
+
+  /* ---------- filter (signature: re-flow grid) ---------- */
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+  var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
+  var emptyEl = document.getElementById("empty");
+
+  function applyFilter(f){
+    var shown = 0;
+    cards.forEach(function(c){
+      var match = (f==="all" || c.getAttribute("data-cat")===f);
+      if(match){
+        c.classList.remove("is-hidden");
+        shown++;
+        if(!reduce){
+          c.classList.add("fade");
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){ c.classList.remove("fade"); }); });
+        }
+      } else {
+        c.classList.add("is-hidden");
+      }
+    });
+    emptyEl.classList.toggle("show", shown===0);
+  }
+
+  chips.forEach(function(chip){
+    chip.addEventListener("click", function(){
+      chips.forEach(function(c){ c.setAttribute("aria-pressed","false"); });
+      chip.setAttribute("aria-pressed","true");
+      applyFilter(chip.getAttribute("data-filter"));
+    });
+  });
+
+  /* ---------- case study overlay ---------- */
+  var study = document.getElementById("study");
+  var panel = document.getElementById("studyPanel");
+  var studyHero = document.getElementById("studyHero");
+  var studyNum = document.getElementById("studyNum");
+  var studyMeta = document.getElementById("studyMeta");
+  var studyBody = document.getElementById("studyBody");
+  var studyClose = document.getElementById("studyClose");
+  var lastFocus = null;
+
+  function openStudy(num){
+    var p = PROJECTS.filter(function(x){ return x.num===num; })[0];
+    if(!p) return;
+    lastFocus = document.activeElement;
+    studyHero.className = "phero " + p.vis;
+    studyHero.appendChild(studyClose); studyHero.appendChild(studyNum);
+    studyNum.textContent = p.num;
+    studyMeta.innerHTML =
+        '<div class="m"><dt>類型</dt><dd>'+p.program+'</dd></div>'
+      + '<div class="m"><dt>地點</dt><dd>'+p.place+'</dd></div>'
+      + '<div class="m"><dt>年份</dt><dd>'+p.year+'</dd></div>'
+      + '<div class="m"><dt>狀態</dt><dd>'+p.status+'</dd></div>';
+    studyBody.innerHTML =
+        '<h3 class="ptitle" id="studyTitle">'+p.title+'</h3>'
+      + p.body.map(function(t){ return '<p>'+t+'</p>'; }).join("")
+      + '<dl class="facts">'
+      +   '<div class="f"><dt>建築面積</dt><dd>'+p.area+'</dd></div>'
+      +   '<div class="f"><dt>使用類組</dt><dd>'+p.catLabel+'</dd></div>'
+      +   '<div class="f"><dt>主持設計</dt><dd>'+p.team+'</dd></div>'
+      +   '<div class="f"><dt>攝影</dt><dd>本頁示意（CSS 雙色調）</dd></div>'
+      + '</dl>';
+    study.classList.add("open");
+    document.body.style.overflow = "hidden";
+    studyClose.focus();
+  }
+  function closeStudy(){
+    study.classList.remove("open");
+    document.body.style.overflow = "";
+    if(lastFocus) lastFocus.focus();
+  }
+  grid.addEventListener("click", function(e){
+    var card = e.target.closest(".card");
+    if(card) openStudy(card.getAttribute("data-num"));
+  });
+  studyClose.addEventListener("click", closeStudy);
+  study.addEventListener("click", function(e){ if(e.target===study) closeStudy(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && study.classList.contains("open")) closeStudy(); });
+
+  /* ---------- enquiry form -> toast ---------- */
+  var form = document.getElementById("enquiryForm");
+  var toast = document.getElementById("toast");
+  var toastMsg = document.getElementById("toastMsg");
+  var toastTimer = null;
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var name = form.querySelector("#f-name");
+    var phone = form.querySelector("#f-phone");
+    var type = form.querySelector("#f-type");
+    if(!name.value.trim()){ name.focus(); flash("請留下您的稱呼，我們好稱呼您。"); return; }
+    if(!phone.value.trim()){ phone.focus(); flash("請留下聯絡電話。"); return; }
+    if(!type.value){ type.focus(); flash("請選擇案件類型。"); return; }
+    flash("收到，"+name.value.trim()+"！需求已送出，我們會在 3 個工作天內聯繫您。");
+    form.reset();
+  });
+  function flash(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 4200);
+  }
+
+  /* ---------- hero reveal + counters ---------- */
+  function runHero(){
+    document.body.classList.add("reveal-in");
+    if(reduce){
+      document.querySelectorAll("[data-count]").forEach(function(el){
+        setVal(el, parseInt(el.getAttribute("data-count"),10));
+      });
+      return;
+    }
+    document.querySelectorAll("[data-count]").forEach(function(el){
+      var target = parseInt(el.getAttribute("data-count"),10);
+      var start = null, dur = 1400;
+      function step(ts){
+        if(!start) start = ts;
+        var t = Math.min((ts-start)/dur, 1);
+        var eased = 1 - Math.pow(1-t, 3);
+        setVal(el, Math.round(target*eased));
+        if(t<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  function setVal(el, val){
+    var sup = el.querySelector("sup");
+    el.firstChild.nodeValue = val;
+    if(sup) el.appendChild(sup);
+  }
+  // kick after fonts/layout settle
+  if(document.readyState==="complete") requestAnimationFrame(runHero);
+  else window.addEventListener("load", function(){ requestAnimationFrame(runHero); });
+})();
+</script>
+</body>
+</html>
