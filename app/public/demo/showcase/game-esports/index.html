@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON AXIS 霓虹軸線 戰隊主站｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="NEON AXIS 霓虹軸線職業電競戰隊官方主站。追蹤戰隊動態、查看選手 HUD 戰績面板、倒數下一場主場賽事並選購門票。本頁為 e-life-ai 設計樣板。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#08070f;          /* near-black base */
+  --panel:#15102b;        /* deep violet panel */
+  --panel-2:#1d1640;      /* raised violet */
+  --magenta:#ff2e88;      /* primary electric */
+  --cyan:#22e0ff;         /* secondary plasma */
+  --amber:#ffb627;        /* alert, sparingly */
+  --ice:#e8ecff;          /* primary text */
+  --muted:#8b86b8;        /* muted text */
+  --line:rgba(136,128,200,.22);
+  --glow-m:0 0 24px rgba(255,46,136,.45);
+  --glow-c:0 0 24px rgba(34,224,255,.4);
+  --disp:'Chakra Petch',sans-serif;
+  --num:'Rajdhani',sans-serif;
+  --body:'Noto Sans TC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--ice);
+  font-family:var(--body);
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* ambient grid + scanline atmosphere */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1100px 600px at 78% -8%, rgba(255,46,136,.16), transparent 60%),
+    radial-gradient(900px 700px at 8% 18%, rgba(34,224,255,.13), transparent 60%),
+    linear-gradient(rgba(136,128,200,.05) 1px, transparent 1px) 0 0/100% 44px,
+    linear-gradient(90deg, rgba(136,128,200,.05) 1px, transparent 1px) 0 0/44px 100%;
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(180deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+  mix-blend-mode:overlay;opacity:.5;animation:scan 8s linear infinite;
+}
+@keyframes scan{to{background-position:0 600px}}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* clipped HUD frame utility */
+.clip{clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
+
+/* ---------- HEADER ---------- */
+header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+  background:linear-gradient(180deg,rgba(8,7,15,.92),rgba(8,7,15,.55));
+  border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:700;letter-spacing:.12em}
+.brand .mark{width:30px;height:30px;flex:none}
+.brand b{font-size:1.05rem}
+.brand b span{color:var(--magenta)}
+.brand small{display:block;font-size:.58rem;letter-spacing:.42em;color:var(--cyan);font-weight:500}
+.menu{display:flex;gap:30px;font-family:var(--disp);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase}
+.menu a{color:var(--muted);position:relative;padding:4px 0;transition:color .2s}
+.menu a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--magenta);box-shadow:var(--glow-m);transition:width .25s}
+.menu a:hover{color:var(--ice)}
+.menu a:hover::after{width:100%}
+.btn{font-family:var(--disp);font-weight:600;letter-spacing:.1em;cursor:pointer;border:none;background:none;color:inherit}
+.btn-pri{padding:11px 22px;background:var(--magenta);color:#0a0612;box-shadow:var(--glow-m);
+  text-transform:uppercase;font-size:.8rem;transition:transform .15s,box-shadow .2s}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(255,46,136,.7)}
+.btn-ghost{padding:11px 22px;border:1px solid var(--cyan);color:var(--cyan);
+  text-transform:uppercase;font-size:.8rem;transition:background .2s,color .2s}
+.btn-ghost:hover{background:var(--cyan);color:#04121a}
+.nav-toggle{display:none}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:74px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:46px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--disp);
+  font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--cyan)}
+.eyebrow .dot{width:7px;height:7px;background:var(--magenta);border-radius:50%;box-shadow:var(--glow-m);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:var(--disp);font-weight:700;line-height:.96;margin:18px 0 6px;
+  font-size:clamp(2.8rem,8vw,5.4rem);letter-spacing:.01em}
+.hero h1 .glitch{position:relative;display:inline-block;color:var(--ice)}
+.hero h1 .glitch::before,.hero h1 .glitch::after{
+  content:attr(data-t);position:absolute;left:0;top:0;width:100%;overflow:hidden}
+.hero h1 .glitch::before{color:var(--magenta);animation:gl1 3.4s infinite steps(2)}
+.hero h1 .glitch::after{color:var(--cyan);animation:gl2 2.7s infinite steps(2)}
+@keyframes gl1{0%,92%,100%{clip-path:inset(0 0 100% 0);transform:translate(0)}93%{clip-path:inset(8% 0 70% 0);transform:translate(-3px,-1px)}96%{clip-path:inset(40% 0 30% 0);transform:translate(3px,1px)}}
+@keyframes gl2{0%,90%,100%{clip-path:inset(100% 0 0 0);transform:translate(0)}91%{clip-path:inset(72% 0 12% 0);transform:translate(3px,1px)}97%{clip-path:inset(20% 0 55% 0);transform:translate(-3px,-1px)}}
+.hero .sub{color:var(--muted);max-width:46ch;margin:14px 0 26px;font-size:1.02rem}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-meta{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+.hero-meta .m b{font-family:var(--num);font-size:1.8rem;font-weight:700;color:var(--ice);display:block;line-height:1}
+.hero-meta .m span{font-family:var(--disp);font-size:.66rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+
+/* hero emblem (SVG) */
+.emblem-box{position:relative;display:flex;justify-content:center}
+.emblem-box svg{width:min(360px,80%);filter:drop-shadow(0 0 30px rgba(255,46,136,.35))}
+.ring{animation:spin 22s linear infinite}
+.ring.r2{animation:spin 30s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- COUNTDOWN BAR ---------- */
+.count{margin:8px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(255,46,136,.08),rgba(34,224,255,.08))}
+.count .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 24px;flex-wrap:wrap}
+.count .lbl{font-family:var(--disp);letter-spacing:.16em;text-transform:uppercase;font-size:.82rem}
+.count .lbl b{color:var(--magenta)}
+.count .lbl small{display:block;color:var(--muted);font-size:.68rem;letter-spacing:.1em;margin-top:3px}
+.clock{display:flex;gap:12px}
+.clock .seg{min-width:64px;text-align:center;background:var(--panel);border:1px solid var(--line);padding:8px 6px}
+.clock .seg b{font-family:var(--num);font-size:1.8rem;font-weight:700;display:block;line-height:1;color:var(--cyan)}
+.clock .seg span{font-family:var(--disp);font-size:.56rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+
+/* ---------- SECTION SHELL ---------- */
+section{position:relative;z-index:1;padding:84px 0}
+.sec-head{margin-bottom:38px}
+.sec-head .kick{font-family:var(--disp);font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;color:var(--cyan)}
+.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1.05;margin-top:8px}
+.sec-head p{color:var(--muted);max-width:54ch;margin-top:10px}
+
+/* ---------- ROSTER (signature) ---------- */
+.roster{display:grid;grid-template-columns:.78fr 1.22fr;gap:30px;align-items:stretch}
+.picker{display:flex;flex-direction:column;gap:10px}
+.pcard{display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--panel);
+  border:1px solid var(--line);cursor:pointer;text-align:left;color:inherit;
+  transition:border-color .2s,background .2s,transform .15s;width:100%}
+.pcard:hover{transform:translateX(4px);border-color:rgba(34,224,255,.5)}
+.pcard[aria-selected="true"]{border-color:var(--magenta);background:var(--panel-2);box-shadow:inset 3px 0 0 var(--magenta),var(--glow-m)}
+.pcard .av{width:44px;height:44px;flex:none}
+.pcard .pn{font-family:var(--disp);font-weight:600;letter-spacing:.06em}
+.pcard .pr{font-size:.72rem;color:var(--muted);font-family:var(--disp);letter-spacing:.14em;text-transform:uppercase}
+.pcard .num{margin-left:auto;font-family:var(--num);font-size:1.5rem;font-weight:700;color:var(--muted)}
+.pcard[aria-selected="true"] .num{color:var(--cyan)}
+
+/* feature HUD panel */
+.feature{position:relative;background:
+  linear-gradient(180deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);padding:30px;overflow:hidden}
+.feature::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(420px 280px at 85% 0%,rgba(255,46,136,.18),transparent 60%);pointer-events:none}
+.feature.swap{animation:reveal .42s ease}
+@keyframes reveal{0%{opacity:.2;clip-path:inset(0 0 0 100%)}55%{opacity:1;clip-path:inset(0 0 0 0)}}
+.f-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.f-id .role{font-family:var(--disp);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--cyan)}
+.f-id h3{font-family:var(--disp);font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1;margin:6px 0 2px}
+.f-id .real{color:var(--muted);font-size:.86rem}
+.f-tag{font-family:var(--num);font-size:3.4rem;font-weight:700;color:rgba(255,46,136,.85);line-height:.8;text-shadow:var(--glow-m)}
+.f-quote{margin:20px 0;padding:14px 16px;border-left:2px solid var(--cyan);
+  background:rgba(34,224,255,.06);color:var(--ice);font-size:.95rem}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;margin-top:8px}
+.stat .top{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--disp);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.stat .top b{font-family:var(--num);font-size:1.25rem;color:var(--ice);letter-spacing:0}
+.bar{height:7px;background:rgba(136,128,200,.18);margin-top:7px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));
+  box-shadow:0 0 10px rgba(255,46,136,.5);transition:width .9s cubic-bezier(.2,.9,.25,1)}
+
+/* ---------- STATS STRIP (scroll reveal) ---------- */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);padding:26px 22px;text-align:center}
+.kpi b{font-family:var(--num);font-weight:700;font-size:clamp(2rem,5vw,3rem);
+  background:linear-gradient(180deg,var(--cyan),var(--magenta));-webkit-background-clip:text;background-clip:text;color:transparent;display:block;line-height:1}
+.kpi span{font-family:var(--disp);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:8px;display:block}
+
+/* ---------- TICKETS ---------- */
+.tickets{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tk{position:relative;background:var(--panel);border:1px solid var(--line);padding:28px 24px;
+  display:flex;flex-direction:column;cursor:pointer;transition:border-color .2s,transform .18s,box-shadow .2s}
+.tk:hover{transform:translateY(-5px);border-color:rgba(34,224,255,.5)}
+.tk[aria-selected="true"]{border-color:var(--magenta);box-shadow:var(--glow-m)}
+.tk .feat{position:absolute;top:-1px;right:-1px;background:var(--magenta);color:#0a0612;
+  font-family:var(--disp);font-size:.6rem;letter-spacing:.18em;padding:5px 11px;text-transform:uppercase}
+.tk .tname{font-family:var(--disp);font-weight:700;font-size:1.2rem;letter-spacing:.08em}
+.tk .price{font-family:var(--num);font-weight:700;font-size:2.5rem;margin:10px 0 4px;color:var(--ice)}
+.tk .price span{font-size:1rem;color:var(--muted)}
+.tk ul{list-style:none;margin:16px 0 22px;display:flex;flex-direction:column;gap:9px;color:var(--muted);font-size:.9rem}
+.tk li::before{content:"▸ ";color:var(--cyan)}
+.tk .pick{margin-top:auto;width:100%;padding:11px;text-align:center;border:1px solid var(--cyan);color:var(--cyan);
+  font-family:var(--disp);letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;transition:background .2s,color .2s}
+.tk[aria-selected="true"] .pick{background:var(--magenta);border-color:var(--magenta);color:#0a0612}
+
+/* ---------- SCHEDULE ---------- */
+.sched{display:flex;flex-direction:column;gap:0;border:1px solid var(--line)}
+.row{display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.row:nth-child(odd){background:rgba(136,128,200,.04)}
+.row .date{font-family:var(--num);font-weight:600;color:var(--cyan)}
+.row .date span{display:block;font-family:var(--disp);font-size:.62rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.row .vs{font-family:var(--disp);letter-spacing:.04em}
+.row .vs b{color:var(--ice)}
+.row .vs em{color:var(--magenta);font-style:normal;padding:0 8px}
+.row .res{font-family:var(--disp);font-size:.74rem;letter-spacing:.14em;padding:5px 12px;border:1px solid var(--line);text-transform:uppercase}
+.row .res.w{color:var(--cyan);border-color:rgba(34,224,255,.5)}
+.row .res.l{color:var(--muted)}
+.row .res.up{color:var(--amber);border-color:rgba(255,182,39,.5)}
+
+/* ---------- CTA ---------- */
+.join{text-align:center;padding:64px 30px;border:1px solid var(--line);
+  background:linear-gradient(135deg,rgba(255,46,136,.1),rgba(34,224,255,.08));position:relative;overflow:hidden}
+.join h2{font-family:var(--disp);font-weight:700;font-size:clamp(2rem,5vw,3.2rem);line-height:1}
+.join p{color:var(--muted);max-width:48ch;margin:14px auto 26px}
+.join form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+.join input{flex:1;min-width:200px;background:var(--ink);border:1px solid var(--line);color:var(--ice);
+  padding:13px 16px;font-family:var(--body);font-size:.92rem}
+.join input:focus{border-color:var(--cyan);outline:none}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);padding:40px 0;position:relative;z-index:1}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.foot .brand small{color:var(--cyan)}
+.foot .note{font-family:var(--disp);font-size:.82rem;letter-spacing:.1em;color:var(--muted)}
+.foot .note a{color:var(--magenta)}
+.foot .soc{display:flex;gap:14px}
+.foot .soc a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);
+  font-family:var(--disp);font-size:.74rem;color:var(--muted);transition:border-color .2s,color .2s}
+.foot .soc a:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* ---------- TOAST ---------- */
+.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,140%);z-index:200;
+  background:var(--panel-2);border:1px solid var(--magenta);box-shadow:var(--glow-m);
+  padding:14px 22px;font-family:var(--disp);letter-spacing:.06em;font-size:.88rem;
+  display:flex;align-items:center;gap:12px;transition:transform .35s cubic-bezier(.2,.9,.25,1);max-width:90vw}
+.toast.on{transform:translate(-50%,0)}
+.toast .ic{color:var(--cyan)}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:880px){
+  .menu{display:none}
+  .hero-grid{grid-template-columns:1fr;gap:30px}
+  .emblem-box{order:-1}
+  .roster{grid-template-columns:1fr}
+  .tickets{grid-template-columns:1fr}
+  .strip{grid-template-columns:1fr 1fr}
+  .nav-toggle{display:inline-flex}
+}
+@media(max-width:520px){
+  .clock .seg{min-width:54px}
+  .stats{grid-template-columns:1fr}
+  .row{grid-template-columns:90px 1fr;gap:10px}
+  .row .res{grid-column:1/-1;justify-self:start}
+  .hero-meta{gap:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  body::after{display:none}
+  .bar i{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="NEON AXIS 霓虹軸線 首頁">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <polygon points="20,2 38,11 38,29 20,38 2,29 2,11" fill="none" stroke="#ff2e88" stroke-width="2"/>
+        <path d="M13 27V13l14 14V13" fill="none" stroke="#22e0ff" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span>
+        <b>NEON<span> AXIS</span></b>
+        <small>霓虹軸線</small>
+      </span>
+    </a>
+    <nav class="menu" aria-label="主選單">
+      <a href="#roster">陣容</a>
+      <a href="#schedule">賽程</a>
+      <a href="#tickets">門票</a>
+      <a href="#join">追蹤</a>
+    </nav>
+    <button class="btn btn-pri" id="navFollow">追蹤戰隊</button>
+    <button class="btn btn-ghost nav-toggle" id="navToggle" aria-label="開啟選單">選單</button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>PCS 太平洋聯賽 · 2026 夏季賽</span>
+      <h1>我們把<br><span class="glitch" data-t="混沌">混沌</span>磨成軸線</h1>
+      <p class="sub">霓虹軸線是一支以快攻節奏與資訊壓制著稱的《戰術前線》職業戰隊。五個人，一條軸線——把戰場的雜訊收斂成致勝的角度。</p>
+      <div class="hero-cta">
+        <button class="btn btn-pri" id="heroFollow">追蹤戰隊</button>
+        <a class="btn btn-ghost" href="#tickets">主場門票</a>
+      </div>
+      <div class="hero-meta">
+        <div class="m"><b>3×</b><span>聯賽冠軍</span></div>
+        <div class="m"><b>71.4%</b><span>賽季勝率</span></div>
+        <div class="m"><b>#2</b><span>世界積分</span></div>
+      </div>
+    </div>
+    <div class="emblem-box">
+      <svg viewBox="0 0 200 200" aria-label="霓虹軸線戰隊徽章">
+        <g class="ring" style="transform-origin:100px 100px">
+          <circle cx="100" cy="100" r="92" fill="none" stroke="#22e0ff" stroke-width="1" stroke-dasharray="4 10" opacity=".55"/>
+        </g>
+        <g class="ring r2" style="transform-origin:100px 100px">
+          <circle cx="100" cy="100" r="78" fill="none" stroke="#ff2e88" stroke-width="1.4" stroke-dasharray="22 14" opacity=".7"/>
+        </g>
+        <polygon points="100,24 166,62 166,138 100,176 34,138 34,62" fill="rgba(29,22,64,.6)" stroke="#ff2e88" stroke-width="2"/>
+        <path d="M70 138V62l60 76V62" fill="none" stroke="#22e0ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="100" cy="100" r="6" fill="#ff2e88"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="count">
+  <div class="wrap">
+    <div class="lbl">
+      <b>下一場主場賽事</b> · 霓虹軸線 vs 蒼流電競
+      <small>2026.07.04 19:00 · 台北流行音樂中心</small>
+    </div>
+    <div class="clock" id="clock" role="timer" aria-label="距離下一場賽事倒數">
+      <div class="seg"><b id="cd">00</b><span>天 Days</span></div>
+      <div class="seg"><b id="ch">00</b><span>時 Hrs</span></div>
+      <div class="seg"><b id="cm">00</b><span>分 Min</span></div>
+      <div class="seg"><b id="cs">00</b><span>秒 Sec</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROSTER (signature) -->
+<section id="roster">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">// ACTIVE ROSTER 主力陣容</div>
+      <h2>點名出戰</h2>
+      <p>選擇任一選手，叫出他的 HUD 戰績面板——本賽季的真實出手節奏、爆頭率與位置定位，一覽無遺。</p>
+    </div>
+    <div class="roster">
+      <div class="picker" id="picker" role="tablist" aria-label="選手名單"></div>
+      <div class="feature clip" id="feature" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">// SEASON 2026 戰隊數據</div>
+      <h2>軸線之上的數字</h2>
+    </div>
+    <div class="strip" id="strip">
+      <div class="kpi"><b data-to="38">0</b><span>例行賽勝場</span></div>
+      <div class="kpi"><b data-to="71" data-suffix="%">0</b><span>整體勝率</span></div>
+      <div class="kpi"><b data-to="1.24" data-dec="2">0</b><span>戰隊平均 KD</span></div>
+      <div class="kpi"><b data-to="14" data-suffix="秒">0</b><span>平均殘局決勝</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">// MATCH LOG 近期賽程</div>
+      <h2>軸線的軌跡</h2>
+    </div>
+    <div class="sched">
+      <div class="row"><div class="date">06/06<span>已結束</span></div><div class="vs"><b>霓虹軸線</b><em>VS</em>逐光戰隊</div><div class="res w">勝 2–0</div></div>
+      <div class="row"><div class="date">06/13<span>已結束</span></div><div class="vs"><b>霓虹軸線</b><em>VS</em>赤潮 RED</div><div class="res w">勝 2–1</div></div>
+      <div class="row"><div class="date">06/17<span>已結束</span></div><div class="vs"><b>霓虹軸線</b><em>VS</em>夜梟電競</div><div class="res l">負 1–2</div></div>
+      <div class="row"><div class="date">07/04<span>主場賽</span></div><div class="vs"><b>霓虹軸線</b><em>VS</em>蒼流電競</div><div class="res up">即將開打</div></div>
+      <div class="row"><div class="date">07/11<span>客場賽</span></div><div class="vs"><b>霓虹軸線</b><em>VS</em>零度方舟</div><div class="res up">即將開打</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKETS -->
+<section id="tickets">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">// HOME GAME 07.04 主場門票</div>
+      <h2>進場，和我們同軸</h2>
+      <p>霓虹軸線 vs 蒼流電競 · 台北流行音樂中心。選定票種後加入願望清單，開賣第一時間通知你。</p>
+    </div>
+    <div class="tickets" id="tickets-grid">
+      <div class="tk clip" data-tk="入場席" data-price="NT$880">
+        <div class="tname">入場席</div>
+        <div class="price">NT$880</div>
+        <ul><li>三樓視野固定座位</li><li>電子應援手環</li><li>賽前選手登場直播</li></ul>
+        <div class="pick">加入願望清單</div>
+      </div>
+      <div class="tk clip" data-tk="戰術席" data-price="NT$1,680" data-featured="1">
+        <div class="feat">人氣首選</div>
+        <div class="tname">戰術席</div>
+        <div class="price">NT$1,680</div>
+        <ul><li>二樓中軸最佳視野</li><li>限定徽章 + 應援巾</li><li>賽後選手影像合影</li></ul>
+        <div class="pick">加入願望清單</div>
+      </div>
+      <div class="tk clip" data-tk="軸心 VIP" data-price="NT$3,200">
+        <div class="tname">軸心 VIP</div>
+        <div class="price">NT$3,200</div>
+        <ul><li>搖滾區前排席位</li><li>選手親簽戰隊球衣</li><li>賽後 Meet &amp; Greet 通行證</li></ul>
+        <div class="pick">加入願望清單</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN / CTA -->
+<section id="join">
+  <div class="wrap">
+    <div class="join clip">
+      <h2>成為軸線的一員</h2>
+      <p>留下信箱，賽程提醒、限定周邊與選手幕後內容，第一手送到你面前。</p>
+      <form id="joinForm">
+        <input type="email" id="joinEmail" placeholder="your@email.com" aria-label="電子信箱" required>
+        <button class="btn btn-pri" type="submit">鎖定追蹤</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#top">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <polygon points="20,2 38,11 38,29 20,38 2,29 2,11" fill="none" stroke="#ff2e88" stroke-width="2"/>
+        <path d="M13 27V13l14 14V13" fill="none" stroke="#22e0ff" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span><b>NEON<span> AXIS</span></b><small>霓虹軸線 · EST. 2021</small></span>
+    </a>
+    <div class="soc">
+      <a href="#" aria-label="Twitch">TW</a>
+      <a href="#" aria-label="YouTube">YT</a>
+      <a href="#" aria-label="Discord">DC</a>
+      <a href="#" aria-label="Instagram">IG</a>
+    </div>
+    <div class="note">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="ic">◆</span><span id="toastMsg"></span></div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ---- toast ---- */
+  var toast = document.getElementById('toast'), toastMsg = document.getElementById('toastMsg'), tT;
+  function showToast(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add('on');
+    clearTimeout(tT);
+    tT = setTimeout(function(){ toast.classList.remove('on'); }, 2600);
+  }
+
+  /* ---- 1. ROSTER selector (signature) ---- */
+  var players = [
+    {id:'AXON',  real:'李宥辰', role:'指揮 / 突破手', no:'07', tag:'IGL',
+      quote:'資訊先到，子彈才有意義。', acs:284, kd:1.31, hs:29, clutch:46, ult:71},
+    {id:'VELL',  real:'陳則安', role:'狙擊手', no:'14', tag:'OP',
+      quote:'一槍開一個角度，剩下交給隊友。', acs:301, kd:1.42, hs:34, clutch:52, ult:64},
+    {id:'KRYO',  real:'吳承翰', role:'控場 / 哨衛', no:'22', tag:'SEN',
+      quote:'守得住的點，才叫陣地。', acs:236, kd:1.18, hs:24, clutch:58, ult:77},
+    {id:'NOVA',  real:'林子睿', role:'先鋒 / 閃光', no:'03', tag:'INIT',
+      quote:'第一個進房間的人，最了解恐懼。', acs:268, kd:1.22, hs:27, clutch:41, ult:69},
+    {id:'HEX',   real:'張立群', role:'機動 / 自由人', no:'09', tag:'FLEX',
+      quote:'缺哪個位置，我就長成哪個位置。', acs:255, kd:1.27, hs:31, clutch:49, ult:73}
+  ];
+
+  function avatar(p){
+    // deterministic geometric SVG avatar per player
+    var hue = {AXON:'#ff2e88',VELL:'#22e0ff',KRYO:'#ffb627',NOVA:'#22e0ff',HEX:'#ff2e88'}[p.id] || '#22e0ff';
+    return '<svg class="av" viewBox="0 0 44 44" aria-hidden="true">'
+      + '<polygon points="22,3 40,13 40,31 22,41 4,31 4,13" fill="rgba(29,22,64,.8)" stroke="'+hue+'" stroke-width="1.6"/>'
+      + '<text x="22" y="27" text-anchor="middle" fill="'+hue+'" font-family="Rajdhani,sans-serif" font-weight="700" font-size="13">'+p.id.slice(0,2)+'</text>'
+      + '</svg>';
+  }
+
+  var picker = document.getElementById('picker'), feature = document.getElementById('feature');
+  players.forEach(function(p,i){
+    var b = document.createElement('button');
+    b.className = 'pcard'; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', i===0 ? 'true':'false');
+    b.innerHTML = avatar(p)
+      + '<span><span class="pn">'+p.id+'</span><br><span class="pr">'+p.role+'</span></span>'
+      + '<span class="num">'+p.no+'</span>';
+    b.addEventListener('click', function(){ select(i); });
+    picker.appendChild(b);
+  });
+
+  function renderFeature(p){
+    feature.classList.remove('swap');
+    void feature.offsetWidth; // restart anim
+    if(!reduce) feature.classList.add('swap');
+    feature.innerHTML =
+      '<div class="f-top">'
+      + '<div class="f-id"><div class="role">'+p.role+'</div><h3>'+p.id+'</h3><div class="real">'+p.real+' · 背號 '+p.no+'</div></div>'
+      + '<div class="f-tag">'+p.tag+'</div>'
+      + '</div>'
+      + '<div class="f-quote">「'+p.quote+'」</div>'
+      + '<div class="stats">'
+      +   statRow('平均戰鬥分 ACS', p.acs, Math.round(p.acs/3.2))
+      +   statRow('K/D 比值', p.kd.toFixed(2), Math.round(p.kd/1.6*100))
+      +   statRow('爆頭率', p.hs+'%', p.hs*2.4)
+      +   statRow('殘局勝率', p.clutch+'%', p.clutch)
+      + '</div>';
+    // animate bars next frame
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        var bars = feature.querySelectorAll('.bar i');
+        bars.forEach(function(bar){ bar.style.width = bar.dataset.w + '%'; });
+      });
+    });
+  }
+  function statRow(label, val, pct){
+    pct = Math.max(6, Math.min(100, pct));
+    return '<div class="stat"><div class="top"><span>'+label+'</span><b>'+val+'</b></div>'
+      + '<div class="bar"><i data-w="'+pct+'" style="'+(reduce?('width:'+pct+'%'):'')+'"></i></div></div>';
+  }
+  function select(i){
+    var cards = picker.querySelectorAll('.pcard');
+    cards.forEach(function(c,j){ c.setAttribute('aria-selected', j===i?'true':'false'); });
+    renderFeature(players[i]);
+  }
+  // keyboard arrow nav on roster
+  picker.addEventListener('keydown', function(e){
+    var cards = Array.prototype.slice.call(picker.querySelectorAll('.pcard'));
+    var cur = cards.indexOf(document.activeElement);
+    if(cur<0) return;
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'){ e.preventDefault(); cards[(cur+1)%cards.length].focus(); cards[(cur+1)%cards.length].click(); }
+    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){ e.preventDefault(); cards[(cur-1+cards.length)%cards.length].focus(); cards[(cur-1+cards.length)%cards.length].click(); }
+  });
+  select(0);
+
+  /* ---- 2. COUNTDOWN ---- */
+  var target = new Date('2026-07-04T19:00:00+08:00').getTime();
+  var elD=document.getElementById('cd'),elH=document.getElementById('ch'),elM=document.getElementById('cm'),elS=document.getElementById('cs');
+  function pad(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var diff = target - Date.now();
+    if(diff<0) diff=0;
+    var d=Math.floor(diff/864e5), h=Math.floor(diff%864e5/36e5), m=Math.floor(diff%36e5/6e4), s=Math.floor(diff%6e4/1e3);
+    elD.textContent=pad(d); elH.textContent=pad(h); elM.textContent=pad(m); elS.textContent=pad(s);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---- 3. STAT STRIP count-up on scroll ---- */
+  var stripDone=false, strip=document.getElementById('strip');
+  function runCount(){
+    if(stripDone) return; stripDone=true;
+    strip.querySelectorAll('b[data-to]').forEach(function(el){
+      var to=parseFloat(el.dataset.to), dec=parseInt(el.dataset.dec||'0',10), suf=el.dataset.suffix||'';
+      if(reduce){ el.textContent=to.toFixed(dec)+suf; return; }
+      var start=performance.now(), dur=1200;
+      function step(now){
+        var t=Math.min(1,(now-start)/dur), e=1-Math.pow(1-t,3), v=to*e;
+        el.textContent=v.toFixed(dec)+suf;
+        if(t<1) requestAnimationFrame(step); else el.textContent=to.toFixed(dec)+suf;
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){ en.forEach(function(x){ if(x.isIntersecting) runCount(); }); },{threshold:.4});
+    io.observe(strip);
+  } else { runCount(); }
+
+  /* ---- 4. TICKETS select + wishlist ---- */
+  var grid=document.getElementById('tickets-grid');
+  grid.querySelectorAll('.tk').forEach(function(tk){
+    tk.setAttribute('tabindex','0');
+    tk.setAttribute('role','button');
+    if(tk.dataset.featured) tk.setAttribute('aria-selected','true');
+    function act(){
+      grid.querySelectorAll('.tk').forEach(function(o){ o.setAttribute('aria-selected','false'); });
+      tk.setAttribute('aria-selected','true');
+      showToast(tk.dataset.tk+'（'+tk.dataset.price+'）已加入願望清單');
+    }
+    tk.addEventListener('click', act);
+    tk.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+  });
+
+  /* ---- follow + join ---- */
+  function follow(){ showToast('已開始追蹤 NEON AXIS — 賽程通知已開啟'); }
+  document.getElementById('navFollow').addEventListener('click', follow);
+  document.getElementById('heroFollow').addEventListener('click', follow);
+  document.getElementById('joinForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var v=document.getElementById('joinEmail').value;
+    showToast('收到了，'+v+' — 軸線情報即將上線');
+    this.reset();
+  });
+
+  /* ---- mobile menu toggle (smooth scroll fallback) ---- */
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('roster').scrollIntoView({behavior:reduce?'auto':'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
