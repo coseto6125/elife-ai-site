@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>衡諦法律事務所｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="衡諦法律事務所——專注企業法務、爭端解決與家事傳承的台灣精品律師事務所。以審慎、精確、值得託付的專業，協助企業與個人面對關鍵法律時刻。預約諮詢，由資深律師為您把關。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213A;
+    --ink-soft:#1F2E4D;
+    --paper:#F7F5F0;
+    --white:#FCFBF9;
+    --brass:#9A7B4F;
+    --brass-deep:#7E6238;
+    --slate:#5B6472;
+    --line:#D9D4C9;
+    --line-ink:rgba(247,245,240,.16);
+    --serif:"Noto Serif TC",serif;
+    --sans:"Noto Sans TC",sans-serif;
+    --latin:"Cormorant Garamond",serif;
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.75;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--brass);color:var(--white)}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:1px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+
+  /* ---------- shared type devices ---------- */
+  .eyebrow{
+    font-family:var(--latin);
+    font-style:italic;
+    font-size:1.12rem;
+    color:var(--brass);
+    letter-spacing:.02em;
+    display:inline-flex;align-items:center;gap:.7rem;
+  }
+  .eyebrow::before{
+    content:"";width:34px;height:1px;background:var(--brass);opacity:.7;display:inline-block;
+  }
+  .kicker{
+    font-family:var(--sans);font-weight:500;font-size:.72rem;
+    letter-spacing:.34em;text-transform:uppercase;color:var(--slate);
+  }
+  h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.32;letter-spacing:.01em}
+  .num{font-family:var(--latin);font-weight:500;font-variant-numeric:lining-nums}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:60;
+    background:rgba(247,245,240,.82);
+    backdrop-filter:saturate(140%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:13px}
+  .brand .mark{
+    width:38px;height:38px;flex:0 0 auto;
+  }
+  .brand .name{font-family:var(--serif);font-weight:600;font-size:1.22rem;letter-spacing:.08em}
+  .brand .name small{
+    display:block;font-family:var(--latin);font-style:italic;font-weight:400;
+    font-size:.74rem;letter-spacing:.18em;color:var(--brass);line-height:1;margin-top:2px;
+  }
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{font-size:.86rem;font-weight:400;color:var(--slate);position:relative;transition:color .3s}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--brass);transition:width .35s var(--ease);
+  }
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a:hover::after{width:100%}
+  .btn{
+    font-family:var(--sans);font-weight:400;font-size:.84rem;letter-spacing:.06em;cursor:pointer;
+    border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+    padding:.74rem 1.5rem;transition:.35s var(--ease);display:inline-flex;align-items:center;gap:.6rem;
+  }
+  .btn:hover{background:transparent;color:var(--ink)}
+  .btn.brass{border-color:var(--brass);background:var(--brass);color:var(--white)}
+  .btn.brass:hover{background:transparent;color:var(--brass-deep);border-color:var(--brass)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+  .nav-cta{display:flex;align-items:center;gap:18px}
+  .burger{display:none;background:none;border:0;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+  .burger span{width:23px;height:1.5px;background:var(--ink);display:block;transition:.3s}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:78px 0 96px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.18fr .82fr;gap:60px;align-items:center}
+  .hero .eyebrow{margin-bottom:26px}
+  .hero h1{
+    font-size:clamp(2.5rem,5.4vw,4.15rem);font-weight:600;line-height:1.22;letter-spacing:.005em;
+    margin-bottom:28px;
+  }
+  .hero h1 .accent{color:var(--brass);font-style:normal}
+  .hero h1 em{font-family:var(--latin);font-style:italic;font-weight:500;color:var(--ink-soft)}
+  .hero p.lead{
+    font-size:1.06rem;max-width:30em;color:var(--slate);line-height:1.95;margin-bottom:38px;font-weight:300;
+  }
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .hero-since{
+    margin-top:46px;padding-top:26px;border-top:1px solid var(--line);
+    display:flex;gap:42px;flex-wrap:wrap;
+  }
+  .hero-since .item .num{font-size:2.2rem;color:var(--ink);display:block;line-height:1}
+  .hero-since .item .lbl{font-size:.76rem;color:var(--slate);letter-spacing:.04em;margin-top:7px}
+
+  /* hero seal motif */
+  .seal-art{position:relative;aspect-ratio:1/1;max-width:380px;margin-left:auto;width:100%}
+  .seal-art .ring{position:absolute;inset:0;border:1px solid var(--line);border-radius:50%}
+  .seal-art .ring.r2{inset:26px;border-color:var(--brass);opacity:.35}
+  .seal-art .ring.r3{inset:54px;border-style:dashed;border-color:var(--line)}
+  .seal-art svg{position:absolute;inset:0;width:100%;height:100%}
+  .seal-art .core{
+    position:absolute;inset:54px;border-radius:50%;
+    background:
+      radial-gradient(circle at 32% 28%, var(--ink-soft), var(--ink) 72%);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    box-shadow:0 30px 60px -28px rgba(20,33,58,.5);
+  }
+  .seal-art .core .ch{
+    font-family:var(--serif);font-weight:600;color:var(--paper);font-size:2.9rem;letter-spacing:.1em;
+    line-height:1;writing-mode:vertical-rl;
+  }
+  .seal-art .core .est{
+    font-family:var(--latin);font-style:italic;color:var(--brass);font-size:.86rem;letter-spacing:.22em;margin-top:14px;
+  }
+  .seal-rotate{animation:spin 60s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------- generic section ---------- */
+  section{position:relative}
+  .sec{padding:96px 0}
+  .sec-head{margin-bottom:54px;max-width:46em}
+  .sec-head .eyebrow{margin-bottom:18px}
+  .sec-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem)}
+  .sec-head p{color:var(--slate);margin-top:16px;font-size:1.02rem;max-width:38em}
+
+  /* ---------- signature: practice explorer ---------- */
+  .explorer{background:var(--ink);color:var(--paper)}
+  .explorer .eyebrow{color:var(--brass)}
+  .explorer .sec-head h2{color:var(--white)}
+  .explorer .sec-head p{color:rgba(247,245,240,.7)}
+  .explorer .kicker{color:rgba(247,245,240,.55)}
+  .exp-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:0;border:1px solid var(--line-ink)}
+  .exp-list{border-right:1px solid var(--line-ink)}
+  .exp-item{
+    display:flex;align-items:baseline;gap:18px;width:100%;text-align:left;cursor:pointer;
+    background:none;border:0;border-bottom:1px solid var(--line-ink);
+    padding:25px 30px;color:var(--paper);font-family:var(--sans);transition:.4s var(--ease);position:relative;
+  }
+  .exp-item:last-child{border-bottom:0}
+  .exp-item .num{font-size:.92rem;color:var(--brass);opacity:.65;width:2ch;flex:0 0 auto;transition:.4s}
+  .exp-item .ti{font-family:var(--serif);font-size:1.18rem;font-weight:500;transition:.4s}
+  .exp-item .ti small{display:block;font-family:var(--sans);font-weight:300;font-size:.76rem;color:rgba(247,245,240,.5);letter-spacing:.04em;margin-top:3px}
+  .exp-item::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass);transform:scaleY(0);transform-origin:top;transition:transform .45s var(--ease);
+  }
+  .exp-item:hover{background:rgba(247,245,240,.04)}
+  .exp-item[aria-selected="true"]{background:rgba(247,245,240,.05)}
+  .exp-item[aria-selected="true"]::before{transform:scaleY(1)}
+  .exp-item[aria-selected="true"] .num{opacity:1}
+  .exp-item[aria-selected="true"] .ti{color:var(--white)}
+
+  .exp-panel{padding:40px 44px;display:flex;flex-direction:column;min-height:440px}
+  .exp-panel .pseal{
+    width:46px;height:46px;border:1px solid var(--brass);border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);color:var(--brass);font-size:1.3rem;margin-bottom:22px;flex:0 0 auto;
+  }
+  .exp-panel h3{font-size:1.6rem;color:var(--white);margin-bottom:6px}
+  .exp-panel .pdesc{color:rgba(247,245,240,.72);font-size:.98rem;line-height:1.9;margin-bottom:30px;max-width:34em}
+  .exp-sub{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin-bottom:16px;font-weight:500}
+  .exp-team{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:32px}
+  .exp-attorney{display:flex;align-items:center;gap:13px}
+  .exp-attorney .ava{
+    width:44px;height:44px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:1.05rem;color:var(--ink);font-weight:600;
+    background:linear-gradient(150deg,#E8DFCC,#C9B284);
+  }
+  .exp-attorney .meta b{display:block;font-family:var(--serif);font-weight:500;font-size:.98rem;color:var(--paper)}
+  .exp-attorney .meta span{font-size:.74rem;color:rgba(247,245,240,.55)}
+  .exp-matters{list-style:none;margin-top:auto}
+  .exp-matters li{
+    display:flex;gap:14px;padding:13px 0;border-top:1px solid var(--line-ink);font-size:.9rem;color:rgba(247,245,240,.82);
+  }
+  .exp-matters li::before{content:"§";color:var(--brass);font-family:var(--latin);flex:0 0 auto}
+  .exp-fade{animation:fade .5s var(--ease)}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- approach / values ---------- */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+  .pillar{padding:40px 34px 40px 0;border-right:1px solid var(--line)}
+  .pillar:last-child{border-right:0;padding-right:0}
+  .pillar:not(:first-child){padding-left:34px}
+  .pillar .num{font-size:1.4rem;color:var(--brass);display:block;margin-bottom:18px}
+  .pillar h3{font-size:1.32rem;margin-bottom:12px}
+  .pillar p{color:var(--slate);font-size:.95rem;line-height:1.85}
+
+  /* ---------- track record band ---------- */
+  .record{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .record-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .record-cell{padding:54px 24px;text-align:center;border-right:1px solid var(--line)}
+  .record-cell:last-child{border-right:0}
+  .record-cell .num{font-size:clamp(2.6rem,5vw,3.6rem);color:var(--ink);display:block;line-height:1;font-weight:600}
+  .record-cell .suf{color:var(--brass);font-size:.6em}
+  .record-cell .lbl{font-size:.82rem;color:var(--slate);margin-top:14px;letter-spacing:.04em}
+
+  /* ---------- attorneys ---------- */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .pcard{border:1px solid var(--line);background:var(--white);padding:0;transition:.4s var(--ease)}
+  .pcard:hover{transform:translateY(-5px);box-shadow:0 26px 50px -30px rgba(20,33,58,.4)}
+  .pcard .pport{
+    aspect-ratio:4/3.4;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;
+    background:linear-gradient(165deg,var(--ink-soft),var(--ink));
+  }
+  .pcard .pport .ini{
+    font-family:var(--serif);font-size:4.2rem;color:rgba(247,245,240,.14);font-weight:600;position:absolute;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+  }
+  .pcard .pport .role-tag{
+    position:absolute;top:16px;left:16px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--brass);border:1px solid rgba(154,123,79,.5);padding:5px 11px;background:rgba(20,33,58,.4);
+  }
+  .pcard .pbody{padding:24px 26px 28px}
+  .pcard h3{font-size:1.32rem;margin-bottom:3px}
+  .pcard .ptitle{font-family:var(--latin);font-style:italic;color:var(--brass);font-size:1rem;margin-bottom:16px}
+  .pcard .ptags{display:flex;flex-wrap:wrap;gap:8px}
+  .pcard .ptags span{font-size:.74rem;color:var(--slate);border:1px solid var(--line);padding:4px 10px;border-radius:20px}
+
+  /* ---------- FAQ ---------- */
+  .faq-wrap{max-width:820px;margin:0 auto;border-top:1px solid var(--line)}
+  .faq-item{border-bottom:1px solid var(--line)}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:26px 48px 26px 0;
+    font-family:var(--serif);font-size:1.12rem;font-weight:500;color:var(--ink);position:relative;display:flex;gap:18px;align-items:baseline;
+  }
+  .faq-q .qn{font-family:var(--latin);font-style:italic;color:var(--brass);font-size:1rem;flex:0 0 auto}
+  .faq-q .ico{
+    position:absolute;right:0;top:50%;transform:translateY(-50%);width:20px;height:20px;flex:0 0 auto;transition:transform .4s var(--ease);
+  }
+  .faq-q .ico::before,.faq-q .ico::after{content:"";position:absolute;background:var(--brass);transition:.4s var(--ease)}
+  .faq-q .ico::before{left:0;top:50%;width:100%;height:1.5px;transform:translateY(-50%)}
+  .faq-q .ico::after{left:50%;top:0;width:1.5px;height:100%;transform:translateX(-50%)}
+  .faq-item[data-open="true"] .ico::after{transform:translateX(-50%) scaleY(0)}
+  .faq-a{overflow:hidden;max-height:0;transition:max-height .5s var(--ease)}
+  .faq-a-in{padding:0 48px 28px 38px;color:var(--slate);font-size:.97rem;line-height:1.9}
+
+  /* ---------- consultation form ---------- */
+  .consult{background:var(--ink);color:var(--paper)}
+  .consult-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start}
+  .consult .eyebrow{color:var(--brass)}
+  .consult h2{color:var(--white);font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:22px}
+  .consult .cintro{color:rgba(247,245,240,.72);line-height:1.95;margin-bottom:34px;max-width:30em}
+  .consult-points{list-style:none;display:flex;flex-direction:column;gap:18px}
+  .consult-points li{display:flex;gap:14px;font-size:.92rem;color:rgba(247,245,240,.85);align-items:flex-start}
+  .consult-points li .ci{
+    flex:0 0 auto;width:26px;height:26px;border:1px solid var(--brass);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:var(--brass);font-size:.8rem;font-family:var(--latin)
+  }
+  form.cform{background:var(--white);color:var(--ink);padding:40px 40px 36px;border-top:3px solid var(--brass)}
+  form.cform h3{font-size:1.3rem;margin-bottom:6px}
+  form.cform .fsub{color:var(--slate);font-size:.88rem;margin-bottom:28px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .field{margin-bottom:20px;position:relative}
+  .field.full{grid-column:1/-1}
+  .field label{display:block;font-size:.78rem;letter-spacing:.04em;color:var(--slate);margin-bottom:8px;font-weight:400}
+  .field label .req{color:var(--brass)}
+  .field input,.field select,.field textarea{
+    width:100%;font-family:var(--sans);font-size:.94rem;font-weight:300;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);padding:.78rem .9rem;transition:.3s;
+  }
+  .field textarea{resize:vertical;min-height:96px}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    outline:none;border-color:var(--brass);background:var(--white);box-shadow:0 0 0 3px rgba(154,123,79,.12)
+  }
+  .field .err{color:#A1453B;font-size:.74rem;margin-top:6px;display:none}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:#A1453B;background:#FBF3F1}
+  .field.invalid .err{display:block}
+  form.cform .fnote{font-size:.72rem;color:var(--slate);margin-top:6px;line-height:1.7}
+  form.cform .submit-row{margin-top:8px}
+  form.cform .btn{width:100%;justify-content:center;padding:.95rem}
+
+  /* toast */
+  .toast{
+    position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(140%);
+    background:var(--ink);color:var(--paper);padding:17px 26px;display:flex;align-items:center;gap:14px;
+    box-shadow:0 20px 50px -18px rgba(0,0,0,.5);z-index:100;border-left:3px solid var(--brass);
+    transition:transform .55s var(--ease);max-width:90vw;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast .ti{font-family:var(--serif);font-weight:500;font-size:.98rem}
+  .toast .tx{font-size:.82rem;color:rgba(247,245,240,.7)}
+  .toast .seal{width:34px;height:34px;border:1px solid var(--brass);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--brass);font-family:var(--serif);flex:0 0 auto}
+
+  /* ---------- footer ---------- */
+  footer.ft{background:var(--paper);border-top:1px solid var(--line);padding:64px 0 32px}
+  .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid var(--line)}
+  .ft-brand .name{font-family:var(--serif);font-size:1.32rem;font-weight:600;letter-spacing:.08em;margin-bottom:14px}
+  .ft-brand p{color:var(--slate);font-size:.9rem;max-width:26em;line-height:1.85}
+  .ft-col h4{font-family:var(--sans);font-weight:500;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
+  .ft-col a,.ft-col p{display:block;color:var(--slate);font-size:.9rem;margin-bottom:11px;transition:color .3s}
+  .ft-col a:hover{color:var(--ink)}
+  .ft-bot{display:flex;justify-content:space-between;align-items:center;padding-top:26px;flex-wrap:wrap;gap:14px}
+  .ft-bot .dim{font-size:.8rem;color:var(--slate)}
+  .ft-credit{font-size:.82rem;color:var(--slate)}
+  .ft-credit a{color:var(--brass);border-bottom:1px solid transparent;transition:.3s}
+  .ft-credit a:hover{border-color:var(--brass)}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:920px){
+    .hero-grid{grid-template-columns:1fr;gap:48px}
+    .seal-art{max-width:300px;margin:0 auto}
+    .exp-grid{grid-template-columns:1fr}
+    .exp-list{border-right:0;border-bottom:1px solid var(--line-ink)}
+    .consult-grid{grid-template-columns:1fr;gap:40px}
+    .pillars{grid-template-columns:1fr}
+    .pillar{border-right:0;border-bottom:1px solid var(--line);padding:32px 0!important}
+    .pillar:last-child{border-bottom:0}
+    .team-grid{grid-template-columns:repeat(2,1fr)}
+    .record-grid{grid-template-columns:repeat(2,1fr)}
+    .record-cell:nth-child(2){border-right:0}
+    .record-cell:nth-child(1),.record-cell:nth-child(2){border-bottom:1px solid var(--line)}
+  }
+  @media(max-width:680px){
+    .wrap{padding:0 22px}
+    .nav-links{display:none}
+    .nav-cta .btn:not(.brass){display:none}
+    .burger{display:flex}
+    .sec{padding:66px 0}
+    .hero{padding:48px 0 64px}
+    .frow{grid-template-columns:1fr}
+    .ft-top{grid-template-columns:1fr;gap:32px}
+    .team-grid{grid-template-columns:1fr}
+    .record-grid{grid-template-columns:1fr}
+    .record-cell{border-right:0;border-bottom:1px solid var(--line)}
+    .record-cell:last-child{border-bottom:0}
+    .hero-since{gap:28px}
+    .mobile-menu.open{display:flex}
+  }
+  .mobile-menu{display:none;flex-direction:column;gap:4px;padding:14px 22px 22px;border-bottom:1px solid var(--line);background:var(--paper)}
+  .mobile-menu a{padding:11px 0;font-size:.98rem;color:var(--slate);border-bottom:1px solid var(--line)}
+  .mobile-menu a:last-child{border-bottom:0}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand" aria-label="衡諦法律事務所 首頁">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" fill="none" stroke="#9A7B4F" stroke-width="1"/>
+        <path d="M20 7 L20 33 M11 13 L29 13 M13 13 L13 24 Q13 27 11 27 M27 13 L27 24 Q27 27 29 27 M20 28 Q14 28 11 27 M20 28 Q26 28 29 27" fill="none" stroke="#14213A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="name">衡諦<small>HENGDI LAW</small></span>
+    </a>
+    <nav class="nav-links" aria-label="主導覽">
+      <a href="#explorer">業務領域</a>
+      <a href="#approach">事務所理念</a>
+      <a href="#team">律師團隊</a>
+      <a href="#faq">常見問題</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#explorer" class="btn ghost">業務領域</a>
+      <a href="#consult" class="btn brass">預約諮詢</a>
+      <button class="burger" id="burger" aria-label="開啟選單" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="行動選單">
+    <a href="#explorer">業務領域</a>
+    <a href="#approach">事務所理念</a>
+    <a href="#team">律師團隊</a>
+    <a href="#faq">常見問題</a>
+    <a href="#consult">預約諮詢</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Est. 2009 · 台北 · 新竹</span>
+      <h1>面對關鍵時刻，<br><span class="accent">審慎</span>是最好的<em>策略</em>。</h1>
+      <p class="lead">衡諦法律事務所深耕企業法務與爭端解決。我們不販售樂觀，而是替您把每一個風險看清楚——在簽約之前、在糾紛之初、在最壞的情況尚未發生之時。</p>
+      <div class="hero-cta">
+        <a href="#consult" class="btn">預約諮詢 &nbsp;→</a>
+        <a href="#explorer" class="btn ghost">探索業務領域</a>
+      </div>
+      <div class="hero-since">
+        <div class="item"><span class="num">16<span style="font-size:.55em;color:var(--brass)">年</span></span><span class="lbl">執業經驗</span></div>
+        <div class="item"><span class="num">2,400<span style="font-size:.5em;color:var(--brass)">+</span></span><span class="lbl">承辦案件</span></div>
+        <div class="item"><span class="num">11<span style="font-size:.55em;color:var(--brass)">位</span></span><span class="lbl">執業律師</span></div>
+      </div>
+    </div>
+    <div class="seal-art" aria-hidden="true">
+      <div class="ring r1"></div>
+      <svg class="seal-rotate" viewBox="0 0 100 100">
+        <defs><path id="circlePath" d="M50,50 m-41,0 a41,41 0 1,1 82,0 a41,41 0 1,1 -82,0"/></defs>
+        <text font-family="Cormorant Garamond, serif" font-size="5.4" letter-spacing="2.2" fill="#9A7B4F">
+          <textPath href="#circlePath" startOffset="0">HENGDI LAW FIRM · COUNSEL WITH PRUDENCE · 衡 諦 法 律 事 務 所 ·</textPath>
+        </text>
+      </svg>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <div class="core">
+        <span class="ch">衡諦</span>
+        <span class="est">A.D. MMIX</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SIGNATURE: PRACTICE EXPLORER ===================== -->
+<section class="explorer sec" id="explorer">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Practice Areas</span>
+      <h2>找到對的領域，<br>就找到對的人。</h2>
+      <p>法律問題沒有萬用解。選擇您面對的領域，我們即時為您配對承辦律師與相關代表案例——讓您在第一次對話前，就知道誰能為您把關。</p>
+    </div>
+
+    <div class="exp-grid" role="tablist" aria-label="業務領域">
+      <div class="exp-list" id="expList"></div>
+      <div class="exp-panel" id="expPanel" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== APPROACH / PILLARS ===================== -->
+<section class="sec" id="approach">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Our Approach</span>
+      <h2>我們相信的三件事</h2>
+      <p>事務所不該只在事情出錯後出現。衡諦的工作方法，是把專業前置到風險發生之前。</p>
+    </div>
+    <div class="pillars reveal">
+      <div class="pillar">
+        <span class="num">01</span>
+        <h3>先看見風險</h3>
+        <p>每一份委任，從盤點最壞情境開始。我們把潛在爭點寫在前面，讓您的決策建立在完整資訊之上，而非樂觀的假設。</p>
+      </div>
+      <div class="pillar">
+        <span class="num">02</span>
+        <h3>把話說清楚</h3>
+        <p>法律意見若您看不懂，便沒有價值。我們以白話拆解條文與判決，並明確標示「能做」與「不建議做」的界線。</p>
+      </div>
+      <div class="pillar">
+        <span class="num">03</span>
+        <h3>替您把關到底</h3>
+        <p>從談判桌到法庭，承辦律師全程不換手。您的案件不會被轉交給不熟悉的同仁，責任歸屬始終清楚。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRACK RECORD ===================== -->
+<section class="record">
+  <div class="wrap record-grid" id="recordGrid">
+    <div class="record-cell reveal"><span class="num" data-count="2400" data-suffix="+">0</span><span class="lbl">累積承辦案件</span></div>
+    <div class="record-cell reveal"><span class="num" data-count="93" data-suffix="%">0</span><span class="lbl">委任人續任率</span></div>
+    <div class="record-cell reveal"><span class="num" data-count="38" data-suffix=" 億">0</span><span class="lbl">經手交易總額（新臺幣）</span></div>
+    <div class="record-cell reveal"><span class="num" data-count="16" data-suffix=" 年">0</span><span class="lbl">持續執業</span></div>
+  </div>
+</section>
+
+<!-- ===================== TEAM ===================== -->
+<section class="sec" id="team">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Counsel</span>
+      <h2>由資深合夥人領銜</h2>
+      <p>每一位律師都有清楚的專業重心。沒有全才，只有把一件事做到專精的人。</p>
+    </div>
+    <div class="team-grid">
+      <article class="pcard reveal">
+        <div class="pport"><span class="role-tag">Managing Partner</span><span class="ini">衡</span></div>
+        <div class="pbody">
+          <h3>陳衡之</h3>
+          <p class="ptitle">主持律師 · 創所合夥人</p>
+          <div class="ptags"><span>公司治理</span><span>併購交易</span><span>商務談判</span></div>
+        </div>
+      </article>
+      <article class="pcard reveal">
+        <div class="pport"><span class="role-tag">Senior Partner</span><span class="ini">林</span></div>
+        <div class="pbody">
+          <h3>林宜珊</h3>
+          <p class="ptitle">資深合夥律師</p>
+          <div class="ptags"><span>商務訴訟</span><span>智慧財產</span><span>營業秘密</span></div>
+        </div>
+      </article>
+      <article class="pcard reveal">
+        <div class="pport"><span class="role-tag">Partner</span><span class="ini">周</span></div>
+        <div class="pbody">
+          <h3>周延川</h3>
+          <p class="ptitle">合夥律師</p>
+          <div class="ptags"><span>勞動法務</span><span>家事與傳承</span><span>不動產</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="sec" id="faq" style="background:var(--white);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <span class="eyebrow" style="justify-content:center">Common Questions</span>
+      <h2>諮詢之前，先回答您</h2>
+    </div>
+    <div class="faq-wrap reveal" id="faqWrap"></div>
+  </div>
+</section>
+
+<!-- ===================== CONSULT FORM ===================== -->
+<section class="consult sec" id="consult">
+  <div class="wrap consult-grid">
+    <div class="reveal">
+      <span class="eyebrow">Request a Consultation</span>
+      <h2>讓我們先聽您說</h2>
+      <p class="cintro">首次諮詢由合夥律師親自評估。填寫您的情況，我們將在一個工作日內回覆，並由最合適的承辦律師與您聯繫。</p>
+      <ul class="consult-points">
+        <li><span class="ci">i</span><span>首次評估 30 分鐘，當面或視訊皆可，費用於正式委任後折抵。</span></li>
+        <li><span class="ci">ii</span><span>所有往來內容受律師保密義務保護，請安心說明細節。</span></li>
+        <li><span class="ci">iii</span><span>我們會誠實告知是否該委任律師——有時最省錢的建議是不打官司。</span></li>
+      </ul>
+    </div>
+
+    <form class="cform" id="cform" novalidate>
+      <h3>預約首次諮詢</h3>
+      <p class="fsub">標示 <span style="color:var(--brass)">*</span> 為必填。送出後不代表成立委任關係。</p>
+      <div class="frow">
+        <div class="field">
+          <label for="f-name">稱呼 <span class="req">*</span></label>
+          <input type="text" id="f-name" name="name" autocomplete="name" placeholder="王先生／李小姐">
+          <span class="err">請告訴我們如何稱呼您。</span>
+        </div>
+        <div class="field">
+          <label for="f-phone">聯絡電話 <span class="req">*</span></label>
+          <input type="tel" id="f-phone" name="phone" autocomplete="tel" placeholder="09xx-xxx-xxx">
+          <span class="err">請輸入有效的聯絡電話。</span>
+        </div>
+      </div>
+      <div class="field full">
+        <label for="f-email">電子郵件 <span class="req">*</span></label>
+        <input type="email" id="f-email" name="email" autocomplete="email" placeholder="you@example.com">
+        <span class="err">請輸入有效的電子郵件地址。</span>
+      </div>
+      <div class="field full">
+        <label for="f-area">諮詢領域 <span class="req">*</span></label>
+        <select id="f-area" name="area">
+          <option value="">請選擇最接近的領域</option>
+          <option>公司治理與投資併購</option>
+          <option>商務與民事訴訟</option>
+          <option>勞動與人資法務</option>
+          <option>智慧財產與營業秘密</option>
+          <option>家事、繼承與傳承規劃</option>
+          <option>不動產與營建工程</option>
+          <option>不確定／其他</option>
+        </select>
+        <span class="err">請選擇一個諮詢領域。</span>
+      </div>
+      <div class="field full">
+        <label for="f-msg">案情概述</label>
+        <textarea id="f-msg" name="msg" placeholder="請簡述您的情況、時間點與目前的疑問（選填，但越具體越有助於我們指派合適律師）。"></textarea>
+        <p class="fnote">請勿在此提供身分證字號等敏感資訊；正式委任後將透過安全管道收集。</p>
+      </div>
+      <div class="field full submit-row">
+        <button type="submit" class="btn brass">送出諮詢申請 &nbsp;→</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <div class="name">衡諦法律事務所</div>
+        <p>以審慎、精確、值得託付的專業，陪伴企業與個人面對每一個關鍵的法律時刻。Counsel with prudence.</p>
+      </div>
+      <div class="ft-col">
+        <h4>事務所</h4>
+        <a href="#explorer">業務領域</a>
+        <a href="#approach">事務所理念</a>
+        <a href="#team">律師團隊</a>
+        <a href="#faq">常見問題</a>
+      </div>
+      <div class="ft-col">
+        <h4>聯絡</h4>
+        <p>台北市信義區松仁路 100 號 22 樓</p>
+        <p>(02) 2720-1689</p>
+        <p>counsel@hengdi-law.tw</p>
+        <p>週一至週五 09:00–18:00</p>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span class="dim">© 2026 衡諦法律事務所. 本網站內容僅供參考，不構成法律意見。</span>
+      <span class="ft-credit">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== TOAST ===================== -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="seal">印</span>
+  <div>
+    <div class="ti">已收到您的諮詢申請</div>
+    <div class="tx">我們將於一個工作日內由承辦律師與您聯繫。</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- DATA ---------- */
+  var practices = [
+    {
+      id:"corp", n:"01", t:"公司治理與投資併購", en:"Corporate / M&A",
+      seal:"商",
+      desc:"從新創股權設計到企業併購交割，協助董事會與經營團隊在每一個結構決定前看清法律後果，把治理風險寫進條款，而非留給未來。",
+      team:[{i:"衡",b:"陳衡之",r:"主持律師"},{i:"林",b:"林宜珊",r:"資深合夥律師"}],
+      matters:["協助某半導體供應商完成跨境股權重組與三方換股，順利交割。","為家族企業設計接班股權架構，化解二代經營權爭議於協商階段。","代表投資方完成新台幣數億元增資案之盡職調查與條件談判。"]
+    },
+    {
+      id:"litigation", n:"02", t:"商務與民事訴訟", en:"Commercial Litigation",
+      seal:"訟",
+      desc:"當談判破裂，訴訟是最後也最需要紀律的工具。我們以證據為核心擬定攻防策略，在進入法庭前先評估勝訴機率與成本，誠實告知是否值得一戰。",
+      team:[{i:"林",b:"林宜珊",r:"資深合夥律師"},{i:"周",b:"周延川",r:"合夥律師"}],
+      matters:["代理承攬廠商請求工程款逾千萬元，於二審改判全額勝訴。","為被告企業成功駁回不實之損害賠償請求，避免商譽連帶受損。","透過調解促成跨境商業契約爭議和解，為當事人省下兩年訴訟。"]
+    },
+    {
+      id:"labor", n:"03", t:"勞動與人資法務", en:"Employment Law",
+      seal:"勞",
+      desc:"勞動法令逐年趨嚴，一次不當解僱可能換來數十倍的代價。我們協助企業建立合規的人事制度，也代表勞工爭取應有權益——立場明確，方法專業。",
+      team:[{i:"周",b:"周延川",r:"合夥律師"},{i:"衡",b:"陳衡之",r:"主持律師"}],
+      matters:["協助連鎖品牌重整工時與加班制度，通過勞檢且零裁罰。","代理資深員工就違法解僱請求，協商達成優於法定之資遣方案。","為新創公司擬定股票選擇權與競業禁止條款，兼顧留才與合規。"]
+    },
+    {
+      id:"ip", n:"04", t:"智慧財產與營業秘密", en:"IP & Trade Secret",
+      seal:"權",
+      desc:"無形資產往往是企業最值錢卻最易流失的資產。我們協助布局專利與商標、處理侵權爭議，並在離職挖角、技術外洩的關鍵時刻迅速採取保全行動。",
+      team:[{i:"林",b:"林宜珊",r:"資深合夥律師"}],
+      matters:["為科技公司聲請定暫時狀態處分，及時阻止前員工攜密跳槽。","協助品牌完成多國商標布局並處理電商平台仿冒下架。","代理營業秘密侵害訴訟，促成對方賠償並簽署保密與停止使用協議。"]
+    },
+    {
+      id:"family", n:"05", t:"家事、繼承與傳承規劃", en:"Family & Estate",
+      seal:"承",
+      desc:"家事案件牽動的不只是法律，還有關係。我們以理性陪伴感性，協助處理離婚、監護、遺產分割，並為高資產家庭預先規劃傳承，減少未來爭端。",
+      team:[{i:"周",b:"周延川",r:"合夥律師"}],
+      matters:["協助當事人完成離婚協議與未成年子女照護安排，全程低衝突。","為企業主家庭設計遺囑與信託架構，明確分配並降低遺產稅負擔。","代理遺產分割爭議，於繼承人間促成共識並完成不動產過戶。"]
+    },
+    {
+      id:"realestate", n:"06", t:"不動產與營建工程", en:"Real Estate",
+      seal:"建",
+      desc:"從買賣、租賃到都更與營建契約，不動產交易金額高、爭點多。我們在簽約前審閱每一個條款，在履約出問題時迅速釐清責任歸屬。",
+      team:[{i:"周",b:"周延川",r:"合夥律師"},{i:"陳",b:"陳衡之",r:"主持律師"}],
+      matters:["協助地主與建商完成合建契約審閱，補強分屋與遲延罰則條款。","代理買方處理海砂屋瑕疵爭議，成功請求減少價金與修繕。","為都更案住戶釐清權利變換爭議，協商提高分回比例。"]
+    }
+  ];
+
+  var faqs = [
+    {q:"第一次諮詢需要付費嗎？", a:"首次評估諮詢為 30 分鐘，採預約制。我們會於諮詢前說明費用，且該費用可於日後正式委任時折抵。我們希望您是在充分了解後才決定是否合作。"},
+    {q:"我的案件規模不大，事務所願意接嗎？", a:"願意。衡諦同時服務企業與個人，案件大小不是我們是否承接的標準——是否能真正幫上忙才是。若評估後認為您不需要委任律師，我們也會誠實告知。"},
+    {q:"承辦律師會中途更換嗎？", a:"不會。我們堅持承辦律師全程負責，從首次諮詢到案件結束由同一位律師主責，必要時才由團隊協力。您不會被轉交給不熟悉案情的同仁。"},
+    {q:"諮詢的內容會被保密嗎？", a:"會。律師受法律上的保密義務拘束，您在諮詢中提供的所有資訊均嚴格保密，即便最終未成立委任關係亦然。請安心說明案情細節。"},
+    {q:"你們可以保證打贏官司嗎？", a:"任何承諾「保證勝訴」的說法都不該被信任。我們會在進入訴訟前，誠實評估勝訴機率、時間與成本，並提供包含和解、調解在內的完整選項，由您做出知情的決定。"}
+  ];
+
+  /* ---------- SIGNATURE: practice explorer ---------- */
+  var listEl = document.getElementById("expList");
+  var panelEl = document.getElementById("expPanel");
+
+  practices.forEach(function(p, idx){
+    var b = document.createElement("button");
+    b.className = "exp-item";
+    b.setAttribute("role","tab");
+    b.id = "tab-"+p.id;
+    b.setAttribute("aria-controls","expPanel");
+    b.setAttribute("aria-selected", idx===0 ? "true":"false");
+    b.tabIndex = idx===0 ? 0 : -1;
+    b.innerHTML = '<span class="num">'+p.n+'</span><span class="ti">'+p.t+'<small>'+p.en+'</small></span>';
+    b.addEventListener("click", function(){ selectPractice(idx); });
+    listEl.appendChild(b);
+  });
+
+  function renderPanel(p){
+    var team = p.team.map(function(a){
+      return '<div class="exp-attorney"><span class="ava">'+a.i+'</span><span class="meta"><b>'+a.b+'</b><span>'+a.r+'</span></span></div>';
+    }).join("");
+    var matters = p.matters.map(function(m){ return '<li>'+m+'</li>'; }).join("");
+    panelEl.innerHTML =
+      '<div class="exp-pseal pseal" aria-hidden="true">'+p.seal+'</div>'+
+      '<h3>'+p.t+'</h3>'+
+      '<p class="pdesc">'+p.desc+'</p>'+
+      '<div class="exp-sub">承辦律師</div>'+
+      '<div class="exp-team">'+team+'</div>'+
+      '<div class="exp-sub">代表案例（為保護當事人，細節已抽象化）</div>'+
+      '<ul class="exp-matters">'+matters+'</ul>';
+    if(!reduceMotion){
+      panelEl.classList.remove("exp-fade");
+      void panelEl.offsetWidth;
+      panelEl.classList.add("exp-fade");
+    }
+  }
+
+  function selectPractice(idx){
+    var tabs = listEl.querySelectorAll(".exp-item");
+    tabs.forEach(function(t,i){
+      var on = i===idx;
+      t.setAttribute("aria-selected", on?"true":"false");
+      t.tabIndex = on?0:-1;
+    });
+    renderPanel(practices[idx]);
+  }
+
+  // keyboard nav for explorer (up/down arrows)
+  listEl.addEventListener("keydown", function(e){
+    var tabs = Array.prototype.slice.call(listEl.querySelectorAll(".exp-item"));
+    var cur = tabs.indexOf(document.activeElement);
+    if(cur<0) return;
+    var next = null;
+    if(e.key==="ArrowDown"||e.key==="ArrowRight") next=(cur+1)%tabs.length;
+    else if(e.key==="ArrowUp"||e.key==="ArrowLeft") next=(cur-1+tabs.length)%tabs.length;
+    else if(e.key==="Home") next=0;
+    else if(e.key==="End") next=tabs.length-1;
+    if(next!==null){ e.preventDefault(); tabs[next].focus(); selectPractice(next); }
+  });
+
+  selectPractice(0);
+
+  /* ---------- FAQ accordion ---------- */
+  var faqWrap = document.getElementById("faqWrap");
+  faqs.forEach(function(f, i){
+    var item = document.createElement("div");
+    item.className = "faq-item";
+    item.dataset.open = "false";
+    var qid = "faq-q-"+i, aid = "faq-a-"+i;
+    item.innerHTML =
+      '<h3 style="margin:0"><button class="faq-q" id="'+qid+'" aria-expanded="false" aria-controls="'+aid+'">'+
+        '<span class="qn">'+String(i+1).padStart(2,"0")+'</span><span>'+f.q+'</span><span class="ico" aria-hidden="true"></span>'+
+      '</button></h3>'+
+      '<div class="faq-a" id="'+aid+'" role="region" aria-labelledby="'+qid+'"><div class="faq-a-in">'+f.a+'</div></div>';
+    faqWrap.appendChild(item);
+    var btn = item.querySelector(".faq-q");
+    var ans = item.querySelector(".faq-a");
+    btn.addEventListener("click", function(){
+      var open = item.dataset.open === "true";
+      // close others
+      faqWrap.querySelectorAll(".faq-item").forEach(function(o){
+        o.dataset.open="false";
+        o.querySelector(".faq-q").setAttribute("aria-expanded","false");
+        o.querySelector(".faq-a").style.maxHeight=null;
+      });
+      if(!open){
+        item.dataset.open="true";
+        btn.setAttribute("aria-expanded","true");
+        ans.style.maxHeight = ans.scrollHeight + "px";
+      }
+    });
+  });
+
+  /* ---------- count-up track record ---------- */
+  function animateCount(el){
+    var target = parseFloat(el.dataset.count);
+    var suffix = el.dataset.suffix || "";
+    if(reduceMotion){ el.textContent = target.toLocaleString("en-US")+suffix; return; }
+    var dur = 1500, start = performance.now();
+    function step(now){
+      var t = Math.min((now-start)/dur, 1);
+      var eased = 1-Math.pow(1-t,3);
+      var val = Math.floor(eased*target);
+      el.textContent = val.toLocaleString("en-US")+suffix;
+      if(t<1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString("en-US")+suffix;
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---------- reveal on scroll + counters ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        en.target.classList.add("in");
+        var nums = en.target.querySelectorAll("[data-count]");
+        nums.forEach(animateCount);
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:0.18});
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+
+  /* ---------- consultation form validation ---------- */
+  var form = document.getElementById("cform");
+  var toast = document.getElementById("toast");
+  var toastTimer;
+
+  function setInvalid(field, on){ field.classList.toggle("invalid", on); }
+
+  function validateField(input){
+    var field = input.closest(".field");
+    var v = input.value.trim();
+    var ok = true;
+    if(input.id==="f-name") ok = v.length>=1;
+    else if(input.id==="f-phone") ok = /^[0-9+\-()\s]{8,}$/.test(v);
+    else if(input.id==="f-email") ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    else if(input.id==="f-area") ok = v!=="";
+    setInvalid(field, !ok);
+    return ok;
+  }
+
+  ["f-name","f-phone","f-email","f-area"].forEach(function(id){
+    var el = document.getElementById(id);
+    el.addEventListener("blur", function(){ validateField(el); });
+    el.addEventListener("input", function(){ if(el.closest(".field").classList.contains("invalid")) validateField(el); });
+    el.addEventListener("change", function(){ if(id==="f-area") validateField(el); });
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var ids = ["f-name","f-phone","f-email","f-area"];
+    var allOk = true, firstBad = null;
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      var ok = validateField(el);
+      if(!ok && !firstBad) firstBad = el;
+      if(!ok) allOk = false;
+    });
+    if(!allOk){ if(firstBad) firstBad.focus(); return; }
+    form.reset();
+    ids.forEach(function(id){ document.getElementById(id).closest(".field").classList.remove("invalid"); });
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 5000);
+  });
+
+  /* ---------- mobile menu ---------- */
+  var burger = document.getElementById("burger");
+  var mobileMenu = document.getElementById("mobileMenu");
+  burger.addEventListener("click", function(){
+    var open = mobileMenu.classList.toggle("open");
+    burger.setAttribute("aria-expanded", open?"true":"false");
+  });
+  mobileMenu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      mobileMenu.classList.remove("open");
+      burger.setAttribute("aria-expanded","false");
+    });
+  });
+})();
+</script>
+</body>
+</html>
