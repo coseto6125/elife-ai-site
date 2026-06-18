@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>內部 Demo · 需求釐清對話流範本</title>
+    <!-- Internal mockup only — not wired to enoract, not for clients. -->
+    <style>
+      :root {
+        --bg-0: #070b10;
+        --bg-1: #0b1117;
+        --bg-2: #0f1620;
+        --bg-3: #141d29;
+        --line: #1d2733;
+        --line-bright: #2a3a4d;
+        --ink-0: #eaf2fb;
+        --ink-1: #9fb2c6;
+        --ink-2: #61748a;
+        --accent: #34e3c4;
+        --accent-soft: rgba(52, 227, 196, 0.12);
+        --accent-line: rgba(52, 227, 196, 0.32);
+        --accent-2: #7c8cff;
+        --accent-warm: #ffb454;
+        --font-display: 'Sora', 'Noto Sans TC', sans-serif;
+        --font-mono: 'JetBrains Mono', 'Noto Sans TC', monospace;
+        --font-cjk: 'Noto Sans TC', 'Sora', sans-serif;
+        --radius: 14px;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background: var(--bg-0);
+        color: var(--ink-0);
+        font-family: var(--font-cjk);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        padding: 40px 20px 80px;
+        background-image:
+          radial-gradient(700px 400px at 80% -5%, rgba(52, 227, 196, 0.06), transparent 60%),
+          radial-gradient(600px 500px at 5% 10%, rgba(124, 140, 255, 0.05), transparent 55%);
+      }
+      .wrap { max-width: 720px; margin: 0 auto; }
+      .doc-tag {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 1.7rem;
+        letter-spacing: -0.02em;
+        margin: 8px 0 6px;
+      }
+      .sub { color: var(--ink-1); font-size: 0.92rem; margin-bottom: 28px; }
+      .chat {
+        background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .chat-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.015);
+      }
+      .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+      .chat-head strong { font-family: var(--font-display); font-size: 0.95rem; }
+      .chat-head .model {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--ink-2);
+      }
+      .chat-body { padding: 22px 18px; display: flex; flex-direction: column; gap: 16px; }
+      .msg { max-width: 84%; }
+      .msg.bot { align-self: flex-start; }
+      .msg.user { align-self: flex-end; }
+      .bubble {
+        padding: 11px 14px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+      }
+      .bot .bubble {
+        background: var(--bg-3);
+        border: 1px solid var(--line);
+        border-top-left-radius: 4px;
+        color: var(--ink-0);
+      }
+      .user .bubble {
+        background: var(--accent-soft);
+        border: 1px solid var(--accent-line);
+        border-top-right-radius: 4px;
+        color: var(--ink-0);
+      }
+      .who { font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-2); margin: 0 4px 4px; }
+      .user .who { text-align: right; }
+      /* choice chips = AskUserQuestion-style options to lower the visitor's load */
+      .choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .choice {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line-bright);
+        color: var(--ink-1);
+        background: rgba(255, 255, 255, 0.02);
+        cursor: default;
+      }
+      .choice.pick { border-color: var(--accent-line); color: var(--accent); background: var(--accent-soft); }
+      /* the phase banner — visually marks where the LLM upgrades to Opus */
+      .phase {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        align-self: stretch;
+        margin: 4px 0;
+        padding: 9px 14px;
+        border-radius: 10px;
+        border: 1px dashed var(--accent-line);
+        background: var(--accent-soft);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        color: var(--accent);
+      }
+      .phase .arrow { color: var(--ink-2); }
+      .tag-purpose, .tag-constraint, .tag-success {
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+        padding: 1px 7px;
+        border-radius: 5px;
+        margin-bottom: 6px;
+        display: inline-block;
+        text-transform: uppercase;
+      }
+      .tag-purpose { color: var(--accent); border: 1px solid var(--accent-line); }
+      .tag-constraint { color: var(--accent-2); border: 1px solid rgba(124, 140, 255, 0.35); }
+      .tag-success { color: var(--accent-warm); border: 1px solid rgba(255, 180, 84, 0.35); }
+      .legend {
+        margin-top: 26px;
+        font-size: 0.8rem;
+        color: var(--ink-1);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+      .legend span { display: inline-flex; align-items: center; gap: 6px; }
+      .legend i { width: 22px; height: 0; border-top: 1px dashed var(--accent-line); }
+      .note { margin-top: 22px; font-size: 0.78rem; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <span class="doc-tag">// 內部範本 · 非實際串接</span>
+      <h1>需求釐清對話流 — 理想長相</h1>
+      <p class="sub">
+        Brainstorming 式漸進釐清：一次一問、優先選擇題、依序問 purpose → constraints → success，
+        進入需求階段時把模型升級為 Opus 4.8。
+      </p>
+
+      <div class="chat">
+        <div class="chat-head">
+          <span class="dot"></span>
+          <strong>e-life-ai 小幫手</strong>
+          <span class="model">model: claude-haiku-4-5</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg bot">
+            <div class="who">小幫手</div>
+            <div class="bubble">嗨～想做點什麼都可以跟我說，哪怕只是一個方向 🙂</div>
+          </div>
+
+          <div class="msg user">
+            <div class="who">訪客</div>
+            <div class="bubble">我想做一個訂房系統</div>
+          </div>
+
+          <!-- LLM router detects requirement intent → switches scenario + model -->
+          <div class="phase">
+            偵測到需求描述
+            <span class="arrow">→</span>
+            進入 requirement_brainstorm · 模型升級 claude-haiku-4-5
+            <span class="arrow">→</span>
+            <strong>claude-opus-4-8</strong>
+          </div>
+
+          <div class="msg bot">
+            <div class="who">小幫手 · opus 4.8</div>
+            <div class="bubble">
+              <span class="tag-purpose">purpose</span>
+              好喔！訂房系統有很多種樣子。先抓個方向就好——這比較像哪一種？
+              <div class="choices">
+                <span class="choice pick">民宿 / 旅館自己的訂房頁</span>
+                <span class="choice">跨多家的訂房平台</span>
+                <span class="choice">內部管理用的後台</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg user">
+            <div class="who">訪客</div>
+            <div class="bubble">我自己一間民宿，想讓客人線上訂房</div>
+          </div>
+
+          <div class="msg bot">
+            <div class="who">小幫手 · opus 4.8</div>
+            <div class="bubble">
+              <span class="tag-constraint">constraint</span>
+              了解～單一間民宿的線上訂房。那金流這塊呢，想收線上付款，還是先讓客人送出申請、你再人工確認就好？
+              <div class="choices">
+                <span class="choice">要線上付款（刷卡 / 第三方）</span>
+                <span class="choice pick">先送申請、人工確認</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg user">
+            <div class="who">訪客</div>
+            <div class="bubble">先人工確認就好，之後再說</div>
+          </div>
+
+          <div class="msg bot">
+            <div class="who">小幫手 · opus 4.8</div>
+            <div class="bubble">
+              <span class="tag-success">success</span>
+              清楚了。那對你來說，這個系統上線後最想解決的是什麼——是減少 LINE 上來回問空房的時間，還是想要一個能對外展示的正式訂房頁？這會影響我們建議的做法。
+            </div>
+          </div>
+
+          <div class="msg user">
+            <div class="who">訪客</div>
+            <div class="bubble">主要是不想一直在 LINE 回空房，太花時間</div>
+          </div>
+
+          <div class="msg bot">
+            <div class="who">小幫手 · opus 4.8</div>
+            <div class="bubble">
+              抓到重點了——核心是「自動擋掉已訂走的日期、客人自己看空房送單」。
+              這規模其實一個輕量訂房頁 + 日曆管理就能解，不用做大平台。
+              要不要我幫你安排一次免費的需求釐清對談，把範圍和大概時程談清楚？或先留個聯絡方式都行 🙂
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><span class="tag-purpose">purpose</span> 為什麼做 / 想解決什麼</span>
+        <span><span class="tag-constraint">constraint</span> 限制 / 條件</span>
+        <span><span class="tag-success">success</span> 怎樣算成功</span>
+      </div>
+
+      <p class="note">
+        要點：① 一次只問一個問題 ② 優先給選擇題降低訪客負擔 ③ 依序釐清 purpose → constraint → success
+        ④ 偵測到需求描述才切 Opus（FAQ / 閒聊維持 Haiku，控成本）⑤ 理解夠了才給方向、軟性引導留聯絡，
+        全程不在此硬報價。
+      </p>
+    </div>
+  </body>
+</html>
