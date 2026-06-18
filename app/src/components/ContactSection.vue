@@ -42,7 +42,7 @@ function submit() {
         <span class="eyebrow">// 05 — Contact</span>
         <h2 class="section-title">有想做的東西？<br />來聊聊。</h2>
         <p class="section-lead">
-          無論是已經很明確的需求，還是一個「這做得到嗎」的模糊想法——
+          無論是已經很明確的需求，還是一個「這做得到嗎」的模糊想法，
           都歡迎丟過來。需求釐清不收費。
         </p>
 

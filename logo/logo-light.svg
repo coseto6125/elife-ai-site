@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" width="360" height="96" role="img" aria-label="e-life.ai light">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" width="360" height="96" role="img" aria-label="e-life-ai light">
   <rect width="360" height="96" fill="#ffffff"/>
   <g transform="translate(48 48)">
     <g stroke="#0f9b86" stroke-width="2" opacity="0.85">
@@ -13,5 +13,5 @@
     <circle cx="20" cy="20" r="4" fill="#4655c9"/>
     <circle cx="0" cy="0" r="7" fill="#0f9b86"/>
   </g>
-  <text x="100" y="60" font-family="Sora, 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="-1.2" fill="#0b1117">e-life<tspan fill="#0f9b86">.ai</tspan></text>
+  <text x="100" y="60" font-family="Sora, 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="-1.2" fill="#0b1117">e-life<tspan fill="#0f9b86">-ai</tspan></text>
 </svg>

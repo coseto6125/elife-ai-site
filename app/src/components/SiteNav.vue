@@ -24,7 +24,7 @@ function go(href: string) {
     <div class="wrap nav-row">
       <a href="#top" class="brand" @click.prevent="go('#top')">
         <span class="dot" />
-        <span class="brand-name">e-life<span class="brand-ai">.ai</span></span>
+        <span class="brand-name">e-life<span class="brand-ai">-ai</span></span>
       </a>
 
       <nav class="links" :class="{ open }">

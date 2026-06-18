@@ -9,7 +9,7 @@ function go(href: string) {
   <footer class="footer">
     <div class="wrap foot-grid">
       <div class="foot-brand">
-        <span class="brand">e-life<span class="ai">.ai</span></span>
+        <span class="brand">e-life<span class="ai">-ai</span></span>
         <p>再難的工程，都能一起搞定。</p>
         <span class="mono">service.e-life-ai.com</span>
       </div>

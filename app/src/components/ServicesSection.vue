@@ -12,8 +12,8 @@ useReveal('root', { stagger: 110 })
         <span class="eyebrow">// 01 — Services</span>
         <h2 class="section-title">我們交付什麼</h2>
         <p class="section-lead">
-          不是什麼都接。我們專注在四個有深度的領域——
-          每一項都有實際出貨、跑在生產環境的作品支撐。
+          不是什麼都接。我們專注在四個有深度的領域，
+          每一項都有實際產出、跑在生產環境的作品支撐。
         </p>
       </header>
 

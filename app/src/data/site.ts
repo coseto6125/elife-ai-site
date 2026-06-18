@@ -63,14 +63,14 @@ export const services: Service[] = [
     id: 'fullstack',
     index: '02',
     title: '全端網站與系統開發',
-    summary: '從前端介面到後端服務一手包辦——好看、好用，而且撐得住量。',
+    summary: '從前端介面到後端服務一手包辦，好看、好用，而且撐得住量。',
     bullets: [
       'Vue 3 / Next.js / TypeScript 前端，響應式、體驗流暢',
-      'FastAPI / Sanic 非同步後端，AWS Lambda / ECS Fargate 部署',
-      'PostgreSQL（asyncpg / psqlpy）、pgvector、Alembic 遷移',
+      'FastAPI / Sanic 非同步後端，PostgreSQL / pgvector 資料層',
+      '雲端部署：AWS（Lambda / ECS Fargate）、GCP、Docker 容器化',
       'CI/CD 自動化，從開發到上線一條龍',
     ],
-    stack: ['Vue 3', 'Next.js', 'TypeScript', 'FastAPI', 'PostgreSQL', 'Docker'],
+    stack: ['Vue 3', 'Next.js', 'TypeScript', 'FastAPI', 'AWS', 'GCP', 'Docker'],
   },
   {
     id: 'data',
@@ -89,7 +89,7 @@ export const services: Service[] = [
     id: 'systems',
     index: '04',
     title: '系統工程與技術顧問',
-    summary: '效能熱點、協定逆向、程式碼圖譜——交給能下到底層的人。',
+    summary: '效能熱點、協定逆向、程式碼圖譜，交給能下到底層的團隊。',
     bullets: [
       '14 種語言的程式碼結構圖譜與影響面分析（tree-sitter + Rust）',
       '協定層逆向與訊息送達驗證（Frida hook、記憶體解密）',
@@ -148,7 +148,7 @@ export const cases: CaseStudy[] = [
     name: 'WeChat ↔ Chatwoot 橋接',
     kind: '協定逆向 / 系統整合',
     blurb:
-      '即時微信訊息橋接，從 OS 層驗證送達——避免「GUI 按了但網路沒送出」的假成功。',
+      '即時微信訊息橋接，從 OS 層驗證送達，避免「GUI 按了但網路沒送出」的假成功。',
     highlights: [
       'Frida hook WeChat CGI 確認協定層 ACK',
       'SQLCipher 解密 + 差異讀取，游標追蹤防重複',

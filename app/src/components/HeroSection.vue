@@ -23,8 +23,8 @@ function go(href: string) {
         </h1>
 
         <p class="sub" data-h>
-          <strong>e-life-ai</strong> 是一支橫跨後端與前端的系統工程團隊——
-          Rust / Python / Go 打底，Vue / Next.js 收尾。
+          <strong>e-life-ai</strong> 是一支橫跨後端與前端的系統工程團隊，
+          後端用 Rust / Python / Go，前端用 Vue / Next.js。
           專注 AI Agent、RAG、程式碼圖譜、爬蟲與系統整合，從底層到介面一條龍。
         </p>
 

@@ -7,7 +7,7 @@ useReveal('root', { stagger: 120 })
 const principles = [
   {
     k: '非同步優先',
-    v: '從一開始就為並發設計。FastAPI / Sanic / tokio——讓系統在量大時不卡死。',
+    v: '從一開始就為並發設計，FastAPI / Sanic / tokio 讓系統在量大時不卡死。',
   },
   {
     k: '測試為證',
@@ -19,7 +19,7 @@ const principles = [
   },
   {
     k: '穩定第一',
-    v: '解壓縮炸彈、OOM、資料競爭、停滯偵測——把生產環境會爆的地方先補起來。',
+    v: '解壓縮炸彈、OOM、資料競爭、停滯偵測，把生產環境會爆的地方先補起來。',
   },
 ]
 </script>
