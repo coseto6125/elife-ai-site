@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Aethyr Protocol — 鏈上流動性層 | DeFi 質押協議</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070912;
+  --bg2:#0b0f1f;
+  --panel:rgba(18,24,44,0.55);
+  --panel2:rgba(26,33,58,0.6);
+  --line:rgba(120,140,210,0.14);
+  --line2:rgba(120,140,210,0.28);
+  --txt:#e9edff;
+  --mut:#8b95c0;
+  --mut2:#5d6694;
+  --iris:#7af9ff;       /* holographic cyan */
+  --iris2:#a98bff;      /* iridescent violet */
+  --iris3:#ff8fd1;      /* hologram magenta */
+  --lime:#c8ff5e;       /* sharp accent */
+  --ok:#5effa8;
+  --warn:#ffd166;
+  --r:18px;
+  --maxw:1180px;
+  --disp:'Chakra Petch',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --mono:'Geist Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:var(--body);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(800px 600px at 78% -5%, rgba(169,139,255,0.16), transparent 60%),
+    radial-gradient(700px 520px at 12% 8%, rgba(122,249,255,0.12), transparent 60%),
+    radial-gradient(900px 700px at 50% 110%, rgba(255,143,209,0.08), transparent 60%);
+}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55}
+.wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--iris);display:inline-flex;align-items:center;gap:9px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--iris),transparent)}
+.grad-text{
+  background:linear-gradient(110deg,#fff 0%,var(--iris) 38%,var(--iris2) 66%,var(--iris3) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* ============ NAV ============ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  transition:background .3s,border-color .3s,backdrop-filter .3s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(7,9,18,0.72);backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px;max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:.02em}
+.brand .logo{width:30px;height:30px;flex:none}
+.nav-links{display:flex;gap:30px;font-size:14.5px;color:var(--mut)}
+.nav-links a{transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--txt)}
+.btn{
+  font-family:var(--mono);font-size:13.5px;font-weight:500;letter-spacing:.02em;
+  border:none;cursor:pointer;border-radius:11px;padding:11px 18px;transition:transform .15s,box-shadow .25s,background .25s;
+  display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
+}
+.btn-primary{
+  background:linear-gradient(120deg,var(--iris),var(--iris2));color:#08111c;font-weight:600;
+  box-shadow:0 6px 26px rgba(122,249,255,0.28);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(169,139,255,0.42)}
+.btn-ghost{background:var(--panel);color:var(--txt);border:1px solid var(--line2)}
+.btn-ghost:hover{border-color:var(--iris);color:var(--iris)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+
+/* ============ HERO ============ */
+header{position:relative;padding:150px 0 90px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:54px;align-items:center}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-.01em;margin:20px 0 22px}
+.hero p.lead{font-size:18px;color:var(--mut);max-width:520px;margin-bottom:30px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+.hero-stats{display:flex;gap:30px;flex-wrap:wrap}
+.hero-stats .s .v{font-family:var(--disp);font-weight:700;font-size:26px}
+.hero-stats .s .l{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut2)}
+.trust-row{margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--mut2);letter-spacing:.08em}
+.trust-row .chip{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--line);border-radius:30px;background:rgba(255,255,255,0.02)}
+.trust-row .chip svg{width:13px;height:13px}
+
+/* hero orb / token card */
+.orb-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:420px}
+.orb-card{
+  position:relative;width:100%;max-width:400px;border-radius:24px;padding:1px;
+  background:linear-gradient(150deg,rgba(122,249,255,.5),rgba(169,139,255,.2) 40%,rgba(255,143,209,.4));
+}
+.orb-card .inner{
+  border-radius:23px;background:linear-gradient(165deg,rgba(14,18,34,.94),rgba(9,12,24,.97));
+  padding:26px;backdrop-filter:blur(10px);position:relative;overflow:hidden;
+}
+.orb-card .inner::after{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(120,140,210,.05) 28px,rgba(120,140,210,.05) 29px);pointer-events:none}
+.tokrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative}
+.tokrow .id{display:flex;align-items:center;gap:11px}
+.tokrow .id svg{width:38px;height:38px}
+.tokrow .id b{font-family:var(--disp);font-size:17px}
+.tokrow .id span{font-family:var(--mono);font-size:11px;color:var(--mut)}
+.badge-live{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ok);border:1px solid rgba(94,255,168,.3);padding:4px 9px;border-radius:20px;display:inline-flex;gap:6px;align-items:center}
+.price-big{font-family:var(--disp);font-weight:700;font-size:42px;letter-spacing:-.01em;line-height:1}
+.price-chg{font-family:var(--mono);font-size:13px;color:var(--ok);margin:8px 0 18px}
+.spark{width:100%;height:64px;display:block}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-radius:13px;overflow:hidden;margin-top:18px}
+.mini-grid .c{background:rgba(13,17,32,.85);padding:13px 14px}
+.mini-grid .c .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut2)}
+.mini-grid .c .vv{font-family:var(--disp);font-weight:600;font-size:18px;margin-top:3px}
+
+/* marquee */
+.marquee{margin-top:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:16px 0;position:relative}
+.marquee::before,.marquee::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:2}
+.marquee::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+.marquee::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
+.mq-track{display:flex;gap:48px;white-space:nowrap;animation:mq 28s linear infinite;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.mq-track .it{display:inline-flex;align-items:center;gap:10px}
+.mq-track .it b{color:var(--txt)}
+.mq-track .up{color:var(--ok)}.mq-track .dn{color:var(--iris3)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ============ SECTIONS ============ */
+section{padding:96px 0;position:relative}
+.sec-head{max-width:680px;margin-bottom:52px}
+.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.01em;margin:16px 0 14px}
+.sec-head p{color:var(--mut);font-size:16.5px}
+
+/* features */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{
+  border:1px solid var(--line);border-radius:var(--r);padding:26px;background:var(--panel);
+  position:relative;overflow:hidden;transition:transform .3s,border-color .3s;
+}
+.feat:hover{transform:translateY(-4px);border-color:var(--line2)}
+.feat::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--iris),transparent);opacity:0;transition:opacity .3s}
+.feat:hover::before{opacity:1}
+.feat .ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;background:linear-gradient(150deg,rgba(122,249,255,.14),rgba(169,139,255,.1));border:1px solid var(--line2)}
+.feat .ic svg{width:23px;height:23px}
+.feat h3{font-family:var(--disp);font-weight:600;font-size:19px;margin-bottom:9px}
+.feat p{color:var(--mut);font-size:14.5px}
+
+/* widget (swap/stake) */
+.widget-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.widget{
+  border-radius:22px;padding:1px;background:linear-gradient(160deg,rgba(122,249,255,.4),rgba(169,139,255,.18),rgba(255,143,209,.3));
+}
+.widget .wi{background:linear-gradient(170deg,rgba(15,19,36,.96),rgba(10,13,26,.98));border-radius:21px;padding:24px}
+.tabs{display:flex;gap:6px;background:rgba(8,11,22,.7);padding:5px;border-radius:13px;margin-bottom:20px;border:1px solid var(--line)}
+.tabs button{flex:1;font-family:var(--mono);font-size:13px;font-weight:500;background:none;border:none;color:var(--mut);padding:9px;border-radius:9px;cursor:pointer;transition:.2s}
+.tabs button.on{background:linear-gradient(120deg,rgba(122,249,255,.16),rgba(169,139,255,.16));color:var(--txt)}
+.field{background:rgba(8,11,22,.7);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;transition:border-color .2s}
+.field:focus-within{border-color:var(--iris)}
+.field .top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--mut2);margin-bottom:8px;letter-spacing:.05em}
+.field .bot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.field input{background:none;border:none;outline:none;color:var(--txt);font-family:var(--disp);font-weight:600;font-size:26px;width:100%}
+.field input::placeholder{color:var(--mut2)}
+.field input:read-only{color:var(--iris)}
+.tok-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:30px;padding:7px 13px 7px 9px;font-family:var(--mono);font-size:13px;font-weight:500;white-space:nowrap}
+.tok-pill svg{width:22px;height:22px}
+.swap-mid{display:flex;justify-content:center;margin:-4px 0}
+.swap-mid button{width:40px;height:40px;border-radius:11px;background:rgba(13,17,32,.95);border:1px solid var(--line2);color:var(--iris);cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center}
+.swap-mid button:hover{transform:rotate(180deg);border-color:var(--iris)}
+.wdetail{font-family:var(--mono);font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:7px;margin:16px 0;padding:14px;border:1px dashed var(--line2);border-radius:12px}
+.wdetail .ln{display:flex;justify-content:space-between}
+.wdetail .ln b{color:var(--txt);font-weight:500}
+.wdetail .ln.hl b{color:var(--lime)}
+.w-cta{width:100%;justify-content:center;padding:14px;font-size:14.5px}
+.w-msg{display:none;margin-top:14px;align-items:center;gap:10px;background:rgba(94,255,168,.08);border:1px solid rgba(94,255,168,.28);border-radius:12px;padding:13px 15px;font-family:var(--mono);font-size:12.5px;color:var(--ok)}
+.w-msg.show{display:flex;animation:pop .4s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.w-msg svg{width:18px;height:18px;flex:none}
+.w-msg .hash{color:var(--mut);word-break:break-all}
+.widget-copy h3{font-family:var(--disp);font-weight:700;font-size:30px;margin-bottom:14px;line-height:1.12}
+.widget-copy p{color:var(--mut);margin-bottom:20px}
+.wc-list{display:flex;flex-direction:column;gap:13px}
+.wc-list .li{display:flex;gap:13px;align-items:flex-start}
+.wc-list .li .n{font-family:var(--mono);color:var(--iris);font-size:13px;flex:none;margin-top:2px}
+.wc-list .li b{font-family:var(--disp);font-weight:600;display:block;margin-bottom:2px}
+.wc-list .li span{color:var(--mut);font-size:14px}
+
+/* stats band */
+.band{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.band .b{padding:30px 26px;border-right:1px solid var(--line)}
+.band .b:last-child{border-right:none}
+.band .b .v{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3vw,38px);letter-spacing:-.01em}
+.band .b .l{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut2);margin-top:6px}
+
+/* tokenomics */
+.tok-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:center}
+.donut-stage{display:flex;justify-content:center;position:relative}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.donut-center .v{font-family:var(--disp);font-weight:700;font-size:30px}
+.donut-center .l{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--mut2);text-transform:uppercase}
+.legend{display:flex;flex-direction:column;gap:6px}
+.legend .lg{display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:var(--panel);transition:.25s}
+.legend .lg:hover{border-color:var(--line2);transform:translateX(4px)}
+.legend .lg .sw{width:13px;height:13px;border-radius:4px;flex:none}
+.legend .lg .nm{font-weight:500;flex:1}
+.legend .lg .pc{font-family:var(--disp);font-weight:700;font-size:18px}
+.legend .lg .am{font-family:var(--mono);font-size:11.5px;color:var(--mut2);margin-left:10px}
+
+/* roadmap */
+.road{position:relative;padding-left:8px}
+.road::before{content:"";position:absolute;left:14px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--iris),var(--iris2),var(--iris3),transparent)}
+.rm{position:relative;padding:0 0 34px 50px}
+.rm:last-child{padding-bottom:0}
+.rm .node{position:absolute;left:6px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--bg2);border:2px solid var(--iris);box-shadow:0 0 0 4px rgba(7,9,18,1),0 0 16px rgba(122,249,255,.5)}
+.rm.done .node{background:var(--iris)}
+.rm.active .node{border-color:var(--lime);box-shadow:0 0 0 4px rgba(7,9,18,1),0 0 18px var(--lime)}
+.rm .q{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--iris);text-transform:uppercase}
+.rm.active .q{color:var(--lime)}
+.rm h4{font-family:var(--disp);font-weight:600;font-size:20px;margin:6px 0 8px}
+.rm ul{list-style:none;color:var(--mut);font-size:14.5px;display:flex;flex-direction:column;gap:5px}
+.rm ul li{display:flex;gap:9px}
+.rm ul li::before{content:"▸";color:var(--mut2)}
+.rm .tag{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;padding:4px 10px;border-radius:20px;border:1px solid var(--line2);color:var(--mut)}
+.rm.done .tag{color:var(--ok);border-color:rgba(94,255,168,.3)}
+.rm.active .tag{color:var(--lime);border-color:rgba(200,255,94,.35)}
+
+/* faq */
+.faq{max-width:820px;margin:0 auto}
+.fq{border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:var(--panel);overflow:hidden;transition:border-color .25s}
+.fq.open{border-color:var(--line2)}
+.fq .q{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;cursor:pointer;font-family:var(--disp);font-weight:500;font-size:16.5px;user-select:none}
+.fq .q .pl{flex:none;width:24px;height:24px;border:1px solid var(--line2);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--iris);transition:.3s;font-family:var(--mono)}
+.fq.open .q .pl{transform:rotate(45deg);background:rgba(122,249,255,.1)}
+.fq .a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.fq .a p{padding:0 22px 22px;color:var(--mut);font-size:14.5px}
+
+/* cta */
+.cta-box{border-radius:26px;padding:1px;background:linear-gradient(130deg,rgba(122,249,255,.5),rgba(169,139,255,.3),rgba(255,143,209,.45))}
+.cta-in{background:linear-gradient(170deg,rgba(12,16,32,.97),rgba(8,11,22,.99));border-radius:25px;padding:62px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-in h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4vw,44px);margin-bottom:14px;position:relative}
+.cta-in p{color:var(--mut);max-width:500px;margin:0 auto 28px;position:relative}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:54px 0 40px;position:relative;z-index:2}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;margin-bottom:40px}
+.foot-grid h5{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut2);margin-bottom:16px}
+.foot-grid a{display:block;color:var(--mut);font-size:14px;margin-bottom:10px;transition:color .2s}
+.foot-grid a:hover{color:var(--iris)}
+.foot-grid .brand{margin-bottom:14px}
+.foot-grid .desc{color:var(--mut);font-size:14px;max-width:280px}
+.foot-bot{border-top:1px solid var(--line);padding-top:24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.disclaimer{font-family:var(--mono);font-size:11.5px;color:var(--mut2);max-width:560px}
+.tmpl-badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;color:var(--mut);border:1px solid var(--line2);border-radius:30px;padding:8px 14px;background:rgba(255,255,255,.02);white-space:nowrap}
+.tmpl-badge b{color:var(--iris);font-weight:500}
+.tmpl-badge .dot{background:var(--iris2);box-shadow:0 0 8px var(--iris2)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* modal */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(4,6,14,.78);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px}
+.overlay.show{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{width:100%;max-width:400px;border-radius:22px;padding:1px;background:linear-gradient(155deg,rgba(122,249,255,.5),rgba(169,139,255,.3))}
+.modal .mi{background:linear-gradient(170deg,rgba(15,19,38,.98),rgba(10,13,26,.99));border-radius:21px;padding:26px;animation:rise .3s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.modal h3{font-family:var(--disp);font-weight:600;font-size:20px;margin-bottom:5px}
+.modal .sub{color:var(--mut);font-size:13.5px;margin-bottom:20px}
+.wallets{display:flex;flex-direction:column;gap:9px}
+.wallet{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:13px;cursor:pointer;background:rgba(255,255,255,.015);transition:.2s}
+.wallet:hover{border-color:var(--iris);background:rgba(122,249,255,.05);transform:translateX(3px)}
+.wallet .wic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
+.wallet b{font-family:var(--disp);font-weight:500;font-size:15px;display:block}
+.wallet span{font-family:var(--mono);font-size:11px;color:var(--mut2)}
+.wallet .arr{margin-left:auto;color:var(--mut2)}
+.modal .close{position:absolute;}
+.modal-x{float:right;background:none;border:none;color:var(--mut);cursor:pointer;font-size:20px;line-height:1;margin-top:-4px}
+.modal-foot{margin-top:18px;font-family:var(--mono);font-size:11px;color:var(--mut2);text-align:center}
+.connecting{display:none;flex-direction:column;align-items:center;gap:18px;padding:30px 0;text-align:center}
+.connecting.show{display:flex}
+.spinner{width:46px;height:46px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--iris);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.connecting p{font-family:var(--mono);font-size:13px;color:var(--mut)}
+
+/* connected pill in nav */
+.acct{display:none;align-items:center;gap:0;border:1px solid var(--line2);border-radius:11px;overflow:hidden;font-family:var(--mono);font-size:13px}
+.acct.show{display:inline-flex}
+.acct .bal{padding:10px 13px;background:rgba(122,249,255,.07);color:var(--iris);border-right:1px solid var(--line2)}
+.acct .addr{padding:10px 13px;display:flex;align-items:center;gap:8px;color:var(--txt)}
+.acct .av{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--iris),var(--iris3))}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);z-index:120;background:rgba(15,19,38,.96);border:1px solid var(--line2);border-radius:13px;padding:13px 18px;font-family:var(--mono);font-size:13px;display:flex;align-items:center;gap:11px;box-shadow:0 12px 40px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast svg{width:17px;height:17px;color:var(--ok)}
+
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:42px}
+  .orb-stage{min-height:auto}
+  .feat-grid{grid-template-columns:1fr}
+  .widget-grid{grid-template-columns:1fr;gap:30px}
+  .band{grid-template-columns:1fr 1fr}
+  .band .b:nth-child(2){border-right:none}
+  .band .b:nth-child(1),.band .b:nth-child(2){border-bottom:1px solid var(--line)}
+  .tok-grid{grid-template-columns:1fr;gap:36px}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:26px}
+  .nav-links{display:none}
+}
+@media(max-width:560px){
+  .hero h1{font-size:34px}
+  .band{grid-template-columns:1fr}
+  .band .b{border-right:none;border-bottom:1px solid var(--line)}
+  .band .b:last-child{border-bottom:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:22px}
+  .nav-in .btn span.lbl{display:none}
+  .foot-bot{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#" class="brand">
+      <svg class="logo" viewBox="0 0 40 40" fill="none"><defs><linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#7af9ff"/><stop offset=".5" stop-color="#a98bff"/><stop offset="1" stop-color="#ff8fd1"/></linearGradient></defs><path d="M20 2 L36 12 L36 28 L20 38 L4 28 L4 12 Z" stroke="url(#lg1)" stroke-width="2" fill="rgba(122,249,255,0.05)"/><path d="M20 11 L28 16 L28 24 L20 29 L12 24 L12 16 Z" fill="url(#lg1)" opacity=".85"/></svg>
+      Aethyr
+    </a>
+    <div class="nav-links">
+      <a href="#protocol">協議</a>
+      <a href="#stake">質押</a>
+      <a href="#tokenomics">代幣經濟</a>
+      <a href="#roadmap">路線圖</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="acct" id="acct">
+        <span class="bal" id="acctBal">128.40 ETH</span>
+        <span class="addr"><span class="av"></span><span id="acctAddr">0x7Af9…aB12</span></span>
+      </div>
+      <button class="btn btn-primary" id="connectBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M16 12h2"/><path d="M2 9h20"/></svg>
+        <span class="lbl">連接錢包</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero">
+        <span class="eyebrow">全鏈流動性層 · Layer-Zero 互通</span>
+        <h1>讓你的資產<br><span class="grad-text">在多鏈間自由流動</span></h1>
+        <p class="lead">Aethyr 是一套去中心化的流動性聚合與質押協議，整合 12 條公鏈的收益來源，以零滑點路由與自動複利策略，為你打造機構級的鏈上收益體驗。</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" id="heroConnect">啟動質押 ↗</button>
+          <a href="#protocol" class="btn btn-ghost">了解協議運作</a>
+        </div>
+        <div class="hero-stats">
+          <div class="s"><div class="v" id="hsTvl">$0</div><div class="l">總鎖倉量 TVL</div></div>
+          <div class="s"><div class="v" id="hsApy">0%</div><div class="l">平均年化 APY</div></div>
+          <div class="s"><div class="v" id="hsUsers">0</div><div class="l">活躍地址</div></div>
+        </div>
+        <div class="trust-row">
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#5effa8" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>CertiK 審計</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#7af9ff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>非託管</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#a98bff" stroke-width="2"><path d="M3 12h18M12 3v18"/></svg>12 條公鏈</span>
+        </div>
+      </div>
+
+      <div class="orb-stage">
+        <div class="orb-card">
+          <div class="inner">
+            <div class="tokrow">
+              <div class="id">
+                <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#7af9ff"/><stop offset="1" stop-color="#a98bff"/></linearGradient></defs><circle cx="20" cy="20" r="19" stroke="url(#lg2)" stroke-width="2"/><path d="M20 9 L29 20 L20 16 L11 20 Z" fill="url(#lg2)"/><path d="M20 31 L11 21 L20 25 L29 21 Z" fill="url(#lg2)" opacity=".55"/></svg>
+                <div><b>AETH</b><span>Aethyr Token</span></div>
+              </div>
+              <span class="badge-live"><span class="dot"></span>LIVE</span>
+            </div>
+            <div class="price-big" id="cardPrice">$0.00</div>
+            <div class="price-chg" id="cardChg">+0.00% 24h</div>
+            <svg class="spark" id="spark" viewBox="0 0 320 64" preserveAspectRatio="none"></svg>
+            <div class="mini-grid">
+              <div class="c"><div class="k">當前 APY</div><div class="vv" id="cardApy">—</div></div>
+              <div class="c"><div class="k">24h 交易量</div><div class="vv" id="cardVol">—</div></div>
+              <div class="c"><div class="k">流通市值</div><div class="vv" id="cardMcap">—</div></div>
+              <div class="c"><div class="k">持有地址</div><div class="vv" id="cardHold">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- marquee -->
+    <div class="marquee">
+      <div class="mq-track" id="mq"></div>
+    </div>
+  </div>
+</header>
+
+<!-- PROTOCOL / FEATURES -->
+<section id="protocol">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">協議核心</span>
+      <h2>為收益而生的<span class="grad-text"> 模組化基礎設施</span></h2>
+      <p>每一個元件都經過形式化驗證與多輪審計，把複雜的鏈上操作收斂成一次點擊。</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#7af9ff" stroke-width="1.8"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3>零滑點路由</h3>
+        <p>聰明訂單路由橫跨 30+ 個 DEX 與聚合器，自動拆單尋找最佳價格，把滑點壓到接近於零。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#a98bff" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg></div>
+        <h3>自動複利金庫</h3>
+        <p>策略金庫持續再投資收益，依市況動態調整風險暴露，讓資金 24 小時為你工作。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#ff8fd1" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 7l3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg></div>
+        <h3>跨鏈互通</h3>
+        <p>原生整合 Layer-Zero 訊息層，資產在 Ethereum、Arbitrum、Base 等 12 條鏈間秒級流轉。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#5effa8" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>形式化驗證</h3>
+        <p>核心合約通過 CertiK 與 Trail of Bits 雙重審計，並以 $2M 漏洞賞金長期保護你的資產安全。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#7af9ff" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>鏈上治理</h3>
+        <p>持有 AETH 即享治理權，從費率參數到金庫策略，社群提案決定協議的每一步演進。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#a98bff" stroke-width="1.8"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div>
+        <h3>即時結算</h3>
+        <p>非託管設計，私鑰始終在你手中。提領無鎖倉期，收益隨領隨到，資金流動性 100%。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAKE / SWAP WIDGET -->
+<section id="stake">
+  <div class="wrap">
+    <div class="widget-grid">
+      <div class="widget-copy reveal">
+        <span class="eyebrow">質押 · 兌換</span>
+        <h3>三步開始<br><span class="grad-text">賺取鏈上收益</span></h3>
+        <p>不需要懂 DeFi 也能上手。輸入金額，協議即時估算你的收益，確認後一鍵完成——全程非託管。</p>
+        <div class="wc-list">
+          <div class="li"><span class="n">01</span><div><b>連接你的錢包</b><span>支援 MetaMask、Rabby、WalletConnect 等主流錢包。</span></div></div>
+          <div class="li"><span class="n">02</span><div><b>輸入質押金額</b><span>系統即時試算預估年化收益與每日產出。</span></div></div>
+          <div class="li"><span class="n">03</span><div><b>確認交易</b><span>簽署一筆鏈上交易，金庫立即開始為你複利。</span></div></div>
+        </div>
+      </div>
+
+      <div class="widget reveal">
+        <div class="wi">
+          <div class="tabs">
+            <button class="on" data-tab="swap" id="tabSwap">兌換 Swap</button>
+            <button data-tab="stake" id="tabStake">質押 Stake</button>
+          </div>
+
+          <!-- SWAP PANE -->
+          <div id="paneSwap">
+            <div class="field">
+              <div class="top"><span>支付</span><span>餘額: <span id="balFrom">2.480</span> ETH</span></div>
+              <div class="bot">
+                <input type="text" id="swapIn" inputmode="decimal" placeholder="0.0" value="1.0">
+                <span class="tok-pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#627eea"/><path d="M12 4v6l5 2.2z" fill="#fff" opacity=".7"/><path d="M12 4v6l-5 2.2z" fill="#fff"/><path d="M12 16.5V20l5-7z" fill="#fff" opacity=".7"/><path d="M12 20v-3.5l-5-3.5z" fill="#fff"/></svg>ETH</span>
+              </div>
+            </div>
+            <div class="swap-mid">
+              <button id="flipBtn" aria-label="flip"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg></button>
+            </div>
+            <div class="field">
+              <div class="top"><span>取得 (預估)</span><span>1 ETH ≈ <span id="rate">—</span> AETH</span></div>
+              <div class="bot">
+                <input type="text" id="swapOut" readonly placeholder="0.0" value="0.0">
+                <span class="tok-pill"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#7af9ff" stroke-width="1.5"/><path d="M12 5l5 7-5-2-5 2z" fill="#7af9ff"/></svg>AETH</span>
+              </div>
+            </div>
+            <div class="wdetail">
+              <div class="ln"><span>匯率</span><b id="dRate">—</b></div>
+              <div class="ln"><span>網路費 (預估)</span><b id="dGas">~ $1.84</b></div>
+              <div class="ln"><span>價格影響</span><b style="color:var(--ok)" id="dImpact">< 0.01%</b></div>
+              <div class="ln hl"><span>最低取得</span><b id="dMin">—</b></div>
+            </div>
+            <button class="btn btn-primary w-cta" id="swapBtn">兌換</button>
+          </div>
+
+          <!-- STAKE PANE -->
+          <div id="paneStake" style="display:none">
+            <div class="field">
+              <div class="top"><span>質押數量</span><span>餘額: <span id="balStake">12,500</span> AETH</span></div>
+              <div class="bot">
+                <input type="text" id="stakeIn" inputmode="decimal" placeholder="0.0" value="1000">
+                <span class="tok-pill"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#7af9ff" stroke-width="1.5"/><path d="M12 5l5 7-5-2-5 2z" fill="#7af9ff"/></svg>AETH</span>
+              </div>
+            </div>
+            <div class="wdetail">
+              <div class="ln"><span>當前 APY</span><b style="color:var(--ok)" id="stApy">—</b></div>
+              <div class="ln"><span>預估日收益</span><b id="stDay">—</b></div>
+              <div class="ln"><span>預估月收益</span><b id="stMonth">—</b></div>
+              <div class="ln hl"><span>預估年收益</span><b id="stYear">—</b></div>
+            </div>
+            <button class="btn btn-primary w-cta" id="stakeBtn">質押 AETH</button>
+          </div>
+
+          <div class="w-msg" id="wMsg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>
+            <div><span id="wMsgTxt">交易成功</span><br><span class="hash" id="wMsgHash"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="band reveal">
+      <div class="b"><div class="v" id="bTvl">$0</div><div class="l">協議總鎖倉量</div></div>
+      <div class="b"><div class="v" id="bVol">$0</div><div class="l">累計交易量</div></div>
+      <div class="b"><div class="v" id="bChain">12</div><div class="l">整合公鏈</div></div>
+      <div class="b"><div class="v" id="bAudit">100%</div><div class="l">合約已審計</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOKENOMICS -->
+<section id="tokenomics">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">代幣經濟</span>
+      <h2>$AETH 的<span class="grad-text"> 分配與用途</span></h2>
+      <p>總供給上限 1,000,000,000 AETH，四年線性釋放，無團隊預挖暴利、無隱藏增發。</p>
+    </div>
+    <div class="tok-grid">
+      <div class="donut-stage reveal">
+        <svg width="300" height="300" viewBox="0 0 300 300" id="donut"></svg>
+        <div class="donut-center">
+          <div class="v">1B</div>
+          <div class="l">總供給 AETH</div>
+        </div>
+      </div>
+      <div class="legend reveal" id="legend"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">發展路線</span>
+      <h2>協議的<span class="grad-text"> 演進藍圖</span></h2>
+      <p>從主網上線到全鏈流動性層，每個里程碑都由社群治理共同推進。</p>
+    </div>
+    <div class="road reveal">
+      <div class="rm done">
+        <div class="node"></div><div class="q">2024 · Q4</div>
+        <h4>主網上線</h4>
+        <ul><li>核心質押金庫部署於 Ethereum 主網</li><li>完成 CertiK 首輪審計</li><li>AETH 創世分發與流動性引導</li></ul>
+        <span class="tag">已完成</span>
+      </div>
+      <div class="rm done">
+        <div class="node"></div><div class="q">2025 · Q1</div>
+        <h4>多鏈擴張</h4>
+        <ul><li>整合 Arbitrum、Base、Optimism</li><li>推出零滑點聰明路由 v1</li><li>TVL 突破 $200M</li></ul>
+        <span class="tag">已完成</span>
+      </div>
+      <div class="rm active">
+        <div class="node"></div><div class="q">2025 · Q2 — 進行中</div>
+        <h4>跨鏈流動性層</h4>
+        <ul><li>Layer-Zero 原生訊息整合</li><li>自動複利金庫 v2 上線</li><li>啟動鏈上治理 DAO</li></ul>
+        <span class="tag">進行中</span>
+      </div>
+      <div class="rm">
+        <div class="node"></div><div class="q">2025 · Q3</div>
+        <h4>機構級產品</h4>
+        <ul><li>推出固定收益金庫與保險模組</li><li>機構託管夥伴接入</li><li>行動端 App 公測</li></ul>
+        <span class="tag">規劃中</span>
+      </div>
+      <div class="rm">
+        <div class="node"></div><div class="q">2025 · Q4</div>
+        <h4>全鏈流動性網路</h4>
+        <ul><li>整合 20+ 條公鏈與 L2</li><li>意圖式 (intent-based) 訂單流</li><li>完全去中心化前端</li></ul>
+        <span class="tag">規劃中</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin:0 auto 52px">
+      <span class="eyebrow">常見問題</span>
+      <h2>關於 Aethyr</h2>
+    </div>
+    <div class="faq">
+      <div class="fq reveal"><div class="q">Aethyr 是託管平台嗎？我的資產安全嗎？<span class="pl">+</span></div><div class="a"><p>不是。Aethyr 採完全非託管設計，你的私鑰與資產始終留在自己的錢包中。協議僅透過你簽署的智能合約執行操作，核心合約已通過 CertiK 與 Trail of Bits 雙重審計，並設有 $2M 漏洞賞金計畫。</p></div></div>
+      <div class="fq reveal"><div class="q">收益從哪裡來？APY 如何計算？<span class="pl">+</span></div><div class="a"><p>收益來自跨鏈借貸利息、流動性挖礦獎勵與協議交易手續費。策略金庫會自動將收益再投資以達成複利。APY 為依過去 30 天實際表現換算的年化值，會隨市況浮動，並非保證收益。</p></div></div>
+      <div class="fq reveal"><div class="q">質押後有鎖倉期嗎？<span class="pl">+</span></div><div class="a"><p>沒有強制鎖倉期。你可以隨時提領本金與已累積收益，提領通常於數分鐘內完成。部分高收益策略金庫提供選擇性鎖倉以換取額外獎勵，但這完全是自願的。</p></div></div>
+      <div class="fq reveal"><div class="q">支援哪些錢包與公鏈？<span class="pl">+</span></div><div class="a"><p>支援 MetaMask、Rabby、WalletConnect、Coinbase Wallet 等主流錢包。目前整合 Ethereum、Arbitrum、Base、Optimism、Polygon 等 12 條公鏈，並持續擴張中。</p></div></div>
+      <div class="fq reveal"><div class="q">AETH 代幣有什麼用途？<span class="pl">+</span></div><div class="a"><p>AETH 是協議的治理與效用代幣。持有者可參與鏈上治理投票、質押以分享協議手續費分潤，並享有金庫費率折扣。代幣總供給固定為 10 億枚，四年線性釋放，無隱藏增發機制。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cta-in">
+        <h2 class="grad-text">準備好讓資產為你工作了嗎？</h2>
+        <p>連接錢包，數分鐘內開始賺取鏈上收益。非託管、無鎖倉、隨領隨到。</p>
+        <button class="btn btn-primary" id="ctaConnect" style="padding:14px 26px;font-size:15px">連接錢包並開始質押 ↗</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#" class="brand">
+          <svg class="logo" viewBox="0 0 40 40" fill="none"><path d="M20 2 L36 12 L36 28 L20 38 L4 28 L4 12 Z" stroke="url(#lg1)" stroke-width="2" fill="rgba(122,249,255,0.05)"/><path d="M20 11 L28 16 L28 24 L20 29 L12 24 L12 16 Z" fill="url(#lg1)" opacity=".85"/></svg>
+          Aethyr
+        </a>
+        <p class="desc">全鏈流動性與質押協議。為每一位用戶打造機構級的鏈上收益體驗。</p>
+      </div>
+      <div><h5>協議</h5><a href="#protocol">運作方式</a><a href="#stake">質押金庫</a><a href="#tokenomics">代幣經濟</a><a href="#">審計報告</a></div>
+      <div><h5>開發者</h5><a href="#">文件</a><a href="#">SDK</a><a href="#">GitHub</a><a href="#">漏洞賞金</a></div>
+      <div><h5>社群</h5><a href="#">Discord</a><a href="#">X / Twitter</a><a href="#">治理論壇</a><a href="#">部落格</a></div>
+    </div>
+    <div class="foot-bot">
+      <p class="disclaimer">⚠ 本頁面為設計示範用途，所有鏈上行為（錢包連接、價格、收益）皆為前端模擬，非真實交易。內容純屬虛構，非投資建議；數位資產具高度風險，投資前請自行研究 (DYOR)。</p>
+      <a class="tmpl-badge" href="https://service.e-life-ai.com" target="_blank" rel="noopener"><span class="dot"></span>Template by <b>e-life-ai</b> · service.e-life-ai.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WALLET MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mi">
+      <button class="modal-x" id="modalX">×</button>
+      <div id="walletSelect">
+        <h3>連接錢包</h3>
+        <p class="sub">選擇你慣用的錢包以連接 Aethyr 協議</p>
+        <div class="wallets">
+          <div class="wallet" data-w="MetaMask">
+            <div class="wic" style="background:linear-gradient(135deg,#f6851b,#e2761b)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M21 4l-7 5 1.3-3.5z"/><path d="M3 4l7 5L8.7 5.5z"/><path d="M18 16l-2 3 4 1 1-4z"/><path d="M3 16l1 4 4-1-2-3z"/><path d="M8 11l-1.5 2 4 .2-.1-4.3z" opacity=".7"/><path d="M16 11l-2.4-2.1-.1 4.3 4-.2z" opacity=".7"/></svg></div>
+            <div><b>MetaMask</b><span>最受歡迎的瀏覽器錢包</span></div>
+            <span class="arr">→</span>
+          </div>
+          <div class="wallet" data-w="Rabby">
+            <div class="wic" style="background:linear-gradient(135deg,#7af9ff,#5b8def)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="7" opacity=".9"/><circle cx="14" cy="10" r="1.6" fill="#222"/></svg></div>
+            <div><b>Rabby</b><span>多鏈 DeFi 專用錢包</span></div>
+            <span class="arr">→</span>
+          </div>
+          <div class="wallet" data-w="WalletConnect">
+            <div class="wic" style="background:linear-gradient(135deg,#3b99fc,#2a6fd6)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M6 10a8 8 0 0 1 12 0M9 13a4 4 0 0 1 6 0"/><circle cx="12" cy="16" r="1" fill="#fff"/></svg></div>
+            <div><b>WalletConnect</b><span>掃碼連接行動錢包</span></div>
+            <span class="arr">→</span>
+          </div>
+          <div class="wallet" data-w="Coinbase Wallet">
+            <div class="wic" style="background:linear-gradient(135deg,#0052ff,#0040cc)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6" rx="1.4" fill="#0052ff"/></svg></div>
+            <div><b>Coinbase Wallet</b><span>安全易用的自託管錢包</span></div>
+            <span class="arr">→</span>
+          </div>
+        </div>
+        <p class="modal-foot">連接即表示你同意服務條款 · 本連接為模擬示範</p>
+      </div>
+      <div class="connecting" id="connecting">
+        <div class="spinner"></div>
+        <p id="connectingTxt">正在連接 MetaMask…</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastTxt">已連接</span>
+</div>
+
+<script>
+"use strict";
+/* ============ utils ============ */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const fmt=(n,d=2)=>n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtUSD=n=>'$'+(n>=1e9?(n/1e9).toFixed(2)+'B':n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toFixed(2));
+const rnd=(a,b)=>a+Math.random()*(b-a);
+
+/* ============ nav scroll ============ */
+const nav=$('#nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
+
+/* ============ canvas particle network ============ */
+(function(){
+  const c=$('#bg'),x=c.getContext('2d');let w,h,pts,raf;
+  const N=()=>Math.min(70,Math.floor(innerWidth/22));
+  function size(){w=c.width=innerWidth;h=c.height=innerHeight;init();}
+  function init(){pts=Array.from({length:N()},()=>({x:Math.random()*w,y:Math.random()*h,vx:rnd(-.25,.25),vy:rnd(-.25,.25)}));}
+  function draw(){
+    x.clearRect(0,0,w,h);
+    for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+        if(d<140){x.strokeStyle='rgba(122,180,255,'+(0.14*(1-d/140))+')';x.lineWidth=1;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}
+      }
+    }
+    for(const p of pts){x.fillStyle='rgba(150,200,255,0.55)';x.beginPath();x.arc(p.x,p.y,1.4,0,7);x.fill();}
+    raf=requestAnimationFrame(draw);
+  }
+  size();addEventListener('resize',size);draw();
+})();
+
+/* ============ live market data (simulated) ============ */
+const M={price:0.842,apy:18.4,tvl:312_400_000,vol:48_200_000,users:84210,mcap:421_000_000,hold:128440,cumVol:9_840_000_000};
+function jitter(){
+  M.price=Math.max(0.4,M.price*(1+rnd(-0.006,0.0065)));
+  M.apy=Math.min(42,Math.max(11,M.apy+rnd(-0.25,0.25)));
+  M.tvl=Math.max(1e8,M.tvl*(1+rnd(-0.0009,0.0012)));
+  M.vol=M.vol*(1+rnd(-0.01,0.011));
+  M.users+=Math.floor(rnd(-2,9));
+  M.mcap=M.price/0.842*421_000_000;
+  M.hold+=Math.floor(rnd(-1,5));
+  M.cumVol+=Math.floor(rnd(2e5,9e5));
+}
+let lastPrice=M.price;
+function renderMarket(){
+  const chg=((M.price-0.842)/0.842*100);
+  $('#cardPrice').textContent='$'+fmt(M.price,4);
+  $('#cardChg').textContent=(chg>=0?'+':'')+fmt(chg,2)+'% 24h';
+  $('#cardChg').style.color=chg>=0?'var(--ok)':'var(--iris3)';
+  $('#cardApy').textContent=fmt(M.apy,1)+'%';
+  $('#cardVol').textContent=fmtUSD(M.vol);
+  $('#cardMcap').textContent=fmtUSD(M.mcap);
+  $('#cardHold').textContent=Math.floor(M.hold).toLocaleString('en-US');
+  $('#hsApy').textContent=fmt(M.apy,1)+'%';
+  $('#hsUsers').textContent=Math.floor(M.users).toLocaleString('en-US');
+  $('#bVol').textContent=fmtUSD(M.cumVol);
+  // rate + widget detail
+  const rate=M.price?(1/M.price* (3500/4150)):0; // ETH≈$3500, illustrative
+  window.AETH_PER_ETH=3500/M.price; // 1 ETH worth of AETH
+  $('#rate').textContent=fmt(window.AETH_PER_ETH,1);
+  $('#dRate').textContent='1 ETH = '+fmt(window.AETH_PER_ETH,1)+' AETH';
+  $('#stApy') && ($('#stApy').textContent=fmt(M.apy,1)+'%');
+  lastPrice=M.price;
+}
+/* animated counter for TVL / hero */
+function animateTo(el,target,dur,pre='',post='',dec=0){
+  const start=parseFloat(el.dataset.v||'0'),t0=performance.now();
+  function step(t){
+    const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3),val=start+(target-start)*e;
+    el.dataset.v=val;
+    el.textContent=pre+(dec? fmt(val,dec):Math.floor(val).toLocaleString('en-US'))+post;
+    if(k<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ============ sparkline ============ */
+(function(){
+  const svg=$('#spark');let data=Array.from({length:40},(_,i)=>0.7+Math.sin(i/4)*0.08+Math.random()*0.06);
+  function render(){
+    const min=Math.min(...data),max=Math.max(...data),W=320,H=64,pad=4;
+    const pts=data.map((v,i)=>[i/(data.length-1)*W,H-pad-((v-min)/((max-min)||1))*(H-2*pad)]);
+    const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const area=d+` L${W} ${H} L0 ${H} Z`;
+    svg.innerHTML=`<defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(122,249,255,.35)"/><stop offset="1" stop-color="rgba(122,249,255,0)"/></linearGradient></defs>
+      <path d="${area}" fill="url(#sg)"/><path d="${d}" fill="none" stroke="#7af9ff" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="3" fill="#7af9ff"/>`;
+  }
+  render();
+  setInterval(()=>{data.push(data[data.length-1]*(1+rnd(-0.03,0.032)));data.shift();render();},2200);
+})();
+
+/* ============ marquee ============ */
+(function(){
+  const toks=[['BTC',64210,1.2],['ETH',3502,0.8],['AETH',0.842,4.1],['ARB',1.18,-2.1],['OP',2.34,3.4],['SOL',148,2.0],['MATIC',0.71,-0.6],['LINK',17.2,1.5],['BASE-TVL','$2.1B',0.4],['stETH',3489,0.7]];
+  const cell=t=>`<span class="it"><b>${t[0]}</b> ${typeof t[1]==='number'?'$'+t[1].toLocaleString():t[1]} <span class="${t[2]>=0?'up':'dn'}">${t[2]>=0?'▲':'▼'}${Math.abs(t[2])}%</span></span>`;
+  const row=toks.map(cell).join('');
+  $('#mq').innerHTML=row+row;
+})();
+
+/* ============ tokenomics donut ============ */
+(function(){
+  const data=[
+    ['社群與生態激勵',32,'#7af9ff','320,000,000'],
+    ['質押與流動性獎勵',24,'#a98bff','240,000,000'],
+    ['協議金庫',18,'#ff8fd1','180,000,000'],
+    ['團隊（4年解鎖）',14,'#c8ff5e','140,000,000'],
+    ['早期投資人',8,'#5b8def','80,000,000'],
+    ['公募',4,'#5effa8','40,000,000'],
+  ];
+  const svg=$('#donut'),cx=150,cy=150,r=110,sw=34;const C=2*Math.PI*r;let off=0;
+  let html='';
+  data.forEach(d=>{
+    const len=d[1]/100*C;
+    html+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d[2]}" stroke-width="${sw}"
+      stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"
+      style="transition:stroke-width .25s"><title>${d[0]} ${d[1]}%</title></circle>`;
+    off+=len;
+  });
+  svg.innerHTML=html;
+  const lg=$('#legend');
+  lg.innerHTML=data.map((d,i)=>`<div class="lg" data-i="${i}"><span class="sw" style="background:${d[2]}"></span><span class="nm">${d[0]}</span><span class="pc">${d[1]}%</span><span class="am">${d[3]}</span></div>`).join('');
+  const circles=$$('circle',svg);
+  $$('.lg',lg).forEach((el,i)=>{
+    el.addEventListener('mouseenter',()=>{circles[i].setAttribute('stroke-width',sw+8);});
+    el.addEventListener('mouseleave',()=>{circles[i].setAttribute('stroke-width',sw);});
+  });
+})();
+
+/* ============ wallet connect (simulated) ============ */
+const overlay=$('#overlay'),acct=$('#acct'),connectBtn=$('#connectBtn');
+let connected=false;
+function openModal(){
+  if(connected){disconnect();return;}
+  $('#walletSelect').style.display='block';$('#connecting').classList.remove('show');
+  overlay.classList.add('show');
+}
+function closeModal(){overlay.classList.remove('show');}
+function disconnect(){
+  connected=false;acct.classList.remove('show');
+  connectBtn.querySelector('.lbl').textContent='連接錢包';
+  showToast('已斷開連接');
+}
+function connectWallet(name){
+  $('#walletSelect').style.display='none';
+  const cn=$('#connecting');cn.classList.add('show');
+  $('#connectingTxt').textContent='正在連接 '+name+'…';
+  setTimeout(()=>{
+    closeModal();connected=true;
+    acct.classList.add('show');
+    connectBtn.querySelector('.lbl').textContent='已連接';
+    // randomized fake address
+    const hex='0123456789abcdef';const a=Array.from({length:4},()=>hex[Math.floor(Math.random()*16)]).join('');const b=Array.from({length:4},()=>hex[Math.floor(Math.random()*16)]).join('');
+    $('#acctAddr').textContent='0x'+a.toUpperCase()+'…'+b;
+    $('#acctBal').textContent=fmt(rnd(2,180),2)+' ETH';
+    showToast('已透過 '+name+' 連接');
+  },1300);
+}
+connectBtn.addEventListener('click',openModal);
+$('#heroConnect').addEventListener('click',openModal);
+$('#ctaConnect').addEventListener('click',openModal);
+$('#modalX').addEventListener('click',closeModal);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+$$('.wallet').forEach(w=>w.addEventListener('click',()=>connectWallet(w.dataset.w)));
+
+/* ============ toast ============ */
+let toastTimer;
+function showToast(msg){
+  $('#toastTxt').textContent=msg;const t=$('#toast');t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* ============ swap / stake widget ============ */
+const tabSwap=$('#tabSwap'),tabStake=$('#tabStake'),paneSwap=$('#paneSwap'),paneStake=$('#paneStake');
+function setTab(t){
+  const swap=t==='swap';
+  tabSwap.classList.toggle('on',swap);tabStake.classList.toggle('on',!swap);
+  paneSwap.style.display=swap?'block':'none';paneStake.style.display=swap?'none':'block';
+  $('#wMsg').classList.remove('show');
+}
+tabSwap.addEventListener('click',()=>setTab('swap'));
+tabStake.addEventListener('click',()=>setTab('stake'));
+
+let swapDir='ETH2AETH';
+function calcSwap(){
+  const v=parseFloat($('#swapIn').value)||0;
+  let out,min;
+  if(swapDir==='ETH2AETH'){out=v*window.AETH_PER_ETH;min=out*0.995;}
+  else{out=v/window.AETH_PER_ETH;min=out*0.995;}
+  $('#swapOut').value=v?fmt(out,swapDir==='ETH2AETH'?2:4):'0.0';
+  $('#dMin').textContent=fmt(min,swapDir==='ETH2AETH'?2:4)+' '+(swapDir==='ETH2AETH'?'AETH':'ETH');
+}
+$('#swapIn').addEventListener('input',calcSwap);
+$('#flipBtn').addEventListener('click',()=>{
+  swapDir=swapDir==='ETH2AETH'?'AETH2ETH':'ETH2AETH';
+  // swap the pill labels by toggling visuals minimally via text — keep simple: just recompute & swap input value
+  const tmp=$('#swapIn').value;$('#swapIn').value=$('#swapOut').value;$('#swapOut').value=tmp;
+  // swap pill labels
+  const pills=$$('#paneSwap .tok-pill');
+  const a=pills[0].innerHTML,b=pills[1].innerHTML;pills[0].innerHTML=b;pills[1].innerHTML=a;
+  calcSwap();
+});
+
+function calcStake(){
+  const v=parseFloat($('#stakeIn').value)||0;
+  const apy=M.apy/100;
+  $('#stApy').textContent=fmt(M.apy,1)+'%';
+  $('#stDay').textContent=fmt(v*apy/365,2)+' AETH';
+  $('#stMonth').textContent=fmt(v*apy/12,2)+' AETH';
+  $('#stYear').textContent=fmt(v*apy,2)+' AETH';
+}
+$('#stakeIn').addEventListener('input',calcStake);
+
+function fakeHash(){const h='0123456789abcdef';return '0x'+Array.from({length:18},()=>h[Math.floor(Math.random()*16)]).join('')+'…';}
+function confirmTx(label){
+  if(!connected){openModal();return;}
+  const msg=$('#wMsg');msg.classList.remove('show');
+  $('#wMsgTxt').textContent=label+' · 交易已上鏈';
+  $('#wMsgHash').textContent='Tx: '+fakeHash();
+  // brief pending then success
+  setTimeout(()=>{msg.classList.add('show');showToast(label+'成功');},80);
+}
+$('#swapBtn').addEventListener('click',()=>confirmTx('兌換'));
+$('#stakeBtn').addEventListener('click',()=>confirmTx('質押'));
+
+/* ============ scroll reveal ============ */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.12});
+$$('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3*60)+'ms';io.observe(el);});
+
+/* ============ faq ============ */
+$$('.fq').forEach(f=>{
+  const a=$('.a',f);
+  $('.q',f).addEventListener('click',()=>{
+    const open=f.classList.contains('open');
+    $$('.fq').forEach(o=>{o.classList.remove('open');$('.a',o).style.maxHeight=null;});
+    if(!open){f.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+  });
+});
+
+/* ============ init + intervals ============ */
+renderMarket();calcSwap();calcStake();
+// hero animated counters once
+setTimeout(()=>{
+  animateTo($('#hsTvl'),M.tvl,1400,'$','',0); // will be overwritten by fmtUSD below; use custom
+},200);
+// override hero TVL formatting with USD shorthand counter
+(function(){
+  const el=$('#hsTvl'),t0=performance.now(),target=M.tvl;
+  function step(t){const k=Math.min(1,(t-t0)/1500),e=1-Math.pow(1-k,3);el.textContent=fmtUSD(target*e);if(k<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+})();
+(function(){
+  const el=$('#bTvl'),t0=performance.now(),target=M.tvl;
+  function step(t){const k=Math.min(1,(t-t0)/1600),e=1-Math.pow(1-k,3);el.textContent=fmtUSD(target*e);if(k<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+})();
+
+setInterval(()=>{
+  jitter();renderMarket();
+  // keep widget outputs in sync with live rate
+  if(paneSwap.style.display!=='none')calcSwap();
+  if(paneStake.style.display!=='none')calcStake();
+  // live TVL drift in band + hero
+  $('#bTvl').textContent=fmtUSD(M.tvl);
+  $('#hsTvl').textContent=fmtUSD(M.tvl);
+},2000);
+</script>
+</body>
+</html>
