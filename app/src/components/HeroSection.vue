@@ -92,7 +92,7 @@ onBeforeUnmount(() => clearTimeout(timer))
 
         <h1 class="title" data-h>
           使<span class="hl">想像成為現實</span>，<br />
-          讓我們幫你實現你的期望。
+          讓我們實現你的期望。
         </h1>
 
         <p class="sub" data-h>
