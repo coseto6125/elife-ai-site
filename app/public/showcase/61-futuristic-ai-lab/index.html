@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEXUS-7 神經反應堆｜量子推理研究實驗室｜e-life-ai</title>
+<meta name="description" content="NEXUS-7 — 次世代神經推理反應堆。即時張量觀測、量子權重校準、自我演化代理。e-life-ai 前瞻研究實驗室。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #04060d;
+    --bg2: #070b16;
+    --panel: rgba(10, 16, 30, 0.72);
+    --grid: rgba(54, 226, 255, 0.06);
+    --cyan: #36e2ff;
+    --cyan-dim: #1a8aa3;
+    --amber: #ffb347;
+    --amber-hot: #ff8a1f;
+    --magenta: #ff4d9d;
+    --green: #5cff9d;
+    --text: #cfe6f2;
+    --text-dim: #6f8aa0;
+    --line: rgba(54, 226, 255, 0.18);
+    --glow: 0 0 18px rgba(54, 226, 255, 0.35);
+    --mono: 'Share Tech Mono', monospace;
+    --disp: 'Orbitron', sans-serif;
+    --body: 'Chakra Petch', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* ===== Atmosphere layers ===== */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(ellipse 120% 90% at 50% 0%, #000 35%, transparent 100%);
+    animation: gridPan 24s linear infinite;
+  }
+  @keyframes gridPan { to { background-position: 46px 46px; } }
+
+  .bg-glow {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(900px 600px at 12% -5%, rgba(54,226,255,0.14), transparent 60%),
+      radial-gradient(800px 600px at 88% 12%, rgba(255,77,157,0.10), transparent 60%),
+      radial-gradient(1000px 800px at 50% 110%, rgba(255,179,71,0.08), transparent 60%);
+  }
+
+  .scanlines {
+    position: fixed; inset: 0; z-index: 999; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.0) 0px, rgba(0,0,0,0.0) 2px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.0) 4px);
+    mix-blend-mode: overlay; opacity: 0.5;
+  }
+  #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  .wrap { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding-inline: 28px; }
+
+  /* ===== Nav ===== */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: linear-gradient(180deg, rgba(4,6,13,0.92), rgba(4,6,13,0.45));
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand .logo {
+    width: 34px; height: 34px; position: relative;
+    border: 1.5px solid var(--cyan); border-radius: 7px;
+    display: grid; place-items: center; box-shadow: var(--glow);
+    animation: logoPulse 3.4s ease-in-out infinite;
+  }
+  @keyframes logoPulse { 50% { box-shadow: 0 0 28px rgba(54,226,255,0.6); } }
+  .brand .logo svg { width: 20px; height: 20px; }
+  .brand b { font-family: var(--disp); font-weight: 900; letter-spacing: 2px; font-size: 15px; color: #fff; }
+  .brand small { font-family: var(--mono); color: var(--cyan); font-size: 10px; letter-spacing: 2px; display: block; }
+  .nav-links { display: flex; gap: 26px; font-family: var(--mono); font-size: 13px; letter-spacing: 1px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; transition: color .2s, text-shadow .2s; position: relative; }
+  .nav-links a:hover { color: var(--cyan); text-shadow: var(--glow); }
+  .nav-cta {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 1px;
+    color: var(--bg); background: var(--cyan); padding: 9px 16px; border-radius: 6px;
+    text-decoration: none; box-shadow: var(--glow); transition: transform .15s, box-shadow .2s; white-space: nowrap;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 0 26px rgba(54,226,255,0.7); }
+
+  /* ===== Hero ===== */
+  .hero { padding-block: 84px 60px; position: relative; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 2px; color: var(--cyan); border: 1px solid var(--line); padding: 6px 13px; border-radius: 40px;
+    background: rgba(54,226,255,0.04);
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: blink 1.4s ease-in-out infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  h1.title {
+    font-family: var(--disp); font-weight: 900; font-size: clamp(38px, 7vw, 88px); line-height: 0.98;
+    margin: 22px 0 8px; letter-spacing: 1px;
+    background: linear-gradient(180deg, #fff 0%, #9fe9ff 55%, var(--cyan) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 50px rgba(54,226,255,0.18);
+  }
+  h1.title .accent { color: var(--amber); -webkit-text-fill-color: var(--amber); text-shadow: 0 0 28px rgba(255,138,31,0.5); }
+  .subtitle { font-size: clamp(15px, 2.2vw, 20px); color: var(--text-dim); max-width: 620px; margin: 14px 0 0; }
+  .term-line { font-family: var(--mono); color: var(--cyan); font-size: clamp(14px,2vw,18px); margin-top: 26px; min-height: 28px; }
+  .term-line .cursor { display: inline-block; width: 9px; height: 1.05em; background: var(--cyan); margin-left: 3px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  .hero-cta { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono); font-size: 14px; letter-spacing: 1px; cursor: pointer;
+    padding: 13px 24px; border-radius: 7px; border: 1px solid var(--cyan); background: transparent;
+    color: var(--cyan); transition: all .18s; text-decoration: none; display: inline-flex; align-items: center; gap: 9px;
+  }
+  .btn:hover { background: rgba(54,226,255,0.1); box-shadow: var(--glow); transform: translateY(-2px); }
+  .btn.primary { background: var(--cyan); color: var(--bg); box-shadow: var(--glow); }
+  .btn.primary:hover { background: #7eeeff; }
+
+  /* ===== Live metrics strip ===== */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 56px; }
+  .metric {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 18px 16px;
+    position: relative; overflow: hidden;
+  }
+  .metric::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); opacity: .6; }
+  .metric .label { font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase; }
+  .metric .val { font-family: var(--disp); font-weight: 700; font-size: 30px; color: #fff; margin: 6px 0 2px; }
+  .metric .val .unit { font-size: 13px; color: var(--cyan); font-family: var(--mono); margin-left: 4px; }
+  .metric .spark { height: 26px; margin-top: 8px; display: flex; align-items: flex-end; gap: 2px; }
+  .metric .spark i { flex: 1; background: linear-gradient(180deg, var(--cyan), var(--cyan-dim)); border-radius: 1px; transition: height .4s ease; opacity: .8; }
+
+  /* ===== Section frame ===== */
+  section.block { padding-block: 80px; position: relative; }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 36px; }
+  .sec-head .idx { font-family: var(--mono); color: var(--amber); font-size: 13px; letter-spacing: 2px; }
+  .sec-head h2 { font-family: var(--disp); font-weight: 700; font-size: clamp(24px, 4vw, 40px); color: #fff; letter-spacing: 1px; }
+  .sec-head .rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+
+  /* ===== Console / Run model ===== */
+  .console-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+  .console {
+    background: #02040a; border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), inset 0 0 60px rgba(54,226,255,0.03);
+  }
+  .console-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: rgba(54,226,255,0.03); }
+  .console-bar .dots { display: flex; gap: 6px; }
+  .console-bar .dots i { width: 11px; height: 11px; border-radius: 50%; }
+  .console-bar .dots i:nth-child(1){background:var(--magenta);} .console-bar .dots i:nth-child(2){background:var(--amber);} .console-bar .dots i:nth-child(3){background:var(--green);}
+  .console-bar span { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 1px; }
+  .console-body { padding: 18px; font-family: var(--mono); font-size: 13.5px; line-height: 1.7; min-height: 280px; max-height: 360px; overflow-y: auto; }
+  .console-body .ln { white-space: pre-wrap; word-break: break-word; }
+  .console-body .pmt { color: var(--green); } .console-body .out { color: var(--text); }
+  .console-body .dim { color: var(--text-dim); } .console-body .ok { color: var(--cyan); } .console-body .warn { color: var(--amber); }
+  .console-body .blk { display: inline-block; width: 8px; height: 1em; background: var(--cyan); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+
+  .prompt-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+  .prompt-panel h3 { font-family: var(--disp); font-size: 16px; color: #fff; letter-spacing: 1px; margin-bottom: 6px; }
+  .prompt-panel p.hint { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .chip { font-family: var(--mono); font-size: 12px; color: var(--text-dim); border: 1px solid var(--line); padding: 7px 12px; border-radius: 30px; cursor: pointer; transition: all .15s; background: rgba(54,226,255,0.02); }
+  .chip:hover { color: var(--cyan); border-color: var(--cyan); }
+  .chip.active { color: var(--bg); background: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow); }
+  textarea#promptInput {
+    width: 100%; background: #02040a; border: 1px solid var(--line); border-radius: 8px; color: var(--text);
+    font-family: var(--mono); font-size: 13px; padding: 12px; resize: vertical; min-height: 84px; margin-bottom: 14px;
+  }
+  textarea#promptInput:focus { outline: none; border-color: var(--cyan); box-shadow: var(--glow); }
+  .run-row { display: flex; gap: 12px; align-items: center; }
+  .gauge { flex: 1; height: 6px; background: rgba(54,226,255,0.08); border-radius: 4px; overflow: hidden; }
+  .gauge i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--amber)); transition: width .1s linear; }
+
+  /* ===== Tabs / Modules ===== */
+  .tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+  .tab {
+    font-family: var(--mono); font-size: 13px; letter-spacing: 1px; cursor: pointer; color: var(--text-dim);
+    padding: 11px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); transition: all .18s;
+  }
+  .tab:hover { color: var(--cyan); }
+  .tab.active { color: var(--bg); background: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow); }
+  .tab-panel { display: none; animation: fadeUp .5s ease both; }
+  .tab-panel.active { display: block; }
+  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feat {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; position: relative;
+    transition: transform .2s, border-color .2s, box-shadow .2s; overflow: hidden;
+  }
+  .feat:hover { transform: translateY(-4px); border-color: var(--cyan); box-shadow: 0 18px 40px rgba(0,0,0,0.4), var(--glow); }
+  .feat .ico { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); display: grid; place-items: center; margin-bottom: 14px; color: var(--cyan); background: rgba(54,226,255,0.05); }
+  .feat h4 { font-family: var(--disp); font-size: 16px; color: #fff; letter-spacing: .5px; margin-bottom: 8px; }
+  .feat p { font-size: 13.5px; color: var(--text-dim); }
+  .feat .tag { position: absolute; top: 16px; right: 16px; font-family: var(--mono); font-size: 10px; color: var(--amber); letter-spacing: 1px; }
+
+  /* ===== Telemetry / hover reveal cards ===== */
+  .tele-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  .tele {
+    border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 20px; cursor: pointer;
+    position: relative; min-height: 150px; transition: border-color .2s, box-shadow .2s;
+  }
+  .tele:hover { border-color: var(--amber); box-shadow: 0 0 24px rgba(255,138,31,0.18); }
+  .tele .node-id { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 1px; }
+  .tele h4 { font-family: var(--disp); font-size: 18px; color: #fff; margin: 8px 0 4px; }
+  .tele .status { font-family: var(--mono); font-size: 12px; color: var(--green); }
+  .tele .reveal { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .35s ease, opacity .3s ease, margin-top .3s; font-size: 13px; color: var(--text-dim); }
+  .tele:hover .reveal { max-height: 160px; opacity: 1; margin-top: 12px; }
+  .tele .reveal .kv { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; padding: 3px 0; border-bottom: 1px dashed rgba(54,226,255,0.1); }
+  .tele .reveal .kv b { color: var(--cyan); }
+
+  /* ===== CTA band ===== */
+  .cta-band {
+    margin: 30px 0 0; border: 1px solid var(--line); border-radius: 16px; padding: 46px 36px; text-align: center;
+    background: radial-gradient(700px 300px at 50% 0%, rgba(54,226,255,0.1), transparent 70%), var(--panel); position: relative; overflow: hidden;
+  }
+  .cta-band h2 { font-family: var(--disp); font-size: clamp(24px,4vw,38px); color: #fff; letter-spacing: 1px; margin-bottom: 12px; }
+  .cta-band p { color: var(--text-dim); max-width: 520px; margin: 0 auto 24px; }
+
+  /* ===== Footer ===== */
+  footer { border-top: 1px solid var(--line); padding: 34px 0; margin-top: 70px; }
+  .foot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--text-dim); letter-spacing: 1px; }
+  .foot-inner a { color: var(--cyan); text-decoration: none; }
+
+  /* ===== Brand badge ===== */
+  .badge {
+    position: fixed; right: 18px; bottom: 18px; z-index: 200; font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px;
+    color: var(--cyan); background: rgba(4,6,13,0.85); border: 1px solid var(--line); border-radius: 30px; padding: 8px 14px;
+    text-decoration: none; backdrop-filter: blur(6px); box-shadow: 0 0 18px rgba(54,226,255,0.18); transition: all .2s; display: flex; align-items: center; gap: 8px;
+  }
+  .badge:hover { color: #fff; border-color: var(--cyan); box-shadow: var(--glow); }
+  .badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 1.4s infinite; }
+
+  /* ===== reveal anim ===== */
+  .reveal-up { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal-up.in { opacity: 1; transform: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px);} to { opacity:1; transform:none; } }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .console-grid { grid-template-columns: 1fr; }
+    .feat-grid, .tele-grid { grid-template-columns: 1fr 1fr; }
+    .metrics { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 18px; }
+    .feat-grid, .tele-grid, .metrics { grid-template-columns: 1fr; }
+    .hero { padding-block: 54px 40px; }
+    section.block { padding-block: 56px; }
+    .cta-band { padding: 34px 20px; }
+    .brand small { display: none; }
+    /* Keep the display title fully inside the left padding on narrow screens:
+       Orbitron's wide side-bearings + letter-spacing bled past the viewport edge. */
+    h1.title { font-size: clamp(30px, 9vw, 46px); letter-spacing: 0; max-width: 100%; overflow-wrap: anywhere; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <canvas id="particles"></canvas>
+  <div class="scanlines"></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#36e2ff" stroke-width="1.7">
+            <circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/>
+          </svg>
+        </span>
+        <div>
+          <b>NEXUS-7</b>
+          <small>e-life-ai · LABS</small>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#reactor">反應堆</a>
+        <a href="#modules">核心模組</a>
+        <a href="#telemetry">節點遙測</a>
+        <a href="#deploy">部署</a>
+      </nav>
+      <a href="#reactor" class="nav-cta">啟動推理 ▸</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="wrap hero">
+    <span class="eyebrow reveal-up"><span class="dot"></span>SYSTEM ONLINE · 量子核心 v7.3.1 已校準</span>
+    <h1 class="title reveal-up">神經<span class="accent">反應堆</span><br/>NEXUS-7</h1>
+    <p class="subtitle reveal-up">次世代自我演化推理引擎。在毫秒尺度上觀測張量流動、校準量子權重，並讓代理群在沙盒宇宙中自主演化。</p>
+    <div class="term-line reveal-up"><span id="typed"></span><span class="cursor"></span></div>
+    <div class="hero-cta reveal-up">
+      <a href="#reactor" class="btn primary">▶ 進入控制台</a>
+      <a href="#modules" class="btn">瀏覽核心模組</a>
+    </div>
+
+    <!-- LIVE METRICS -->
+    <div class="metrics" id="metrics">
+      <div class="metric reveal-up"><div class="label">推理吞吐量</div><div class="val" data-key="tps">0<span class="unit">tok/s</span></div><div class="spark" data-spark></div></div>
+      <div class="metric reveal-up"><div class="label">量子相干度</div><div class="val" data-key="coh">0<span class="unit">%</span></div><div class="spark" data-spark></div></div>
+      <div class="metric reveal-up"><div class="label">活躍代理</div><div class="val" data-key="agents">0<span class="unit">節點</span></div><div class="spark" data-spark></div></div>
+      <div class="metric reveal-up"><div class="label">核心溫度</div><div class="val" data-key="temp">0<span class="unit">K</span></div><div class="spark" data-spark></div></div>
+    </div>
+  </section>
+
+  <!-- REACTOR / RUN CONSOLE -->
+  <section class="wrap block" id="reactor">
+    <div class="sec-head reveal-up">
+      <span class="idx">[ 01 ]</span><h2>推理控制台</h2><span class="rule"></span>
+    </div>
+    <div class="console-grid">
+      <div class="console reveal-up">
+        <div class="console-bar"><div class="dots"><i></i><i></i><i></i></div><span>nexus@reactor-core: ~/inference</span></div>
+        <div class="console-body" id="consoleBody">
+          <div class="ln dim">// 反應堆待命中。選擇任務並點擊「執行推理」。</div>
+          <div class="ln pmt">nexus@core:~$ <span class="blk"></span></div>
+        </div>
+      </div>
+      <div class="prompt-panel reveal-up">
+        <h3>提交推理任務</h3>
+        <p class="hint">選擇預設情境或自訂指令，反應堆將串流回傳模擬結果。</p>
+        <div class="chips" id="chips">
+          <span class="chip active" data-p="分析 2.4 TB 衛星遙測資料中的異常熱訊號">異常偵測</span>
+          <span class="chip" data-p="為材料 Λ-7 生成超導晶格候選結構">材料生成</span>
+          <span class="chip" data-p="模擬 1000 個代理在資源稀缺環境下的協作策略">多代理博弈</span>
+          <span class="chip" data-p="將自然語言規格轉譯為可驗證的形式邏輯">形式化轉譯</span>
+        </div>
+        <textarea id="promptInput">分析 2.4 TB 衛星遙測資料中的異常熱訊號</textarea>
+        <div class="run-row">
+          <button class="btn primary" id="runBtn">⚡ 執行推理</button>
+          <div class="gauge"><i id="gaugeFill"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULES / TABS -->
+  <section class="wrap block" id="modules">
+    <div class="sec-head reveal-up">
+      <span class="idx">[ 02 ]</span><h2>核心模組</h2><span class="rule"></span>
+    </div>
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="t1">張量觀測台</div>
+      <div class="tab" data-tab="t2">量子校準</div>
+      <div class="tab" data-tab="t3">代理沙盒</div>
+    </div>
+
+    <div class="tab-panel active" data-panel="t1">
+      <div class="feat-grid">
+        <div class="feat"><span class="tag">REALTIME</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div><h4>流形透視</h4><p>將高維激活投影至可導航的三維流形，逐層追蹤注意力如何在 token 間傳播。</p></div>
+        <div class="feat"><span class="tag">XAI</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h4>歸因熱圖</h4><p>對任意輸出 token 反向歸因，定位主導決策的神經元簇與輸入片段。</p></div>
+        <div class="feat"><span class="tag">TRACE</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><path d="M10 6h4v8"/></svg></div><h4>因果探針</h4><p>植入消融探針，量測單一電路被切斷後對下游行為的反事實影響。</p></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="t2">
+      <div class="feat-grid">
+        <div class="feat"><span class="tag">8-BIT</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-8M22 20V8" stroke-linecap="round"/></svg></div><h4>權重退火</h4><p>以模擬退火搜尋最低能量的量化配置，在 0.4% 精度損失內壓縮至 4-bit。</p></div>
+        <div class="feat"><span class="tag">DRIFT</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17c4-6 6 6 9 0s5-9 9-3"/></svg></div><h4>漂移哨兵</h4><p>持續監測分佈漂移，當相干度跌破閾值時自動觸發再校準排程。</p></div>
+        <div class="feat"><span class="tag">SAFE</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><h4>對齊圍欄</h4><p>在解碼路徑注入硬性約束，於 token 生成前攔截越界輸出，零延遲。</p></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="t3">
+      <div class="feat-grid">
+        <div class="feat"><span class="tag">SIM</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 7.5L11 16M16.5 7.5L13 16M8 6h8"/></svg></div><h4>群體湧現</h4><p>在沙盒宇宙中釋放數千代理，觀測分工、協商與背叛策略的自發湧現。</p></div>
+        <div class="feat"><span class="tag">EVOLVE</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22V2M6 8c0 4 12 4 12 8M18 8c0-4-12-4-12 8"/></svg></div><h4>演化迴圈</h4><p>以適者生存壓力篩選提示策略，每代保留前 5% 基因進入下一輪變異。</p></div>
+        <div class="feat"><span class="tag">REPLAY</span><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="6 4 20 12 6 20 6 4"/></svg></div><h4>時序回放</h4><p>任意倒帶並分叉模擬時間軸，比較不同決策節點導致的平行結局。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELEMETRY -->
+  <section class="wrap block" id="telemetry">
+    <div class="sec-head reveal-up">
+      <span class="idx">[ 03 ]</span><h2>節點遙測</h2><span class="rule"></span>
+    </div>
+    <div class="tele-grid" id="teleGrid">
+      <!-- injected by JS -->
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wrap block" id="deploy">
+    <div class="sec-head reveal-up">
+      <span class="idx">[ 04 ]</span><h2>部署你的反應堆</h2><span class="rule"></span>
+    </div>
+    <div class="cta-band reveal-up">
+      <h2>把研究級推理帶進產品</h2>
+      <p>NEXUS-7 是 e-life-ai 實驗室的概念展示。需要打造屬於你的 AI 產品、儀表板或互動體驗？我們從架構到上線一手包辦。</p>
+      <a href="https://elife-ai.com" class="btn primary" target="_blank" rel="noopener">▶ 與實驗室對話</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap foot-inner">
+      <span>© 2026 NEXUS-7 LABS · 由 <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a> 打造</span>
+      <span>BUILD 7.3.1 · QUANTUM-CORE · 概念展示作品（無真實後端）</span>
+    </div>
+  </footer>
+
+  <a class="badge" href="https://elife-ai.com" target="_blank" rel="noopener"><span class="pulse"></span>elife-ai.com</a>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ===== 1. Hero typewriter ===== */
+  const typedEl = document.getElementById('typed');
+  const lines = [
+    '> 初始化量子核心... 完成',
+    '> 載入 4096 維注意力流形...',
+    '> 同步 128 個推理節點 [████████] 100%',
+    '> 反應堆已穩定。等待指令。'
+  ];
+  let li = 0, ci = 0;
+  function type() {
+    if (li >= lines.length) { li = 0; ci = 0; setTimeout(() => { typedEl.textContent=''; type(); }, 2600); return; }
+    const cur = lines[li];
+    typedEl.textContent = cur.slice(0, ci);
+    if (ci < cur.length) { ci++; setTimeout(type, 26); }
+    else { li++; ci = 0; setTimeout(() => { typedEl.textContent=''; type(); }, 1400); }
+  }
+  type();
+
+  /* ===== 2. Live metrics + sparklines ===== */
+  const metricCfg = {
+    tps:    { base: 2840, span: 420, fmt: v => Math.round(v).toLocaleString() },
+    coh:    { base: 97.4, span: 1.6, fmt: v => v.toFixed(1) },
+    agents: { base: 1024, span: 36,  fmt: v => Math.round(v).toLocaleString() },
+    temp:   { base: 4.2,  span: 0.5, fmt: v => v.toFixed(2) }
+  };
+  document.querySelectorAll('[data-spark]').forEach(s => {
+    for (let i = 0; i < 24; i++) { const b = document.createElement('i'); b.style.height = (20 + Math.random()*70) + '%'; s.appendChild(b); }
+  });
+  function tickMetrics() {
+    document.querySelectorAll('.val[data-key]').forEach(el => {
+      const cfg = metricCfg[el.dataset.key];
+      const v = cfg.base + (Math.random() - 0.5) * cfg.span;
+      const unit = el.querySelector('.unit');
+      el.firstChild.nodeValue = cfg.fmt(v);
+      if (unit) el.appendChild(unit);
+    });
+    document.querySelectorAll('[data-spark]').forEach(s => {
+      const bars = s.children;
+      for (let i = 0; i < bars.length - 1; i++) bars[i].style.height = bars[i+1].style.height;
+      bars[bars.length-1].style.height = (20 + Math.random()*70) + '%';
+    });
+  }
+  tickMetrics();
+  setInterval(tickMetrics, 1300);
+
+  /* ===== 3. Run model console (streamed canned output) ===== */
+  const chips = document.getElementById('chips');
+  const promptInput = document.getElementById('promptInput');
+  const runBtn = document.getElementById('runBtn');
+  const body = document.getElementById('consoleBody');
+  const gauge = document.getElementById('gaugeFill');
+  let running = false;
+
+  chips.addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    chips.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    promptInput.value = c.dataset.p;
+  });
+
+  function responseFor(p) {
+    const out = [
+      ['pmt', 'nexus@core:~$ infer --task "' + p.slice(0, 42) + (p.length>42?'…':'') + '"'],
+      ['dim', '  ├─ 解析指令意圖... ok'],
+      ['ok',  '  ├─ 路由至 [張量觀測台 · 量子校準] 雙引擎'],
+      ['dim', '  ├─ 分配 ' + (40 + Math.floor(Math.random()*60)) + ' 個推理節點'],
+      ['out', '  ├─ 串流張量流形 ▸▸▸'],
+      ['warn','  ├─ 偵測到 3 個低相干區段，自動退火...'],
+      ['ok',  '  └─ 推理完成 · 耗時 ' + (0.6 + Math.random()*1.8).toFixed(2) + 's'],
+      ['', ''],
+      ['out', '【推理摘要】'],
+      ['out', '· 信賴度 ' + (91 + Math.random()*8).toFixed(1) + '%，已通過對齊圍欄三重驗證。'],
+      ['out', '· 主導電路：第 22–31 層的跨模態注意力簇。'],
+      ['out', '· 建議：將輸出交由代理沙盒做反事實壓力測試。'],
+      ['ok',  '✓ 結果已寫入 /var/nexus/runs/' + Date.now().toString(36) + '.qdat']
+    ];
+    return out;
+  }
+
+  function streamLines(items, idx) {
+    if (idx === 0) { body.innerHTML = ''; }
+    if (idx >= items.length) {
+      const p = document.createElement('div'); p.className = 'ln pmt';
+      p.innerHTML = 'nexus@core:~$ <span class="blk"></span>'; body.appendChild(p);
+      body.scrollTop = body.scrollHeight;
+      running = false; runBtn.textContent = '⚡ 執行推理'; gauge.style.width = '0%';
+      return;
+    }
+    const [cls, txt] = items[idx];
+    const div = document.createElement('div');
+    div.className = 'ln ' + cls;
+    div.textContent = txt;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+    gauge.style.width = Math.round((idx+1)/items.length*100) + '%';
+    setTimeout(() => streamLines(items, idx+1), 130 + Math.random()*170);
+  }
+
+  runBtn.addEventListener('click', () => {
+    if (running) return;
+    running = true; runBtn.textContent = '⟳ 推理中...';
+    streamLines(responseFor(promptInput.value.trim() || '空白任務'), 0);
+  });
+
+  /* ===== 4. Tabs ===== */
+  const tabs = document.getElementById('tabs');
+  tabs.addEventListener('click', e => {
+    const t = e.target.closest('.tab'); if (!t) return;
+    tabs.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelector('[data-panel="' + t.dataset.tab + '"]').classList.add('active');
+  });
+
+  /* ===== 5. Telemetry nodes (hover reveal) ===== */
+  const nodes = [
+    { id: 'NODE-Δ07', name: '南極觀測陣列', st: '◉ 同步中', load: '78%', lat: '12ms', up: '413d', region: 'ANT-Vostok' },
+    { id: 'NODE-Σ22', name: '軌道推理叢集', st: '◉ 高負載', load: '94%', lat: '31ms', up: '88d',  region: 'LEO-Orbital' },
+    { id: 'NODE-Ω91', name: '深海冷卻核心', st: '◉ 最佳化', load: '41%', lat: '7ms',  up: '901d', region: 'PAC-Abyssal' },
+    { id: 'NODE-Λ14', name: '沙漠太陽陣',   st: '◉ 待命',   load: '12%', lat: '19ms', up: '255d', region: 'SAH-Solar' },
+    { id: 'NODE-Φ03', name: '極光量子站',   st: '◉ 校準中', load: '63%', lat: '24ms', up: '142d', region: 'ARC-Aurora' },
+    { id: 'NODE-Ψ58', name: '城市邊緣節點', st: '◉ 同步中', load: '56%', lat: '4ms',  up: '67d',  region: 'TPE-Edge' }
+  ];
+  const grid = document.getElementById('teleGrid');
+  grid.innerHTML = nodes.map(n => `
+    <div class="tele reveal-up">
+      <div class="node-id">${n.id} · ${n.region}</div>
+      <h4>${n.name}</h4>
+      <div class="status">${n.st}</div>
+      <div class="reveal">
+        <div class="kv"><span>運算負載</span><b>${n.load}</b></div>
+        <div class="kv"><span>推理延遲</span><b>${n.lat}</b></div>
+        <div class="kv"><span>連續上線</span><b>${n.up}</b></div>
+        <div class="kv"><span>核心區域</span><b>${n.region}</b></div>
+      </div>
+    </div>`).join('');
+
+  /* ===== 6. Scroll reveal (staggered) ===== */
+  // Reveal anything already within (or near) the initial viewport immediately on load.
+  function revealInView() {
+    const vh = innerHeight;
+    document.querySelectorAll('.reveal-up:not(.in)').forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * 0.92) {
+        el.style.transitionDelay = Math.min(i, 8) * 60 + 'ms';
+        el.classList.add('in');
+      }
+    });
+  }
+  requestAnimationFrame(revealInView);
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en, i) => {
+      if (en.isIntersecting) {
+        const sibs = Array.from(en.target.parentElement.querySelectorAll('.reveal-up'));
+        en.target.style.transitionDelay = Math.min(sibs.indexOf(en.target), 6) * 70 + 'ms';
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal-up').forEach(el => io.observe(el));
+  // Safety net: never leave content hidden if observer/scroll never fires.
+  setTimeout(() => document.querySelectorAll('.reveal-up:not(.in)').forEach(el => el.classList.add('in')), 1600);
+
+  /* ===== 7. Particle field (drifting data motes) ===== */
+  const cv = document.getElementById('particles');
+  const ctx = cv.getContext('2d');
+  let W, H, parts;
+  function resize() {
+    W = cv.width = innerWidth; H = cv.height = innerHeight;
+    const count = Math.min(70, Math.floor(W / 22));
+    parts = Array.from({ length: count }, () => ({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+      r: Math.random()*1.6 + 0.4, a: Math.random()*0.5 + 0.15
+    }));
+  }
+  resize(); addEventListener('resize', resize);
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (const p of parts) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(54,226,255,' + p.a + ')';
+      ctx.fill();
+    }
+    // faint connecting lines
+    for (let i = 0; i < parts.length; i++) {
+      for (let j = i+1; j < parts.length; j++) {
+        const dx = parts[i].x-parts[j].x, dy = parts[i].y-parts[j].y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 < 12000) {
+          ctx.strokeStyle = 'rgba(54,226,255,' + (0.06 * (1 - d2/12000)) + ')';
+          ctx.beginPath(); ctx.moveTo(parts[i].x,parts[i].y); ctx.lineTo(parts[j].x,parts[j].y); ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
