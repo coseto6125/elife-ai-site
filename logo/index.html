@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-life.ai — Logo</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #070b10;
+        --panel: #0f1620;
+        --line: #1d2733;
+        --ink: #eaf2fb;
+        --mut: #61748a;
+        --acc: #34e3c4;
+      }
+      * { margin: 0; box-sizing: border-box; }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Sora, sans-serif;
+        padding: 56px clamp(20px, 6vw, 80px);
+      }
+      h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+      h1 span { color: var(--acc); }
+      .sub { color: var(--mut); font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; margin-top: 8px; }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 22px;
+        margin-top: 44px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--panel);
+      }
+      .stage {
+        display: grid;
+        place-items: center;
+        min-height: 200px;
+        padding: 32px;
+      }
+      .stage.dark { background: radial-gradient(500px 300px at 50% 30%, #0f1620, #070b10); }
+      .stage.light { background: #fff; }
+      .stage img { max-width: 90%; height: auto; }
+      .stage.mark img { max-width: 130px; }
+      .cap {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.78rem;
+        color: var(--mut);
+        padding: 14px 18px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+      }
+      .cap b { color: var(--ink); font-weight: 500; }
+    </style>
+  </head>
+  <body>
+    <h1>e-life<span>.ai</span> — Logo 套組</h1>
+    <p class="sub">graph-mark + wordmark · 接案形象識別</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="stage dark"><img src="logo-horizontal.svg" alt="水平主標" /></div>
+        <div class="cap"><b>水平主標</b><span>深底 · 主要使用</span></div>
+      </div>
+      <div class="card">
+        <div class="stage dark mark"><img src="logo-mark.svg" alt="圖標" /></div>
+        <div class="cap"><b>方形圖標</b><span>頭像 · favicon · 社群</span></div>
+      </div>
+      <div class="card">
+        <div class="stage light"><img src="logo-light.svg" alt="淺底版" /></div>
+        <div class="cap"><b>淺底版</b><span>名片 · 文件 · 白底</span></div>
+      </div>
+    </div>
+  </body>
+</html>

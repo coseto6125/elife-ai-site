@@ -1,0 +1,274 @@
+/* =========================================================================
+   e-life-ai — Design System
+   Aesthetic: "Terminal-grade engineering" — cold, precise, dark.
+   Neon used sparingly as data accents, never as decoration.
+   ========================================================================= */
+
+:root {
+  /* --- Surface (deep space-ink, layered) --- */
+  --bg-0: #070b10; /* page base */
+  --bg-1: #0b1117; /* panel */
+  --bg-2: #0f1620; /* raised panel */
+  --bg-3: #141d29; /* hover / active */
+  --line: #1d2733; /* hairline borders */
+  --line-bright: #2a3a4d;
+
+  /* --- Ink --- */
+  --ink-0: #eaf2fb; /* primary text */
+  --ink-1: #9fb2c6; /* secondary */
+  --ink-2: #61748a; /* muted */
+  --ink-3: #3a4a5c; /* faintest */
+
+  /* --- Accent: signal-cyan + a single warm contrast --- */
+  --accent: #34e3c4; /* primary cyan-mint, the "alive" color */
+  --accent-soft: rgba(52, 227, 196, 0.12);
+  --accent-line: rgba(52, 227, 196, 0.32);
+  --accent-2: #7c8cff; /* secondary indigo — graph edges */
+  --accent-warm: #ffb454; /* rare warm — for "human" / contact moments */
+  --danger: #ff6b6b;
+
+  /* --- Type --- */
+  --font-display: 'Sora', 'Noto Sans TC', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Noto Sans TC', monospace;
+  --font-cjk: 'Noto Sans TC', 'Sora', sans-serif;
+
+  /* --- Rhythm --- */
+  --maxw: 1180px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --radius: 14px;
+  --radius-sm: 9px;
+
+  /* --- Motion --- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-0);
+  color: var(--ink-0);
+  font-family: var(--font-cjk);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Atmospheric base: faint grid + radial glow, fixed behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(900px 600px at 78% -8%, rgba(52, 227, 196, 0.08), transparent 60%),
+    radial-gradient(800px 700px at 8% 12%, rgba(124, 140, 255, 0.06), transparent 55%);
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, #000 0%, transparent 75%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-0);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-0);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-3);
+  border-radius: 99px;
+  border: 3px solid var(--bg-0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--line-bright);
+}
+
+/* =========================================================================
+   Layout primitives
+   ========================================================================= */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(72px, 11vw, 140px);
+}
+
+/* Eyebrow: monospaced section marker, e.g. "// 02 — SERVICES" */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 4vw, 2.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink-0);
+  margin-top: 18px;
+}
+.section-lead {
+  max-width: 56ch;
+  margin-top: 16px;
+  color: var(--ink-1);
+  font-size: clamp(0.98rem, 1.4vw, 1.1rem);
+}
+
+/* =========================================================================
+   Buttons
+   ========================================================================= */
+.btn {
+  --bw: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.86em 1.4em;
+  border-radius: var(--radius-sm);
+  border: var(--bw) solid transparent;
+  transition: all 0.35s var(--ease);
+  position: relative;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #04110d;
+  box-shadow: 0 0 0 0 var(--accent-soft);
+}
+.btn-primary:hover {
+  background: #4ff4d6;
+  box-shadow: 0 10px 38px -12px var(--accent);
+  transform: translateY(-2px);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-0);
+  border-color: var(--line-bright);
+}
+.btn-ghost:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* =========================================================================
+   Reveal-on-scroll (driven by useReveal composable -> .is-in)
+   ========================================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =========================================================================
+   Shared panel / card chrome
+   ========================================================================= */
+.panel {
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* mono tag chip */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-1);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.28em 0.6em;
+  white-space: nowrap;
+}
