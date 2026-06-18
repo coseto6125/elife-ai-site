@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>窯與手作坊 · 慢手工陶 ｜e-life-ai</title>
+<meta name="description" content="窯與手作坊 — 一只一只，手作的溫度。陶器、織品、木作、皮件，由職人雙手慢慢做出來。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Caveat:wght@500;600;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#f5ece0;
+    --paper:#efe3d2;
+    --kraft:#d9c3a5;
+    --clay:#c08552;
+    --clay-deep:#a4632f;
+    --terracotta:#b5532e;
+    --terracotta-deep:#8f3d1e;
+    --ink:#3a2a1d;
+    --ink-soft:#6b5440;
+    --sage:#7d8666;
+    --sage-deep:#5b6448;
+    --cocoa:#4a3526;
+    --shadow:rgba(74,53,38,.18);
+    --shadow-deep:rgba(74,53,38,.30);
+    --serif:"Noto Serif TC",serif;
+    --display:"Gloock",serif;
+    --hand:"Caveat",cursive;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--serif);
+    color:var(--ink);
+    background-color:var(--cream);
+    background-image:
+      radial-gradient(circle at 20% 12%, rgba(192,133,82,.10), transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(125,134,102,.10), transparent 45%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    line-height:1.75;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1180px,100%);margin-inline:auto;padding-inline:clamp(20px,5vw,48px)}
+  section{position:relative}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:50;
+    background:rgba(245,236,224,.86);backdrop-filter:blur(8px);
+    border-bottom:1.5px dashed rgba(143,61,30,.35)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;
+    padding-block:14px;gap:18px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);
+    font-size:clamp(20px,2.4vw,25px);color:var(--terracotta-deep);letter-spacing:.5px}
+  .brand .seal{width:38px;height:38px;flex:0 0 auto}
+  .nav-links{display:flex;gap:26px;font-size:15px;color:var(--ink-soft);font-weight:500}
+  .nav-links a{position:relative;padding-block:4px;transition:color .25s}
+  .nav-links a:hover{color:var(--terracotta-deep)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;
+    background:var(--clay);border-radius:2px;transition:width .3s}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{font-family:var(--serif);font-weight:600;font-size:14px;color:var(--cream);
+    background:var(--terracotta);padding:9px 18px;border-radius:24px 22px 24px 20px;
+    box-shadow:0 4px 0 var(--terracotta-deep);transition:transform .15s,box-shadow .15s}
+  .nav-cta:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--terracotta-deep)}
+  .burger{display:none;background:none;border:none;cursor:pointer;color:var(--terracotta-deep)}
+
+  /* ---------- hero ---------- */
+  .hero{padding-block:clamp(46px,7vw,86px) clamp(40px,6vw,72px)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center}
+  .eyebrow{font-family:var(--hand);font-size:clamp(22px,2.6vw,30px);color:var(--clay-deep);
+    transform:rotate(-2deg);display:inline-block;margin-bottom:6px}
+  .hero h1{font-family:var(--display);font-weight:400;
+    font-size:clamp(40px,6.6vw,76px);line-height:1.04;color:var(--cocoa);
+    letter-spacing:.5px;margin-bottom:18px}
+  .hero h1 .accent{color:var(--terracotta);position:relative;white-space:nowrap}
+  .hero h1 .accent svg{position:absolute;left:-2%;bottom:-12px;width:104%;height:16px}
+  .hero p.lead{font-size:clamp(16px,1.7vw,18.5px);color:var(--ink-soft);max-width:48ch;margin-bottom:28px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn-primary{font-weight:600;font-size:15.5px;color:var(--cream);background:var(--terracotta);
+    padding:13px 26px;border-radius:26px 24px 26px 22px;box-shadow:0 5px 0 var(--terracotta-deep);
+    transition:transform .15s,box-shadow .15s;cursor:pointer;border:none;font-family:var(--serif)}
+  .btn-primary:hover{transform:translateY(2px);box-shadow:0 3px 0 var(--terracotta-deep)}
+  .btn-ghost{font-weight:600;font-size:15.5px;color:var(--cocoa);padding:13px 22px;
+    border:2px solid var(--cocoa);border-radius:24px 26px 22px 26px;
+    background:transparent;cursor:pointer;font-family:var(--serif);transition:background .2s,color .2s}
+  .btn-ghost:hover{background:var(--cocoa);color:var(--cream)}
+  .hero-stats{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap}
+  .hero-stats .st b{font-family:var(--display);font-size:30px;color:var(--clay-deep);display:block;line-height:1}
+  .hero-stats .st span{font-size:13.5px;color:var(--ink-soft)}
+
+  .hero-art{position:relative}
+  .hero-art .clay-card{background:var(--paper);border:2px solid var(--cocoa);
+    border-radius:28px 32px 26px 30px;padding:26px;box-shadow:14px 16px 0 rgba(143,61,30,.16);
+    transform:rotate(1.4deg)}
+  .hero-art .tag-hand{position:absolute;font-family:var(--hand);font-size:22px;color:var(--sage-deep);
+    transform:rotate(-6deg)}
+  .hero-art .tag-1{top:-14px;left:-6px;background:var(--cream);padding:2px 12px;border:1.5px dashed var(--sage-deep);border-radius:14px}
+  .hero-art .tag-2{bottom:-18px;right:8px;background:var(--cream);padding:2px 12px;border:1.5px dashed var(--clay-deep);color:var(--clay-deep);transform:rotate(4deg)}
+
+  /* ---------- section heading ---------- */
+  .sec-head{text-align:center;margin-bottom:clamp(30px,4vw,48px)}
+  .sec-head .kick{font-family:var(--hand);font-size:26px;color:var(--clay-deep);transform:rotate(-1.5deg);display:inline-block}
+  .sec-head h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,4.2vw,46px);
+    color:var(--cocoa);line-height:1.1;margin-top:2px}
+  .sec-head p{color:var(--ink-soft);max-width:54ch;margin:12px auto 0;font-size:15.5px}
+
+  /* ---------- gallery / shop ---------- */
+  .shop{padding-block:clamp(52px,7vw,90px)}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:34px}
+  .filter{font-family:var(--serif);font-weight:600;font-size:14.5px;color:var(--ink-soft);
+    background:var(--paper);border:1.5px solid var(--kraft);padding:8px 18px;border-radius:22px;
+    cursor:pointer;transition:all .2s}
+  .filter:hover{border-color:var(--clay)}
+  .filter.active{background:var(--cocoa);color:var(--cream);border-color:var(--cocoa);
+    box-shadow:0 3px 0 rgba(58,42,29,.35)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,28px)}
+  .card{background:var(--paper);border:2px solid var(--cocoa);border-radius:20px 24px 20px 22px;
+    overflow:hidden;box-shadow:7px 8px 0 rgba(143,61,30,.13);transition:transform .25s,box-shadow .25s;
+    cursor:pointer;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-5px) rotate(-.5deg);box-shadow:10px 13px 0 rgba(143,61,30,.18)}
+  .card .thumb{background:
+      radial-gradient(circle at 50% 120%, rgba(192,133,82,.25), transparent 60%),
+      var(--cream);
+    padding:22px;display:flex;align-items:center;justify-content:center;
+    border-bottom:1.5px dashed rgba(143,61,30,.3);min-height:172px}
+  .card .thumb svg{width:118px;height:118px}
+  .card .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card .cat{font-family:var(--hand);font-size:18px;color:var(--clay-deep)}
+  .card h3{font-family:var(--serif);font-weight:700;font-size:18.5px;color:var(--cocoa);line-height:1.3}
+  .card .desc{font-size:13.5px;color:var(--ink-soft);flex:1}
+  .card .row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .card .price{font-family:var(--display);font-size:20px;color:var(--terracotta-deep)}
+  .card .pick{font-size:13px;font-weight:600;color:var(--cream);background:var(--clay);
+    padding:6px 12px;border-radius:16px;border:none;cursor:pointer;font-family:var(--serif);transition:background .2s}
+  .card .pick:hover{background:var(--clay-deep)}
+  .empty{grid-column:1/-1;text-align:center;color:var(--ink-soft);padding:40px;font-size:16px}
+
+  /* ---------- customizer ---------- */
+  .custom{padding-block:clamp(52px,7vw,90px);background:
+      linear-gradient(rgba(217,195,165,.22),rgba(217,195,165,.22))}
+  .custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center}
+  .preview-box{background:var(--paper);border:2px solid var(--cocoa);border-radius:26px 30px 26px 28px;
+    padding:30px;box-shadow:12px 14px 0 rgba(143,61,30,.15);position:relative}
+  .preview-box .stamp{position:absolute;top:-16px;right:18px;font-family:var(--hand);font-size:20px;
+    color:var(--cream);background:var(--terracotta);padding:3px 14px;border-radius:16px;transform:rotate(4deg)}
+  .preview-stage{display:flex;align-items:center;justify-content:center;min-height:260px}
+  .preview-stage svg{width:210px;height:210px;transition:filter .4s}
+  .cfg .opt-group{margin-bottom:22px}
+  .cfg .opt-label{font-weight:600;font-size:14px;color:var(--cocoa);margin-bottom:10px;display:flex;
+    align-items:center;gap:8px}
+  .cfg .opt-label .hl{font-family:var(--hand);font-size:18px;color:var(--clay-deep)}
+  .swatches{display:flex;gap:12px;flex-wrap:wrap}
+  .swatch{width:46px;height:46px;border-radius:50%;border:3px solid transparent;cursor:pointer;
+    box-shadow:0 3px 6px var(--shadow);transition:transform .15s,border-color .2s;position:relative}
+  .swatch:hover{transform:scale(1.08)}
+  .swatch.sel{border-color:var(--cocoa)}
+  .swatch.sel::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;
+    justify-content:center;color:#fff;font-size:18px;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+  .sizes{display:flex;gap:10px;flex-wrap:wrap}
+  .size{font-family:var(--serif);font-weight:600;font-size:14px;padding:9px 16px;border-radius:18px;
+    border:1.5px solid var(--kraft);background:var(--cream);cursor:pointer;color:var(--ink-soft);transition:all .2s}
+  .size.sel{background:var(--cocoa);color:var(--cream);border-color:var(--cocoa)}
+  .price-line{display:flex;align-items:baseline;justify-content:space-between;
+    border-top:1.5px dashed rgba(143,61,30,.35);padding-top:18px;margin-top:6px}
+  .price-line .lbl{font-size:14px;color:var(--ink-soft)}
+  .price-line .amt{font-family:var(--display);font-size:34px;color:var(--terracotta-deep)}
+  .cfg .add-btn{width:100%;margin-top:18px}
+
+  /* ---------- process ---------- */
+  .process{padding-block:clamp(52px,7vw,90px)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  .step{background:var(--paper);border:2px solid var(--cocoa);border-radius:20px 22px 18px 22px;
+    padding:22px 18px;text-align:center;cursor:pointer;position:relative;
+    box-shadow:6px 7px 0 rgba(143,61,30,.12);transition:transform .25s,box-shadow .25s}
+  .step:hover,.step.open{transform:translateY(-4px);box-shadow:9px 11px 0 rgba(143,61,30,.18)}
+  .step .num{position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+    width:34px;height:34px;border-radius:50%;background:var(--terracotta);color:var(--cream);
+    font-family:var(--display);font-size:17px;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--cream);box-shadow:0 3px 0 var(--terracotta-deep)}
+  .step svg{width:64px;height:64px;margin:14px auto 10px}
+  .step h4{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--cocoa)}
+  .step .det{font-size:13px;color:var(--ink-soft);max-height:0;overflow:hidden;
+    transition:max-height .4s ease,margin-top .3s;margin-top:0}
+  .step.open .det{max-height:160px;margin-top:9px}
+  .step .more{font-family:var(--hand);font-size:16px;color:var(--clay-deep);margin-top:6px}
+
+  /* ---------- workshop booking ---------- */
+  .workshop{padding-block:clamp(52px,7vw,90px);background:linear-gradient(rgba(125,134,102,.12),rgba(125,134,102,.12))}
+  .ws-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
+  .ws-card{background:var(--paper);border:2px solid var(--cocoa);border-radius:20px;padding:20px;
+    box-shadow:6px 7px 0 rgba(91,100,72,.18);transition:transform .2s}
+  .ws-card.sel{transform:translateY(-4px);border-color:var(--sage-deep);box-shadow:6px 9px 0 var(--sage-deep)}
+  .ws-card .wtit{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--cocoa);margin-bottom:4px}
+  .ws-card .wmeta{font-size:13px;color:var(--ink-soft);margin-bottom:4px}
+  .ws-card .wmeta b{color:var(--sage-deep)}
+  .ws-card .wprice{font-family:var(--display);font-size:22px;color:var(--terracotta-deep);margin:8px 0}
+  .ws-card .wpick{font-size:13px;font-weight:600;color:var(--sage-deep);border:1.5px solid var(--sage-deep);
+    background:transparent;padding:7px 14px;border-radius:16px;cursor:pointer;font-family:var(--serif);transition:all .2s;width:100%}
+  .ws-card.sel .wpick{background:var(--sage-deep);color:var(--cream)}
+  .ws-form{background:var(--paper);border:2px solid var(--cocoa);border-radius:22px;padding:clamp(22px,3vw,34px);
+    box-shadow:10px 12px 0 rgba(91,100,72,.16);max-width:680px;margin-inline:auto}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-weight:600;font-size:14px;color:var(--cocoa);margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;font-family:var(--serif);font-size:15px;color:var(--ink);
+    background:var(--cream);border:1.5px solid var(--kraft);border-radius:12px;padding:11px 14px;transition:border-color .2s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--clay)}
+  .field input.err,.field select.err{border-color:var(--terracotta)}
+  .field .msg{font-size:12.5px;color:var(--terracotta);margin-top:5px;min-height:16px}
+  .ws-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ws-chosen{font-size:14px;color:var(--ink-soft);margin-bottom:16px;font-family:var(--hand);font-size:18px}
+  .ws-chosen b{color:var(--sage-deep)}
+  .form-ok{display:none;text-align:center;padding:18px;background:rgba(125,134,102,.18);
+    border:1.5px dashed var(--sage-deep);border-radius:14px;color:var(--sage-deep);font-weight:600;margin-top:8px}
+
+  /* ---------- story timeline ---------- */
+  .story{padding-block:clamp(52px,7vw,90px)}
+  .timeline{position:relative;max-width:760px;margin-inline:auto;padding-left:6px}
+  .timeline::before{content:"";position:absolute;left:18px;top:6px;bottom:6px;width:2.5px;
+    background:repeating-linear-gradient(var(--clay) 0 8px,transparent 8px 16px)}
+  .tl-item{position:relative;padding-left:54px;margin-bottom:30px}
+  .tl-item .dot{position:absolute;left:8px;top:2px;width:22px;height:22px;border-radius:50%;
+    background:var(--terracotta);border:3px solid var(--cream);box-shadow:0 0 0 2px var(--terracotta)}
+  .tl-item .yr{font-family:var(--display);font-size:22px;color:var(--clay-deep);line-height:1}
+  .tl-item h4{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--cocoa);margin:3px 0 4px}
+  .tl-item p{font-size:14.5px;color:var(--ink-soft)}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--cocoa);color:var(--cream);padding-block:clamp(40px,5vw,60px) 26px;margin-top:20px}
+  footer .f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;margin-bottom:30px}
+  footer .brand{color:var(--cream)}
+  footer .brand .seal{filter:brightness(0) invert(1) sepia(.3)}
+  footer p.f-desc{color:rgba(245,236,224,.72);font-size:14px;margin-top:10px;max-width:34ch}
+  footer h5{font-family:var(--hand);font-size:21px;color:var(--clay);margin-bottom:10px}
+  footer ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  footer ul a{font-size:14px;color:rgba(245,236,224,.78);transition:color .2s}
+  footer ul a:hover{color:var(--clay)}
+  footer .f-bottom{border-top:1px dashed rgba(245,236,224,.25);padding-top:18px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:rgba(245,236,224,.6)}
+  footer .f-bottom a{color:var(--clay);font-weight:600}
+
+  /* ---------- badge ---------- */
+  .badge{position:fixed;right:18px;bottom:18px;z-index:80;font-family:var(--serif);font-weight:700;
+    font-size:13px;color:var(--cream);background:var(--terracotta);
+    padding:9px 15px 9px 13px;border-radius:50% 18px 50% 18px;
+    box-shadow:0 5px 14px rgba(143,61,30,.4),inset 0 0 0 2px rgba(245,236,224,.35);
+    display:flex;align-items:center;gap:7px;transition:transform .2s;transform:rotate(-3deg)}
+  .badge:hover{transform:rotate(-3deg) scale(1.05)}
+  .badge svg{width:18px;height:18px}
+
+  /* ---------- toast ---------- */
+  .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(120%);
+    background:var(--cocoa);color:var(--cream);font-size:14px;font-weight:600;
+    padding:12px 22px;border-radius:30px;box-shadow:0 8px 20px var(--shadow-deep);z-index:90;
+    transition:transform .4s cubic-bezier(.2,.8,.2,1);border:1.5px dashed var(--clay)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:880px){
+    .nav-links{display:none}
+    .burger{display:block}
+    .hero-grid{grid-template-columns:1fr;gap:38px}
+    .hero-art{order:-1;max-width:380px;margin-inline:auto}
+    .custom-grid{grid-template-columns:1fr;gap:34px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr);gap:24px}
+    .ws-grid{grid-template-columns:1fr}
+    footer .f-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:480px){
+    .grid{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr;gap:26px}
+    .ws-row{grid-template-columns:1fr}
+    .hero-stats{gap:18px}
+    footer .f-grid{grid-template-columns:1fr}
+    .badge{font-size:12px;padding:8px 13px 8px 11px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .reveal{transition:none;opacity:1;transform:none}
+    *{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- seal logo def -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="seal" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="3 4"/>
+      <path d="M16 30c0-7 3-12 8-12s8 5 8 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M14 31h20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="24" cy="15" r="2.4" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand"><svg class="seal"><use href="#seal"/></svg>窯與手作坊</a>
+    <nav class="nav-links">
+      <a href="#shop">作品</a>
+      <a href="#custom">客製</a>
+      <a href="#process">製程</a>
+      <a href="#workshop">課程</a>
+      <a href="#story">關於</a>
+    </nav>
+    <a href="#workshop" class="nav-cta">預約手作</a>
+    <button class="burger" aria-label="選單" onclick="document.querySelector('.nav-links').scrollIntoView()">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">一只一只，慢慢做</span>
+      <h1>手心裡的<br/><span class="accent">溫度<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M3 11c40-9 90-9 130-5 25 2 50 3 64 1" fill="none" stroke="#c08552" stroke-width="4" stroke-linecap="round"/></svg></span>，<br/>由雙手慢慢長出</h1>
+      <p class="lead">窯與手作坊，一間藏在山腳下的小工作室。陶土、棉麻、原木與牛皮，經過職人的手，留下指紋與窯火的痕跡 —— 每一件，都是獨一無二的不完美。</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView()">看看作品</button>
+        <button class="btn-ghost" onclick="document.getElementById('process').scrollIntoView()">手作的故事</button>
+      </div>
+      <div class="hero-stats">
+        <div class="st"><b>14</b><span>年職人手感</span></div>
+        <div class="st"><b>2,300+</b><span>件親手作品</span></div>
+        <div class="st"><b>4</b><span>種手工材質</span></div>
+      </div>
+    </div>
+    <div class="hero-art reveal">
+      <span class="tag-hand tag-1">手拉坯</span>
+      <span class="tag-hand tag-2">窯燒中</span>
+      <div class="clay-card">
+        <svg viewBox="0 0 320 300" role="img" aria-label="手作陶器與工作桌插畫">
+          <!-- table line -->
+          <path d="M20 244h280" stroke="#8f3d1e" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 9"/>
+          <!-- big vase -->
+          <path d="M120 244c-26 0-40-26-40-58 0-22 12-30 12-46 0-10-6-12-6-22 0-12 12-18 28-18s28 6 28 18c0 10-6 12-6 22 0 16 12 24 12 46 0 32-14 58-40 58z" fill="#c08552" stroke="#5a3a22" stroke-width="3"/>
+          <ellipse cx="120" cy="100" rx="22" ry="6" fill="#a4632f"/>
+          <path d="M92 150c18 8 38 8 56 0" fill="none" stroke="#8f3d1e" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M96 190c16 7 32 7 48 0" fill="none" stroke="#8f3d1e" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
+          <!-- small bowl -->
+          <path d="M196 244c-26 0-44-16-44-38h88c0 22-18 38-44 38z" fill="#b5532e" stroke="#5a3a22" stroke-width="3"/>
+          <ellipse cx="196" cy="206" rx="44" ry="9" fill="#8f3d1e"/>
+          <ellipse cx="196" cy="205" rx="36" ry="6" fill="#d9c3a5"/>
+          <!-- cup -->
+          <path d="M252 244c-12 0-20-8-20-22v-26h40v26c0 14-8 22-20 22z" fill="#7d8666" stroke="#5a3a22" stroke-width="3"/>
+          <path d="M272 204c14 0 18 8 18 16s-6 14-16 14" fill="none" stroke="#5a3a22" stroke-width="3"/>
+          <!-- steam -->
+          <path d="M252 184c-4-6 4-10 0-16" fill="none" stroke="#a4632f" stroke-width="2.4" stroke-linecap="round" opacity=".6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP / GALLERY -->
+<section class="shop" id="shop">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kick">每一件都不一樣</span>
+      <h2>手作選物</h2>
+      <p>依材質挑選你喜歡的那一件。沒有兩個完全相同 —— 因為它們都是手做的。</p>
+    </div>
+    <div class="filters reveal" id="filters">
+      <button class="filter active" data-cat="all">全部</button>
+      <button class="filter" data-cat="陶器">陶器</button>
+      <button class="filter" data-cat="織品">織品</button>
+      <button class="filter" data-cat="木作">木作</button>
+      <button class="filter" data-cat="皮件">皮件</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- CUSTOMIZER -->
+<section class="custom" id="custom">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kick">做一只你的</span>
+      <h2>客製你的手沖杯</h2>
+      <p>選一個釉色、選一個大小，看看屬於你的那只杯子長什麼樣子。</p>
+    </div>
+    <div class="custom-grid">
+      <div class="preview-box reveal">
+        <span class="stamp">即時預覽</span>
+        <div class="preview-stage">
+          <svg id="cupPreview" viewBox="0 0 220 220" role="img" aria-label="客製手沖杯預覽">
+            <ellipse cx="100" cy="196" rx="56" ry="10" fill="rgba(74,53,38,.16)"/>
+            <path id="cupBody" d="M58 70h84l-8 96c-1 12-12 20-34 20s-33-8-34-20z" fill="#c08552" stroke="#5a3a22" stroke-width="3.4"/>
+            <ellipse id="cupRim" cx="100" cy="70" rx="42" ry="11" fill="#a4632f" stroke="#5a3a22" stroke-width="3.4"/>
+            <ellipse cx="100" cy="70" rx="33" ry="7" fill="#7a4a28" opacity=".5"/>
+            <path id="cupHandle" d="M142 92c26 0 32 16 32 30s-10 30-30 30" fill="none" stroke="#5a3a22" stroke-width="6.5" stroke-linecap="round"/>
+            <path d="M70 120c20 7 40 7 60 0" fill="none" stroke="#5a3a22" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
+            <circle cx="84" cy="150" r="2.2" fill="#5a3a22" opacity=".4"/>
+            <circle cx="116" cy="158" r="1.8" fill="#5a3a22" opacity=".35"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cfg reveal">
+        <div class="opt-group">
+          <div class="opt-label"><span class="hl">釉色</span> Glaze</div>
+          <div class="swatches" id="glazes"></div>
+        </div>
+        <div class="opt-group">
+          <div class="opt-label"><span class="hl">大小</span> Size</div>
+          <div class="sizes" id="sizes"></div>
+        </div>
+        <div class="opt-group">
+          <div class="opt-label"><span class="hl">把手</span> Handle</div>
+          <div class="sizes" id="handles"></div>
+        </div>
+        <div class="price-line">
+          <span class="lbl">你的手沖杯 · 含手刻落款</span>
+          <span class="amt" id="cupPrice">NT$ 980</span>
+        </div>
+        <button class="btn-primary add-btn" onclick="addCart('客製手沖杯')">加入購物籃</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kick">從一塊土開始</span>
+      <h2>手作的四道工序</h2>
+      <p>點開每一步，看看一只陶器怎麼從泥土，走到你的手中。</p>
+    </div>
+    <div class="steps" id="steps"></div>
+  </div>
+</section>
+
+<!-- WORKSHOP -->
+<section class="workshop" id="workshop">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kick">親手做一次</span>
+      <h2>來上一堂手作課</h2>
+      <p>選一堂課，留下你的時間 —— 名額有限，我們會親自回信給你。</p>
+    </div>
+    <div class="ws-grid reveal" id="wsGrid"></div>
+    <form class="ws-form reveal" id="wsForm" novalidate>
+      <p class="ws-chosen">你選的課程：<b id="wsChosen">陶藝手拉坯 · 入門</b></p>
+      <div class="ws-row">
+        <div class="field">
+          <label for="wsName">你的名字</label>
+          <input id="wsName" type="text" placeholder="王小陶" />
+          <div class="msg" id="errName"></div>
+        </div>
+        <div class="field">
+          <label for="wsPhone">聯絡電話</label>
+          <input id="wsPhone" type="tel" placeholder="0912-345-678" inputmode="numeric" />
+          <div class="msg" id="errPhone"></div>
+        </div>
+      </div>
+      <div class="ws-row">
+        <div class="field">
+          <label for="wsDate">想來的日期</label>
+          <input id="wsDate" type="date" />
+          <div class="msg" id="errDate"></div>
+        </div>
+        <div class="field">
+          <label for="wsPeople">人數</label>
+          <select id="wsPeople">
+            <option value="1">1 人</option>
+            <option value="2">2 人</option>
+            <option value="3">3 人</option>
+            <option value="4">4 人（小團體）</option>
+          </select>
+          <div class="msg"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wsNote">想跟職人說的話（選填）</label>
+        <textarea id="wsNote" rows="2" placeholder="想做一個給媽媽的碗…"></textarea>
+      </div>
+      <button type="submit" class="btn-primary add-btn">送出預約</button>
+      <div class="form-ok" id="wsOk">收到了！我們會在 2 個工作天內親自回信給你 ✦</div>
+    </form>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kick">關於這雙手</span>
+      <h2>窯與手作坊的故事</h2>
+      <p>從一個人、一座電窯，到今天的小工作室。</p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="#top" class="brand"><svg class="seal"><use href="#seal"/></svg>窯與手作坊</a>
+        <p class="f-desc">藏在山腳下的手作工作室。陶器、織品、木作、皮件，一只一只慢慢做。</p>
+      </div>
+      <div>
+        <h5>逛逛</h5>
+        <ul>
+          <li><a href="#shop">手作選物</a></li>
+          <li><a href="#custom">客製手沖杯</a></li>
+          <li><a href="#process">製程記錄</a></li>
+          <li><a href="#workshop">手作課程</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>找我們</h5>
+        <ul>
+          <li><a href="#">南投 · 山腳工作室</a></li>
+          <li><a href="#">hello@yao-craft.tw</a></li>
+          <li><a href="#">週四至週日 11:00–18:00</a></li>
+          <li><a href="#">@yao.handcraft</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 窯與手作坊 · 手作示範站</span>
+      <span>網站設計與開發 by <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a></span>
+    </div>
+  </div>
+</footer>
+
+<a class="badge" href="https://elife-ai.com" target="_blank" rel="noopener" title="由 e-life-ai 打造">
+  <svg viewBox="0 0 48 48" aria-hidden="true"><use href="#seal"/></svg>
+  elife-ai.com
+</a>
+
+<div class="toast" id="toast">已放進購物籃 ✦</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- SVG art factory ---------- */
+  function art(type, color){
+    color = color || "#c08552";
+    var dark = "#5a3a22";
+    var maps = {
+      pot:'<path d="M59 96c-16 0-26-16-26-36 0-14 8-19 8-29 0-7-4-8-4-14 0-8 8-12 18-12s18 4 18 12c0 6-4 7-4 14 0 10 8 15 8 29 0 20-10 36-26 36z" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><ellipse cx="59" cy="17" rx="14" ry="4" fill="'+dark+'" opacity=".6"/><path d="M40 50c12 5 26 5 38 0" stroke="'+dark+'" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>',
+      bowl:'<path d="M22 44h74c0 26-18 44-37 44S22 70 22 44z" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><ellipse cx="59" cy="44" rx="37" ry="9" fill="'+dark+'" opacity=".55"/><ellipse cx="59" cy="44" rx="29" ry="6" fill="#f5ece0"/>',
+      cup:'<path d="M36 36h46l-5 50c-1 8-8 14-18 14s-17-6-18-14z" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><ellipse cx="59" cy="36" rx="23" ry="6" fill="'+dark+'" opacity=".55"/><path d="M82 50c14 0 18 9 18 17s-7 17-17 17" fill="none" stroke="'+dark+'" stroke-width="4.5" stroke-linecap="round"/>',
+      weave:'<rect x="26" y="24" width="66" height="72" rx="6" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><path d="M26 40h66M26 56h66M26 72h66" stroke="'+dark+'" stroke-width="2" opacity=".45"/><path d="M42 24v72M59 24v72M76 24v72" stroke="#f5ece0" stroke-width="2" opacity=".55"/><path d="M30 96l-4 12M88 96l4 12" stroke="'+dark+'" stroke-width="3" stroke-linecap="round"/>',
+      scarf:'<path d="M40 22c-8 24-8 50 0 80 8-8 30-8 38 0 8-30 8-56 0-80-8 8-30 8-38 0z" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><path d="M48 36c6 4 16 4 22 0M48 56c6 4 16 4 22 0M48 76c6 4 16 4 22 0" stroke="'+dark+'" stroke-width="2" fill="none" opacity=".5"/>',
+      tray:'<ellipse cx="59" cy="60" rx="44" ry="24" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><ellipse cx="59" cy="56" rx="36" ry="18" fill="#f5ece0" opacity=".4" stroke="'+dark+'" stroke-width="1.5"/><path d="M30 70c18 6 40 6 58 0" stroke="'+dark+'" stroke-width="2" fill="none" opacity=".4"/>',
+      spoon:'<ellipse cx="42" cy="40" rx="20" ry="14" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><path d="M54 50c14 14 30 30 38 44" stroke="'+color+'" stroke-width="9" stroke-linecap="round"/><path d="M54 50c14 14 30 30 38 44" stroke="'+dark+'" stroke-width="9" stroke-linecap="round" fill="none" opacity=".25"/><ellipse cx="42" cy="40" rx="12" ry="8" fill="'+dark+'" opacity=".3"/>',
+      board:'<path d="M44 18h30c4 0 7 3 7 7v66c0 4-3 7-7 7H44c-4 0-7-3-7-7V25c0-4 3-7 7-7z" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><circle cx="59" cy="14" r="6" fill="none" stroke="'+dark+'" stroke-width="3"/><path d="M44 36h30M44 52h30M44 68h30" stroke="'+dark+'" stroke-width="1.6" opacity=".35"/>',
+      wallet:'<rect x="26" y="34" width="66" height="50" rx="8" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><path d="M26 50h66" stroke="'+dark+'" stroke-width="2.4" opacity=".6"/><circle cx="78" cy="62" r="6" fill="none" stroke="'+dark+'" stroke-width="3"/><path d="M34 42l8 4 8-4" stroke="'+dark+'" stroke-width="2" fill="none" opacity=".5"/>',
+      bag:'<path d="M34 44h50l-5 50c0 4-3 6-7 6H46c-4 0-7-2-7-6z" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><path d="M46 44c0-14 6-22 13-22s13 8 13 22" fill="none" stroke="'+dark+'" stroke-width="3"/><path d="M44 60h30" stroke="'+dark+'" stroke-width="2" opacity=".4" stroke-dasharray="3 4"/>',
+      keychain:'<rect x="42" y="40" width="34" height="50" rx="6" fill="'+color+'" stroke="'+dark+'" stroke-width="3"/><circle cx="59" cy="28" r="9" fill="none" stroke="'+dark+'" stroke-width="3"/><path d="M59 37v3" stroke="'+dark+'" stroke-width="3"/><path d="M50 56h18M50 68h18" stroke="'+dark+'" stroke-width="2" opacity=".4" stroke-dasharray="3 3"/>'
+    };
+    return '<svg viewBox="0 0 118 118">'+(maps[type]||maps.pot)+'</svg>';
+  }
+
+  /* ---------- products ---------- */
+  var products = [
+    {n:"霧釉手沖杯",c:"陶器",t:"cup",col:"#c08552",p:980,d:"霧面米白釉，握感溫潤，手刻落款。"},
+    {n:"柴燒茶碗",c:"陶器",t:"bowl",col:"#a4632f",p:1480,d:"落灰自然成色，每只窯變不同。"},
+    {n:"山雨花器",c:"陶器",t:"pot",col:"#7d8666",p:2200,d:"高溫還原燒，青灰帶銅綠。"},
+    {n:"草木染圍巾",c:"織品",t:"scarf",col:"#b5532e",p:1280,d:"棉麻手織，洋蔥皮天然染。"},
+    {n:"手織坐墊",c:"織品",t:"weave",col:"#c08552",p:880,d:"粗棉繩編織，越用越軟。"},
+    {n:"亞麻餐墊",c:"織品",t:"weave",col:"#7d8666",p:520,d:"純亞麻平織，藍灰素色。"},
+    {n:"胡桃木湯匙",c:"木作",t:"spoon",col:"#a4632f",p:460,d:"整塊胡桃木削成，食品級木蠟。"},
+    {n:"原木托盤",c:"木作",t:"tray",col:"#c08552",p:1380,d:"山毛櫸實木，圓潤手感邊。"},
+    {n:"手刻砧板",c:"木作",t:"board",col:"#8f6a45",p:1180,d:"櫸木整切，附掛繩孔。"},
+    {n:"植鞣短夾",c:"皮件",t:"wallet",col:"#a4632f",p:1680,d:"義大利植鞣牛皮，手縫蠟線。"},
+    {n:"側背小包",c:"皮件",t:"bag",col:"#8f3d1e",p:2980,d:"全手縫，使用後越養越深色。"},
+    {n:"皮革鑰匙圈",c:"皮件",t:"keychain",col:"#c08552",p:380,d:"邊角料手作，可烙印姓名首字母。"}
+  ];
+
+  var grid = document.getElementById("grid");
+  function renderProducts(cat){
+    var list = cat==="all" ? products : products.filter(function(p){return p.c===cat;});
+    if(!list.length){ grid.innerHTML='<div class="empty">這個分類還在窯裡燒著，再等等 ✦</div>'; return; }
+    grid.innerHTML = list.map(function(p){
+      return '<article class="card">'+
+        '<div class="thumb">'+art(p.t,p.col)+'</div>'+
+        '<div class="body">'+
+          '<span class="cat">'+p.c+'</span>'+
+          '<h3>'+p.n+'</h3>'+
+          '<p class="desc">'+p.d+'</p>'+
+          '<div class="row"><span class="price">NT$ '+p.p.toLocaleString()+'</span>'+
+          '<button class="pick" data-n="'+p.n+'">放進籃子</button></div>'+
+        '</div></article>';
+    }).join("");
+  }
+  renderProducts("all");
+
+  document.getElementById("filters").addEventListener("click",function(e){
+    var b = e.target.closest(".filter"); if(!b) return;
+    this.querySelectorAll(".filter").forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active");
+    renderProducts(b.dataset.cat);
+  });
+  grid.addEventListener("click",function(e){
+    var b = e.target.closest(".pick"); if(!b) return;
+    addCart(b.dataset.n);
+  });
+
+  /* ---------- customizer ---------- */
+  var glazes = [
+    {n:"霧米白",body:"#e3d3b8",rim:"#cbb491",base:980},
+    {n:"陶土赭",body:"#c08552",rim:"#a4632f",base:980},
+    {n:"窯變青",body:"#7d8666",rim:"#5b6448",base:1180},
+    {n:"柴燒褐",body:"#8f5a32",rim:"#6e4022",base:1280},
+    {n:"釉裡紅",body:"#b5532e",rim:"#8f3d1e",base:1380}
+  ];
+  var sizes = [{n:"小 220ml",add:0},{n:"中 320ml",add:160},{n:"大 450ml",add:320}];
+  var handles = [{n:"有把手",h:true,add:120},{n:"無把手",h:false,add:0}];
+  var state = {g:1,s:1,h:0};
+
+  function buildSwatches(){
+    document.getElementById("glazes").innerHTML = glazes.map(function(g,i){
+      return '<button class="swatch'+(i===state.g?" sel":"")+'" data-i="'+i+'" title="'+g.n+'" style="background:'+g.body+'"></button>';
+    }).join("");
+    document.getElementById("sizes").innerHTML = sizes.map(function(s,i){
+      return '<button class="size'+(i===state.s?" sel":"")+'" data-i="'+i+'">'+s.n+'</button>';
+    }).join("");
+    document.getElementById("handles").innerHTML = handles.map(function(h,i){
+      return '<button class="size'+(i===state.h?" sel":"")+'" data-i="'+i+'">'+h.n+'</button>';
+    }).join("");
+  }
+  function updateCup(){
+    var g = glazes[state.g];
+    document.getElementById("cupBody").setAttribute("fill",g.body);
+    document.getElementById("cupRim").setAttribute("fill",g.rim);
+    var hd = document.getElementById("cupHandle");
+    hd.style.display = handles[state.h].h ? "" : "none";
+    // size scale on body
+    var scale = [0.9,1,1.12][state.s];
+    document.getElementById("cupBody").setAttribute("transform","scale("+scale+") translate("+(100-100*scale)/scale*0+",0)");
+    document.getElementById("cupBody").style.transformOrigin = "100px 120px";
+    var price = g.base + sizes[state.s].add + handles[state.h].add;
+    document.getElementById("cupPrice").textContent = "NT$ "+price.toLocaleString();
+  }
+  buildSwatches(); updateCup();
+
+  document.getElementById("glazes").addEventListener("click",function(e){
+    var b=e.target.closest(".swatch"); if(!b)return; state.g=+b.dataset.i; buildSwatches(); updateCup();
+  });
+  document.getElementById("sizes").addEventListener("click",function(e){
+    var b=e.target.closest(".size"); if(!b)return; state.s=+b.dataset.i; buildSwatches(); updateCup();
+  });
+  document.getElementById("handles").addEventListener("click",function(e){
+    var b=e.target.closest(".size"); if(!b)return; state.h=+b.dataset.i; buildSwatches(); updateCup();
+  });
+
+  /* ---------- process ---------- */
+  var steps = [
+    {ic:'<svg viewBox="0 0 64 64" fill="none" stroke="#8f3d1e" stroke-width="3" stroke-linecap="round"><ellipse cx="32" cy="44" rx="20" ry="6"/><path d="M22 44c0-10 4-18 10-18s10 8 10 18"/><path d="M24 30c5 4 11 4 16 0"/></svg>',
+      t:"手拉坯",d:"在轆轤上，用雙手把一塊濕土慢慢拉高、塑形。指尖的力道，決定了它的弧度。"},
+    {ic:'<svg viewBox="0 0 64 64" fill="none" stroke="#8f3d1e" stroke-width="3" stroke-linecap="round"><path d="M14 50h36"/><path d="M18 50c0-8 6-14 14-14s14 6 14 14"/><circle cx="46" cy="20" r="6"/><path d="M46 26v6"/></svg>',
+      t:"素燒",d:"陰乾後送進窯，以約 800°C 初燒。土坯變硬、定形，準備好喝下釉藥。"},
+    {ic:'<svg viewBox="0 0 64 64" fill="none" stroke="#8f3d1e" stroke-width="3" stroke-linecap="round"><path d="M20 24h24l-4 26c0 4-4 6-8 6s-8-2-8-6z"/><path d="M26 16c-2 4 2 6 0 10M38 16c-2 4 2 6 0 10"/></svg>',
+      t:"上釉",d:"沾釉、刷釉或淋釉。同一種釉，因厚薄與窯位不同，燒出來各有深淺。"},
+    {ic:'<svg viewBox="0 0 64 64" fill="none" stroke="#8f3d1e" stroke-width="3" stroke-linecap="round"><path d="M16 52h32"/><path d="M22 52V30h20v22"/><path d="M28 40c0-4 2-8 4-8s4 4 4 8M30 22c0-3 2-4 2-7M37 22c0-3 2-4 2-7"/></svg>',
+      t:"窯燒",d:"以 1230°C 高溫燒一整天。開窯前，誰也不知道窯火留下了什麼 —— 這就是手作的緣分。"}
+  ];
+  document.getElementById("steps").innerHTML = steps.map(function(s,i){
+    return '<div class="step" data-i="'+i+'"><span class="num">'+(i+1)+'</span>'+s.ic+
+      '<h4>'+s.t+'</h4><div class="det">'+s.d+'</div><div class="more">點我看細節 ↓</div></div>';
+  }).join("");
+  document.getElementById("steps").addEventListener("click",function(e){
+    var s=e.target.closest(".step"); if(!s)return;
+    var open = s.classList.contains("open");
+    this.querySelectorAll(".step").forEach(function(x){x.classList.remove("open");});
+    if(!open) s.classList.add("open");
+  });
+
+  /* ---------- workshops ---------- */
+  var ws = [
+    {t:"陶藝手拉坯 · 入門",dur:"2.5 小時",lv:"新手友善",p:1280,d:"親手拉一只碗，含燒製寄送。"},
+    {t:"草木染圍巾 · 半日",dur:"4 小時",lv:"親子可參加",p:1680,d:"用洋蔥皮、藍靛染出你的顏色。"},
+    {t:"木匙手刻 · 一日",dur:"6 小時",lv:"進階手作",p:2480,d:"從一塊木頭，削出一支湯匙。"}
+  ];
+  var wsState = 0;
+  function renderWs(){
+    document.getElementById("wsGrid").innerHTML = ws.map(function(w,i){
+      return '<div class="ws-card'+(i===wsState?" sel":"")+'" data-i="'+i+'">'+
+        '<div class="wtit">'+w.t+'</div>'+
+        '<div class="wmeta">時長 <b>'+w.dur+'</b> · '+w.lv+'</div>'+
+        '<div class="wmeta">'+w.d+'</div>'+
+        '<div class="wprice">NT$ '+w.p.toLocaleString()+' / 人</div>'+
+        '<button class="wpick">'+(i===wsState?"已選擇 ✦":"選這堂")+'</button>'+
+      '</div>';
+    }).join("");
+    document.getElementById("wsChosen").textContent = ws[wsState].t;
+  }
+  renderWs();
+  document.getElementById("wsGrid").addEventListener("click",function(e){
+    var c=e.target.closest(".ws-card"); if(!c)return;
+    wsState=+c.dataset.i; renderWs();
+  });
+
+  /* ---------- form validation ---------- */
+  var form = document.getElementById("wsForm");
+  function setErr(id,errId,cond,msg){
+    var f=document.getElementById(id), e=document.getElementById(errId);
+    if(cond){ f.classList.add("err"); e.textContent=msg; return false; }
+    f.classList.remove("err"); e.textContent=""; return true;
+  }
+  form.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    var name=document.getElementById("wsName").value.trim();
+    var phone=document.getElementById("wsPhone").value.trim();
+    var date=document.getElementById("wsDate").value;
+    var ok=true;
+    ok = setErr("wsName","errName",name.length<2,"請留下你的名字") && ok;
+    ok = setErr("wsPhone","errPhone",!/^09\d{2}-?\d{3}-?\d{3}$/.test(phone),"請輸入正確的手機號碼") && ok;
+    ok = setErr("wsDate","errDate",!date,"選一個你想來的日子") && ok;
+    if(ok){
+      form.querySelectorAll("input,select,textarea").forEach(function(x){x.disabled=true;});
+      document.getElementById("wsOk").style.display="block";
+      document.querySelector("#wsForm button[type=submit]").style.display="none";
+    }
+  });
+
+  /* ---------- story timeline ---------- */
+  var tl=[
+    {y:"2012",t:"一個人，一座電窯",d:"辭掉設計工作，在租來的鐵皮屋裡放下第一座窯。"},
+    {y:"2016",t:"第一個市集攤位",d:"帶著二十只杯子去擺攤，傍晚只剩三只。原來有人願意懂這份手感。"},
+    {y:"2019",t:"開了第一堂課",d:"把工作室打開，讓更多人親手碰碰土。手作課從此沒停過。"},
+    {y:"2023",t:"搬進山腳工作室",d:"找到一間有大窗的老屋，陽光、土與人，剛剛好。"},
+    {y:"2026",t:"四種材質，一樣的手溫",d:"陶、織、木、皮 —— 不同的材料，同樣慢慢來的態度。"}
+  ];
+  document.getElementById("timeline").innerHTML = tl.map(function(x){
+    return '<div class="tl-item"><span class="dot"></span><span class="yr">'+x.y+'</span>'+
+      '<h4>'+x.t+'</h4><p>'+x.d+'</p></div>';
+  }).join("");
+
+  /* ---------- cart toast ---------- */
+  var toast=document.getElementById("toast"), ttimer;
+  window.addCart=function(name){
+    toast.textContent="「"+name+"」已放進購物籃 ✦";
+    toast.classList.add("show");
+    clearTimeout(ttimer);
+    ttimer=setTimeout(function(){toast.classList.remove("show");},2200);
+  };
+
+  /* ---------- reveal on scroll (staggered) ---------- */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en,i){
+      if(en.isIntersecting){
+        setTimeout(function(){en.target.classList.add("in");}, (en.target.dataset.delay||0)*1);
+        io.unobserve(en.target);
+      }
+    });
+  },{threshold:.12});
+  var revs=document.querySelectorAll(".reveal");
+  revs.forEach(function(el,i){ el.dataset.delay=(i%4)*110; io.observe(el); });
+})();
+</script>
+</body>
+</html>
