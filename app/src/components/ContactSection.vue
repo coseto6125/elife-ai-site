@@ -166,7 +166,7 @@ function mailtoFallback() {
         <p v-if="state === 'error'" class="err-msg">
           {{ errorMsg }}——你也可以
           <a href="#" @click.prevent="mailtoFallback">改用 Email 寄送</a>
-          或加 LINE <strong>@elife-ai</strong>。
+          或加 LINE <strong>@936pvpoq</strong>。
         </p>
         <p v-else-if="state !== 'sent'" class="hint">
           填表送出後我們會盡快回覆；也可直接寄到

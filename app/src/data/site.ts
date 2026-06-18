@@ -102,20 +102,6 @@ export const services: Service[] = [
 
 export const cases: CaseStudy[] = [
   {
-    id: 'ecp',
-    name: 'ECP — 程式碼圖譜引擎',
-    kind: '系統工程 / 開發者工具',
-    blurb:
-      '為 AI Agent 打造的符號級程式碼圖譜，回答「誰呼叫了 X」「這次改動的影響面」，毫秒級查詢。',
-    highlights: [
-      '14 種語言統一 parser，單次 DFS 走訪將重建開銷降約 7%',
-      'diff 驅動的影響面分析與間接派發偵測',
-      '2000+ 分析器測試與 1000+ CLI 測試全綠',
-    ],
-    stack: ['Rust', 'tree-sitter', 'PostgreSQL', 'Cypher', 'Protobuf'],
-    metric: { value: '14', label: '支援語言數' },
-  },
-  {
     id: 'raccoon',
     name: '多 Agent 客服 AI 平台',
     kind: 'AI / RAG / 生產級後端',
@@ -130,18 +116,32 @@ export const cases: CaseStudy[] = [
     metric: { value: '40–60%', label: '回應加速' },
   },
   {
+    id: 'ecp',
+    name: 'ECP — 程式碼圖譜引擎',
+    kind: '系統工程 / 開發者工具',
+    blurb:
+      '為 AI Agent 打造的符號級程式碼圖譜，回答「誰呼叫了 X」「這次改動的影響面」，毫秒級查詢。',
+    highlights: [
+      '14 種語言統一 parser，單次 DFS 走訪將重建開銷降約 7%',
+      'diff 驅動的影響面分析與間接派發偵測',
+      '2000+ 分析器測試與 1000+ CLI 測試全綠',
+    ],
+    stack: ['Rust', 'tree-sitter', 'PostgreSQL', 'Cypher', 'Protobuf'],
+    metric: { value: '14', label: '支援語言數' },
+  },
+  {
     id: 'eywa',
-    name: 'Eywa — 混合檢索服務',
+    name: 'Eywa — Agent 自我學習記憶引擎',
     kind: 'AI 基礎建設',
     blurb:
-      'MCP 相容的知識檢索服務，BM25 + 向量混合搜尋，透過對抗式掃描在上線前揪出 19 個關鍵 bug。',
+      '讓 AI Agent 持續累積經驗的原則記憶系統：自動捕捉工作洞見、結構化治理，在對的時機把對的原則餵回 Agent。',
     highlights: [
-      'RRF 融合可調權重，LLM 超時自動降級',
-      '修復向量索引並發競爭與截斷不對稱導致的生產 500',
-      '88 項測試，驗證 3400+ 字長輸入',
+      'auto-capture 自動沉澱原則，category/domain 分類 + enum gate 把關品質',
+      'bge-m3 向量 + tantivy 全文混合檢索，毫秒回灌',
+      'MCP server 常駐，9000+ 原則上線運行',
     ],
-    stack: ['Python', 'Sanic', 'FAISS', 'ONNX', 'tantivy'],
-    metric: { value: '19', label: '上線前修復的關鍵 bug' },
+    stack: ['Python', 'msgspec', 'bge-m3', 'tantivy', 'MCP'],
+    metric: { value: '9000+', label: '常駐運行的原則數' },
   },
   {
     id: 'wechat',
@@ -161,11 +161,11 @@ export const cases: CaseStudy[] = [
     name: '台灣電商比價 / 機票查詢',
     kind: '爬蟲 / 資料聚合',
     blurb:
-      '跨 momo、PChome、Coupang 等多站比價與七國機票查詢，MCP server 形式供 AI 自然語言調用。',
+      '跨 momo、PChome、Coupang 等多站比價與七國機票查詢，純 API 直連端點，不靠瀏覽器渲染，MCP server 形式供 AI 自然語言調用。',
     highlights: [
-      'Rust 正則高速解析 HTML，刻意不依賴 Playwright',
-      'msgspec 結構化輸出、多站去重與價格正規化',
-      'cachebox 快取層與非同步架構',
+      '純 API 直打資料端點，零瀏覽器、零 Playwright，比無頭瀏覽器快上一個量級',
+      'Rust 正則高速解析 HTML、msgspec 結構化輸出，多站去重與價格正規化',
+      'cachebox 快取層與全非同步架構，毫秒級併發查詢',
     ],
     stack: ['Python 3.13', 'FastMCP', 'never-primp', 'regex-rs', 'msgspec'],
   },
@@ -251,8 +251,8 @@ export const contacts: Contact[] = [
   {
     channel: 'LINE',
     label: '官方帳號',
-    value: '@elife-ai',
-    href: 'https://line.me/R/ti/p/@elife-ai',
+    value: '@936pvpoq',
+    href: 'https://line.me/R/ti/p/@936pvpoq',
   },
   {
     channel: 'GitHub',
