@@ -49,6 +49,15 @@ useReveal('root', { stagger: 90 })
           </div>
         </article>
       </div>
+
+      <a class="showcase-cta reveal" href="/demos/" data-reveal>
+        <div class="cta-text">
+          <span class="cta-eyebrow">// Design Showcase</span>
+          <span class="cta-title">20 種設計風格範例</span>
+          <span class="cta-sub">不同產業與品牌調性的網站樣板，可互動模擬，挑一個當接案起點。</span>
+        </div>
+        <span class="cta-arrow" aria-hidden="true">→</span>
+      </a>
     </div>
   </section>
 </template>
@@ -182,9 +191,71 @@ useReveal('root', { stagger: 90 })
   padding-top: 24px;
 }
 
+.showcase-cta {
+  margin-top: clamp(18px, 2.4vw, 26px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(24px, 3vw, 34px) clamp(26px, 3vw, 38px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(94, 234, 212, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+.showcase-cta:hover {
+  border-color: var(--line-bright);
+  transform: translateY(-3px);
+}
+.cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cta-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.cta-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  letter-spacing: -0.015em;
+  color: var(--ink-0, #fff);
+}
+.cta-sub {
+  font-size: 0.9rem;
+  color: var(--ink-1);
+  max-width: 52ch;
+}
+.cta-arrow {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  color: var(--accent);
+  transition: transform 0.4s var(--ease);
+}
+.showcase-cta:hover .cta-arrow {
+  transform: translateX(6px);
+}
+
 @media (max-width: 720px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+  .showcase-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
   .case.wide .case-hl {
     grid-template-columns: 1fr;
