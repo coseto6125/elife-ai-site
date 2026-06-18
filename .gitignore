@@ -3,3 +3,10 @@ dist
 *.log
 .DS_Store
 .claude/
+
+# secrets — never commit
+.env
+.dev.vars
+**/.env
+**/.dev.vars
+.wrangler/

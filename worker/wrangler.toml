@@ -1,0 +1,10 @@
+name = "elife-ai-contact"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Email Routing send binding — destination MUST be a verified address.
+# digital.oasis.tw@gmail.com is the verified destination on this account.
+[[send_email]]
+name = "SEND_EMAIL"
+destination_address = "digital.oasis.tw@gmail.com"

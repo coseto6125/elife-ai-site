@@ -5,33 +5,63 @@ import { useReveal } from '../composables/useReveal'
 
 useReveal('root', { stagger: 90 })
 
-const form = reactive({ name: '', email: '', kind: 'AI / RAG', budget: '', msg: '' })
+// 表單寄信端點（Cloudflare Worker → Email Routing）
+const ENDPOINT = 'https://elife-ai-contact.digital-oasis-tw.workers.dev'
+
+const form = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  line: '',
+  kind: 'AI / RAG',
+  budget: '',
+  msg: '',
+  company_url: '', // honeypot：真人不會填，機器人會
+})
 const kinds = ['AI / RAG', '全端 / 後端', '爬蟲 / 資料', '系統 / 顧問', '其他']
-const sent = ref(false)
+const state = ref<'idle' | 'sending' | 'sent' | 'error'>('idle')
+const errorMsg = ref('')
 
 const valid = computed(
   () => form.name.trim() && /^\S+@\S+\.\S+$/.test(form.email) && form.msg.trim().length > 4,
 )
 
-/**
- * No backend yet — compose a mailto so the form works on a static host today.
- * Swap this for a POST to a form endpoint (Formspree / a Lambda) when ready.
- */
-function submit() {
-  if (!valid.value) return
+async function submit() {
+  if (!valid.value || state.value === 'sending') return
+  state.value = 'sending'
+  errorMsg.value = ''
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    })
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}))
+      throw new Error(data.error || '寄送失敗')
+    }
+    state.value = 'sent'
+  } catch (err) {
+    state.value = 'error'
+    errorMsg.value = err instanceof Error ? err.message : '寄送失敗，請改用 Email 或 LINE'
+  }
+}
+
+// 降級：若 Worker 不可用，改用 mailto
+function mailtoFallback() {
   const body = [
-    `姓名：${form.name}`,
+    `姓名 / 公司：${form.name}`,
     `Email：${form.email}`,
+    `電話：${form.phone || '未填'}`,
+    `LINE ID：${form.line || '未填'}`,
     `專案類型：${form.kind}`,
     `預算範圍：${form.budget || '未填'}`,
     '',
     form.msg,
   ].join('\n')
-  const url = `mailto:service@e-life-ai.com?subject=${encodeURIComponent(
+  window.location.href = `mailto:service@e-life-ai.com?subject=${encodeURIComponent(
     `[接案洽詢] ${form.kind} — ${form.name}`,
   )}&body=${encodeURIComponent(body)}`
-  window.location.href = url
-  sent.value = true
 }
 </script>
 
@@ -88,6 +118,17 @@ function submit() {
           </div>
         </label>
 
+        <div class="row">
+          <label>
+            <span>電話 <em>(選填)</em></span>
+            <input v-model="form.phone" type="tel" placeholder="0912-345-678" />
+          </label>
+          <label>
+            <span>LINE ID <em>(選填)</em></span>
+            <input v-model="form.line" type="text" placeholder="你的 LINE ID" />
+          </label>
+        </div>
+
         <label>
           <span>預算範圍 <em>(選填)</em></span>
           <input v-model="form.budget" type="text" placeholder="例如 NT$50k–100k / 待討論" />
@@ -102,11 +143,33 @@ function submit() {
           />
         </label>
 
-        <button class="btn btn-primary submit" type="submit" :disabled="!valid">
-          {{ sent ? '已開啟郵件 ✓' : '送出洽詢 →' }}
+        <!-- honeypot: visually hidden, bots fill it -->
+        <input
+          v-model="form.company_url"
+          class="hp"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+
+        <button
+          v-if="state !== 'sent'"
+          class="btn btn-primary submit"
+          type="submit"
+          :disabled="!valid || state === 'sending'"
+        >
+          {{ state === 'sending' ? '送出中…' : '送出洽詢 →' }}
         </button>
-        <p class="hint">
-          送出會開啟你的郵件程式並帶入內容；也可直接寄到
+        <p v-else class="ok-msg">✓ 已送出，我們會盡快回覆你！</p>
+
+        <p v-if="state === 'error'" class="err-msg">
+          {{ errorMsg }}——你也可以
+          <a href="#" @click.prevent="mailtoFallback">改用 Email 寄送</a>
+          或加 LINE <strong>@elife-ai</strong>。
+        </p>
+        <p v-else-if="state !== 'sent'" class="hint">
+          填表送出後我們會盡快回覆；也可直接寄到
           <a href="mailto:service@e-life-ai.com">service@e-life-ai.com</a>。
         </p>
       </form>
@@ -268,6 +331,35 @@ textarea:focus {
   text-align: center;
 }
 .hint a {
+  color: var(--accent);
+}
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.ok-msg {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  color: var(--accent);
+  padding: 0.86em;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+}
+.err-msg {
+  font-size: 0.82rem;
+  color: var(--ink-1);
+  text-align: center;
+}
+.err-msg a {
+  color: var(--accent);
+}
+.err-msg strong {
   color: var(--accent);
 }
 
