@@ -10,9 +10,9 @@ useReveal('root', { stagger: 110 })
     <div class="wrap">
       <header class="head reveal" data-reveal>
         <span class="eyebrow">// 01 — Services</span>
-        <h2 class="section-title">我能交付什麼</h2>
+        <h2 class="section-title">我們交付什麼</h2>
         <p class="section-lead">
-          不是什麼都接。我專注在四個自己有深度的領域——
+          不是什麼都接。我們專注在四個有深度的領域——
           每一項都有實際出貨、跑在生產環境的作品支撐。
         </p>
       </header>

@@ -10,10 +10,10 @@ useReveal('root', { stagger: 90 })
     <div class="wrap">
       <header class="head reveal" data-reveal>
         <span class="eyebrow">// 02 — Selected Work</span>
-        <h2 class="section-title">出貨過的硬東西</h2>
+        <h2 class="section-title">我們做過的專案</h2>
         <p class="section-lead">
-          以下皆為實際出貨、跑在生產環境的專案，已隱去客戶可識別資訊，
-          聚焦在解決的技術難題本身。
+          以下都是實際上線、跑在生產環境的專案。為保護客戶隱私已隱去可識別資訊，
+          這裡聚焦在我們怎麼解決問題。
         </p>
       </header>
 

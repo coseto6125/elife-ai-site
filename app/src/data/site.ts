@@ -62,15 +62,15 @@ export const services: Service[] = [
   {
     id: 'fullstack',
     index: '02',
-    title: '全端系統與後端開發',
-    summary: '非同步優先的後端、可上雲的服務、能撐住量的資料層。',
+    title: '全端網站與系統開發',
+    summary: '從前端介面到後端服務一手包辦——好看、好用，而且撐得住量。',
     bullets: [
-      'FastAPI / Sanic 非同步服務，AWS Lambda / ECS Fargate 部署',
+      'Vue 3 / Next.js / TypeScript 前端，響應式、體驗流暢',
+      'FastAPI / Sanic 非同步後端，AWS Lambda / ECS Fargate 部署',
       'PostgreSQL（asyncpg / psqlpy）、pgvector、Alembic 遷移',
-      '300+ API 端點的多服務 monorepo 架構與版本演進',
-      'CI/CD 自動化（staging / beta / production 多階段）',
+      'CI/CD 自動化，從開發到上線一條龍',
     ],
-    stack: ['Python 3.14', 'FastAPI', 'PostgreSQL', 'Go', 'Docker', 'uv'],
+    stack: ['Vue 3', 'Next.js', 'TypeScript', 'FastAPI', 'PostgreSQL', 'Docker'],
   },
   {
     id: 'data',
@@ -244,9 +244,9 @@ export const plans: Plan[] = [
 export const contacts: Contact[] = [
   {
     channel: 'Email',
-    label: '寄信給我',
-    value: 'enorenor@gmail.com',
-    href: 'mailto:enorenor@gmail.com',
+    label: '來信洽詢',
+    value: 'service@e-life-ai.com',
+    href: 'mailto:service@e-life-ai.com',
   },
   {
     channel: 'LINE',
@@ -256,7 +256,7 @@ export const contacts: Contact[] = [
   },
   {
     channel: 'GitHub',
-    label: 'coseto6125',
+    label: '開源作品',
     value: 'github.com/coseto6125',
     href: 'https://github.com/coseto6125',
   },
@@ -264,8 +264,8 @@ export const contacts: Contact[] = [
 
 export const stats = [
   { value: '14', label: '程式碼圖譜支援語言' },
-  { value: '3', label: '主力語言 Rust·Py·Go' },
-  { value: '20+', label: '生產級專案出貨' },
+  { value: '前+後', label: '全端一手包辦' },
+  { value: '20+', label: '生產級專案上線' },
   { value: '99.7%', label: '資料抽取準確率' },
 ]
 
@@ -274,6 +274,9 @@ export const techStack = [
   'Python 3.14',
   'Go',
   'TypeScript',
+  'Vue 3',
+  'Next.js',
+  'Vite',
   'tree-sitter',
   'tokio',
   'FastAPI',

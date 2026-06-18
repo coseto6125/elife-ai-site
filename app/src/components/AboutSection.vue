@@ -29,20 +29,19 @@ const principles = [
     <div class="wrap about-grid">
       <div class="left reveal" data-reveal>
         <span class="eyebrow">// 03 — About</span>
-        <h2 class="section-title">一個人，但像一支隊伍</h2>
+        <h2 class="section-title">好溝通，也能下到底層</h2>
         <p class="lead">
-          我是 <strong>e-life-ai</strong>。橫跨 Rust、Python、Go 三種語言，
-          做過從毫秒級程式碼圖譜引擎、生產級多 Agent AI 平台，
-          到協定層逆向與高強度爬蟲的各種專案。
+          <strong>e-life-ai</strong> 是一支務實的工程團隊，後端用 Rust、Python、Go，
+          前端用 Vue、Next.js，從 AI 應用、資料系統到網站介面都能一手包辦。
         </p>
         <p class="lead">
-          接案時我帶來的不只是「會寫程式」，而是<strong>能下到底層、能扛住生產環境、能對品質負責</strong>的工程判斷。
-          難的問題，正是我喜歡接的。
+          我們相信好的合作，是<strong>把話講清楚、把品質做到位、讓你放心</strong>。
+          不管你的想法是已經很完整、還是只有個雛形，都很歡迎一起聊聊看怎麼做。
         </p>
 
         <div class="links">
           <a class="btn btn-ghost" href="https://github.com/coseto6125" target="_blank" rel="noopener">
-            GitHub · coseto6125 ↗
+            查看開源作品 ↗
           </a>
         </div>
       </div>

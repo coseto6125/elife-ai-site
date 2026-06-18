@@ -14,18 +14,18 @@ function go(href: string) {
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <div class="status" data-h>
-          <span class="live" /> 接案中 · 可承接新專案
+          <span class="live" /> 開放接案中 · 歡迎來聊聊
         </div>
 
         <h1 class="title" data-h>
-          把<span class="hl">難的工程</span><br />
-          交給能搞定的人。
+          再<span class="hl">難的工程</span><br />
+          都能一起搞定。
         </h1>
 
         <p class="sub" data-h>
-          我是 <strong>e-life-ai</strong>，Rust / Python / Go 三棲系統工程師。
-          專注 AI Agent、RAG、程式碼圖譜、高強度爬蟲與系統整合——
-          那些「聽起來很難、別人不太敢接」的硬核工程。
+          <strong>e-life-ai</strong> 是一支橫跨後端與前端的系統工程團隊——
+          Rust / Python / Go 打底，Vue / Next.js 收尾。
+          專注 AI Agent、RAG、程式碼圖譜、爬蟲與系統整合，從底層到介面一條龍。
         </p>
 
         <div class="cta-row" data-h>
@@ -50,10 +50,11 @@ function go(href: string) {
           <em>~/e-life-ai — zsh</em>
         </div>
         <pre class="term-body"><span class="c-mut">$</span> <span class="c-cmd">elife</span> who-am-i --stack
-<span class="c-key">role</span>    : 系統工程師 / 接案外包
-<span class="c-key">langs</span>   : <span class="c-acc">Rust</span> · <span class="c-acc">Python 3.14</span> · <span class="c-acc">Go</span>
-<span class="c-key">domains</span> : ai-agent · rag · scraping · systems
-<span class="c-key">style</span>   : async-first, test-backed, perf-tuned
+<span class="c-key">role</span>     : 系統工程團隊 / 軟體外包
+<span class="c-key">backend</span>  : <span class="c-acc">Rust</span> · <span class="c-acc">Python 3.14</span> · <span class="c-acc">Go</span>
+<span class="c-key">frontend</span> : <span class="c-acc">Vue 3</span> · <span class="c-acc">Next.js</span> · <span class="c-acc">TypeScript</span>
+<span class="c-key">domains</span>  : ai-agent · rag · scraping · systems
+<span class="c-key">style</span>    : async-first, test-backed, perf-tuned
 
 <span class="c-mut">$</span> <span class="c-cmd">elife</span> ecp impact --target your_problem
 <span class="c-ok">✓</span> resolved 14 languages

@@ -27,7 +27,7 @@ function submit() {
     '',
     form.msg,
   ].join('\n')
-  const url = `mailto:enorenor@gmail.com?subject=${encodeURIComponent(
+  const url = `mailto:service@e-life-ai.com?subject=${encodeURIComponent(
     `[接案洽詢] ${form.kind} — ${form.name}`,
   )}&body=${encodeURIComponent(body)}`
   window.location.href = url
@@ -107,7 +107,7 @@ function submit() {
         </button>
         <p class="hint">
           送出會開啟你的郵件程式並帶入內容；也可直接寄到
-          <a href="mailto:enorenor@gmail.com">enorenor@gmail.com</a>。
+          <a href="mailto:service@e-life-ai.com">service@e-life-ai.com</a>。
         </p>
       </form>
     </div>
