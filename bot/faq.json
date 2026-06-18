@@ -2,27 +2,27 @@
   {
     "category": "服務範疇",
     "question": "你們提供哪些服務？",
-    "answer": "我們專注在四個領域：① AI Agent 與 LLM 整合（RAG 檢索、多 Agent 編排、LLM 評測）② 全端網站與系統開發（Vue / Next.js 前端 + FastAPI / Sanic 後端，可上雲）③ 爬蟲與資料工程（多站聚合、反爬、資料圖譜）④ 系統工程與技術顧問（效能調校、協定逆向、程式碼圖譜）。簡單說，從 AI 應用、資料系統到網站介面都能一手包辦。"
+    "answer": "主要四種：AI / 聊天機器人、網站與後台系統、爬蟲與資料整合，還有技術顧問。簡單說，從 AI 應用到網站介面都能幫你處理。你想做的偏哪一塊呢？"
   },
   {
     "category": "服務範疇",
     "question": "你們會用哪些技術？",
-    "answer": "後端主力是 Rust、Python（3.14）、Go；前端用 Vue 3、Next.js、TypeScript。常用到 FastAPI、Sanic、PostgreSQL、pgvector、FAISS、LangChain / LangGraph、tree-sitter、polars 等。我們會依專案需求選最合適的工具，不會為了用而用。"
+    "answer": "後端常用 Rust、Python、Go，前端是 Vue、React、Next.js。其他像 FastAPI、PostgreSQL、向量檢索、LangGraph 這些也都熟。不過工具會看專案需求選，不會為了用而用，你不用先懂這些也沒關係。"
   },
   {
     "category": "服務範疇",
     "question": "可以做 AI 聊天機器人 / RAG 系統嗎？",
-    "answer": "可以，這是我們的核心強項之一。我們做過生產級的多 Agent 客服平台（並行檢索讓回應快 40–60%）、混合檢索服務（BM25＋向量＋RRF 融合），支援 Anthropic / OpenAI / Gemini / Ollama 等多家模型。從知識庫建置、檢索優化到上線維運都能協助。"
+    "answer": "可以，這是我們最擅長的之一。做過上線中的多 Agent 客服平台（回應加速 40–60%），Anthropic / OpenAI / Gemini / Ollama 各家模型都接過。從知識庫建置、檢索優化到上線維運都能幫你顧。你想做哪種 AI 應用呢？"
   },
   {
     "category": "服務範疇",
     "question": "可以幫忙做網站嗎？",
-    "answer": "可以，我們做全端，前端用 Vue 3 / Next.js / TypeScript，響應式、體驗流暢；後端用 FastAPI / Sanic，可部署到 AWS Lambda / ECS Fargate。形象官網、後台系統、API 服務都能做。這個官網（service.e-life-ai.com）就是我們自己做的。"
+    "answer": "可以，前後端都能做。前端用 Vue / React / Next.js，畫面流暢、手機也好用；後端可上雲、撐得住量。形象官網、後台系統、API 都行——你現在看的這個官網就是我們自己做的。你想做哪種網站呢？"
   },
   {
     "category": "服務範疇",
     "question": "可以做爬蟲 / 資料蒐集嗎？",
-    "answer": "可以。我們做過台灣電商比價（momo、PChome、Coupang 等）與七國機票查詢，價格抽取準確率達 99.7%。偏好用原生 HTTP＋高速解析，必要時才上瀏覽器自動化，並會做去重、正規化與抗中斷的穩定管線。"
+    "answer": "可以。我們做過台灣電商比價（momo、PChome、Coupang 等）和七國機票查詢，知識擷取準確率到 99.7%。會幫你把資料整理乾淨、去重，管線也穩，不容易中斷。你想蒐集哪方面的資料呢？"
   },
   {
     "category": "報價",
@@ -72,12 +72,12 @@
   {
     "category": "品質",
     "question": "你們做過什麼代表作？",
-    "answer": "幾個例子：ECP 程式碼圖譜引擎（支援 14 種語言、毫秒級查詢）、多 Agent 客服 AI 平台（回應加速 40–60%）、Eywa 混合檢索服務（上線前以對抗式測試修復 19 個關鍵 bug）、台灣電商比價 / 機票查詢（抽取準確率 99.7%）。官網作品區有更多細節。"
+    "answer": "舉幾個：ECP 程式碼圖譜引擎（支援 14 種語言、毫秒級查詢）、多 Agent 客服 AI 平台（回應加速 40–60%）、Eywa Agent 記憶引擎、台灣電商比價 / 機票查詢（知識擷取準確率 99.7%）。官網作品區有更多細節，想看哪個我可以多說一點。"
   },
   {
     "category": "聯絡",
     "question": "怎麼聯絡你們？",
-    "answer": "可以透過 [LINE] 官方帳號 @elife-ai 直接私訊（你現在就在這裡 😊）、Email：service@e-life-ai.com，或到官網 service.e-life-ai.com 填聯絡表單。留下你的需求與聯絡方式，我們會盡快回覆。"
+    "answer": "可以加 LINE 官方帳號 @936pvpoq 直接聊、寄信到 service@e-life-ai.com，或到官網 service.e-life-ai.com 填表單都行。留個聯絡方式和想做的東西，我們會盡快回你。"
   },
   {
     "category": "聯絡",
