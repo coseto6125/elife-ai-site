@@ -60,28 +60,40 @@
   .empty { color: var(--ink-2); font-style: italic; }
   .err { color: #c0392b; }
   .hint { margin-top: 20px; color: var(--ink-2); font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  th { color: var(--ink-2); font-weight: 700; font-size: 12px; }
+  td.n { text-align: right; font-family: "JetBrains Mono", monospace; font-weight: 700; color: var(--brand); }
+  td .h { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-2); }
+  tr.row { cursor: pointer; }
+  tr.row:hover td { background: var(--brand-soft); }
+  .back { display: inline-block; margin-bottom: 14px; color: var(--brand);
+    cursor: pointer; font-size: 14px; }
+  .back:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="brand"><span class="dot"></span>e-life-ai</div>
   <h1>提案瀏覽統計</h1>
-  <p class="sub">查看某份提案頁被開啟的次數與時間（台灣時間）。</p>
+  <p class="sub">所有提案頁的開啟次數與時間（台灣時間）。點任一提案看明細，或輸入 hash 直接查。</p>
 
   <div class="bar">
-    <input id="hash" placeholder="輸入提案 hash，例：fdfaa060df90" autocomplete="off" />
+    <input id="hash" placeholder="輸入提案 hash 看單一明細，留空看全部" autocomplete="off" />
     <button id="go">查詢</button>
   </div>
 
   <div class="card" id="out">
-    <p class="empty">輸入提案 hash 後按「查詢」，或在網址加 <code>?p=&lt;hash&gt;</code> 直接帶入。</p>
+    <p class="empty">載入中…</p>
   </div>
 
   <p class="hint">資料僅記錄開啟次數與時間，不含任何個資（無 cookie／IP／來源）。本頁不對外公開索引。</p>
 </div>
 
 <script>
-  var API = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track/stats';
+  var BASE = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+  var API = BASE + '/stats';
+  var ALL = BASE + '/all';
   var out = document.getElementById('out');
   var input = document.getElementById('hash');
 
@@ -95,6 +107,12 @@
       + ' ' + p(tw.getUTCHours()) + ':' + p(tw.getUTCMinutes());
   }
 
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
   function render(d) {
     var recent = d.recent || [];
     var last = recent.length ? fmt(recent[0]) : '尚無紀錄';
@@ -102,11 +120,56 @@
       ? recent.map(function (t) { return '<div class="ts">' + fmt(t) + '</div>'; }).join('')
       : '<div class="empty">尚無開啟紀錄</div>';
     out.innerHTML =
+      '<span class="back" id="back">← 返回所有提案</span>' +
       '<div class="big-label">總開啟次數</div>' +
       '<div class="big">' + (d.count || 0) + '</div>' +
       '<div class="meta">最近一次開啟：<b>' + last + '</b><br />' +
       '<span class="hashline">提案 hash：' + d.hash + '</span></div>' +
       '<div class="list"><h3>開啟時間紀錄（最近 ' + recent.length + ' 筆，台灣時間）</h3>' + rows + '</div>';
+    document.getElementById('back').addEventListener('click', function () {
+      history.pushState({}, '', location.pathname);
+      input.value = '';
+      queryAll();
+    });
+  }
+
+  function renderAll(items) {
+    if (!items.length) {
+      out.innerHTML = '<p class="empty">目前還沒有任何提案的開啟紀錄。</p>';
+      return;
+    }
+    var total = items.reduce(function (s, it) { return s + it.count; }, 0);
+    var rows = items.map(function (it) {
+      return '<tr class="row" data-h="' + it.hash + '">' +
+        '<td>' + (it.label ? esc(it.label) : '<span class="empty">（未命名）</span>') +
+        '<br /><span class="h">' + it.hash + '</span></td>' +
+        '<td>' + (it.last ? fmt(it.last) : '—') + '</td>' +
+        '<td class="n">' + it.count + '</td></tr>';
+    }).join('');
+    out.innerHTML =
+      '<div class="big-label">所有提案總開啟次數</div>' +
+      '<div class="big">' + total + '</div>' +
+      '<div class="list"><h3>各提案（點任一列看明細，依次數排序）</h3>' +
+      '<table><thead><tr><th>提案／hash</th><th>最近開啟</th><th style="text-align:right">次數</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div>';
+    Array.prototype.forEach.call(out.querySelectorAll('tr.row'), function (tr) {
+      tr.addEventListener('click', function () {
+        var h = tr.getAttribute('data-h');
+        history.pushState({}, '', location.pathname + '?p=' + h);
+        input.value = h;
+        query(h);
+      });
+    });
+  }
+
+  function queryAll() {
+    out.innerHTML = '<p class="empty">載入所有提案…</p>';
+    fetch(ALL)
+      .then(function (r) { return r.json(); })
+      .then(function (d) { renderAll(d.items || []); })
+      .catch(function () {
+        out.innerHTML = '<p class="err">查詢失敗，請確認在 service.e-life-ai.com 網域下開啟本頁。</p>';
+      });
   }
 
   function query(hash) {
@@ -124,12 +187,17 @@
       });
   }
 
-  document.getElementById('go').addEventListener('click', function () { query(input.value); });
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') query(input.value); });
+  function submit() {
+    var v = input.value.trim();
+    if (v) { history.pushState({}, '', location.pathname + '?p=' + v); query(v); }
+    else { history.pushState({}, '', location.pathname); queryAll(); }
+  }
+  document.getElementById('go').addEventListener('click', submit);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
 
-  // 網址帶 ?p=<hash> 則自動查詢
+  // 網址帶 ?p=<hash> 顯示單一提案明細，否則顯示所有提案總覽
   var p = new URLSearchParams(location.search).get('p');
-  if (p) { input.value = p; query(p); }
+  if (p) { input.value = p; query(p); } else { queryAll(); }
 </script>
 </body>
 </html>

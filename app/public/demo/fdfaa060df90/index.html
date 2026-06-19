@@ -222,8 +222,9 @@
 <!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
 <script>
   (function () {
-    var u = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track?p=fdfaa060df90';
-    new Image().src = u + '&t=' + Date.now();
+    var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+    var q = '?p=fdfaa060df90&label=' + encodeURIComponent('訂單抽取案 TK26061711IBDEQ89');
+    new Image().src = base + q + '&t=' + Date.now();
   })();
 </script>
 </body>

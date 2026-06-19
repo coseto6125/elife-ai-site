@@ -44,14 +44,15 @@ function json(body, status, origin) {
 const clean = (s, max) => String(s ?? '').replace(/[\r\n]+/g, ' ').trim().slice(0, max)
 const isEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
 
-// 提案瀏覽追蹤：只記「開了幾次 + 時間」，不存任何個資。
+// 提案瀏覽追蹤：只記「開了幾次 + 時間 + 人類可讀標籤」，不存任何個資。
 // 資料放 Workers KV (binding VIEWS)：
 //   count:<hash>  → 累計次數
 //   ts:<hash>     → 最近 50 筆 ISO 時間戳的 JSON 陣列
+//   label:<hash>  → 案件編號／客戶名等可讀標籤（供總覽辨識）
 // hash 僅接受 demo 路徑用的 12 位 hex，過濾任意 key 寫入。
 const isHash = (s) => /^[0-9a-f]{12}$/.test(s)
 
-async function recordView(hash, env) {
+async function recordView(hash, label, env) {
   const [rawCount, rawTs] = await Promise.all([
     env.VIEWS.get(`count:${hash}`),
     env.VIEWS.get(`ts:${hash}`),
@@ -59,10 +60,38 @@ async function recordView(hash, env) {
   const count = (parseInt(rawCount, 10) || 0) + 1
   const ts = rawTs ? JSON.parse(rawTs) : []
   ts.unshift(new Date().toISOString())
-  await Promise.all([
+  const writes = [
     env.VIEWS.put(`count:${hash}`, String(count)),
     env.VIEWS.put(`ts:${hash}`, JSON.stringify(ts.slice(0, 50))),
-  ])
+  ]
+  // 標籤只在有帶且尚未記錄時寫一次，避免每次瀏覽都覆寫
+  if (label) writes.push(env.VIEWS.put(`label:${hash}`, label))
+  await Promise.all(writes)
+}
+
+// 列出所有提案（hash + 標籤 + 次數 + 最近開啟），供總覽看板使用。
+async function listAll(env) {
+  const { keys } = await env.VIEWS.list({ prefix: 'count:' })
+  const items = await Promise.all(
+    keys.map(async ({ name }) => {
+      const hash = name.slice('count:'.length)
+      const [rawCount, label, rawTs] = await Promise.all([
+        env.VIEWS.get(name),
+        env.VIEWS.get(`label:${hash}`),
+        env.VIEWS.get(`ts:${hash}`),
+      ])
+      const recent = rawTs ? JSON.parse(rawTs) : []
+      return {
+        hash,
+        label: label || '',
+        count: parseInt(rawCount, 10) || 0,
+        last: recent[0] || null,
+      }
+    }),
+  )
+  // 次數高到低排序
+  items.sort((a, b) => b.count - a.count)
+  return items
 }
 
 // 1×1 透明 GIF，作為 /track 的回應 body（即使 JS 被擋，<img> fallback 也能記）
@@ -79,13 +108,17 @@ export default {
     // --- 提案瀏覽追蹤（GET，與寄信獨立）---
     if (request.method === 'GET' && url.pathname === '/track') {
       const hash = url.searchParams.get('p') || ''
-      if (isHash(hash)) await recordView(hash, env)
+      const label = clean(url.searchParams.get('label'), 80)
+      if (isHash(hash)) await recordView(hash, label, env)
       return new Response(PIXEL, {
         headers: {
           'Content-Type': 'image/gif',
           'Cache-Control': 'no-store, no-cache, must-revalidate',
         },
       })
+    }
+    if (request.method === 'GET' && url.pathname === '/track/all') {
+      return json({ items: await listAll(env) }, 200, origin)
     }
     if (request.method === 'GET' && url.pathname === '/track/stats') {
       const hash = url.searchParams.get('p') || ''
