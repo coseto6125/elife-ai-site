@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>ORB 無線耳機 — 純粹之聲</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0c0c0e;
+    --bg-soft:#141417;
+    --surface:#17171b;
+    --line:rgba(255,255,255,.08);
+    --line-strong:rgba(255,255,255,.16);
+    --ink:#f4f5f7;
+    --ink-dim:#9a9ba2;
+    --ink-faint:#6b6c74;
+    --accent:#5ad1c8;
+    --accent-deep:#2fa79d;
+    /* product colorway (live-switchable) */
+    --prod-1:#1c1d22;
+    --prod-2:#34363f;
+    --prod-3:#0d0e11;
+    --prod-glow:#5ad1c8;
+    --radius:18px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Archivo',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  ::selection{background:var(--accent);color:#04100f}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ---------- ambient ---------- */
+  .ambient{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .ambient::before{
+    content:"";position:absolute;top:-20%;left:50%;transform:translateX(-50%);
+    width:1100px;height:1100px;border-radius:50%;
+    background:radial-gradient(circle, color-mix(in srgb,var(--prod-glow) 22%,transparent) 0%, transparent 60%);
+    filter:blur(20px);opacity:.55;transition:background .6s var(--ease)
+  }
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(18px);
+    background:color-mix(in srgb,var(--bg) 72%,transparent);
+    border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.01em;font-size:18px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,var(--accent),var(--accent-deep));
+    box-shadow:0 0 14px var(--accent)}
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{font-size:14px;color:var(--ink-dim);font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;
+    padding:9px 18px;border-radius:999px;background:var(--accent);color:#04100f;
+    transition:transform .2s var(--ease),box-shadow .3s}
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 45%,transparent)}
+  .menu-tog{display:none;background:none;border:0;color:var(--ink);font-size:22px;cursor:pointer}
+  @media(max-width:820px){
+    .nav-links{position:fixed;inset:64px 0 auto 0;flex-direction:column;gap:0;
+      background:var(--bg-soft);border-bottom:1px solid var(--line);
+      max-height:0;overflow:hidden;transition:max-height .35s var(--ease)}
+    .nav-links.open{max-height:360px}
+    .nav-links a{padding:16px 28px;width:100%;border-top:1px solid var(--line)}
+    .nav-links .nav-cta{margin:14px 28px;justify-content:center}
+    .menu-tog{display:block}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;z-index:2;padding:64px 0 40px;text-align:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+    padding:7px 15px;border:1px solid var(--line-strong);border-radius:999px;margin-bottom:26px;
+    background:color-mix(in srgb,var(--accent) 7%,transparent)}
+  .eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);
+    animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--accent)}50%{opacity:.5;box-shadow:0 0 0 5px transparent}}
+  h1.title{font-size:clamp(58px,13vw,148px);font-weight:900;letter-spacing:-.045em;
+    line-height:.86;background:linear-gradient(180deg,#fff 30%,#8d8e96);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{margin:24px auto 0;max-width:540px;font-size:clamp(16px,2.4vw,20px);
+    color:var(--ink-dim);font-weight:400}
+  .hero-cta{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
+    padding:14px 28px;border-radius:999px;cursor:pointer;border:1px solid transparent;
+    transition:transform .2s var(--ease),background .25s,border-color .25s}
+  .btn-primary{background:var(--accent);color:#04100f}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+  .btn-ghost:hover{border-color:var(--ink);background:rgba(255,255,255,.04)}
+  .btn-primary:hover{transform:translateY(-2px)}
+
+  /* ---------- product render ---------- */
+  .stage{position:relative;z-index:2;margin:30px auto 0;width:min(560px,90vw);height:430px;
+    perspective:1400px}
+  .float{width:100%;height:100%;animation:float 7s ease-in-out infinite;will-change:transform}
+  @keyframes float{0%,100%{transform:translateY(0) rotateZ(-2deg)}50%{transform:translateY(-22px) rotateZ(2deg)}}
+  .float svg{width:100%;height:100%;overflow:visible}
+  .earbud-body{transition:fill .5s var(--ease)}
+  .spec-hi{mix-blend-mode:screen}
+  /* reflection */
+  .reflect{position:absolute;left:0;right:0;bottom:-2px;height:160px;
+    transform:scaleY(-1);opacity:.22;mask-image:linear-gradient(to bottom,#000,transparent 72%);
+    -webkit-mask-image:linear-gradient(to bottom,#000,transparent 72%);pointer-events:none}
+  .reflect svg{width:min(560px,90vw);height:430px;display:block;margin:0 auto}
+  .floor-glow{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
+    width:62%;height:54px;border-radius:50%;
+    background:radial-gradient(ellipse,color-mix(in srgb,var(--prod-glow) 40%,transparent),transparent 70%);
+    filter:blur(14px);transition:background .5s}
+
+  @media(max-width:560px){.stage{height:330px}.reflect{height:120px}}
+
+  /* ---------- variant switch ---------- */
+  .variants{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
+    gap:18px;margin:18px 0 8px}
+  .variant-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .swatches{display:flex;gap:14px}
+  .sw{width:52px;height:52px;border-radius:50%;cursor:pointer;position:relative;
+    border:2px solid var(--line);transition:transform .25s var(--ease),border-color .25s}
+  .sw:hover{transform:translateY(-3px)}
+  .sw.active{border-color:var(--accent)}
+  .sw.active::after{content:"";position:absolute;inset:-7px;border-radius:50%;
+    border:1px solid var(--accent);opacity:.5}
+  .sw span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    top:60px;font-size:11px;letter-spacing:.06em;color:var(--ink-dim);white-space:nowrap;font-weight:500}
+  .sw.active span{color:var(--ink)}
+
+  /* ---------- section heads ---------- */
+  section{position:relative;z-index:2}
+  .sec-pad{padding:96px 0}
+  .sec-head{margin-bottom:54px}
+  .sec-tag{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);
+    letter-spacing:.1em;margin-bottom:14px;display:block}
+  .sec-title{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.02}
+  .sec-sub{margin-top:16px;color:var(--ink-dim);max-width:480px;font-size:16px}
+
+  /* ---------- features ---------- */
+  .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  @media(max-width:760px){.feat-grid{grid-template-columns:1fr}}
+  .feat{background:linear-gradient(160deg,var(--surface),var(--bg-soft));
+    border:1px solid var(--line);border-radius:var(--radius);padding:30px 30px 34px;
+    opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease),border-color .3s;
+    position:relative;overflow:hidden}
+  .feat.in{opacity:1;transform:none}
+  .feat:hover{border-color:var(--line-strong)}
+  .feat::after{content:"";position:absolute;top:-40%;right:-30%;width:60%;height:120%;
+    background:radial-gradient(circle,color-mix(in srgb,var(--accent) 14%,transparent),transparent 65%);
+    opacity:0;transition:opacity .4s}
+  .feat:hover::after{opacity:1}
+  .feat-ico{width:60px;height:60px;margin-bottom:22px;border-radius:14px;
+    background:var(--bg);border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center}
+  .feat-ico svg{width:32px;height:32px}
+  .feat h3{font-size:21px;font-weight:700;letter-spacing:-.01em;margin-bottom:9px}
+  .feat p{color:var(--ink-dim);font-size:15px}
+  .feat .metric{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);
+    margin-top:16px;display:inline-block}
+
+  /* ---------- specs ---------- */
+  .spec-wrap{background:linear-gradient(180deg,var(--surface),var(--bg-soft));
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .spec-row{display:grid;grid-template-columns:200px 1fr;gap:20px;padding:24px 32px;
+    border-bottom:1px solid var(--line);align-items:baseline}
+  .spec-row:last-child{border-bottom:0}
+  .spec-row .k{color:var(--ink-faint);font-size:14px;font-weight:500;letter-spacing:.02em}
+  .spec-row .v{font-family:'JetBrains Mono',monospace;font-size:clamp(18px,3vw,24px);font-weight:500;
+    letter-spacing:-.01em}
+  .spec-row .v small{font-size:14px;color:var(--ink-dim);font-weight:400;margin-left:4px}
+  .count{font-variant-numeric:tabular-nums}
+  @media(max-width:560px){.spec-row{grid-template-columns:1fr;gap:6px;padding:20px 22px}}
+
+  /* ---------- buy ---------- */
+  .buy{background:linear-gradient(160deg,#101216,var(--bg-soft));
+    border:1px solid var(--line-strong);border-radius:26px;padding:clamp(34px,6vw,64px);
+    text-align:center;position:relative;overflow:hidden}
+  .buy::before{content:"";position:absolute;top:-50%;left:50%;transform:translateX(-50%);
+    width:700px;height:700px;border-radius:50%;
+    background:radial-gradient(circle,color-mix(in srgb,var(--accent) 12%,transparent),transparent 60%)}
+  .buy>*{position:relative;z-index:1}
+  .price{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:20px 0 4px}
+  .price .cur{font-size:24px;font-weight:600;color:var(--ink-dim);margin-bottom:8px}
+  .price .num{font-size:clamp(54px,11vw,86px);font-weight:900;letter-spacing:-.04em;line-height:1}
+  .price-note{color:var(--ink-faint);font-size:14px;margin-bottom:30px}
+  .price-note s{color:var(--ink-faint);opacity:.6}
+  form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+  form input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--line-strong);
+    color:var(--ink);padding:15px 18px;border-radius:999px;font-size:15px;font-family:inherit;
+    transition:border-color .25s}
+  form input:focus{outline:none;border-color:var(--accent)}
+  form input::placeholder{color:var(--ink-faint)}
+  .form-msg{margin-top:18px;font-size:14px;color:var(--accent);opacity:0;transition:opacity .4s;
+    font-family:'JetBrains Mono',monospace}
+  .form-msg.show{opacity:1}
+  .trust{display:flex;gap:26px;justify-content:center;margin-top:30px;flex-wrap:wrap;
+    color:var(--ink-faint);font-size:13px}
+  .trust span{display:inline-flex;align-items:center;gap:7px}
+
+  /* ---------- footer ---------- */
+  footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:40px;
+    padding:48px 0 56px}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .foot-brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:17px}
+  .foot-links{display:flex;gap:24px;color:var(--ink-faint);font-size:14px}
+  .foot-links a:hover{color:var(--ink)}
+  .credit{margin-top:30px;text-align:center;color:var(--ink-faint);font-size:13px;
+    font-family:'JetBrains Mono',monospace}
+  .credit b{color:var(--accent);font-weight:500}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grain"></div>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#" class="brand"><span class="dot"></span>ORB</a>
+    <div class="nav-links" id="navlinks">
+      <a href="#features">功能</a>
+      <a href="#specs">規格</a>
+      <a href="#buy">購買</a>
+      <a href="#buy" class="nav-cta">立即預購 →</a>
+    </div>
+    <button class="menu-tog" id="menutog" aria-label="選單">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="pulse"></span>全新 ORB · 2026 旗艦</span>
+    <h1 class="title">純粹之聲</h1>
+    <p class="tagline">主動降噪 · 空間音訊 · 一體成型金屬腔體。<br>把整個世界，調成你想要的安靜。</p>
+    <div class="hero-cta">
+      <a href="#buy" class="btn btn-primary" id="magbtn">立即預購 NT$5,990</a>
+      <a href="#features" class="btn btn-ghost">探索功能</a>
+    </div>
+  </div>
+
+  <!-- product render -->
+  <div class="stage">
+    <div class="floor-glow"></div>
+    <div class="float">
+      <svg viewBox="0 0 400 320" id="earbud" aria-label="ORB 無線耳機">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="var(--prod-2)"/>
+            <stop offset="0.5" stop-color="var(--prod-1)"/>
+            <stop offset="1" stop-color="var(--prod-3)"/>
+          </linearGradient>
+          <radialGradient id="specGrad" cx="0.35" cy="0.28" r="0.5">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+            <stop offset="0.4" stop-color="#ffffff" stop-opacity="0.12"/>
+            <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="stemGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="var(--prod-3)"/>
+            <stop offset="0.5" stop-color="var(--prod-2)"/>
+            <stop offset="1" stop-color="var(--prod-1)"/>
+          </linearGradient>
+          <radialGradient id="ringGlow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="var(--prod-glow)" stop-opacity="0.9"/>
+            <stop offset="1" stop-color="var(--prod-glow)" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- left earbud -->
+        <g transform="translate(110 60)">
+          <!-- main bud -->
+          <ellipse class="earbud-body" cx="0" cy="0" rx="74" ry="70" fill="url(#bodyGrad)"/>
+          <!-- accent ring -->
+          <ellipse cx="0" cy="0" rx="48" ry="46" fill="none" stroke="var(--prod-glow)" stroke-width="2" opacity="0.55"/>
+          <ellipse cx="0" cy="0" rx="26" ry="25" fill="var(--prod-3)"/>
+          <circle cx="0" cy="0" r="9" fill="url(#ringGlow)"/>
+          <!-- specular -->
+          <ellipse class="spec-hi" cx="-18" cy="-22" rx="46" ry="40" fill="url(#specGrad)"/>
+          <!-- stem -->
+          <path class="earbud-body" d="M -22 56 Q -30 130 -8 178 Q 4 186 18 178 Q 30 120 22 56 Z" fill="url(#stemGrad)"/>
+          <rect x="-6" y="120" width="12" height="40" rx="6" fill="var(--prod-glow)" opacity="0.5"/>
+          <ellipse class="spec-hi" cx="-12" cy="120" rx="8" ry="50" fill="url(#specGrad)" opacity="0.5"/>
+        </g>
+
+        <!-- right earbud (smaller, depth) -->
+        <g transform="translate(268 130) scale(0.78)">
+          <ellipse class="earbud-body" cx="0" cy="0" rx="74" ry="70" fill="url(#bodyGrad)"/>
+          <ellipse cx="0" cy="0" rx="48" ry="46" fill="none" stroke="var(--prod-glow)" stroke-width="2.4" opacity="0.5"/>
+          <ellipse cx="0" cy="0" rx="26" ry="25" fill="var(--prod-3)"/>
+          <circle cx="0" cy="0" r="9" fill="url(#ringGlow)"/>
+          <ellipse class="spec-hi" cx="-18" cy="-22" rx="46" ry="40" fill="url(#specGrad)"/>
+          <path class="earbud-body" d="M -22 56 Q -30 130 -8 178 Q 4 186 18 178 Q 30 120 22 56 Z" fill="url(#stemGrad)"/>
+          <rect x="-6" y="120" width="12" height="40" rx="6" fill="var(--prod-glow)" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+    <!-- reflection -->
+    <div class="reflect" aria-hidden="true">
+      <svg viewBox="0 0 400 320">
+        <use href="#earbud-content"></use>
+        <g transform="translate(110 60)">
+          <ellipse cx="0" cy="0" rx="74" ry="70" fill="url(#bodyGrad)"/>
+          <path d="M -22 56 Q -30 130 -8 178 Q 4 186 18 178 Q 30 120 22 56 Z" fill="url(#stemGrad)"/>
+        </g>
+        <g transform="translate(268 130) scale(0.78)">
+          <ellipse cx="0" cy="0" rx="74" ry="70" fill="url(#bodyGrad)"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- variant switcher -->
+  <div class="variants">
+    <span class="variant-label">選擇配色</span>
+    <div class="swatches" id="swatches">
+      <button class="sw active" data-v="0" style="background:linear-gradient(135deg,#34363f,#0d0e11)" aria-label="石墨黑"><span>石墨黑</span></button>
+      <button class="sw" data-v="1" style="background:linear-gradient(135deg,#e9ebef,#b9bdc7)" aria-label="月光銀"><span>月光銀</span></button>
+      <button class="sw" data-v="2" style="background:linear-gradient(135deg,#2b6a64,#12342f)" aria-label="深海青"><span>深海青</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features" class="sec-pad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">// 核心技術</span>
+      <h2 class="sec-title">為聆聽而生的<br>每一處細節。</h2>
+      <p class="sec-sub">從腔體到演算法，重新定義一副耳機該有的樣子。</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6">
+            <path d="M3 12a9 9 0 0 1 18 0"/><path d="M3 12v3a3 3 0 0 0 3 3h1v-7H6a3 3 0 0 0-3 3Z" fill="var(--accent)" fill-opacity="0.18"/>
+            <path d="M21 12v3a3 3 0 0 1-3 3h-1v-7h1a3 3 0 0 1 3 1Z" fill="var(--accent)" fill-opacity="0.18"/>
+          </svg>
+        </div>
+        <h3>自適應主動降噪</h3>
+        <p>每秒 48,000 次偵測環境噪音，雙麥克風反向消噪，飛機引擎到地鐵人聲，瞬間靜默。</p>
+        <span class="metric">–48 dB 降噪深度</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6">
+            <circle cx="12" cy="12" r="3" fill="var(--accent)" fill-opacity="0.2"/>
+            <path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4"/>
+          </svg>
+        </div>
+        <h3>動態空間音訊</h3>
+        <p>頭部追蹤陀螺儀讓聲音定位你身邊。轉頭，聲場不動；閉眼，舞台就在眼前。</p>
+        <span class="metric">360° 全景聲場</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6">
+            <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="var(--accent)" fill-opacity="0.2"/>
+          </svg>
+        </div>
+        <h3>全天候續航</h3>
+        <p>單次 11 小時，搭配充電盒共 42 小時。充電 5 分鐘，回放 2 小時，趕車也不慌。</p>
+        <span class="metric">42 hr 總續航</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6">
+            <path d="M12 2a7 7 0 0 1 7 7c0 4-3 6-3 9H8c0-3-3-5-3-9a7 7 0 0 1 7-7Z" fill="var(--accent)" fill-opacity="0.18"/>
+            <path d="M9 21h6"/>
+          </svg>
+        </div>
+        <h3>無損晶片解碼</h3>
+        <p>自研 H2 音訊晶片支援 24-bit 無損串流，金屬腔體共振校準，每個音符都忠實還原。</p>
+        <span class="metric">24-bit / 96 kHz</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section id="specs" class="sec-pad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">// 技術規格</span>
+      <h2 class="sec-title">數字會說話。</h2>
+    </div>
+    <div class="spec-wrap reveal">
+      <div class="spec-row">
+        <div class="k">處理晶片</div>
+        <div class="v">ORB H2 Audio</div>
+      </div>
+      <div class="spec-row">
+        <div class="k">電池續航</div>
+        <div class="v"><span class="count" data-to="42">0</span><small>小時（含充電盒）</small></div>
+      </div>
+      <div class="spec-row">
+        <div class="k">主動降噪</div>
+        <div class="v">−<span class="count" data-to="48">0</span><small>dB 最大降噪</small></div>
+      </div>
+      <div class="spec-row">
+        <div class="k">單耳重量</div>
+        <div class="v"><span class="count" data-to="4.8" data-dec="1">0</span><small>公克</small></div>
+      </div>
+      <div class="spec-row">
+        <div class="k">無線連線</div>
+        <div class="v">Bluetooth 5.4 LE</div>
+      </div>
+      <div class="spec-row">
+        <div class="k">防水等級</div>
+        <div class="v">IP<span class="count" data-to="57">0</span><small>防塵防水</small></div>
+      </div>
+      <div class="spec-row">
+        <div class="k">驅動單元</div>
+        <div class="v"><span class="count" data-to="11">0</span><small>mm 動圈 + 平衡電樞</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUY -->
+<section id="buy" class="sec-pad">
+  <div class="wrap">
+    <div class="buy reveal">
+      <span class="sec-tag">// 限量首批預購</span>
+      <h2 class="sec-title">ORB 無線耳機</h2>
+      <div class="price">
+        <span class="cur">NT$</span>
+        <span class="num">5,990</span>
+      </div>
+      <p class="price-note">首批預購限定 · 原價 <s>NT$6,990</s> · 預計 2026 年 7 月出貨</p>
+      <form id="preform" novalidate>
+        <input type="email" id="email" placeholder="輸入 Email，第一時間通知開賣" autocomplete="email" required />
+        <button type="submit" class="btn btn-primary">通知我預購 →</button>
+      </form>
+      <p class="form-msg" id="formmsg"></p>
+      <div class="trust">
+        <span>✓ 兩年保固</span>
+        <span>✓ 30 天無條件退換</span>
+        <span>✓ 全台免運</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <a href="#" class="foot-brand"><span class="dot" style="width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--accent),var(--accent-deep));box-shadow:0 0 14px var(--accent)"></span>ORB</a>
+      <div class="foot-links">
+        <a href="#features">功能</a>
+        <a href="#specs">規格</a>
+        <a href="#buy">購買</a>
+      </div>
+    </div>
+    <p class="credit">範例設計 · <b>e-life-ai.com</b></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // mobile menu
+  var tog=document.getElementById('menutog'),links=document.getElementById('navlinks');
+  tog.addEventListener('click',function(){links.classList.toggle('open')});
+  links.addEventListener('click',function(e){if(e.target.tagName==='A')links.classList.remove('open')});
+
+  // variant switcher
+  var root=document.documentElement;
+  var palettes=[
+    {p1:'#34363f',p2:'#494c57',p3:'#0d0e11',glow:'#5ad1c8'},   // graphite
+    {p1:'#d3d6dd',p2:'#f1f3f6',p3:'#a7abb6',glow:'#7a8bff'},   // silver
+    {p1:'#1c4842',p2:'#2f6a62',p3:'#0c241f',glow:'#36e3b8'}    // teal-deep
+  ];
+  document.querySelectorAll('.sw').forEach(function(sw){
+    sw.addEventListener('click',function(){
+      document.querySelectorAll('.sw').forEach(function(s){s.classList.remove('active')});
+      sw.classList.add('active');
+      var pal=palettes[+sw.dataset.v];
+      root.style.setProperty('--prod-1',pal.p1);
+      root.style.setProperty('--prod-2',pal.p2);
+      root.style.setProperty('--prod-3',pal.p3);
+      root.style.setProperty('--prod-glow',pal.glow);
+    });
+  });
+
+  // magnetic CTA
+  var mag=document.getElementById('magbtn');
+  mag.addEventListener('mousemove',function(e){
+    var r=mag.getBoundingClientRect();
+    var x=(e.clientX-r.left-r.width/2)*0.3, y=(e.clientY-r.top-r.height/2)*0.4;
+    mag.style.transform='translate('+x+'px,'+(y-2)+'px)';
+  });
+  mag.addEventListener('mouseleave',function(){mag.style.transform=''});
+
+  // scroll reveal
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+    });
+  },{threshold:0.18});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+
+  // feature stagger reveal
+  var fio=new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if(en.isIntersecting){
+        var i=[].indexOf.call(en.target.parentNode.children,en.target);
+        en.target.style.transitionDelay=(i*90)+'ms';
+        en.target.classList.add('in');fio.unobserve(en.target);
+      }
+    });
+  },{threshold:0.2});
+  document.querySelectorAll('.feat').forEach(function(el){fio.observe(el)});
+
+  // count-up
+  function countUp(el){
+    var to=parseFloat(el.dataset.to),dec=parseInt(el.dataset.dec||'0'),dur=1300,t0=null;
+    function step(ts){
+      if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1);
+      var ease=1-Math.pow(1-p,3);
+      var val=to*ease;
+      el.textContent=dec?val.toFixed(dec):Math.round(val);
+      if(p<1)requestAnimationFrame(step);else el.textContent=dec?to.toFixed(dec):to;
+    }
+    requestAnimationFrame(step);
+  }
+  var cio=new IntersectionObserver(function(es){
+    es.forEach(function(en){if(en.isIntersecting){countUp(en.target);cio.unobserve(en.target);}});
+  },{threshold:0.6});
+  document.querySelectorAll('.count').forEach(function(el){cio.observe(el)});
+
+  // pre-order form (simulated)
+  var form=document.getElementById('preform'),msg=document.getElementById('formmsg'),email=document.getElementById('email');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=email.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){
+      msg.textContent='⚠ 請輸入有效的 Email';msg.style.color='#ff7a7a';msg.classList.add('show');return;
+    }
+    msg.style.color='';
+    msg.textContent='✓ 已登記！開賣前我們會寄信給 '+v;
+    msg.classList.add('show');
+    email.value='';email.disabled=true;
+    form.querySelector('button').textContent='已登記 ✓';
+    form.querySelector('button').style.opacity='0.6';
+  });
+})();
+</script>
+</body>
+</html>

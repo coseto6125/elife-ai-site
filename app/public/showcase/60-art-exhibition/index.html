@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>無界之境 LIMINAL — 當代藝術館 MOCA·當代</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Archivo:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#111111;
+    --paper:#f4f1ea;
+    --paper-deep:#e9e4d8;
+    --vermilion:#e63916;
+    --ultramarine:#1f2bd6;
+    --chartreuse:#d8e84a;
+    --line:rgba(17,17,17,.16);
+    --display:"Fraunces",Georgia,serif;
+    --grotesk:"Archivo","Noto Sans TC",sans-serif;
+    --body:"Noto Sans TC","Archivo",sans-serif;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--vermilion);color:var(--paper)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{width:min(1280px,92vw);margin:0 auto}
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:90;
+    background:rgba(244,241,234,.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    transition:transform .5s var(--ease);
+  }
+  .topbar.hide{transform:translateY(-100%)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .wordmark{display:flex;align-items:baseline;gap:.55rem;font-family:var(--display);font-weight:900;font-size:1.32rem;letter-spacing:-.02em}
+  .wordmark .dot{width:11px;height:11px;background:var(--vermilion);border-radius:50%;display:inline-block;transform:translateY(-1px)}
+  .wordmark small{font-family:var(--grotesk);font-weight:600;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;opacity:.55}
+  .navlinks{display:flex;gap:2rem;align-items:center}
+  .navlinks a{font-family:var(--grotesk);font-weight:600;font-size:.82rem;letter-spacing:.04em;position:relative;padding:.2rem 0}
+  .navlinks a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--vermilion);transition:width .35s var(--ease)}
+  .navlinks a:hover::after{width:100%}
+  .cta{
+    font-family:var(--grotesk);font-weight:700;font-size:.82rem;letter-spacing:.04em;
+    background:var(--ink);color:var(--paper);
+    padding:.62rem 1.25rem;border-radius:999px;
+    border:1px solid var(--ink);
+    transition:.35s var(--ease);
+  }
+  .cta:hover{background:var(--vermilion);border-color:var(--vermilion);color:var(--paper);transform:translateY(-2px)}
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+  .menu-btn span{width:26px;height:2px;background:var(--ink);transition:.3s}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:9.5rem 0 4rem;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:2.5rem;align-items:end}
+  .eyebrow{font-family:var(--grotesk);font-weight:700;font-size:.78rem;letter-spacing:.26em;text-transform:uppercase;color:var(--vermilion);display:flex;align-items:center;gap:.7rem;margin-bottom:1.4rem}
+  .eyebrow::before{content:"";width:38px;height:1px;background:var(--vermilion)}
+  .hero-title{
+    font-family:var(--display);
+    font-weight:300;
+    font-size:clamp(3.4rem,11.5vw,9.2rem);
+    line-height:.86;
+    letter-spacing:-.03em;
+    margin-bottom:1.4rem;
+  }
+  .hero-title em{font-style:italic;font-weight:600;color:var(--vermilion)}
+  .hero-title .blk{font-weight:900}
+  .hero-en{font-family:var(--grotesk);font-weight:800;font-size:clamp(.9rem,2.4vw,1.4rem);letter-spacing:.42em;text-transform:uppercase;margin-bottom:1.8rem;color:rgba(17,17,17,.45)}
+  .hero-lead{font-family:var(--display);font-style:italic;font-size:clamp(1.05rem,2.4vw,1.45rem);line-height:1.5;max-width:32ch;color:rgba(17,17,17,.78)}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:1.8rem;margin-top:2.2rem;font-family:var(--grotesk)}
+  .hero-meta .m{border-left:2px solid var(--ink);padding-left:.85rem}
+  .hero-meta .m b{display:block;font-weight:800;font-size:1.02rem;letter-spacing:.01em}
+  .hero-meta .m span{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;opacity:.55;font-weight:600}
+
+  /* key artwork SVG */
+  .key-art{position:relative;aspect-ratio:4/5;border:1px solid var(--ink);background:var(--paper-deep);overflow:hidden;box-shadow:18px 18px 0 rgba(17,17,17,.08)}
+  .key-art svg{width:100%;height:100%;display:block}
+  .key-art .tag{position:absolute;left:0;bottom:0;background:var(--ink);color:var(--paper);font-family:var(--grotesk);font-size:.66rem;font-weight:600;letter-spacing:.16em;padding:.45rem .8rem;text-transform:uppercase}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--ink);color:var(--paper);overflow:hidden;padding:.85rem 0;margin-top:3.5rem}
+  .marquee-track{display:flex;gap:2.4rem;white-space:nowrap;width:max-content;animation:scrollX 32s linear infinite;font-family:var(--display);font-weight:600;font-style:italic;font-size:1.35rem}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marquee-track span{display:flex;align-items:center;gap:2.4rem}
+  .marquee-track i{font-style:normal;color:var(--vermilion);font-family:var(--grotesk);font-weight:900}
+  @keyframes scrollX{to{transform:translateX(-50%)}}
+
+  /* ---------- CURATORIAL ---------- */
+  .curate{padding:6rem 0}
+  .sec-head{display:flex;align-items:baseline;gap:1.2rem;margin-bottom:3rem;flex-wrap:wrap}
+  .sec-num{font-family:var(--grotesk);font-weight:900;font-size:.9rem;color:var(--vermilion);letter-spacing:.1em}
+  .sec-title{font-family:var(--display);font-weight:300;font-size:clamp(2rem,5vw,3.4rem);line-height:1;letter-spacing:-.02em}
+  .sec-title b{font-weight:900}
+  .sec-en{font-family:var(--grotesk);font-weight:700;font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;opacity:.5;margin-left:auto}
+  .curate-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:3.5rem}
+  .pull{font-family:var(--display);font-weight:300;font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.12;letter-spacing:-.02em}
+  .pull em{font-style:italic;color:var(--vermilion);font-weight:500}
+  .curate-body p{font-size:1.02rem;line-height:1.85;color:rgba(17,17,17,.82);margin-bottom:1.3rem;max-width:54ch}
+  .curate-body p:first-letter{}
+  .curator-sign{margin-top:1.8rem;font-family:var(--grotesk);font-weight:700;font-size:.82rem;letter-spacing:.04em}
+  .curator-sign span{display:block;font-weight:500;opacity:.55;letter-spacing:.18em;text-transform:uppercase;font-size:.7rem;margin-top:.2rem}
+
+  /* ---------- WORKS ---------- */
+  .works{padding:4rem 0 6rem}
+  .filters{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2.6rem}
+  .filters button{
+    font-family:var(--grotesk);font-weight:600;font-size:.8rem;letter-spacing:.02em;
+    background:transparent;border:1px solid var(--ink);color:var(--ink);
+    padding:.5rem 1.1rem;border-radius:999px;cursor:pointer;transition:.3s var(--ease);
+  }
+  .filters button:hover{background:var(--paper-deep)}
+  .filters button.on{background:var(--ink);color:var(--paper)}
+  .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:1.6rem}
+  .work{
+    grid-column:span 4;cursor:pointer;position:relative;
+    transition:opacity .45s var(--ease),transform .45s var(--ease);
+  }
+  .work.big{grid-column:span 6}
+  .work.tall .frame{aspect-ratio:3/4}
+  .work .frame{
+    position:relative;aspect-ratio:1/1;overflow:hidden;
+    border:1px solid var(--ink);background:var(--paper-deep);
+    transition:.45s var(--ease);
+  }
+  .work .frame svg{width:100%;height:100%;display:block;transition:transform .7s var(--ease)}
+  .work:hover .frame svg{transform:scale(1.06)}
+  .work .meta-over{
+    position:absolute;inset:0;background:rgba(17,17,17,.86);color:var(--paper);
+    opacity:0;transition:opacity .4s var(--ease);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:1.3rem;
+  }
+  .work:hover .meta-over{opacity:1}
+  .meta-over .mt{font-family:var(--display);font-style:italic;font-size:1.45rem;line-height:1.05;margin-bottom:.5rem}
+  .meta-over .ma{font-family:var(--grotesk);font-weight:700;font-size:.82rem;letter-spacing:.04em}
+  .meta-over .md{font-size:.74rem;opacity:.7;margin-top:.35rem;letter-spacing:.04em;font-family:var(--grotesk)}
+  .meta-over .plus{position:absolute;top:1.2rem;right:1.3rem;font-family:var(--grotesk);font-weight:700;font-size:.7rem;letter-spacing:.18em;border:1px solid rgba(244,241,234,.4);padding:.35rem .65rem;border-radius:999px;text-transform:uppercase}
+  .work-caption{margin-top:.8rem;display:flex;justify-content:space-between;gap:1rem;font-family:var(--grotesk)}
+  .work-caption .wt{font-weight:700;font-size:.92rem;letter-spacing:-.01em}
+  .work-caption .wy{font-size:.82rem;opacity:.5;white-space:nowrap}
+  .work-caption .wa{font-size:.78rem;opacity:.6;margin-top:.1rem}
+
+  /* ---------- VISIT ---------- */
+  .visit{padding:6rem 0;background:var(--ink);color:var(--paper)}
+  .visit ::selection{background:var(--chartreuse);color:var(--ink)}
+  .visit .sec-title{color:var(--paper)}
+  .visit .sec-en{opacity:.4}
+  .visit .sec-num{color:var(--chartreuse)}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:2.5rem;margin-top:1rem}
+  .visit-block h4{font-family:var(--grotesk);font-weight:700;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--chartreuse);margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid rgba(244,241,234,.2)}
+  .visit-block p{font-size:.96rem;line-height:1.9;opacity:.86}
+  .visit-block p b{font-family:var(--display);font-style:italic;font-weight:500;opacity:1}
+  .price-table{width:100%;border-collapse:collapse;font-family:var(--grotesk)}
+  .price-table tr{border-bottom:1px solid rgba(244,241,234,.16)}
+  .price-table td{padding:.7rem 0;font-size:.9rem}
+  .price-table td:last-child{text-align:right;font-weight:800;font-size:1.05rem}
+  .price-table .free td:last-child{color:var(--chartreuse)}
+
+  /* ---------- TICKET ---------- */
+  .ticket{padding:6rem 0}
+  .ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+  .ticket-intro .big{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,6vw,4.2rem);line-height:.92;letter-spacing:-.03em;margin:1rem 0 1.4rem}
+  .ticket-intro .big b{font-weight:900;color:var(--vermilion)}
+  .ticket-intro p{font-size:1rem;line-height:1.8;max-width:42ch;color:rgba(17,17,17,.78)}
+  .ticket-feats{margin-top:2rem;display:flex;flex-direction:column;gap:.9rem}
+  .ticket-feats div{display:flex;gap:.8rem;align-items:baseline;font-family:var(--grotesk);font-size:.92rem}
+  .ticket-feats b{color:var(--vermilion);font-weight:900}
+
+  .form-card{border:1px solid var(--ink);background:var(--paper-deep);padding:2rem;box-shadow:14px 14px 0 rgba(17,17,17,.1)}
+  .form-card h3{font-family:var(--display);font-weight:600;font-size:1.55rem;margin-bottom:.3rem}
+  .form-card .sub{font-family:var(--grotesk);font-size:.78rem;letter-spacing:.04em;opacity:.6;margin-bottom:1.6rem}
+  .field{margin-bottom:1.15rem}
+  .field label{display:block;font-family:var(--grotesk);font-weight:700;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.5rem}
+  .field input,.field select{
+    width:100%;font-family:var(--body);font-size:.95rem;
+    background:var(--paper);border:1px solid var(--ink);
+    padding:.78rem .9rem;color:var(--ink);transition:.25s;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--vermilion);box-shadow:0 0 0 3px rgba(230,57,22,.18)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .submit{
+    width:100%;font-family:var(--grotesk);font-weight:800;font-size:.92rem;letter-spacing:.06em;
+    background:var(--vermilion);color:var(--paper);border:1px solid var(--vermilion);
+    padding:1rem;cursor:pointer;margin-top:.4rem;transition:.3s var(--ease);text-transform:uppercase;
+  }
+  .submit:hover{background:var(--ink);border-color:var(--ink);transform:translateY(-2px)}
+  .ticket-result{display:none;text-align:left}
+  .ticket-result.show{display:block;animation:popin .55s var(--ease)}
+  @keyframes popin{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+  .stub{border:2px dashed var(--ink);background:var(--paper);padding:1.6rem;position:relative}
+  .stub .code{font-family:var(--grotesk);font-weight:900;font-size:1.8rem;letter-spacing:.12em;color:var(--vermilion);margin:.4rem 0}
+  .stub .row{display:flex;justify-content:space-between;font-family:var(--grotesk);font-size:.82rem;padding:.4rem 0;border-bottom:1px dotted var(--line)}
+  .stub .row span:first-child{opacity:.55;letter-spacing:.1em;text-transform:uppercase;font-weight:600;font-size:.72rem}
+  .stub .row span:last-child{font-weight:700}
+  .stub .ok{font-family:var(--display);font-style:italic;font-size:1.3rem;margin-bottom:.8rem}
+  .stub .ok b{color:var(--vermilion);font-style:normal;font-weight:900}
+  .stub-again{margin-top:1.2rem;background:none;border:1px solid var(--ink);font-family:var(--grotesk);font-weight:600;font-size:.8rem;padding:.6rem 1.2rem;cursor:pointer;border-radius:999px;transition:.3s}
+  .stub-again:hover{background:var(--ink);color:var(--paper)}
+
+  /* ---------- DETAIL PANEL ---------- */
+  .panel-back{position:fixed;inset:0;background:rgba(17,17,17,.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .4s;z-index:100}
+  .panel-back.open{opacity:1;pointer-events:auto}
+  .panel{position:fixed;top:0;right:0;height:100%;width:min(520px,92vw);background:var(--paper);border-left:1px solid var(--ink);transform:translateX(100%);transition:transform .5s var(--ease);z-index:101;overflow-y:auto}
+  .panel.open{transform:translateX(0)}
+  .panel-art{aspect-ratio:1/1;border-bottom:1px solid var(--ink)}
+  .panel-art svg{width:100%;height:100%}
+  .panel-body{padding:2rem}
+  .panel-close{position:absolute;top:1.2rem;right:1.2rem;z-index:2;background:var(--paper);border:1px solid var(--ink);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;line-height:1;transition:.3s}
+  .panel-close:hover{background:var(--vermilion);color:var(--paper);border-color:var(--vermilion);transform:rotate(90deg)}
+  .panel-body .pt{font-family:var(--display);font-style:italic;font-weight:400;font-size:2rem;line-height:1.05;margin-bottom:.5rem}
+  .panel-body .pa{font-family:var(--grotesk);font-weight:800;font-size:1rem;margin-bottom:1.4rem}
+  .panel-body .pmeta{display:grid;grid-template-columns:auto 1fr;gap:.6rem 1.2rem;font-family:var(--grotesk);font-size:.86rem;margin-bottom:1.6rem;padding:1.2rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .panel-body .pmeta b{opacity:.5;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:.72rem}
+  .panel-body .pdesc{font-size:.96rem;line-height:1.85;color:rgba(17,17,17,.82)}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:var(--paper);padding:5rem 0 2.5rem}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;padding-bottom:3rem;border-bottom:1px solid rgba(244,241,234,.18)}
+  .foot-mark{font-family:var(--display);font-weight:900;font-size:2.8rem;line-height:.95;letter-spacing:-.02em}
+  .foot-mark em{font-style:italic;color:var(--vermilion);font-weight:400}
+  .foot-mark p{font-family:var(--grotesk);font-size:.82rem;opacity:.6;margin-top:1rem;max-width:34ch;line-height:1.7;font-weight:400}
+  .foot-col h5{font-family:var(--grotesk);font-weight:700;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--chartreuse);margin-bottom:1.1rem}
+  .foot-col a,.foot-col p{display:block;font-family:var(--grotesk);font-size:.9rem;opacity:.82;margin-bottom:.6rem;transition:.25s}
+  .foot-col a:hover{opacity:1;color:var(--vermilion)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-top:2rem;font-family:var(--grotesk);font-size:.78rem;opacity:.6}
+  .foot-bottom .credit b{color:var(--paper);opacity:1;font-weight:700}
+
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:920px){
+    .hero-grid{grid-template-columns:1fr;gap:3rem}
+    .curate-grid{grid-template-columns:1fr;gap:2rem}
+    .visit-grid{grid-template-columns:1fr}
+    .ticket-grid{grid-template-columns:1fr;gap:2.5rem}
+    .foot-top{grid-template-columns:1fr 1fr}
+    .work.big{grid-column:span 6}
+  }
+  @media(max-width:680px){
+    .navlinks{display:none}
+    .menu-btn{display:flex}
+    .menu-btn.x span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-btn.x span:nth-child(2){opacity:0}
+    .menu-btn.x span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .navlinks.show{display:flex;position:fixed;top:68px;left:0;right:0;flex-direction:column;background:var(--paper);gap:1.4rem;padding:1.8rem 4vw;border-bottom:1px solid var(--ink);box-shadow:0 20px 30px rgba(0,0,0,.1)}
+    .navlinks.show .cta{align-self:flex-start}
+    .gallery{grid-template-columns:repeat(6,1fr)}
+    .work,.work.big{grid-column:span 6}
+    .foot-top{grid-template-columns:1fr}
+    .field-row{grid-template-columns:1fr}
+    .hero{padding:7rem 0 3rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar" id="topbar">
+  <div class="wrap nav">
+    <a href="#top" class="wordmark"><span class="dot"></span>無界之境<small>MOCA·當代</small></a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#about">展覽</a>
+      <a href="#works">作品</a>
+      <a href="#visit">參觀資訊</a>
+      <a href="#ticket">購票</a>
+      <a href="#ticket" class="cta">立即購票 →</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="選單"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <div class="eyebrow">2026 年度策展 · 當代藝術館</div>
+      <h1 class="hero-title">無<em>界</em><br><span class="blk">之境</span></h1>
+      <div class="hero-en">LIMINAL FIELD</div>
+      <p class="hero-lead">在邊界消融之處，物質與感知彼此滲透——一場關於「之間」的當代探問。</p>
+      <div class="hero-meta">
+        <div class="m"><b>2026.03.14 — 06.28</b><span>展期 Duration</span></div>
+        <div class="m"><b>當代藝術館 1–3F</b><span>地點 Venue</span></div>
+        <div class="m"><b>14 位藝術家</b><span>參展 Artists</span></div>
+      </div>
+    </div>
+    <div class="key-art reveal" id="keyArt">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="kg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1f2bd6"/><stop offset="1" stop-color="#e63916"/>
+          </linearGradient>
+          <radialGradient id="kg2" cx="0.3" cy="0.3" r="0.8">
+            <stop offset="0" stop-color="#d8e84a"/><stop offset="1" stop-color="#d8e84a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="500" fill="#e9e4d8"/>
+        <rect x="40" y="60" width="240" height="380" fill="url(#kg1)"/>
+        <circle cx="300" cy="160" r="150" fill="url(#kg2)"/>
+        <circle cx="150" cy="250" r="92" fill="#f4f1ea"/>
+        <path d="M40 440 L280 60" stroke="#111" stroke-width="3"/>
+        <rect x="220" y="320" width="140" height="140" fill="#111"/>
+        <circle cx="290" cy="390" r="44" fill="#e63916"/>
+        <line x1="0" y1="250" x2="400" y2="250" stroke="#111" stroke-width="1" stroke-dasharray="6 6"/>
+      </svg>
+      <span class="tag">主視覺 · 林之曜《之間 III》2025</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>林之曜 <i>✦</i> 安娜·維瑟 <i>✦</i> 陳沛瑜 <i>✦</i> 黑川澪 <i>✦</i> 葉以恆 <i>✦</i> 馬可·費里尼 <i>✦</i> 周映真 <i>✦</i> 索菲·朗 <i>✦</i> 高彥廷 <i>✦</i></span>
+    <span>林之曜 <i>✦</i> 安娜·維瑟 <i>✦</i> 陳沛瑜 <i>✦</i> 黑川澪 <i>✦</i> 葉以恆 <i>✦</i> 馬可·費里尼 <i>✦</i> 周映真 <i>✦</i> 索菲·朗 <i>✦</i> 高彥廷 <i>✦</i></span>
+  </div>
+</div>
+
+<!-- ===== CURATORIAL ===== -->
+<section class="curate" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">策展<b>論述</b></h2>
+      <span class="sec-en">About the Exhibition</span>
+    </div>
+    <div class="curate-grid">
+      <div class="pull reveal">「邊界從不是線，<br>而是一片<em>正在發生</em>的場域。」</div>
+      <div class="curate-body reveal">
+        <p>「無界之境」並非要消滅界線，而是邀請觀者停留在界線本身——那條被忽略的、模糊的、持續變動的地帶。十四位來自不同文化脈絡的藝術家，以裝置、繪畫、聲響與動態影像，重新測繪「之間」的厚度。</p>
+        <p>展覽以三個樓層展開：一樓談「物質的滲透」，二樓進入「感知的折疊」，三樓抵達「時間的擱淺」。觀展動線本身即是一次穿越——從堅實走向流動，從可見走向待解。</p>
+        <p>我們相信，當代藝術的任務不是給出答案，而是把問題放大到足以容納身體的尺度。請慢慢走，讓視線在邊界處逗留。</p>
+        <div class="curator-sign">主策展人 — 顧維寧<span>Chief Curator · 當代藝術館</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORKS ===== -->
+<section class="works" id="works">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">參展<b>作品</b></h2>
+      <span class="sec-en">Selected Works</span>
+    </div>
+    <div class="filters reveal" id="filters">
+      <button class="on" data-f="all">全部</button>
+      <button data-f="material">物質的滲透</button>
+      <button data-f="perception">感知的折疊</button>
+      <button data-f="time">時間的擱淺</button>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ===== VISIT ===== -->
+<section class="visit" id="visit">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">參觀<b>資訊</b></h2>
+      <span class="sec-en">Visit</span>
+    </div>
+    <div class="visit-grid">
+      <div class="visit-block reveal">
+        <h4>開放時間 Hours</h4>
+        <p><b>週二 – 週日</b><br>10:00 – 18:00（最後入場 17:30）<br><br><b>週六延長場</b><br>10:00 – 21:00<br><br>每週一休館</p>
+      </div>
+      <div class="visit-block reveal">
+        <h4>地點 Location</h4>
+        <p><b>當代藝術館 MOCA·當代</b><br>台北市大同區長安西路 39 號<br><br>捷運 中山站 4 號出口步行 5 分鐘<br>備有無障礙電梯與輪椅借用</p>
+      </div>
+      <div class="visit-block reveal">
+        <h4>票價 Admission</h4>
+        <table class="price-table">
+          <tr><td>全票 Standard</td><td>NT$ 280</td></tr>
+          <tr><td>優待票 Concession</td><td>NT$ 220</td></tr>
+          <tr><td>雙人套票 Duo</td><td>NT$ 480</td></tr>
+          <tr class="free"><td>12 歲以下 / 身障者陪同</td><td>免費</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TICKET ===== -->
+<section class="ticket" id="ticket">
+  <div class="wrap ticket-grid">
+    <div class="ticket-intro reveal">
+      <span class="eyebrow">線上預約 · Reserve</span>
+      <div class="big">預約<br>你的<b>場次</b></div>
+      <p>選擇日期與場次，完成線上預約即可享免排隊快速入場。導覽場次名額有限，建議提早預訂。</p>
+      <div class="ticket-feats">
+        <div><b>01</b><span>電子票券，掃碼即可入場</span></div>
+        <div><b>02</b><span>含當期語音導覽免費租借</span></div>
+        <div><b>03</b><span>可改期，開展前 24 小時免費取消</span></div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="form-card" id="formCard">
+        <h3>預約購票</h3>
+        <div class="sub">無界之境 LIMINAL FIELD · 2026 特展</div>
+        <form id="ticketForm">
+          <div class="field">
+            <label>參觀日期</label>
+            <input type="date" id="fDate" required value="2026-03-14" min="2026-03-14" max="2026-06-28" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>場次時段</label>
+              <select id="fSlot" required>
+                <option value="10:00 上午場">10:00 上午場</option>
+                <option value="13:30 午後場">13:30 午後場</option>
+                <option value="16:00 黃昏場">16:00 黃昏場</option>
+                <option value="19:00 夜間導覽場">19:00 夜間導覽場（週六）</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>票種</label>
+              <select id="fType" required>
+                <option value="全票">全票 NT$280</option>
+                <option value="優待票">優待票 NT$220</option>
+                <option value="雙人套票">雙人套票 NT$480</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>張數</label>
+              <select id="fQty" required>
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>姓名</label>
+              <input type="text" id="fName" placeholder="您的姓名" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="fMail" placeholder="you@example.com" required />
+          </div>
+          <button type="submit" class="submit">確認預約 Reserve</button>
+        </form>
+
+        <div class="ticket-result" id="ticketResult">
+          <div class="stub">
+            <div class="ok"><b>預約成功</b> ── 期待與你相見</div>
+            <div class="code" id="tCode">LM-000000</div>
+            <div class="row"><span>場次 Session</span><span id="tSession">—</span></div>
+            <div class="row"><span>票種 Type</span><span id="tType">—</span></div>
+            <div class="row"><span>張數 Qty</span><span id="tQty">—</span></div>
+            <div class="row"><span>持票人 Holder</span><span id="tHolder">—</span></div>
+            <button class="stub-again" id="againBtn">再預約一筆 ↺</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-mark">無界<em>之境</em></div>
+        <p>當代藝術館 MOCA·當代 — 一座以「提問」為方法的當代藝術機構，常設展與年度特展持續對城市發聲。</p>
+      </div>
+      <div class="foot-col">
+        <h5>導覽 Navigate</h5>
+        <a href="#about">策展論述</a>
+        <a href="#works">參展作品</a>
+        <a href="#visit">參觀資訊</a>
+        <a href="#ticket">線上購票</a>
+      </div>
+      <div class="foot-col">
+        <h5>聯絡 Contact</h5>
+        <p>台北市大同區長安西路 39 號</p>
+        <p>+886 2 2552 3xxx</p>
+        <p>hello@moca-liminal.art</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="credit">範例設計 · <b>e-life-ai.com</b></div>
+      <div>© 2026 當代藝術館 MOCA·當代 — 本頁為虛構展覽示意，僅供設計展示</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== DETAIL PANEL ===== -->
+<div class="panel-back" id="panelBack"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <button class="panel-close" id="panelClose" aria-label="關閉">✕</button>
+  <div class="panel-art" id="panelArt"></div>
+  <div class="panel-body">
+    <div class="pt" id="panelTitle"></div>
+    <div class="pa" id="panelArtist"></div>
+    <div class="pmeta">
+      <b>年份</b><span id="panelYear"></span>
+      <b>媒材</b><span id="panelMedium"></span>
+      <b>樓層</b><span id="panelFloor"></span>
+    </div>
+    <div class="pdesc" id="panelDesc"></div>
+  </div>
+</aside>
+
+<script>
+// ---------- artwork data + generative SVG ----------
+const WORKS = [
+  {t:"之間 III",a:"林之曜",y:"2025",m:"壓克力 · 礦物顏料於麻布",f:"material",fl:"1F",size:"big",
+   d:"以重疊的色域構築一處「沒有名字的地帶」。藝術家刻意讓兩種顏料在乾燥前相互滲入，使邊界成為一個持續協商的事件，而非一條被決定的線。",svg:0},
+  {t:"鹽的記憶",a:"安娜·維瑟",y:"2024",m:"結晶鹽 · 鋼構裝置",f:"material",fl:"1F",size:"",
+   d:"懸浮的鹽結晶在展期中緩慢生長，物質本身即是時間的書寫者。觀者每次造訪都將看見一件略有不同的作品。",svg:1},
+  {t:"折疊的光",a:"黑川澪",y:"2025",m:"投影 · 鏡面 · 即時運算",f:"perception",fl:"2F",size:"tall",
+   d:"透過數十面角度各異的鏡面，單一光源被折疊成無數重影。感知在此被拉長，視覺不再可靠。",svg:2},
+  {t:"未命名（藍）",a:"馬可·費里尼",y:"2023",m:"油彩於亞麻布",f:"perception",fl:"2F",size:"",
+   d:"一整片近乎單色的群青，邀請眼睛在其中尋找根本不存在的形象。空無，正是這件作品提供的最大空間。",svg:3},
+  {t:"擱淺的鐘",a:"周映真",y:"2025",m:"機械裝置 · 聲響",f:"time",fl:"3F",size:"",
+   d:"十二座失準的鐘以各自的節奏走動，匯聚成一片無法同步的時間之海。準確，原來只是一種集體的約定。",svg:4},
+  {t:"地平線後",a:"索菲·朗",y:"2024",m:"複合媒材 · 燈箱",f:"time",fl:"3F",size:"big",
+   d:"一道永遠抵達不了的地平線被封存在燈箱之中。當我們凝視遠方，凝視的其實是自己對「之後」的渴望。",svg:5},
+  {t:"皮膜",a:"陳沛瑜",y:"2025",m:"乳膠 · 顏料 · 鋁框",f:"material",fl:"1F",size:"",
+   d:"半透明的薄膜在牆面與空間之間張開一層皮膚，溫柔地提醒：所有的「裡」與「外」，都共享同一道界面。",svg:6},
+  {t:"回聲室",a:"葉以恆",y:"2024",m:"聲音 · 空間裝置",f:"perception",fl:"2F",size:"",
+   d:"一個被聲音填滿的暗室，觀者的腳步與呼吸被即時放大、延遲、重疊。你既是聆聽者，也是這件作品的發聲者。",svg:7}
+];
+
+const PAL = [["#1f2bd6","#e63916"],["#e63916","#111111"],["#1f2bd6","#d8e84a"],["#1f2bd6","#1f2bd6"],["#111111","#e63916"],["#d8e84a","#1f2bd6"],["#e63916","#d8e84a"],["#111111","#1f2bd6"]];
+
+function artSVG(i){
+  const [c1,c2]=PAL[i%PAL.length];
+  const u="g"+i;
+  const variants=[
+    `<rect x="40" y="40" width="220" height="220" fill="url(#${u})"/><circle cx="240" cy="130" r="110" fill="#f4f1ea"/><circle cx="240" cy="130" r="60" fill="${c2}"/><path d="M40 300 L300 40" stroke="#111" stroke-width="4"/>`,
+    `<circle cx="170" cy="170" r="130" fill="${c1}"/><rect x="170" y="40" width="160" height="260" fill="${c2}"/><line x1="40" y1="170" x2="300" y2="170" stroke="#f4f1ea" stroke-width="6"/><circle cx="100" cy="100" r="34" fill="#111"/>`,
+    `<rect width="340" height="340" fill="${c1}"/>${[0,1,2,3,4,5].map(n=>`<line x1="${40+n*48}" y1="20" x2="${20+n*48}" y2="320" stroke="${c2}" stroke-width="5"/>`).join("")}<circle cx="200" cy="180" r="70" fill="#f4f1ea" opacity=".9"/>`,
+    `<rect width="340" height="340" fill="${c1}"/><circle cx="170" cy="170" r="120" fill="${c1}" stroke="#f4f1ea" stroke-width="2"/><circle cx="170" cy="170" r="78" fill="none" stroke="#f4f1ea" stroke-width="2"/><circle cx="170" cy="170" r="40" fill="none" stroke="#f4f1ea" stroke-width="2"/>`,
+    `<rect width="340" height="340" fill="#e9e4d8"/>${[0,1,2,3,4].map(n=>`<circle cx="${70+n*48}" cy="${90+(n%2)*120}" r="${22+n*6}" fill="none" stroke="${n%2?c2:c1}" stroke-width="6"/>`).join("")}<path d="M30 260 Q170 180 310 280" stroke="${c1}" stroke-width="4" fill="none"/>`,
+    `<rect width="340" height="340" fill="${c2}"/><rect x="0" y="170" width="340" height="170" fill="${c1}"/><circle cx="170" cy="170" r="74" fill="#f4f1ea"/><line x1="0" y1="170" x2="340" y2="170" stroke="#111" stroke-width="3"/>`,
+    `<rect width="340" height="340" fill="#e9e4d8"/><path d="M0 0 H340 V340 Z" fill="${c1}" opacity=".9"/><path d="M0 340 H340 V0 Z" fill="${c2}" opacity=".55"/><circle cx="170" cy="170" r="50" fill="#f4f1ea"/>`,
+    `<rect width="340" height="340" fill="${c1}"/>${[0,1,2,3,4,5,6].map(n=>`<rect x="0" y="${n*48}" width="340" height="24" fill="${n%2?c2:'#f4f1ea'}" opacity=".5"/>`).join("")}<circle cx="170" cy="170" r="58" fill="${c2}"/>`
+  ];
+  return `<svg viewBox="0 0 340 340" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
+    <rect width="340" height="340" fill="#e9e4d8"/>${variants[i%variants.length]}</svg>`;
+}
+
+// ---------- render gallery ----------
+const gallery=document.getElementById("gallery");
+WORKS.forEach((w,i)=>{
+  const el=document.createElement("article");
+  el.className="work "+(w.size==="big"?"big":"")+(w.size==="tall"?" tall":"");
+  el.dataset.f=w.f;el.dataset.i=i;
+  el.innerHTML=`
+    <div class="frame">${artSVG(i)}
+      <div class="meta-over">
+        <span class="plus">查看 +</span>
+        <div class="mt">${w.t}</div>
+        <div class="ma">${w.a}</div>
+        <div class="md">${w.y} · ${w.m} · ${w.fl}</div>
+      </div>
+    </div>
+    <div class="work-caption">
+      <div><div class="wt">${w.t}</div><div class="wa">${w.a}</div></div>
+      <div class="wy">${w.y}</div>
+    </div>`;
+  el.addEventListener("click",()=>openPanel(i));
+  gallery.appendChild(el);
+});
+
+// ---------- filter ----------
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll("#filters button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  const f=b.dataset.f;
+  document.querySelectorAll(".work").forEach(el=>{
+    const show=f==="all"||el.dataset.f===f;
+    el.style.display=show?"":"none";
+  });
+});
+
+// ---------- detail panel ----------
+const panel=document.getElementById("panel"),panelBack=document.getElementById("panelBack");
+function openPanel(i){
+  const w=WORKS[i];
+  document.getElementById("panelArt").innerHTML=artSVG(i);
+  document.getElementById("panelTitle").textContent=w.t;
+  document.getElementById("panelArtist").textContent=w.a;
+  document.getElementById("panelYear").textContent=w.y;
+  document.getElementById("panelMedium").textContent=w.m;
+  document.getElementById("panelFloor").textContent=w.fl+" 展區";
+  document.getElementById("panelDesc").textContent=w.d;
+  panel.classList.add("open");panelBack.classList.add("open");panel.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+}
+function closePanel(){panel.classList.remove("open");panelBack.classList.remove("open");panel.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+document.getElementById("panelClose").addEventListener("click",closePanel);
+panelBack.addEventListener("click",closePanel);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
+
+// ---------- ticket form ----------
+const form=document.getElementById("ticketForm"),result=document.getElementById("ticketResult");
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  const slot=document.getElementById("fSlot").value;
+  const type=document.getElementById("fType").value;
+  const qty=document.getElementById("fQty").value;
+  const date=document.getElementById("fDate").value;
+  const name=document.getElementById("fName").value||"訪客";
+  const code="LM-"+Math.random().toString(36).slice(2,8).toUpperCase();
+  document.getElementById("tCode").textContent=code;
+  document.getElementById("tSession").textContent=date+" · "+slot;
+  document.getElementById("tType").textContent=type;
+  document.getElementById("tQty").textContent=qty+" 張";
+  document.getElementById("tHolder").textContent=name;
+  form.style.display="none";
+  result.classList.add("show");
+});
+document.getElementById("againBtn").addEventListener("click",()=>{
+  result.classList.remove("show");form.style.display="";form.reset();
+  document.getElementById("fDate").value="2026-03-14";
+});
+
+// ---------- mobile menu ----------
+const menuBtn=document.getElementById("menuBtn"),navlinks=document.getElementById("navlinks");
+menuBtn.addEventListener("click",()=>{menuBtn.classList.toggle("x");navlinks.classList.toggle("show");});
+navlinks.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{menuBtn.classList.remove("x");navlinks.classList.remove("show");}));
+
+// ---------- scroll reveal ----------
+const io=new IntersectionObserver((es)=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}});},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+// ---------- hide topbar on scroll down ----------
+let lastY=0;const topbar=document.getElementById("topbar");
+window.addEventListener("scroll",()=>{
+  const y=window.scrollY;
+  if(y>lastY&&y>200)topbar.classList.add("hide");else topbar.classList.remove("hide");
+  lastY=y;
+},{passive:true});
+
+// ---------- hero parallax ----------
+const keyArt=document.getElementById("keyArt");
+window.addEventListener("scroll",()=>{
+  const y=window.scrollY;
+  if(y<800)keyArt.style.transform=`translateY(${y*-0.06}px)`;
+},{passive:true});
+</script>
+</body>
+</html>
