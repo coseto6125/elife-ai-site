@@ -169,8 +169,14 @@
   .wall-head .note { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); }
   .wall-head .ttl { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 1.9vw, 1.5rem); letter-spacing: -0.01em; color: var(--ink); }
 
-  /* portfolio grid: 2 columns × 4 rows = 8 per page, generous gutters */
-  .wall { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); gap: clamp(10px, 1.4vw, 16px); }
+  /* portfolio grid: 2 columns × 3 rows = 6 per page, generous gutters */
+  .wall { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: clamp(12px, 1.8vw, 20px); }
+
+  /* last wall page embeds the closing FIN message in the leftover grid cells */
+  .wall-fin { grid-column: 1 / -1; align-self: center; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: clamp(16px, 3vw, 36px); }
+  .wall-fin .h { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+  .wall-fin .t { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 2.2vw, 1.8rem); color: var(--ink); margin: 6px 0 10px; letter-spacing: -0.01em; }
+  .wall-fin .p { font-family: var(--font-body); font-weight: 300; font-size: 0.95rem; color: var(--ink-soft); max-width: 30ch; line-height: 1.7; }
 
   /* clean portfolio card — fills its grid cell; thumb flexes, meta row is fixed height */
   .frame-photo {
@@ -211,7 +217,19 @@
   .intro-p.muted { color: var(--ink-faint); font-size: 0.92rem; }
   .intro-foot { margin-top: 24px; font-family: var(--font-display); font-size: 0.76rem; letter-spacing: 0.12em; color: var(--ink-faint); }
 
-  .cover.backcover { justify-content: center; align-items: center; text-align: center; }
+  /* floating large preview shown when hovering a thumbnail on the canvas */
+  .hover-preview {
+    position: fixed; z-index: 40; pointer-events: none; opacity: 0;
+    width: min(34vw, 460px); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--line-bright); background: #0c0c0f;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    transform: translateY(6px) scale(0.98); transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+  }
+  .hover-preview.on { opacity: 1; transform: none; }
+  .hover-preview img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+  .hover-preview .hp-cap { display: block; padding: 9px 13px; font-family: var(--font-body); font-size: 0.86rem; color: var(--ink); border-top: 1px solid var(--line); }
+  @media (max-width: 760px), (hover: none) { .hover-preview { display: none; } }
+
   .end-cta { display: inline-block; margin-top: 18px; padding: 11px 22px; border: 1px solid var(--line-bright); border-radius: 999px; font-family: var(--font-display); font-size: 0.84rem; color: var(--ink); text-decoration: none; transition: background 0.25s, border-color 0.25s; }
   .end-cta:hover { background: var(--gold); border-color: var(--gold); color: #1a1a1a; }
 
@@ -288,6 +306,10 @@
       <div class="edge b"></div>
       <div class="flipbook" id="flipbook"></div>
       <div class="loading" id="loading" style="visibility:visible">載入作品集…</div>
+    </div>
+    <div class="hover-preview" id="hoverPreview" aria-hidden="true">
+      <img alt="" />
+      <span class="hp-cap"></span>
     </div>
     <div class="nav" id="nav" style="visibility:hidden">
       <button id="prev" aria-label="上一頁">‹</button>
@@ -506,9 +528,16 @@
           </div></div>`;
         case 'wall': {
           const cells = p.items.map((d, k) => framePhoto(d, p.start + k)).join('');
+          const fin = p.withFin ? `
+            <div class="wall-fin">
+              <span class="h">— Fin —</span>
+              <span class="t">想看別的風格？</span>
+              <p class="p">告訴我們你的產業與品牌調性，我們可以再客製一整套。</p>
+              <a class="end-cta" href="/#contact">聊聊你的專案 →</a>
+            </div>` : '';
           return `<div class="page-face"><div class="pad">
             <div class="wall-head"><span class="note">${esc(p.head)}</span><span class="ttl">${esc(p.sub)}</span></div>
-            <div class="wall">${cells}</div>
+            <div class="wall">${cells}${fin}</div>
             ${num}
           </div></div>`;
         }
@@ -520,22 +549,6 @@
             <a class="end-cta" href="/#contact">聊聊你的專案 →</a>
             <span class="s">e-life-ai.com</span>
           </div></div>`;
-        case 'colophon':
-          return `<div class="page-face"><div class="pad end-pad">
-            <span class="h">Colophon</span>
-            <p class="p">全站 ${esc(80)} 種設計樣板，純前端互動模擬。<br/>Space Grotesk · Archivo · 手工打造。</p>
-            <span class="s">e-life-ai.com</span>
-          </div></div>`;
-        case 'backcover':
-          return `<div class="page-face cover backcover">
-            <div class="frame"></div>
-            <div class="ctr" style="text-align:center;align-items:center">
-              <span class="kicker">Thanks for reading</span>
-              <span class="rule" style="margin:18px auto"></span>
-              <span class="sub" style="text-align:center">e-life-ai · 你的軟體開發夥伴<br/>AI · 全端 · 系統開發</span>
-            </div>
-            <span class="est" style="text-align:center">e-life-ai.com</span>
-          </div>`;
         default:
           return `<div class="page-face blank"></div>`;
       }
@@ -545,8 +558,8 @@
     // showCover:true makes page[0] the front cover and the LAST page the back cover (both standalone).
     // page[1] is the cover's inner side (left of the first spread) → put intro there.
     // we pad the inner pages to an EVEN count so the back cover never lands on a blank side.
-    // 8 per page (2×4) divides 80 evenly → 10 full wall pages, no near-empty tail page.
-    const PER_PAGE = 8;
+    // 6 per page (2×3) keeps each card large enough to read at the spread size.
+    const PER_PAGE = 6;
     function buildFlatPages(demos) {
       const pageCount = Math.ceil(demos.length / PER_PAGE);
       const walls = [];
@@ -559,12 +572,13 @@
           sub: `No. ${items[0].no}–${items[items.length - 1].no}`,
         });
       }
-      // spreads pair as [0,1],[2,3],… so the LAST page must sit at an ODD index (right side)
-      // to avoid a lone white right-half. cover(0)+intro(1)+walls fills indices; if the running
-      // length is odd before 'end', pad one colophon so 'end' lands on the right of the final spread.
+      // no back cover / colophon. the FIN message (CTA) is embedded into the LAST wall page,
+      // which only holds the final 1-2 cards and has room beneath them.
+      walls[walls.length - 1].withFin = true;
       const list = [{ type: 'cover', count: demos.length }, { type: 'intro', count: demos.length }, ...walls];
-      if (list.length % 2 === 0) list.push({ type: 'colophon' }); // make next (end) land on odd/right
-      list.push({ type: 'end' });
+      // keep the spread alignment clean: if the last wall lands on a left page (even index, lone
+      // right half), append a soft closing page so no blank white half shows.
+      if (list.length % 2 !== 0) list.push({ type: 'end' });
       return list;
     }
 
@@ -573,21 +587,29 @@
 
       // build flat .page elements for StPageFlip
       const flipEl = document.getElementById('flipbook');
+      const PAGE_RATIO = 0.72; // single page width / height
+      function isPortrait() { return window.innerWidth <= 760; }
       function dims() {
-        // fill the viewport: book as large as fits, leaving only a thin margin
-        const maxH = Math.min(window.innerHeight * 0.86, 900);
+        const maxH = Math.min(window.innerHeight * 0.84, 900);
+        if (isPortrait()) {
+          // single page fills the phone width; height follows the page ratio, capped by viewport
+          let w = Math.floor(Math.min(window.innerWidth * 0.92, 460));
+          let h = Math.round(w / PAGE_RATIO);
+          if (h > maxH) { h = maxH; w = Math.round(h * PAGE_RATIO); }
+          return { w, h };
+        }
+        // desktop: two-page spread fits the viewport
         const maxSpreadW = Math.min(window.innerWidth * 0.94, 1500);
         let h = maxH;
-        let w = Math.round(h * 0.72);
-        if (w * 2 > maxSpreadW) { w = Math.floor(maxSpreadW / 2); h = Math.round(w / 0.72); }
+        let w = Math.round(h * PAGE_RATIO);
+        if (w * 2 > maxSpreadW) { w = Math.floor(maxSpreadW / 2); h = Math.round(w / PAGE_RATIO); }
         return { w, h };
       }
       let { w, h } = dims();
       const sizeBook = () => {
         ({ w, h } = dims());
-        const portrait = window.innerWidth <= 760;
         book.style.height = h + 'px';
-        book.style.width = (portrait ? w : w * 2) + 'px';
+        book.style.width = (isPortrait() ? w : w * 2) + 'px';
         flipEl.style.height = h + 'px';
       };
       sizeBook();
@@ -605,8 +627,7 @@
 
       async function rasterize(p, idx) {
         const el = document.createElement('div');
-        const isCover = p.type === 'cover' || p.type === 'backcover';
-        el.className = 'page render-page' + (isCover ? ' page-cover' : '') + (p.type === 'wall' ? ' page-wall' : '');
+        el.className = 'page render-page' + (p.type === 'cover' ? ' page-cover' : '') + (p.type === 'wall' ? ' page-wall' : '');
         el.style.cssText = `width:${w}px;height:${h}px;position:relative;overflow:hidden;`;
         el.innerHTML = flatPageHTML(p, idx);
         sandbox.appendChild(el);
@@ -616,7 +637,12 @@
         if (p.type === 'wall') {
           hotspots[idx] = [...el.querySelectorAll('.frame-photo')].map((a) => {
             const r = a.getBoundingClientRect(), pr = el.getBoundingClientRect();
-            return { x: (r.left - pr.left) / w, y: (r.top - pr.top) / h, w: r.width / w, h: r.height / h, href: a.getAttribute('href') };
+            const img = a.querySelector('.shot img');
+            return {
+              x: (r.left - pr.left) / w, y: (r.top - pr.top) / h, w: r.width / w, h: r.height / h,
+              href: a.getAttribute('href'), title: a.getAttribute('title') || '',
+              thumb: img ? img.getAttribute('src') : null,
+            };
           });
         }
         const canvas = await html2canvas(el, { backgroundColor: null, scale: SCALE, logging: false, useCORS: true });
@@ -640,6 +666,7 @@
           usePortrait: true, startZIndex: 5, autoSize: false,
           maxShadowOpacity: 0.6, showCover: false, // no standalone cover → no white half-page
           mobileScrollSupport: false, swipeDistance: 18, showPageCorners: true,
+          disableFlipByClick: true, // tap a thumbnail → open its demo; flip via drag / corner / buttons
         });
         pageFlip.loadFromImages(images);
 
@@ -660,31 +687,56 @@
         pageFlip.on('flip', updateUI);
         updateUI();
 
-        // click-through on the canvas: hit-test hotspots of the currently visible pages
+        // hit-test the single stf canvas (spans the whole spread) → returns the hotspot under the cursor.
+        // portrait → one visible page (index = current); landscape → left = current, right = current+1.
+        function hitAt(clientX, clientY) {
+          if (pageFlip.getState && pageFlip.getState() !== 'read') return null;
+          const cv = flipEl.querySelector('canvas');
+          if (!cv) return null;
+          const rect = cv.getBoundingClientRect();
+          const relX = (clientX - rect.left) / rect.width;
+          const py = (clientY - rect.top) / rect.height;
+          if (relX < 0 || relX > 1 || py < 0 || py > 1) return null;
+          const cur = pageFlip.getCurrentPageIndex();
+          const portrait = pageFlip.getOrientation ? pageFlip.getOrientation() === 'portrait' : window.innerWidth <= 760;
+          let pageIdx, px;
+          if (portrait) { pageIdx = cur; px = relX; }
+          else if (relX < 0.5) { pageIdx = cur; px = relX * 2; }
+          else { pageIdx = cur + 1; px = (relX - 0.5) * 2; }
+          const hs = hotspots[pageIdx];
+          if (!hs) return null;
+          return hs.find((s) => px >= s.x && px <= s.x + s.w && py >= s.y && py <= s.y + s.h) || null;
+        }
         flipEl.addEventListener('click', (e) => {
-          if (pageFlip.getState && pageFlip.getState() !== 'read') return; // ignore mid-flip
-          const canvases = flipEl.querySelectorAll('canvas');
-          if (!canvases.length) return;
-          const idx = pageFlip.getCurrentPageIndex();
-          // visible pages: left = idx (if even spread), right = idx+? — test both current and neighbor
-          const candidates = [idx, idx + 1, idx - 1];
-          for (const ci of candidates) {
-            const hs = hotspots[ci];
-            if (!hs) continue;
-            // figure the page's on-screen rect (each visible page occupies half the spread)
-            const rect = flipEl.getBoundingClientRect();
-            const isPortrait = window.innerWidth <= 760;
-            const pageW = isPortrait ? rect.width : rect.width / 2;
-            // determine which half this page is on (cover/odd → right, even → left). use spread parity.
-            const onLeft = !isPortrait && (ci % 2 === 1); // showCover:true → page1 is right of cover... approximate
-            const pageLeft = isPortrait ? rect.left : (onLeft ? rect.left : rect.left + rect.width / 2);
-            const px = (e.clientX - pageLeft) / pageW;
-            const py = (e.clientY - rect.top) / rect.height;
-            if (px < 0 || px > 1 || py < 0 || py > 1) continue;
-            const hit = hs.find((s) => px >= s.x && px <= s.x + s.w && py >= s.y && py <= s.y + s.h);
-            if (hit) { window.open(hit.href, '_blank', 'noopener'); return; }
-          }
+          const hit = hitAt(e.clientX, e.clientY);
+          if (hit) window.open(hit.href, '_blank', 'noopener');
         });
+
+        // hover → large preview near the cursor (desktop only)
+        const hp = document.getElementById('hoverPreview');
+        const hpImg = hp.querySelector('img');
+        const hpCap = hp.querySelector('.hp-cap');
+        let hpKey = null;
+        flipEl.addEventListener('mousemove', (e) => {
+          const hit = hitAt(e.clientX, e.clientY);
+          if (!hit || !hit.thumb) { hp.classList.remove('on'); hpKey = null; flipEl.style.cursor = ''; return; }
+          flipEl.style.cursor = 'pointer';
+          if (hit.href !== hpKey) {
+            hpKey = hit.href;
+            hpImg.src = hit.thumb;
+            hpCap.textContent = hit.title;
+          }
+          // position: offset from cursor, flip to left/up near edges
+          const pw = Math.min(window.innerWidth * 0.34, 460);
+          const ph = pw * 0.625 + 38;
+          let x = e.clientX + 20, y = e.clientY + 20;
+          if (x + pw > window.innerWidth - 8) x = e.clientX - pw - 20;
+          if (y + ph > window.innerHeight - 8) y = window.innerHeight - ph - 8;
+          hp.style.left = x + 'px'; hp.style.top = y + 'px';
+          hp.classList.add('on');
+        });
+        flipEl.addEventListener('mouseleave', () => { hp.classList.remove('on'); hpKey = null; });
+        pageFlip.on('flip', () => { hp.classList.remove('on'); hpKey = null; });
 
         nextBtn.addEventListener('click', () => pageFlip.flipNext());
         prevBtn.addEventListener('click', () => pageFlip.flipPrev());
