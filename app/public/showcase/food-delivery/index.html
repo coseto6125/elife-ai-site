@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>火山炸雞 VOLCANO｜辣到噴火的台式炸雞外送｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="火山炸雞 VOLCANO — 台式辣味炸雞連鎖外送品牌。線上點餐、自選辣度、套餐客製，30 分鐘熱辣送到家。本頁為 e-life-ai 設計樣板。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Bebas+Neue&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lava:#FF4D17;
+    --ember:#FFB400;
+    --char:#1F1410;
+    --cream:#FFF6EC;
+    --chili:#C81E1E;
+    --leaf:#3FA34D;
+    --paper:#FFFDFA;
+    --ink:#2A1C14;
+    --muted:#7A6657;
+    --shadow:rgba(31,20,16,.16);
+    --r:22px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans TC",system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .display{font-family:"Lilita One",system-ui,cursive}
+  .data{font-family:"Bebas Neue",system-ui,sans-serif;letter-spacing:.04em}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  :focus-visible{outline:3px solid var(--char);outline-offset:3px;border-radius:8px}
+  img{max-width:100%}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:60;
+    background:rgba(255,246,236,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:2px solid rgba(31,20,16,.08);
+  }
+  .nav{
+    max-width:1200px;margin:0 auto;padding:.7rem 1.25rem;
+    display:flex;align-items:center;gap:1rem;
+  }
+  .brand{display:flex;align-items:center;gap:.55rem;font-size:1.5rem;color:var(--char)}
+  .brand .logo{
+    width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+    background:linear-gradient(150deg,var(--lava),var(--chili));
+    font-size:1.5rem;box-shadow:0 6px 14px rgba(255,77,23,.4);
+    transform:rotate(-6deg);
+  }
+  .brand b{font-family:"Lilita One";font-weight:400;line-height:1}
+  .brand small{font-family:"Bebas Neue";color:var(--lava);font-size:.85rem;display:block;letter-spacing:.18em}
+  .nav-links{display:flex;gap:1.4rem;margin-left:auto;font-weight:700;font-size:.95rem}
+  .nav-links a{padding:.3rem 0;position:relative;transition:color .2s}
+  .nav-links a:hover{color:var(--lava)}
+  .cart-btn{
+    position:relative;display:flex;align-items:center;gap:.5rem;
+    background:var(--char);color:var(--cream);
+    padding:.6rem 1.1rem;border-radius:99px;font-weight:900;font-size:.95rem;
+    transition:transform .18s,box-shadow .18s;
+  }
+  .cart-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--shadow)}
+  .cart-count{
+    position:absolute;top:-8px;right:-8px;
+    background:var(--ember);color:var(--char);
+    min-width:24px;height:24px;border-radius:99px;
+    display:grid;place-items:center;font-size:.78rem;font-weight:900;
+    border:2px solid var(--cream);
+    transform:scale(0);transition:transform .25s cubic-bezier(.34,1.7,.5,1);
+  }
+  .cart-count.show{transform:scale(1)}
+  .cart-count.bump{animation:bump .4s}
+  @keyframes bump{0%,100%{transform:scale(1)}40%{transform:scale(1.35)}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 85% 10%, rgba(255,180,0,.28), transparent 55%),
+      linear-gradient(160deg,#2A1810 0%, var(--char) 55%, #2E1208 100%);
+    color:var(--cream);
+    padding:4rem 1.25rem 5rem;
+  }
+  .hero-grid{
+    max-width:1200px;margin:0 auto;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:2.5rem;align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:.5rem;
+    background:rgba(255,77,23,.18);border:1.5px solid rgba(255,77,23,.5);
+    color:var(--ember);font-family:"Bebas Neue";letter-spacing:.16em;
+    padding:.4rem 1rem;border-radius:99px;font-size:1.05rem;margin-bottom:1.3rem;
+  }
+  .hero h1{
+    font-family:"Lilita One";font-weight:400;
+    font-size:clamp(3rem,8vw,5.4rem);line-height:.95;color:#fff;
+    text-shadow:0 4px 0 var(--chili),0 16px 30px rgba(0,0,0,.4);
+  }
+  .hero h1 .flame{color:var(--ember);display:inline-block}
+  .hero p.lead{
+    font-size:1.15rem;color:#F3D8C4;margin:1.4rem 0 2rem;max-width:30rem;
+  }
+  .hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
+  .btn-primary{
+    background:linear-gradient(150deg,var(--lava),var(--chili));
+    color:#fff;font-weight:900;font-size:1.05rem;
+    padding:1rem 1.8rem;border-radius:99px;
+    box-shadow:0 10px 24px rgba(255,77,23,.45);
+    transition:transform .18s,box-shadow .18s;
+  }
+  .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 32px rgba(255,77,23,.55)}
+  .btn-ghost{
+    color:var(--cream);font-weight:700;padding:1rem 1.4rem;border-radius:99px;
+    border:2px solid rgba(255,246,236,.3);transition:border-color .2s,background .2s;
+  }
+  .btn-ghost:hover{border-color:var(--ember);background:rgba(255,180,0,.12)}
+  .hero-stats{display:flex;gap:2rem;margin-top:2.5rem}
+  .hero-stats .s b{font-family:"Bebas Neue";font-size:2.4rem;color:var(--ember);display:block;line-height:1}
+  .hero-stats .s span{font-size:.8rem;color:#C9AE9C;letter-spacing:.05em}
+
+  /* hero art — CSS plated fried chicken */
+  .plate{position:relative;width:min(420px,90vw);aspect-ratio:1;margin:0 auto;animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(2deg)}}
+  .dish{
+    position:absolute;inset:8%;border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #fff 0%, #F4E6D6 55%, #E0CBB6 100%);
+    box-shadow:inset 0 -18px 40px rgba(0,0,0,.12), 0 30px 60px rgba(0,0,0,.45);
+  }
+  .dish::after{content:"";position:absolute;inset:14%;border-radius:50%;border:3px dashed rgba(255,77,23,.25)}
+  .chick{
+    position:absolute;font-size:clamp(3rem,11vw,5.5rem);
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));
+  }
+  .c1{top:18%;left:30%;transform:rotate(-12deg)}
+  .c2{top:34%;left:48%;transform:rotate(14deg);font-size:clamp(2.6rem,9vw,4.8rem)}
+  .c3{top:50%;left:24%;transform:rotate(8deg);font-size:clamp(2.4rem,8vw,4.2rem)}
+  .steam{position:absolute;top:8%;left:50%;font-size:1.6rem;opacity:.7;animation:rise 3s ease-in-out infinite}
+  @keyframes rise{0%{opacity:0;transform:translateY(10px) scale(.8)}50%{opacity:.8}100%{opacity:0;transform:translateY(-30px) scale(1.2)}}
+  .badge-spin{
+    position:absolute;bottom:2%;right:-2%;width:108px;height:108px;border-radius:50%;
+    background:var(--ember);color:var(--char);display:grid;place-items:center;text-align:center;
+    font-family:"Lilita One";font-size:.95rem;line-height:1.05;
+    box-shadow:0 12px 24px rgba(0,0,0,.4);transform:rotate(-12deg);border:4px dashed var(--lava);
+  }
+  .badge-spin b{font-size:1.7rem;color:var(--lava)}
+
+  .ticker{
+    background:var(--ember);color:var(--char);overflow:hidden;white-space:nowrap;
+    border-top:3px solid var(--char);border-bottom:3px solid var(--char);
+  }
+  .ticker-track{display:inline-flex;gap:2.5rem;padding:.55rem 0;animation:scroll 24s linear infinite;font-family:"Lilita One";font-size:1.05rem}
+  .ticker-track span{display:inline-flex;gap:2.5rem}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:4.5rem 1.25rem}
+  .wrap{max-width:1200px;margin:0 auto}
+  .sec-head{text-align:center;margin-bottom:2.5rem}
+  .sec-head .kicker{font-family:"Bebas Neue";color:var(--lava);letter-spacing:.2em;font-size:1.15rem}
+  .sec-head h2{font-family:"Lilita One";font-weight:400;font-size:clamp(2rem,5vw,3rem);color:var(--char);line-height:1.05;margin:.3rem 0}
+  .sec-head p{color:var(--muted);max-width:34rem;margin:0 auto}
+
+  /* ---------- MENU ---------- */
+  .tabs{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.2rem}
+  .tab{
+    display:flex;align-items:center;gap:.45rem;
+    background:var(--paper);color:var(--ink);font-weight:700;
+    padding:.7rem 1.3rem;border-radius:99px;border:2px solid rgba(31,20,16,.1);
+    transition:all .2s;font-size:.98rem;
+  }
+  .tab:hover{border-color:var(--lava);color:var(--lava)}
+  .tab.active{background:var(--char);color:var(--cream);border-color:var(--char)}
+  .tab .emo{font-size:1.15rem}
+
+  .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.4rem}
+  .card{
+    background:var(--paper);border-radius:var(--r);overflow:hidden;
+    box-shadow:0 10px 30px rgba(31,20,16,.08);
+    display:flex;flex-direction:column;
+    border:2px solid transparent;transition:transform .22s,box-shadow .22s,border-color .22s;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 20px 44px rgba(31,20,16,.16);border-color:rgba(255,77,23,.3)}
+  .card-img{
+    height:150px;position:relative;display:grid;place-items:center;font-size:4.2rem;
+    background:radial-gradient(circle at 50% 40%, var(--g1), var(--g2));
+  }
+  .card-img .tag{
+    position:absolute;top:.7rem;left:.7rem;
+    background:var(--char);color:var(--cream);font-size:.7rem;font-weight:900;
+    padding:.25rem .7rem;border-radius:99px;letter-spacing:.05em;
+  }
+  .card-img .tag.hot{background:var(--chili)}
+  .card-img .tag.veg{background:var(--leaf)}
+  .card-body{padding:1.1rem 1.2rem 1.3rem;display:flex;flex-direction:column;flex:1}
+  .card-body h3{font-size:1.15rem;color:var(--char);font-weight:900;display:flex;align-items:center;gap:.4rem}
+  .card-body .desc{font-size:.86rem;color:var(--muted);margin:.4rem 0 .9rem;flex:1;line-height:1.5}
+  .spice{display:flex;gap:.15rem;font-size:.9rem;margin-bottom:.9rem}
+  .spice .off{filter:grayscale(1);opacity:.35}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+  .price{font-family:"Bebas Neue";font-size:1.85rem;color:var(--lava);line-height:1}
+  .price small{font-size:.9rem;color:var(--muted);font-family:"Noto Sans TC"}
+  .add{
+    background:var(--lava);color:#fff;font-weight:900;font-size:.92rem;
+    padding:.6rem 1.1rem;border-radius:99px;display:flex;align-items:center;gap:.4rem;
+    transition:transform .15s,background .2s;
+  }
+  .add:hover{background:var(--chili);transform:scale(1.05)}
+  .add:active{transform:scale(.94)}
+  .add.added{background:var(--leaf)}
+
+  /* ---------- CUSTOMIZER ---------- */
+  .builder{
+    background:var(--char);border-radius:28px;color:var(--cream);
+    display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;
+    box-shadow:0 24px 60px rgba(31,20,16,.3);
+  }
+  .builder-art{
+    background:
+      radial-gradient(110% 90% at 70% 20%, rgba(255,180,0,.3), transparent 60%),
+      linear-gradient(160deg,#3A1E12,#1A0E08);
+    padding:2.8rem;display:flex;flex-direction:column;justify-content:center;gap:1.2rem;position:relative;
+  }
+  .builder-art .big-emo{font-size:5.5rem;filter:drop-shadow(0 10px 16px rgba(0,0,0,.5))}
+  .builder-art h3{font-family:"Lilita One";font-weight:400;font-size:2rem;color:#fff;line-height:1}
+  .builder-art p{color:#D9BCA8;font-size:.95rem}
+  .builder-form{padding:2.5rem;background:var(--paper);color:var(--ink)}
+  .field{margin-bottom:1.5rem}
+  .field>label{font-weight:900;color:var(--char);display:block;margin-bottom:.6rem;font-size:.95rem}
+  .opt-row{display:flex;gap:.5rem;flex-wrap:wrap}
+  .opt{
+    flex:1;min-width:80px;text-align:center;
+    background:var(--cream);border:2px solid rgba(31,20,16,.12);border-radius:14px;
+    padding:.65rem .4rem;font-weight:700;font-size:.9rem;color:var(--ink);transition:all .18s;
+  }
+  .opt small{display:block;font-family:"Bebas Neue";color:var(--lava);font-size:1rem;margin-top:.1rem}
+  .opt:hover{border-color:var(--lava)}
+  .opt.sel{background:var(--lava);color:#fff;border-color:var(--lava)}
+  .opt.sel small{color:#FFE7B0}
+  /* spice slider */
+  .slider-wrap{display:flex;align-items:center;gap:1rem}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;flex:1;height:10px;border-radius:99px;
+    background:linear-gradient(90deg,var(--ember),var(--lava),var(--chili));outline-offset:6px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:30px;height:30px;border-radius:50%;
+    background:#fff;border:4px solid var(--char);cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.25);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--char);cursor:pointer;
+  }
+  .spice-read{font-size:1.6rem;min-width:120px;text-align:right}
+  .spice-label{font-weight:900;color:var(--chili);font-size:.95rem}
+  .builder-total{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:.5rem;padding-top:1.3rem;border-top:2px dashed rgba(31,20,16,.15);
+  }
+  .builder-total .lbl{font-weight:700;color:var(--muted)}
+  .builder-total .amt{font-family:"Bebas Neue";font-size:2.6rem;color:var(--lava);line-height:1}
+  .builder-add{
+    width:100%;margin-top:1.2rem;background:var(--char);color:var(--cream);
+    font-weight:900;font-size:1.05rem;padding:1rem;border-radius:16px;
+    transition:transform .15s,background .2s;
+  }
+  .builder-add:hover{background:#000;transform:translateY(-2px)}
+
+  /* ---------- STORES ---------- */
+  .store-switch{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.8rem}
+  .store-pill{
+    background:var(--paper);border:2px solid rgba(31,20,16,.1);border-radius:99px;
+    padding:.6rem 1.2rem;font-weight:700;transition:all .2s;
+  }
+  .store-pill:hover{border-color:var(--lava)}
+  .store-pill.active{background:var(--lava);color:#fff;border-color:var(--lava)}
+  .store-panel{
+    background:var(--paper);border-radius:24px;padding:2.2rem;
+    display:grid;grid-template-columns:1.3fr 1fr;gap:2rem;align-items:center;
+    box-shadow:0 12px 36px rgba(31,20,16,.1);
+  }
+  .store-info h3{font-family:"Lilita One";font-weight:400;font-size:1.8rem;color:var(--char)}
+  .store-info .row{display:flex;gap:.6rem;align-items:flex-start;margin-top:.8rem;color:var(--ink)}
+  .store-info .row .ic{font-size:1.2rem}
+  .store-info .row b{color:var(--char)}
+  .store-status{display:inline-flex;align-items:center;gap:.4rem;background:rgba(63,163,77,.14);color:var(--leaf);font-weight:900;padding:.3rem .9rem;border-radius:99px;font-size:.85rem;margin-top:1rem}
+  .store-status .dot{width:9px;height:9px;border-radius:50%;background:var(--leaf);box-shadow:0 0 0 0 rgba(63,163,77,.5);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,163,77,.5)}70%{box-shadow:0 0 0 10px rgba(63,163,77,0)}100%{box-shadow:0 0 0 0 rgba(63,163,77,0)}}
+  .store-map{
+    aspect-ratio:4/3;border-radius:18px;position:relative;overflow:hidden;
+    background:
+      linear-gradient(135deg,#FCEEDD,#F6DDC4);
+  }
+  .store-map .grid-lines{position:absolute;inset:0;background-image:
+    linear-gradient(rgba(31,20,16,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(31,20,16,.08) 1px,transparent 1px);
+    background-size:34px 34px}
+  .store-map .road{position:absolute;background:rgba(255,77,23,.25)}
+  .store-map .road.h{left:0;right:0;height:8px;top:55%}
+  .store-map .road.v{top:0;bottom:0;width:8px;left:38%}
+  .store-map .pin{position:absolute;top:55%;left:38%;transform:translate(-50%,-100%);font-size:2.6rem;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));animation:drop .5s ease}
+  @keyframes drop{from{transform:translate(-50%,-180%);opacity:0}to{transform:translate(-50%,-100%);opacity:1}}
+
+  /* ---------- HOW / STEPS ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+  .step{background:var(--paper);border-radius:var(--r);padding:1.8rem 1.5rem;text-align:center;box-shadow:0 8px 24px rgba(31,20,16,.07)}
+  .step .n{font-family:"Bebas Neue";font-size:3rem;color:var(--ember);line-height:1;-webkit-text-stroke:2px var(--lava)}
+  .step .emo{font-size:2.4rem;margin:.3rem 0 .6rem}
+  .step h4{color:var(--char);font-weight:900;font-size:1.1rem}
+  .step p{color:var(--muted);font-size:.9rem;margin-top:.3rem}
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(31,20,16,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:90}
+  .overlay.open{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;height:100dvh;width:min(400px,92vw);z-index:100;
+    background:var(--cream);transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;box-shadow:-12px 0 40px rgba(0,0,0,.25);
+  }
+  .drawer.open{transform:translateX(0)}
+  .drawer-head{
+    background:var(--char);color:var(--cream);padding:1.3rem 1.4rem;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .drawer-head h3{font-family:"Lilita One";font-weight:400;font-size:1.4rem;display:flex;align-items:center;gap:.5rem}
+  .drawer-close{color:var(--cream);font-size:1.6rem;line-height:1;width:40px;height:40px;border-radius:50%;transition:background .2s}
+  .drawer-close:hover{background:rgba(255,255,255,.12)}
+  .drawer-items{flex:1;overflow-y:auto;padding:1rem 1.2rem}
+  .ci{display:flex;gap:.8rem;align-items:center;padding:.8rem 0;border-bottom:1px dashed rgba(31,20,16,.12)}
+  .ci .thumb{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;font-size:1.6rem;background:var(--ember);flex-shrink:0}
+  .ci .meta{flex:1;min-width:0}
+  .ci .meta b{display:block;color:var(--char);font-size:.95rem;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ci .meta span{font-size:.8rem;color:var(--muted)}
+  .qty{display:flex;align-items:center;gap:.5rem}
+  .qty button{width:28px;height:28px;border-radius:8px;background:var(--paper);border:2px solid rgba(31,20,16,.12);font-weight:900;color:var(--char);display:grid;place-items:center;line-height:1;transition:all .15s}
+  .qty button:hover{border-color:var(--lava);color:var(--lava)}
+  .qty b{font-family:"Bebas Neue";font-size:1.2rem;min-width:18px;text-align:center}
+  .ci-price{font-family:"Bebas Neue";color:var(--lava);font-size:1.2rem;min-width:60px;text-align:right}
+  .cart-empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+  .cart-empty .emo{font-size:3.5rem;opacity:.5;display:block;margin-bottom:.8rem}
+  .drawer-foot{padding:1.2rem 1.4rem;border-top:2px solid rgba(31,20,16,.1);background:var(--paper)}
+  .foot-row{display:flex;justify-content:space-between;margin-bottom:.4rem;color:var(--muted);font-size:.92rem}
+  .foot-row.total{color:var(--char);font-weight:900;font-size:1.05rem;margin-top:.6rem}
+  .foot-row.total .amt{font-family:"Bebas Neue";font-size:2rem;color:var(--lava)}
+  .checkout{
+    width:100%;margin-top:1rem;background:linear-gradient(150deg,var(--lava),var(--chili));
+    color:#fff;font-weight:900;font-size:1.1rem;padding:1rem;border-radius:16px;
+    transition:transform .15s,box-shadow .2s;box-shadow:0 8px 20px rgba(255,77,23,.4);
+  }
+  .checkout:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,77,23,.5)}
+  .checkout:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+  /* ---------- TOAST ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:2rem;transform:translate(-50%,150%);
+    background:var(--char);color:var(--cream);padding:.9rem 1.5rem;border-radius:99px;
+    font-weight:700;z-index:120;display:flex;align-items:center;gap:.6rem;
+    box-shadow:0 12px 30px rgba(0,0,0,.3);transition:transform .4s cubic-bezier(.34,1.56,.64,1);max-width:90vw;
+  }
+  .toast.show{transform:translate(-50%,0)}
+  .toast .emo{font-size:1.3rem}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--char);color:#D9BCA8;padding:3.5rem 1.25rem 2rem}
+  .foot-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2rem}
+  .foot-brand .brand{color:var(--cream)}
+  .foot-brand p{margin-top:1rem;max-width:24rem;font-size:.92rem}
+  .foot-col h5{color:var(--ember);font-family:"Bebas Neue";letter-spacing:.1em;font-size:1.1rem;margin-bottom:.8rem}
+  .foot-col a{display:block;padding:.25rem 0;font-size:.92rem;transition:color .2s}
+  .foot-col a:hover{color:var(--ember)}
+  .foot-bottom{
+    max-width:1200px;margin:2.5rem auto 0;padding-top:1.5rem;
+    border-top:1px solid rgba(255,246,236,.12);
+    display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;font-size:.85rem;
+  }
+  .foot-credit{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,180,0,.12);border:1px solid rgba(255,180,0,.3);color:var(--ember);padding:.4rem 1rem;border-radius:99px;font-weight:700}
+  .foot-credit a{color:#fff;text-decoration:underline}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr;text-align:center}
+    .hero-cta,.hero-stats{justify-content:center}
+    .eyebrow{margin-inline:auto}
+    .builder{grid-template-columns:1fr}
+    .store-panel{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .nav-links{display:none}
+  }
+  @media(max-width:420px){
+    section{padding:3.2rem 1rem}
+    .hero{padding:2.8rem 1rem 3.5rem}
+    .builder-form,.builder-art{padding:1.6rem}
+    .hero-stats{gap:1.2rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="brand" aria-label="火山炸雞首頁">
+      <span class="logo" aria-hidden="true">🔥</span>
+      <span><b>火山炸雞</b><small>VOLCANO</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#menu">菜單</a>
+      <a href="#builder">客製套餐</a>
+      <a href="#stores">門市</a>
+      <a href="#how">怎麼點</a>
+    </div>
+    <button class="cart-btn" id="openCart" aria-label="開啟購物車">
+      🛒 <span>購物車</span>
+      <span class="cart-count" id="cartCount" aria-live="polite">0</span>
+    </button>
+  </nav>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" style="padding-top:4rem">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">🌶️ 全台 28 間直營 · 現點現炸</span>
+        <h1>辣到<span class="flame">噴火</span><br>的台式炸雞</h1>
+        <p class="lead">獨門火山粉裹漿，七段辣度自己選。從微辣到「岩漿級」，30 分鐘熱辣送到你家門口。</p>
+        <div class="hero-cta">
+          <a href="#menu" class="btn-primary">🍗 立即點餐</a>
+          <a href="#builder" class="btn-ghost">自己組套餐 →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="s"><b>30</b><span>分鐘送達</span></div>
+          <div class="s"><b>4.9★</b><span>外送評分</span></div>
+          <div class="s"><b>7</b><span>段辣度</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="plate" aria-hidden="true">
+          <div class="dish"></div>
+          <span class="steam" style="left:42%">♨️</span>
+          <span class="steam" style="left:56%;animation-delay:1.4s">♨️</span>
+          <span class="chick c1">🍗</span>
+          <span class="chick c2">🍗</span>
+          <span class="chick c3">🍗</span>
+          <div class="badge-spin"><span>外送<br><b>$0</b><br>運費</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>🔥 招牌火山雞排 NT$89 &nbsp;·&nbsp; 🍗 七塊雞桶超值組 NT$299 &nbsp;·&nbsp; 🧀 起司岩漿薯條 NT$69 &nbsp;·&nbsp; 🥤 第二杯半價 &nbsp;·&nbsp; 🌶️ 挑戰岩漿級辣度送可樂 &nbsp;·&nbsp;</span>
+      <span>🔥 招牌火山雞排 NT$89 &nbsp;·&nbsp; 🍗 七塊雞桶超值組 NT$299 &nbsp;·&nbsp; 🧀 起司岩漿薯條 NT$69 &nbsp;·&nbsp; 🥤 第二杯半價 &nbsp;·&nbsp; 🌶️ 挑戰岩漿級辣度送可樂 &nbsp;·&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">MENU · 現點現炸</div>
+        <h2>挑一份，開始噴火</h2>
+        <p>每一份都是接單才下鍋。點下「加入」即時更新右上角購物車。</p>
+      </div>
+
+      <div class="tabs" id="tabs" role="tablist">
+        <button class="tab active" data-cat="signature" role="tab" aria-selected="true"><span class="emo">🍗</span>招牌炸雞</button>
+        <button class="tab" data-cat="combo" role="tab" aria-selected="false"><span class="emo">🍱</span>超值套餐</button>
+        <button class="tab" data-cat="side" role="tab" aria-selected="false"><span class="emo">🍟</span>炸物點心</button>
+        <button class="tab" data-cat="drink" role="tab" aria-selected="false"><span class="emo">🥤</span>飲料</button>
+      </div>
+
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <!-- BUILDER (signature) -->
+  <section id="builder">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">BUILD-A-BOX · 自己組</div>
+        <h2>客製你的火山桶</h2>
+        <p>選份量、配菜、再用滑桿決定辣到什麼程度。價格即時算給你看。</p>
+      </div>
+
+      <div class="builder">
+        <div class="builder-art">
+          <div class="big-emo" id="builderEmo" aria-hidden="true">🍗</div>
+          <h3 id="builderTitle">六塊火山雞桶</h3>
+          <p id="builderSummary">原味 · 微辣 · 加薯條</p>
+        </div>
+        <div class="builder-form">
+          <div class="field">
+            <label>① 份量</label>
+            <div class="opt-row" data-group="size">
+              <button class="opt sel" data-val="3" data-price="119" data-emo="🍗">三塊<small>NT$119</small></button>
+              <button class="opt" data-val="6" data-price="199" data-emo="🍗">六塊<small>NT$199</small></button>
+              <button class="opt" data-val="9" data-price="269" data-emo="🪣">九塊桶<small>NT$269</small></button>
+            </div>
+          </div>
+          <div class="field">
+            <label>② 加配菜</label>
+            <div class="opt-row" data-group="side">
+              <button class="opt sel" data-val="無配菜" data-price="0">不加<small>NT$0</small></button>
+              <button class="opt" data-val="加薯條" data-price="49">薯條<small>+49</small></button>
+              <button class="opt" data-val="加雞塊" data-price="59">雞塊<small>+59</small></button>
+            </div>
+          </div>
+          <div class="field">
+            <label>③ 辣度（滑滑看）</label>
+            <div class="slider-wrap">
+              <input type="range" id="spice" min="0" max="6" value="2" aria-label="辣度等級" aria-valuetext="微辣">
+              <div class="spice-read"><span id="spiceEmo">🌶️🌶️</span><br><span class="spice-label" id="spiceLabel">微辣</span></div>
+            </div>
+          </div>
+          <div class="builder-total">
+            <span class="lbl">這桶總計</span>
+            <span class="amt" id="builderPrice">NT$119</span>
+          </div>
+          <button class="builder-add" id="builderAdd">🔥 加入購物車</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORES -->
+  <section id="stores">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">STORES · 找最近的</div>
+        <h2>哪間幫你炸？</h2>
+        <p>切換門市看營業時間與外送範圍。</p>
+      </div>
+      <div class="store-switch" id="storeSwitch"></div>
+      <div class="store-panel">
+        <div class="store-info">
+          <h3 id="stName">火山炸雞 · 信義旗艦店</h3>
+          <div class="store-status"><span class="dot"></span><span id="stStatus">營業中 · 外送中</span></div>
+          <div class="row"><span class="ic">📍</span><span><b id="stAddr">台北市信義區松壽路 12 號 1 樓</b></span></div>
+          <div class="row"><span class="ic">🕙</span><span>每日 <b id="stHours">11:00 – 23:30</b></span></div>
+          <div class="row"><span class="ic">🛵</span><span>外送範圍 <b id="stRange">3 公里內 · 約 25 分鐘</b></span></div>
+          <div class="row"><span class="ic">📞</span><span><b id="stPhone">02-2722-1280</b></span></div>
+        </div>
+        <div class="store-map" aria-hidden="true">
+          <div class="grid-lines"></div>
+          <div class="road h"></div>
+          <div class="road v"></div>
+          <div class="pin" id="stPin">📍</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how" style="background:linear-gradient(180deg,transparent,rgba(255,180,0,.08))">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">HOW IT WORKS</div>
+        <h2>三步，熱辣到家</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="n">01</div><div class="emo">🍗</div><h4>挑你的雞</h4><p>選招牌、組套餐、滑出你要的辣度。</p></div>
+        <div class="step"><div class="n">02</div><div class="emo">👨‍🍳</div><h4>接單現炸</h4><p>不預炸、不回鍋，金黃酥脆才出餐。</p></div>
+        <div class="step"><div class="n">03</div><div class="emo">🛵</div><h4>30 分送達</h4><p>專屬保溫袋，送到還是燙口酥脆。</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="購物車" aria-hidden="true">
+  <div class="drawer-head">
+    <h3>🛒 我的訂單</h3>
+    <button class="drawer-close" id="closeCart" aria-label="關閉購物車">×</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot">
+    <div class="foot-row"><span>小計</span><span id="subtotal">NT$0</span></div>
+    <div class="foot-row"><span>外送費</span><span id="deliveryFee" style="color:var(--leaf);font-weight:700">免費</span></div>
+    <div class="foot-row total"><span>總計</span><span class="amt" id="grandTotal">NT$0</span></div>
+    <button class="checkout" id="checkout" disabled>送出訂單</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><span class="emo">✅</span><span id="toastMsg">已加入購物車</span></div>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="#top" class="brand">
+        <span class="logo" aria-hidden="true">🔥</span>
+        <span><b>火山炸雞</b><small>VOLCANO</small></span>
+      </a>
+      <p>接單現炸的台式辣味炸雞。七段辣度，從微辣到岩漿級，挑戰你的味蕾極限。全台 28 間直營門市，外送 30 分鐘到家。</p>
+    </div>
+    <div class="foot-col">
+      <h5>點餐</h5>
+      <a href="#menu">招牌菜單</a>
+      <a href="#builder">客製火山桶</a>
+      <a href="#stores">門市與外送</a>
+      <a href="#how">點餐流程</a>
+    </div>
+    <div class="foot-col">
+      <h5>關於</h5>
+      <a href="#">品牌故事</a>
+      <a href="#">加盟招商</a>
+      <a href="#">人才招募</a>
+      <a href="#">食安承諾</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 火山炸雞 VOLCANO（虛構品牌）· 版權所有</span>
+    <span class="foot-credit">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  const NT = n => "NT$" + n.toLocaleString("en-US");
+
+  // ---------- MENU DATA ----------
+  const MENU = {
+    signature:[
+      {id:"s1",emo:"🍗",name:"招牌火山雞排",price:89,desc:"手打厚切雞胸，裹上獨門火山粉，外酥內嫩。",spice:3,tag:"招牌",g:["#FFE0A3","#FF8C42"]},
+      {id:"s2",emo:"🍗",name:"岩漿辣子雞",price:129,desc:"川味花椒乾辣椒爆炒，麻辣後勁十足。",spice:5,tag:"hot",tagLabel:"超辣",g:["#FFB199","#C81E1E"]},
+      {id:"s3",emo:"🍗",name:"蜂蜜芥末嫩雞",price:99,desc:"微甜蜂蜜芥末醬，不辣也好吃，小孩最愛。",spice:0,g:["#FFF0B3","#FFB400"]},
+      {id:"s4",emo:"🍗",name:"鹽酥脆皮雞翅",price:79,desc:"九層塔現炸雞翅，台味鹹香、停不下來。",spice:2,g:["#FFE3B8","#E08A2E"]},
+    ],
+    combo:[
+      {id:"c1",emo:"🪣",name:"七塊雞桶超值組",price:299,desc:"七塊招牌炸雞＋大薯＋兩杯飲料，三人份。",spice:3,tag:"省80",g:["#FFD78A","#FF6B2C"]},
+      {id:"c2",emo:"🍱",name:"火山單人餐",price:159,desc:"雞排＋薯條＋可樂，一個人也要吃好。",spice:3,g:["#FFE0A3","#FF8C42"]},
+      {id:"c3",emo:"🥡",name:"情侶雙人桶",price:249,desc:"四塊炸雞＋起司薯條＋雙飲，約會剛剛好。",spice:2,tag:"省50",g:["#FFCBA3","#E0682E"]},
+      {id:"c4",emo:"🍗",name:"全家分享餐",price:459,desc:"十二塊炸雞＋兩份點心＋四杯飲，家庭聚餐。",spice:3,tag:"hot",tagLabel:"熱賣",g:["#FFD08A","#C84A1E"]},
+    ],
+    side:[
+      {id:"d1",emo:"🧀",name:"起司岩漿薯條",price:69,desc:"金黃薯條淋上會牽絲的熱熔起司醬。",spice:0,tag:"veg",tagLabel:"純素可",g:["#FFEFA8","#FFB400"]},
+      {id:"d2",emo:"🍟",name:"火山脆薯",price:49,desc:"撒上招牌火山辣粉的波浪薯條。",spice:2,g:["#FFE3A8","#FF9A3C"]},
+      {id:"d3",emo:"🧅",name:"黃金洋蔥圈",price:59,desc:"酥脆麵衣包裹清甜洋蔥，附蜂蜜芥末醬。",spice:0,g:["#FFEAB0","#E69A2E"]},
+      {id:"d4",emo:"🌽",name:"奶油烤玉米",price:45,desc:"刷上香蒜奶油的炙烤玉米，鹹香多汁。",spice:0,tag:"veg",tagLabel:"純素可",g:["#FFF0A8","#FFC400"]},
+    ],
+    drink:[
+      {id:"k1",emo:"🥤",name:"古早味紅茶",price:30,desc:"回甘無澀的大杯古早味紅茶，解辣神器。",spice:0,g:["#E8C8A0","#B5814A"]},
+      {id:"k2",emo:"🧋",name:"黑糖珍珠鮮奶",price:65,desc:"手炒黑糖＋Q彈珍珠＋鮮奶，療癒辣後。",spice:0,tag:"人氣",g:["#E8D2B8","#8A6038"]},
+      {id:"k3",emo:"🍋",name:"冰晶檸檬氣泡",price:45,desc:"現榨檸檬＋氣泡水，酸爽消辣最對味。",spice:0,g:["#FFF6B8","#E0D040"]},
+      {id:"k4",emo:"🥤",name:"可口可樂",price:30,desc:"冰鎮罐裝可樂，配炸雞的永恆答案。",spice:0,g:["#F0C8A8","#C81E1E"]},
+    ],
+  };
+
+  const SPICE = ["不辣","微微辣","微辣","小辣","中辣","大辣","岩漿級🌋"];
+  const spiceFlames = lv => "🌶️".repeat(lv) || "—";
+
+  // ---------- CART STATE ----------
+  const cart = new Map(); // key -> {emo,name,price,qty,note}
+  const $ = id => document.getElementById(id);
+  const cartCount=$("cartCount"), drawer=$("drawer"), overlay=$("overlay"),
+        drawerItems=$("drawerItems"), toast=$("toast");
+
+  function addToCart(key, item){
+    if(cart.has(key)){ cart.get(key).qty++; }
+    else { cart.set(key,{...item,qty:1}); }
+    renderCart(); bumpBadge(); showToast("✅","已加入「"+item.name+"」");
+  }
+  function changeQty(key,delta){
+    const it=cart.get(key); if(!it)return;
+    it.qty+=delta;
+    if(it.qty<=0) cart.delete(key);
+    renderCart();
+  }
+
+  function totals(){
+    let count=0,sub=0;
+    cart.forEach(it=>{count+=it.qty;sub+=it.price*it.qty});
+    return {count,sub};
+  }
+
+  function bumpBadge(){
+    cartCount.classList.add("bump");
+    setTimeout(()=>cartCount.classList.remove("bump"),400);
+  }
+
+  function renderCart(){
+    const {count,sub}=totals();
+    cartCount.textContent=count;
+    cartCount.classList.toggle("show",count>0);
+
+    if(cart.size===0){
+      drawerItems.innerHTML='<div class="cart-empty"><span class="emo">🍗</span>購物車還空空的<br>挑一份炸雞開始吧！</div>';
+    } else {
+      let html="";
+      cart.forEach((it,key)=>{
+        html+=`<div class="ci">
+          <div class="thumb">${it.emo}</div>
+          <div class="meta"><b>${it.name}</b><span>${it.note||NT(it.price)}</span></div>
+          <div class="qty">
+            <button data-act="dec" data-key="${key}" aria-label="減少數量">−</button>
+            <b>${it.qty}</b>
+            <button data-act="inc" data-key="${key}" aria-label="增加數量">+</button>
+          </div>
+          <div class="ci-price">${NT(it.price*it.qty)}</div>
+        </div>`;
+      });
+      drawerItems.innerHTML=html;
+    }
+    $("subtotal").textContent=NT(sub);
+    $("grandTotal").textContent=NT(sub);
+    $("checkout").disabled=cart.size===0;
+  }
+
+  // ---------- MENU RENDER ----------
+  const menuGrid=$("menuGrid");
+  function renderMenu(cat){
+    menuGrid.innerHTML=MENU[cat].map(it=>{
+      const spiceDots=[0,1,2,3,4,5].map(i=>`<span class="${i<it.spice?'':'off'}">🌶️</span>`).join("");
+      let tag="";
+      if(it.tag==="hot") tag=`<span class="tag hot">🔥 ${it.tagLabel}</span>`;
+      else if(it.tag==="veg") tag=`<span class="tag veg">🌱 ${it.tagLabel}</span>`;
+      else if(it.tag) tag=`<span class="tag">${it.tag}</span>`;
+      return `<article class="card">
+        <div class="card-img" style="--g1:${it.g[0]};--g2:${it.g[1]}">${tag}<span aria-hidden="true">${it.emo}</span></div>
+        <div class="card-body">
+          <h3>${it.name}</h3>
+          <p class="desc">${it.desc}</p>
+          <div class="spice" title="辣度 ${it.spice}/5" aria-label="辣度 ${it.spice} 級">${spiceDots}</div>
+          <div class="card-foot">
+            <span class="price">${NT(it.price)}</span>
+            <button class="add" data-id="${it.id}" data-cat="${cat}">＋ 加入</button>
+          </div>
+        </div>
+      </article>`;
+    }).join("");
+  }
+  renderMenu("signature");
+
+  // tab switching
+  $("tabs").addEventListener("click",e=>{
+    const tab=e.target.closest(".tab"); if(!tab)return;
+    document.querySelectorAll(".tab").forEach(t=>{t.classList.remove("active");t.setAttribute("aria-selected","false")});
+    tab.classList.add("active"); tab.setAttribute("aria-selected","true");
+    renderMenu(tab.dataset.cat);
+  });
+
+  // add-to-cart from menu
+  menuGrid.addEventListener("click",e=>{
+    const btn=e.target.closest(".add"); if(!btn)return;
+    const item=MENU[btn.dataset.cat].find(x=>x.id===btn.dataset.id);
+    addToCart(item.id,{emo:item.emo,name:item.name,price:item.price});
+    btn.classList.add("added"); btn.textContent="✓ 已加";
+    setTimeout(()=>{btn.classList.remove("added");btn.textContent="＋ 加入"},900);
+  });
+
+  // ---------- BUILDER (signature) ----------
+  const builder={size:{val:"3",price:119,emo:"🍗",label:"三塊"},side:{val:"無配菜",price:0},spice:2};
+  function updateBuilder(){
+    const total=builder.size.price+builder.side.price;
+    $("builderPrice").textContent=NT(total);
+    $("builderEmo").textContent=builder.size.emo;
+    $("builderTitle").textContent=builder.size.label+"火山雞桶";
+    $("builderSummary").textContent=[builder.side.val,SPICE[builder.spice]].join(" · ");
+    $("spiceEmo").textContent=spiceFlames(builder.spice);
+    $("spiceLabel").textContent=SPICE[builder.spice];
+    return total;
+  }
+  document.querySelectorAll('.opt-row').forEach(row=>{
+    row.addEventListener("click",e=>{
+      const opt=e.target.closest(".opt"); if(!opt)return;
+      row.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel"));
+      opt.classList.add("sel");
+      const group=row.dataset.group;
+      if(group==="size"){
+        builder.size={val:opt.dataset.val,price:+opt.dataset.price,emo:opt.dataset.emo,label:opt.textContent.replace(/NT\$.*/,"").trim()};
+      } else {
+        builder.side={val:opt.dataset.val,price:+opt.dataset.price};
+      }
+      updateBuilder();
+    });
+  });
+  $("spice").addEventListener("input",e=>{
+    builder.spice=+e.target.value;
+    e.target.setAttribute("aria-valuetext",SPICE[builder.spice]);
+    updateBuilder();
+  });
+  $("builderAdd").addEventListener("click",()=>{
+    const total=updateBuilder();
+    const note=[builder.size.label,builder.side.val,SPICE[builder.spice]].join("·");
+    const key="build-"+Date.now();
+    addToCart(key,{emo:builder.size.emo,name:builder.size.label+"火山桶",price:total,note});
+  });
+  updateBuilder();
+
+  // ---------- STORES ----------
+  const STORES=[
+    {n:"信義旗艦店",addr:"台北市信義區松壽路 12 號 1 樓",hours:"11:00 – 23:30",range:"3 公里內 · 約 25 分鐘",phone:"02-2722-1280",open:true,top:"55%",left:"38%"},
+    {n:"西門徒步店",addr:"台北市萬華區漢中街 88 號",hours:"11:00 – 00:00",range:"2.5 公里內 · 約 20 分鐘",phone:"02-2311-4560",open:true,top:"40%",left:"60%"},
+    {n:"板橋車站店",addr:"新北市板橋區站前路 5 號 B1",hours:"10:30 – 22:30",range:"4 公里內 · 約 30 分鐘",phone:"02-2960-7788",open:true,top:"65%",left:"25%"},
+    {n:"台中逢甲店",addr:"台中市西屯區文華路 100 號",hours:"12:00 – 01:00",range:"3.5 公里內 · 約 28 分鐘",phone:"04-2451-3300",open:false,top:"30%",left:"45%"},
+  ];
+  const storeSwitch=$("storeSwitch");
+  storeSwitch.innerHTML=STORES.map((s,i)=>`<button class="store-pill ${i===0?'active':''}" data-i="${i}">${s.n}</button>`).join("");
+  function showStore(i){
+    const s=STORES[i];
+    $("stName").textContent="火山炸雞 · "+s.n;
+    $("stAddr").textContent=s.addr;
+    $("stHours").textContent=s.hours;
+    $("stRange").textContent=s.range;
+    $("stPhone").textContent=s.phone;
+    const status=$("stStatus"), dot=document.querySelector(".store-status");
+    if(s.open){ status.textContent="營業中 · 外送中"; dot.style.background="rgba(63,163,77,.14)"; dot.style.color="var(--leaf)"; dot.querySelector(".dot").style.background="var(--leaf)"; }
+    else { status.textContent="休息中 · 明日 12:00 開"; dot.style.background="rgba(200,30,30,.12)"; dot.style.color="var(--chili)"; dot.querySelector(".dot").style.background="var(--chili)"; dot.querySelector(".dot").style.animation="none"; }
+    const pin=$("stPin"); pin.style.top=s.top; pin.style.left=s.left;
+    pin.style.animation="none"; void pin.offsetWidth; pin.style.animation="drop .5s ease";
+  }
+  storeSwitch.addEventListener("click",e=>{
+    const pill=e.target.closest(".store-pill"); if(!pill)return;
+    document.querySelectorAll(".store-pill").forEach(p=>p.classList.remove("active"));
+    pill.classList.add("active");
+    showStore(+pill.dataset.i);
+  });
+
+  // ---------- DRAWER ----------
+  function openDrawer(){drawer.classList.add("open");overlay.classList.add("open");drawer.setAttribute("aria-hidden","false")}
+  function closeDrawer(){drawer.classList.remove("open");overlay.classList.remove("open");drawer.setAttribute("aria-hidden","true")}
+  $("openCart").addEventListener("click",openDrawer);
+  $("closeCart").addEventListener("click",closeDrawer);
+  overlay.addEventListener("click",closeDrawer);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+
+  drawerItems.addEventListener("click",e=>{
+    const btn=e.target.closest("button[data-act]"); if(!btn)return;
+    changeQty(btn.dataset.key, btn.dataset.act==="inc"?1:-1);
+  });
+
+  // ---------- CHECKOUT ----------
+  $("checkout").addEventListener("click",()=>{
+    const {count,sub}=totals();
+    showToast("🛵","訂單已送出！"+count+" 件 · "+NT(sub)+" · 30 分鐘到府");
+    cart.clear(); renderCart(); closeDrawer();
+  });
+
+  // ---------- TOAST ----------
+  let toastTimer;
+  function showToast(emo,msg){
+    toast.querySelector(".emo").textContent=emo;
+    $("toastMsg").textContent=msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
+  }
+
+  renderCart();
+})();
+</script>
+</body>
+</html>

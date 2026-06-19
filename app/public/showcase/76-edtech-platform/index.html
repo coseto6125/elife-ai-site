@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>學途 SkillTrail｜邊學邊做的線上技能學院｜e-life-ai</title>
+<meta name="description" content="學途 SkillTrail — 友善、實作導向的線上技能學院。程式、設計、資料科學課程，跟著學習路徑一步步完課。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #20283a;
+    --ink-soft: #4a5468;
+    --paper: #fff9f0;
+    --card: #ffffff;
+    --sun: #ffcb3d;
+    --sun-deep: #f7b500;
+    --coral: #ff6b5e;
+    --teal: #1fb6a6;
+    --teal-deep: #128c80;
+    --grape: #6c5ce7;
+    --line: #efe6d6;
+    --shadow: 0 10px 30px -12px rgba(40, 30, 10, .22);
+    --shadow-lg: 0 24px 60px -22px rgba(40, 30, 10, .32);
+    --radius: 22px;
+    --radius-sm: 14px;
+    font-synthesis: none;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: "Noto Sans TC", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.65;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(255,203,61,.16), transparent 38%),
+      radial-gradient(circle at 88% 4%, rgba(31,182,166,.13), transparent 36%),
+      radial-gradient(circle at 80% 92%, rgba(255,107,94,.10), transparent 40%);
+  }
+  h1,h2,h3,.display { font-family: "Baloo 2","Noto Sans TC",sans-serif; line-height: 1.18; letter-spacing: -.01em; }
+  .serif { font-family: "Fraunces", serif; font-style: italic; }
+  a { color: inherit; text-decoration: none; }
+  img,svg { display: block; max-width: 100%; }
+  .wrap { width: min(1180px, 100% - 40px); margin-inline: auto; }
+  .btn {
+    font-family: "Baloo 2", sans-serif; font-weight: 700; font-size: 1rem;
+    border: 0; cursor: pointer; border-radius: 999px;
+    padding-block: 13px; padding-inline: 26px;
+    display: inline-flex; align-items: center; gap: 9px;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, background .2s;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn-primary { background: var(--ink); color: #fff; box-shadow: 0 8px 0 -2px var(--sun-deep), var(--shadow); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 11px 0 -2px var(--sun-deep), var(--shadow-lg); }
+  .btn-sun { background: var(--sun); color: var(--ink); box-shadow: 0 7px 0 -1px var(--sun-deep); }
+  .btn-sun:hover { transform: translateY(-2px); }
+  .btn-ghost { background: #fff; color: var(--ink); border: 2px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+  /* ---------- NAV ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(12px);
+    background: rgba(255,249,240,.82);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-in { display: flex; align-items: center; gap: 18px; padding-block: 13px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: "Baloo 2",sans-serif; font-weight: 800; font-size: 1.25rem; }
+  .brand .mark { width: 38px; height: 38px; flex: 0 0 auto; }
+  .brand small { display: block; font-family: "Noto Sans TC"; font-weight: 500; font-size: .62rem; color: var(--ink-soft); letter-spacing: .14em; margin-top: -3px; }
+  .nav-links { display: flex; gap: 26px; margin-left: auto; font-weight: 700; font-size: .94rem; }
+  .nav-links a { position: relative; padding-block: 4px; }
+  .nav-links a::after { content:""; position:absolute; left:0; bottom:0; width:0; height:3px; border-radius:3px; background: var(--coral); transition: width .22s; }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta { margin-left: 6px; }
+  @media (max-width: 880px) { .nav-links { display: none; } .nav-cta { margin-left: auto; } }
+
+  /* ---------- HERO ---------- */
+  .hero { padding-block: clamp(40px, 7vw, 84px) clamp(30px, 5vw, 56px); }
+  .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(26px, 4vw, 60px); align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 2px solid var(--line); border-radius: 999px; padding-block: 7px; padding-inline: 15px; font-weight: 700; font-size: .82rem; box-shadow: var(--shadow); }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px rgba(31,182,166,.2); }
+  .hero h1 { font-size: clamp(2.3rem, 6vw, 4rem); font-weight: 800; margin-block: 20px 16px; }
+  .hero h1 .hl { position: relative; color: var(--ink); white-space: nowrap; }
+  .hero h1 .hl::after { content:""; position:absolute; left:-3px; right:-3px; bottom:6px; height: 34%; background: var(--sun); z-index:-1; border-radius: 6px; transform: rotate(-1.2deg); }
+  .hero p.lede { font-size: clamp(1.02rem, 1.6vw, 1.18rem); color: var(--ink-soft); max-width: 36ch; margin-bottom: 26px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-trust { display: flex; gap: 22px; margin-top: 30px; flex-wrap: wrap; }
+  .hero-trust .t { font-size: .85rem; color: var(--ink-soft); }
+  .hero-trust .t b { display:block; font-family:"Baloo 2"; font-size: 1.5rem; color: var(--ink); }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } .hero-art { order: -1; } }
+
+  /* hero art */
+  .hero-art { position: relative; }
+  .art-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 20px; border: 1px solid var(--line); }
+  .art-card .ac-top { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .ac-ava { width:46px; height:46px; border-radius: 14px; flex:0 0 auto; }
+  .ac-bars { flex:1; }
+  .ac-bars i { display:block; height:9px; border-radius:5px; background:#eef0f4; margin-bottom:7px; }
+  .ac-bars i:first-child { width:62%; background:#dfe3ea; }
+  .ac-bars i:last-child { width:40%; margin-bottom:0; }
+  .ac-prog { margin-top: 6px; }
+  .ac-prog .lbl { display:flex; justify-content:space-between; font-size:.78rem; font-weight:700; margin-bottom:6px; }
+  .ac-track { height: 12px; background: #f0eee8; border-radius: 999px; overflow: hidden; }
+  .ac-fill { height:100%; width:0; border-radius:999px; background: linear-gradient(90deg, var(--teal), var(--sun-deep)); transition: width 1.6s cubic-bezier(.2,.8,.2,1); }
+  .float-badge { position:absolute; background:#fff; border-radius: 16px; box-shadow: var(--shadow-lg); padding-block:10px; padding-inline:14px; display:flex; align-items:center; gap:9px; font-weight:800; font-family:"Baloo 2"; font-size:.92rem; border:1px solid var(--line); animation: bob 4s ease-in-out infinite; }
+  .fb-1 { top: -22px; right: -10px; color: var(--coral); }
+  .fb-2 { bottom: -20px; left: -16px; color: var(--teal-deep); animation-delay: -2s; }
+  @keyframes bob { 0%,100%{ transform: translateY(0) rotate(-1deg);} 50%{ transform: translateY(-9px) rotate(1.5deg);} }
+  @media (max-width:480px){ .fb-1{right:0;} .fb-2{left:0;} }
+
+  /* ---------- STATS ---------- */
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 10px; }
+  .stat { background: var(--card); border:1px solid var(--line); border-radius: var(--radius); padding: 22px 18px; text-align: center; box-shadow: var(--shadow); }
+  .stat .num { font-family:"Baloo 2"; font-weight:800; font-size: clamp(1.7rem,3.4vw,2.4rem); color: var(--ink); }
+  .stat .num .suf { color: var(--coral); }
+  .stat .cap { font-size: .82rem; color: var(--ink-soft); font-weight:600; }
+  .stat:nth-child(2) .num .suf { color: var(--teal); }
+  .stat:nth-child(3) .num .suf { color: var(--sun-deep); }
+  .stat:nth-child(4) .num .suf { color: var(--grape); }
+  @media (max-width: 680px){ .stats { grid-template-columns: repeat(2,1fr); } }
+
+  /* ---------- SECTION HEAD ---------- */
+  section { padding-block: clamp(46px, 6vw, 78px); }
+  .sec-head { text-align: center; max-width: 60ch; margin-inline: auto; margin-bottom: 38px; }
+  .sec-head .kicker { font-family:"Baloo 2"; font-weight:700; color: var(--coral); letter-spacing:.12em; text-transform: uppercase; font-size: .82rem; }
+  .sec-head h2 { font-size: clamp(1.7rem, 4vw, 2.7rem); font-weight: 800; margin-block: 8px 12px; }
+  .sec-head p { color: var(--ink-soft); }
+
+  /* ---------- CATALOG ---------- */
+  .controls { display:flex; gap: 14px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+  .search { position: relative; flex: 1 1 260px; }
+  .search input { width:100%; font-family:"Noto Sans TC"; font-size: .98rem; padding-block: 13px; padding-inline: 46px 16px; border-radius: 999px; border: 2px solid var(--line); background:#fff; transition: border-color .2s, box-shadow .2s; }
+  .search input:focus { outline:none; border-color: var(--teal); box-shadow: 0 0 0 4px rgba(31,182,166,.15); }
+  .search svg { position:absolute; left:16px; top:50%; transform: translateY(-50%); width:20px; height:20px; color: var(--ink-soft); }
+  .chips { display:flex; gap: 9px; flex-wrap: wrap; }
+  .chip { font-family:"Baloo 2"; font-weight:700; font-size:.88rem; border:2px solid var(--line); background:#fff; color: var(--ink-soft); border-radius:999px; padding-block:9px; padding-inline:17px; cursor:pointer; transition: all .18s; }
+  .chip:hover { border-color: var(--ink); color: var(--ink); }
+  .chip.active { background: var(--ink); color:#fff; border-color: var(--ink); }
+  .levelbar { display:flex; gap:8px; align-items:center; font-size:.85rem; font-weight:600; color: var(--ink-soft); margin-bottom:24px; flex-wrap:wrap; }
+  .levelbar .seg { display:flex; background:#fff; border:2px solid var(--line); border-radius:999px; padding:3px; }
+  .levelbar .seg button { border:0; background:transparent; cursor:pointer; font-family:"Baloo 2"; font-weight:700; font-size:.84rem; padding-block:6px; padding-inline:14px; border-radius:999px; color: var(--ink-soft); transition: all .16s; }
+  .levelbar .seg button.on { background: var(--sun); color: var(--ink); }
+
+  .grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  @media (max-width: 920px){ .grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 560px){ .grid { grid-template-columns: 1fr; } }
+  .course {
+    background: var(--card); border:1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow); cursor: pointer;
+    display:flex; flex-direction:column;
+    transition: transform .2s cubic-bezier(.34,1.4,.64,1), box-shadow .2s;
+    animation: pop .5s both;
+  }
+  .course:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  @keyframes pop { from { opacity:0; transform: translateY(18px) scale(.97);} to { opacity:1; transform: none;} }
+  .thumb { height: 130px; position: relative; display:flex; align-items:center; justify-content:center; }
+  .thumb svg { width: 70px; height: 70px; }
+  .thumb .lvl { position:absolute; top:12px; right:12px; background: rgba(255,255,255,.9); font-family:"Baloo 2"; font-weight:700; font-size:.72rem; padding-block:4px; padding-inline:11px; border-radius:999px; }
+  .course .body { padding: 17px 18px 20px; display:flex; flex-direction:column; flex:1; }
+  .course .cat { font-family:"Baloo 2"; font-weight:700; font-size:.74rem; letter-spacing:.04em; text-transform:uppercase; margin-bottom:6px; }
+  .course h3 { font-size: 1.18rem; font-weight:700; margin-bottom: 8px; }
+  .course .desc { font-size:.88rem; color: var(--ink-soft); flex:1; margin-bottom:14px; }
+  .course .meta { display:flex; align-items:center; gap:12px; font-size:.8rem; color:var(--ink-soft); font-weight:600; margin-bottom:14px; }
+  .course .meta .star { color: var(--sun-deep); }
+  .course .foot { display:flex; align-items:center; justify-content:space-between; }
+  .course .price { font-family:"Baloo 2"; font-weight:800; font-size: 1.3rem; }
+  .course .price s { font-size:.82rem; color: var(--ink-soft); font-weight:600; margin-right:6px; }
+  .course .enroll { font-family:"Baloo 2"; font-weight:700; font-size:.85rem; color: var(--teal-deep); display:inline-flex; align-items:center; gap:5px; }
+  .empty { grid-column: 1/-1; text-align:center; padding: 50px 20px; color: var(--ink-soft); }
+  .empty svg { width:64px; height:64px; margin-inline:auto; margin-bottom:14px; }
+
+  /* ---------- CURRICULUM ---------- */
+  .curr-wrap { display:grid; grid-template-columns: 1.5fr 1fr; gap: 28px; align-items:start; }
+  @media (max-width: 860px){ .curr-wrap { grid-template-columns: 1fr; } }
+  .acc { background: var(--card); border:1px solid var(--line); border-radius: var(--radius); padding: 8px; box-shadow: var(--shadow); }
+  .mod { border-bottom: 1px solid var(--line); }
+  .mod:last-child { border-bottom: 0; }
+  .mod-head { display:flex; align-items:center; gap:14px; width:100%; background:none; border:0; cursor:pointer; text-align:left; padding: 16px 14px; font-family:"Baloo 2"; }
+  .mod-head .idx { width:34px; height:34px; flex:0 0 auto; border-radius:11px; background: var(--paper); display:flex; align-items:center; justify-content:center; font-weight:800; color: var(--teal-deep); }
+  .mod-head .ti { flex:1; }
+  .mod-head .ti b { font-weight:700; font-size:1.04rem; display:block; }
+  .mod-head .ti span { font-size:.78rem; color: var(--ink-soft); font-weight:500; font-family:"Noto Sans TC"; }
+  .mod-head .chev { transition: transform .25s; color: var(--ink-soft); }
+  .mod.open .mod-head .chev { transform: rotate(180deg); }
+  .mod-body { max-height:0; overflow:hidden; transition: max-height .35s ease; }
+  .mod.open .mod-body { max-height: 600px; }
+  .lesson { display:flex; align-items:center; gap:13px; padding: 11px 16px 11px 14px; cursor:pointer; border-radius: 12px; transition: background .15s; }
+  .lesson:hover { background: var(--paper); }
+  .lesson .check { width:24px; height:24px; flex:0 0 auto; border-radius:50%; border:2.5px solid var(--line); display:flex; align-items:center; justify-content:center; transition: all .2s; }
+  .lesson.done .check { background: var(--teal); border-color: var(--teal); }
+  .lesson .check svg { width:13px; height:13px; color:#fff; opacity:0; transform: scale(.5); transition: all .2s; }
+  .lesson.done .check svg { opacity:1; transform: scale(1); }
+  .lesson .lt { flex:1; font-size:.92rem; font-weight:500; }
+  .lesson.done .lt { color: var(--ink-soft); text-decoration: line-through; }
+  .lesson .dur { font-size:.76rem; color: var(--ink-soft); font-weight:600; font-family:"Baloo 2"; }
+
+  .progress-card { background: var(--ink); color:#fff; border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow-lg); position: sticky; top: 84px; }
+  .progress-card h3 { font-size:1.3rem; margin-bottom:4px; }
+  .progress-card p.sub { color: rgba(255,255,255,.7); font-size:.85rem; margin-bottom:22px; }
+  .ring-wrap { display:flex; align-items:center; gap:20px; }
+  .ring { position: relative; width: 116px; height: 116px; flex:0 0 auto; }
+  .ring .pct { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .ring .pct b { font-family:"Baloo 2"; font-weight:800; font-size:1.9rem; }
+  .ring .pct small { font-size:.7rem; color: rgba(255,255,255,.65); }
+  .ring-meta b { display:block; font-family:"Baloo 2"; font-size:1.7rem; }
+  .ring-meta span { font-size:.82rem; color: rgba(255,255,255,.7); }
+  .badges { display:flex; gap:10px; margin-top:22px; }
+  .pb { flex:1; text-align:center; background: rgba(255,255,255,.08); border-radius: 14px; padding: 13px 6px; transition: all .3s; opacity:.4; }
+  .pb.earned { opacity:1; background: rgba(255,203,61,.16); }
+  .pb svg { width:30px; height:30px; margin-inline:auto; margin-bottom:5px; }
+  .pb span { font-size:.7rem; font-weight:700; font-family:"Baloo 2"; }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-card { max-width: 680px; margin-inline: auto; background: var(--card); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: clamp(22px, 4vw, 38px); }
+  .quiz-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .quiz-top .qcount { font-family:"Baloo 2"; font-weight:800; color: var(--ink-soft); }
+  .qbar { height:8px; background:#f0eee8; border-radius:999px; flex:1; margin-inline:16px; overflow:hidden; }
+  .qbar i { display:block; height:100%; background: linear-gradient(90deg,var(--teal),var(--sun-deep)); border-radius:999px; transition: width .4s; }
+  .q-text { font-family:"Baloo 2"; font-weight:700; font-size: clamp(1.2rem,2.6vw,1.55rem); margin-bottom:20px; }
+  .opts { display:flex; flex-direction:column; gap:12px; }
+  .opt { display:flex; align-items:center; gap:13px; padding: 15px 18px; border:2px solid var(--line); border-radius: var(--radius-sm); background:#fff; cursor:pointer; font-weight:600; font-size:.98rem; text-align:left; transition: all .16s; width:100%; }
+  .opt:hover:not(:disabled) { border-color: var(--ink); transform: translateX(3px); }
+  .opt .key { width:28px; height:28px; flex:0 0 auto; border-radius:9px; background: var(--paper); display:flex; align-items:center; justify-content:center; font-family:"Baloo 2"; font-weight:800; font-size:.9rem; }
+  .opt.correct { border-color: var(--teal); background: rgba(31,182,166,.1); }
+  .opt.correct .key { background: var(--teal); color:#fff; }
+  .opt.wrong { border-color: var(--coral); background: rgba(255,107,94,.09); }
+  .opt.wrong .key { background: var(--coral); color:#fff; }
+  .opt:disabled { cursor: default; }
+  .q-feedback { margin-top:16px; padding:13px 16px; border-radius: var(--radius-sm); font-weight:600; font-size:.9rem; display:none; }
+  .q-feedback.show { display:block; animation: pop .3s; }
+  .q-feedback.ok { background: rgba(31,182,166,.12); color: var(--teal-deep); }
+  .q-feedback.no { background: rgba(255,107,94,.12); color: #c8412f; }
+  .quiz-actions { margin-top:22px; display:flex; justify-content:flex-end; }
+  .quiz-result { text-align:center; padding: 14px 0; }
+  .quiz-result .score { font-family:"Baloo 2"; font-weight:800; font-size: clamp(2.4rem,8vw,3.4rem); }
+  .quiz-result .emoji { font-size: 3rem; margin-bottom:6px; }
+  .quiz-result p { color: var(--ink-soft); margin-bottom:18px; }
+
+  /* ---------- PATH STEPPER ---------- */
+  .path { display:grid; grid-template-columns: repeat(4,1fr); gap: 0; counter-reset: step; }
+  @media (max-width: 760px){ .path { grid-template-columns: 1fr; } }
+  .step { position: relative; text-align:center; padding-inline: 14px; }
+  .step .node { width:54px; height:54px; margin-inline:auto; border-radius:18px; background:#fff; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; position:relative; z-index:2; transition: all .3s; }
+  .step .node svg { width:26px; height:26px; color: var(--ink-soft); transition: color .3s; }
+  .step.active .node { background: var(--sun); border-color: var(--sun-deep); transform: scale(1.08); box-shadow: var(--shadow); }
+  .step.active .node svg { color: var(--ink); }
+  .step::before { content:""; position:absolute; top:27px; left:-50%; width:100%; height:3px; background: var(--line); z-index:1; }
+  .step:first-child::before { display:none; }
+  @media (max-width:760px){ .step::before{ display:none; } .step { display:flex; gap:14px; text-align:left; align-items:center; margin-bottom:14px; } .step .node{ margin:0; } }
+  .step h4 { font-family:"Baloo 2"; font-weight:700; font-size: 1.02rem; margin-top:14px; }
+  @media (max-width:760px){ .step h4 { margin-top:0; } .step .stbody{ flex:1; } }
+  .step p { font-size:.82rem; color: var(--ink-soft); margin-top:4px; }
+
+  /* ---------- INSTRUCTORS ---------- */
+  .inst-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  @media (max-width: 820px){ .inst-grid { grid-template-columns: 1fr; } }
+  .inst { background: var(--card); border:1px solid var(--line); border-radius: var(--radius); padding: 26px 22px; text-align:center; box-shadow: var(--shadow); transition: transform .2s; }
+  .inst:hover { transform: translateY(-5px); }
+  .inst .ava { width:84px; height:84px; margin-inline:auto; border-radius: 26px; margin-bottom:14px; }
+  .inst h4 { font-size:1.18rem; font-weight:700; }
+  .inst .role { color: var(--coral); font-weight:700; font-family:"Baloo 2"; font-size:.86rem; margin-bottom:10px; }
+  .inst p { font-size:.86rem; color: var(--ink-soft); }
+  .inst .tags { display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-top:13px; }
+  .inst .tags span { font-size:.72rem; font-weight:700; background: var(--paper); border-radius:999px; padding-block:4px; padding-inline:11px; }
+
+  /* ---------- ENROLL ---------- */
+  .enroll-wrap { display:grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
+  @media (max-width: 820px){ .enroll-wrap { grid-template-columns: 1fr; } }
+  .plan { background: var(--card); border:2px solid var(--line); border-radius: var(--radius); padding: 28px 26px; box-shadow: var(--shadow); position:relative; }
+  .plan.feat { border-color: var(--sun-deep); }
+  .plan.feat::before { content:"最受歡迎 ★"; position:absolute; top:-14px; left:50%; transform: translateX(-50%); background: var(--sun); font-family:"Baloo 2"; font-weight:800; font-size:.78rem; padding-block:5px; padding-inline:16px; border-radius:999px; white-space:nowrap; }
+  .plan h3 { font-size:1.3rem; }
+  .plan .pp { font-family:"Baloo 2"; font-weight:800; font-size: 2.4rem; margin-block: 6px 2px; }
+  .plan .pp small { font-size:1rem; color: var(--ink-soft); font-weight:600; }
+  .plan ul { list-style:none; margin-block: 18px; display:flex; flex-direction:column; gap:11px; }
+  .plan li { display:flex; gap:10px; font-size:.9rem; }
+  .plan li svg { width:19px; height:19px; flex:0 0 auto; color: var(--teal); margin-top:2px; }
+  .form { background: var(--ink); color:#fff; border-radius: var(--radius); padding: 30px 28px; box-shadow: var(--shadow-lg); }
+  .form h3 { font-size:1.4rem; margin-bottom:6px; }
+  .form p.fs { color: rgba(255,255,255,.7); font-size:.86rem; margin-bottom:20px; }
+  .field { margin-bottom: 15px; }
+  .field label { display:block; font-size:.82rem; font-weight:600; margin-bottom:6px; color: rgba(255,255,255,.85); }
+  .field input, .field select { width:100%; font-family:"Noto Sans TC"; font-size:.95rem; padding-block:12px; padding-inline:15px; border-radius: var(--radius-sm); border:2px solid transparent; background: rgba(255,255,255,.1); color:#fff; transition: all .18s; }
+  .field input::placeholder { color: rgba(255,255,255,.45); }
+  .field input:focus, .field select:focus { outline:none; border-color: var(--sun); background: rgba(255,255,255,.16); }
+  .field select { appearance:none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffd34d' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position: right 15px center; }
+  .field select option { color: var(--ink); }
+  .field .err { color: #ffb3aa; font-size:.76rem; margin-top:5px; display:none; }
+  .field.bad input, .field.bad select { border-color: var(--coral); }
+  .field.bad .err { display:block; }
+  .form .btn { width:100%; justify-content:center; margin-top:8px; }
+  .form-ok { display:none; text-align:center; padding: 20px 0; }
+  .form-ok.show { display:block; animation: pop .4s; }
+  .form-ok .big { font-size: 3rem; margin-bottom:10px; }
+  .form-ok h3 { margin-bottom:8px; }
+
+  /* ---------- FOOTER ---------- */
+  footer { background: var(--ink); color: #fff; padding-block: 50px 30px; margin-top: 40px; }
+  .foot-grid { display:grid; grid-template-columns: 1.6fr repeat(3,1fr); gap: 30px; }
+  @media (max-width: 760px){ .foot-grid { grid-template-columns: 1fr 1fr; gap:24px; } }
+  .foot-grid h5 { font-family:"Baloo 2"; font-weight:700; font-size:.95rem; margin-bottom:14px; color: var(--sun); }
+  .foot-grid a { display:block; color: rgba(255,255,255,.72); font-size:.88rem; padding-block:5px; transition: color .15s; }
+  .foot-grid a:hover { color:#fff; }
+  .foot-grid .brand { color:#fff; margin-bottom:12px; }
+  .foot-grid .brand small { color: rgba(255,255,255,.6); }
+  .foot-desc { font-size:.86rem; color: rgba(255,255,255,.6); max-width: 34ch; }
+  .foot-bot { border-top:1px solid rgba(255,255,255,.12); margin-top:36px; padding-top:22px; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:.82rem; color: rgba(255,255,255,.55); }
+  .foot-bot a { color: var(--sun); }
+
+  /* ---------- BADGE ---------- */
+  .elife-badge {
+    position: fixed; bottom: 18px; right: 18px; z-index: 90;
+    display:flex; align-items:center; gap:9px;
+    background:#fff; border:2px solid var(--ink);
+    border-radius: 999px; padding-block:9px; padding-inline:15px;
+    font-family:"Baloo 2"; font-weight:800; font-size:.85rem; color: var(--ink);
+    box-shadow: 0 8px 22px -8px rgba(40,30,10,.45);
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .elife-badge:hover { transform: translateY(-3px) rotate(-2deg); }
+  .elife-badge .spark { width:20px; height:20px; }
+  @media (max-width: 480px){ .elife-badge { bottom: 12px; right: 12px; font-size:.78rem; padding-inline:12px; } }
+
+  .reveal { opacity:0; transform: translateY(26px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none!important; transition:none!important;} .reveal{opacity:1;transform:none;} }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <svg class="mark" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <rect width="44" height="44" rx="13" fill="#20283a"/>
+        <path d="M22 9 L36 16 L22 23 L8 16 Z" fill="#ffcb3d"/>
+        <path d="M14 19 V27 C14 30 18 32 22 32 C26 32 30 30 30 27 V19" stroke="#1fb6a6" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="36" cy="16" r="2.4" fill="#ff6b5e"/>
+        <path d="M36 16 V24" stroke="#ff6b5e" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span>學途 SkillTrail<small>邊學邊做 · 線上技能學院</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#catalog">課程探索</a>
+      <a href="#curriculum">課程內容</a>
+      <a href="#quiz">能力測驗</a>
+      <a href="#path">學習路徑</a>
+      <a href="#enroll">方案報名</a>
+    </nav>
+    <a href="#enroll" class="btn btn-sun nav-cta">免費試學</a>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="pill"><span class="dot"></span> 2026 春季新課上線 · 限時早鳥 7 折</span>
+      <h1>把想學的，<br>變成<span class="hl">做得到</span>的。</h1>
+      <p class="lede">學途陪你從零開始，跟著清楚的學習路徑，一堂一堂完課，一個一個成就解鎖。實作專案帶著走，學完就能用。</p>
+      <div class="hero-cta">
+        <a href="#catalog" class="btn btn-primary">開始探索課程 →</a>
+        <a href="#quiz" class="btn btn-ghost">測測我的起點</a>
+      </div>
+      <div class="hero-trust">
+        <div class="t"><b>4.9</b>學員評分 ★</div>
+        <div class="t"><b>87%</b>平均完課率</div>
+        <div class="t"><b>30天</b>不滿意退費</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="float-badge fb-1">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>
+        恭喜完課！
+      </div>
+      <div class="float-badge fb-2">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        連續學習 12 天
+      </div>
+      <div class="art-card">
+        <div class="ac-top">
+          <svg class="ac-ava" viewBox="0 0 46 46"><rect width="46" height="46" rx="14" fill="#fff3d1"/><circle cx="23" cy="18" r="8" fill="#f7b500"/><path d="M9 40c0-8 6-13 14-13s14 5 14 13" fill="#ffcb3d"/></svg>
+          <div class="ac-bars"><i></i><i></i></div>
+        </div>
+        <div class="ac-prog">
+          <div class="lbl"><span>Python 資料分析實戰</span><span id="acPct">0%</span></div>
+          <div class="ac-track"><div class="ac-fill" id="acFill"></div></div>
+        </div>
+        <div class="ac-prog" style="margin-top:14px;">
+          <div class="lbl"><span>UI/UX 設計入門</span><span>100%</span></div>
+          <div class="ac-track"><div class="ac-fill" style="width:100%;transition-delay:.3s;"></div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:16px;">
+          <span style="flex:1;text-align:center;background:var(--paper);border-radius:12px;padding:10px 4px;font-family:'Baloo 2';font-weight:800;font-size:.78rem;color:var(--teal-deep);">🔥 12 天</span>
+          <span style="flex:1;text-align:center;background:var(--paper);border-radius:12px;padding:10px 4px;font-family:'Baloo 2';font-weight:800;font-size:.78rem;color:var(--coral);">🏅 8 徽章</span>
+          <span style="flex:1;text-align:center;background:var(--paper);border-radius:12px;padding:10px 4px;font-family:'Baloo 2';font-weight:800;font-size:.78rem;color:var(--sun-deep);">⭐ Lv.4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding-block:0 clamp(40px,5vw,64px);">
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><div class="num" data-to="48200"><span class="val">0</span><span class="suf">+</span></div><div class="cap">在學學員</div></div>
+      <div class="stat"><div class="num" data-to="186"><span class="val">0</span><span class="suf">門</span></div><div class="cap">精選課程</div></div>
+      <div class="stat"><div class="num" data-to="87"><span class="val">0</span><span class="suf">%</span></div><div class="cap">平均完課率</div></div>
+      <div class="stat"><div class="num" data-to="62"><span class="val">0</span><span class="suf">位</span></div><div class="cap">業界講師</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section id="catalog">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Course Explorer</span>
+      <h2>探索你的下一堂課</h2>
+      <p>用分類、難度與關鍵字快速找到適合你的課程。每一門都附實作專案。</p>
+    </div>
+
+    <div class="controls reveal">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="搜尋課程，例如：Python、設計、行銷…" aria-label="搜尋課程" />
+      </div>
+      <div class="levelbar">
+        <span>難度：</span>
+        <div class="seg" id="levelSeg">
+          <button class="on" data-lvl="all">全部</button>
+          <button data-lvl="入門">入門</button>
+          <button data-lvl="進階">進階</button>
+          <button data-lvl="專家">專家</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chips reveal" id="chips" style="margin-bottom:26px;">
+      <button class="chip active" data-cat="all">全部課程</button>
+      <button class="chip" data-cat="程式開發">💻 程式開發</button>
+      <button class="chip" data-cat="設計創作">🎨 設計創作</button>
+      <button class="chip" data-cat="資料科學">📊 資料科學</button>
+      <button class="chip" data-cat="數位行銷">📣 數位行銷</button>
+    </div>
+
+    <div class="grid" id="courseGrid"></div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum" style="background:linear-gradient(180deg,transparent,rgba(255,203,61,.06),transparent);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Interactive Curriculum</span>
+      <h2>《Python 資料分析實戰》課程大綱</h2>
+      <p>點開單元、勾選完成的小節，右側進度環與成就徽章會即時更新。試試看 ✅</p>
+    </div>
+    <div class="curr-wrap">
+      <div class="acc reveal" id="acc"></div>
+      <div class="progress-card reveal">
+        <h3>你的學習進度</h3>
+        <p class="sub">完成小節即可解鎖徽章</p>
+        <div class="ring-wrap">
+          <div class="ring">
+            <svg viewBox="0 0 120 120" width="116" height="116">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="11"/>
+              <circle id="ringFg" cx="60" cy="60" r="52" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+              <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1fb6a6"/><stop offset="1" stop-color="#ffcb3d"/></linearGradient></defs>
+            </svg>
+            <div class="pct"><b id="ringPct">0%</b><small>已完成</small></div>
+          </div>
+          <div class="ring-meta">
+            <b><span id="doneCount">0</span>/<span id="totalCount">0</span></b>
+            <span>小節完成</span>
+          </div>
+        </div>
+        <div class="badges" id="badges">
+          <div class="pb" data-need="25"><svg viewBox="0 0 24 24" fill="#ffcb3d"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg><span>起跑者</span></div>
+          <div class="pb" data-need="50"><svg viewBox="0 0 24 24" fill="#ff6b5e"><path d="M12 2a7 7 0 00-7 7c0 3 2 5 4 6v3a1 1 0 001 1h4a1 1 0 001-1v-3c2-1 4-3 4-6a7 7 0 00-7-7z"/></svg><span>進行中</span></div>
+          <div class="pb" data-need="100"><svg viewBox="0 0 24 24" fill="#1fb6a6"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8" fill="#1fb6a6"/></svg><span>完課王</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Skill Check</span>
+      <h2>3 題小測驗，找到你的起點</h2>
+      <p>沒有對錯壓力，答完馬上看到回饋與適合你的課程建議。</p>
+    </div>
+    <div class="quiz-card reveal">
+      <div id="quizBody">
+        <div class="quiz-top">
+          <span class="qcount">第 <span id="qNow">1</span> / 3 題</span>
+          <div class="qbar"><i id="qProg" style="width:33%"></i></div>
+        </div>
+        <div class="q-text" id="qText"></div>
+        <div class="opts" id="qOpts"></div>
+        <div class="q-feedback" id="qFb"></div>
+        <div class="quiz-actions">
+          <button class="btn btn-primary" id="qNext" style="display:none;">下一題 →</button>
+        </div>
+      </div>
+      <div class="quiz-result" id="quizResult" style="display:none;">
+        <div class="emoji" id="resEmoji">🎉</div>
+        <div class="score"><span id="resScore">0</span> / 3</div>
+        <p id="resMsg"></p>
+        <button class="btn btn-sun" id="qRetry">再測一次 ↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATH -->
+<section id="path" style="background:linear-gradient(180deg,transparent,rgba(31,182,166,.06),transparent);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Learning Path</span>
+      <h2>四步驟，從新手到上線</h2>
+      <p>滑鼠移到任一步驟看看，這是我們為你規劃的成長地圖。</p>
+    </div>
+    <div class="path reveal" id="pathSteps">
+      <div class="step active" data-step="0">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="stbody"><h4>01 · 找方向</h4><p>能力測驗 + 興趣分析，幫你選對起點課程。</p></div>
+      </div>
+      <div class="step" data-step="1">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19V5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z" stroke-linejoin="round"/><path d="M8 13h8M8 17h5" stroke-linecap="round"/></svg></div>
+        <div class="stbody"><h4>02 · 跟著學</h4><p>影片 + 互動練習，每天 30 分鐘穩定推進。</p></div>
+      </div>
+      <div class="step" data-step="2">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="stbody"><h4>03 · 做專案</h4><p>實作專案放進作品集，助教一對一回饋。</p></div>
+      </div>
+      <div class="step" data-step="3">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6 5.7 21l2.3-7.2-6-4.4h7.6z" stroke-linejoin="round"/></svg></div>
+        <div class="stbody"><h4>04 · 拿證書</h4><p>完課證書 + 求職資源，帶著作品自信上場。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTORS -->
+<section id="instructors">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Meet the Mentors</span>
+      <h2>業界講師，陪你少走彎路</h2>
+      <p>每位講師都有真實業界經驗，把工作現場的眉角教給你。</p>
+    </div>
+    <div class="inst-grid" id="instGrid"></div>
+  </div>
+</section>
+
+<!-- ENROLL -->
+<section id="enroll" style="background:linear-gradient(180deg,transparent,rgba(255,107,94,.05),transparent);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Join Us</span>
+      <h2>選方案，今天就開始</h2>
+      <p>所有方案都享 30 天不滿意退費，學習零負擔。</p>
+    </div>
+    <div class="enroll-wrap">
+      <div style="display:flex;flex-direction:column;gap:22px;">
+        <div class="plan reveal">
+          <h3>單堂購買</h3>
+          <div class="pp">NT$ 1,280<small> / 門</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>單一課程永久觀看</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>實作專案 + 完課證書</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>課程討論區提問</li>
+          </ul>
+        </div>
+        <div class="plan feat reveal">
+          <h3>年度暢學</h3>
+          <div class="pp">NT$ 6,800<small> / 年</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>全站 186 門課程無限看</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>助教一對一專案回饋</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>學習路徑 + 求職資源包</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>新課優先試學</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form reveal">
+        <form id="enrollForm" novalidate>
+          <h3>免費試學報名</h3>
+          <p class="fs">填寫資料，立即解鎖任一門課程前 3 小節。</p>
+          <div class="field" id="f-name">
+            <label for="i-name">姓名</label>
+            <input type="text" id="i-name" placeholder="王小明" />
+            <div class="err">請填寫你的姓名</div>
+          </div>
+          <div class="field" id="f-email">
+            <label for="i-email">電子信箱</label>
+            <input type="email" id="i-email" placeholder="you@example.com" />
+            <div class="err">請填寫有效的電子信箱</div>
+          </div>
+          <div class="field" id="f-course">
+            <label for="i-course">想試學的方向</label>
+            <select id="i-course">
+              <option value="">請選擇…</option>
+              <option>程式開發</option>
+              <option>設計創作</option>
+              <option>資料科學</option>
+              <option>數位行銷</option>
+            </select>
+            <div class="err">請選擇一個學習方向</div>
+          </div>
+          <div class="field" id="f-plan">
+            <label for="i-plan">偏好方案</label>
+            <select id="i-plan">
+              <option value="">請選擇…</option>
+              <option>單堂購買</option>
+              <option>年度暢學（推薦）</option>
+            </select>
+            <div class="err">請選擇一個方案</div>
+          </div>
+          <button type="submit" class="btn btn-sun">送出，開始免費試學 →</button>
+        </form>
+        <div class="form-ok" id="formOk">
+          <div class="big">🎓</div>
+          <h3>報名成功！</h3>
+          <p style="color:rgba(255,255,255,.75);font-size:.9rem;">我們已將試學連結寄到 <b id="okEmail"></b>，<br>快去信箱開始你的學習旅程吧！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" style="color:#fff;">
+          <svg class="mark" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <rect width="44" height="44" rx="13" fill="#ffcb3d"/>
+            <path d="M22 9 L36 16 L22 23 L8 16 Z" fill="#20283a"/>
+            <path d="M14 19 V27 C14 30 18 32 22 32 C26 32 30 30 30 27 V19" stroke="#1fb6a6" stroke-width="2.6" stroke-linecap="round"/>
+          </svg>
+          <span>學途 SkillTrail<small>邊學邊做 · 線上技能學院</small></span>
+        </a>
+        <p class="foot-desc">陪每一位想成長的人，把「想學」變成「做得到」。實作導向、業界講師、清楚的學習路徑。</p>
+      </div>
+      <div>
+        <h5>課程</h5>
+        <a href="#catalog">程式開發</a><a href="#catalog">設計創作</a><a href="#catalog">資料科學</a><a href="#catalog">數位行銷</a>
+      </div>
+      <div>
+        <h5>學習</h5>
+        <a href="#curriculum">課程大綱</a><a href="#quiz">能力測驗</a><a href="#path">學習路徑</a><a href="#instructors">講師團隊</a>
+      </div>
+      <div>
+        <h5>關於</h5>
+        <a href="#enroll">方案報名</a><a href="#top">學員故事</a><a href="#top">企業合作</a><a href="#top">常見問題</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 學途 SkillTrail（虛構作品集示範）· All rights reserved.</span>
+      <span>網站設計與開發 · <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- BADGE -->
+<a class="elife-badge" href="https://elife-ai.com" target="_blank" rel="noopener" aria-label="由 e-life-ai 製作">
+  <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="#f7b500" stroke-width="2.4"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6 5.7 21l2.3-7.2-6-4.4h7.6z" stroke-linejoin="round"/></svg>
+  elife-ai.com
+</a>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------- DATA ---------- */
+  const COURSES = [
+    { t:"Python 資料分析實戰", cat:"資料科學", lvl:"入門", desc:"從 pandas 到視覺化，用真實資料集做出第一份分析報告。", price:1280, old:1880, rate:4.9, n:"5,210", h:32, c1:"#fff3d1", c2:"#ffcb3d", icon:"chart" },
+    { t:"React 前端開發全攻略", cat:"程式開發", lvl:"進階", desc:"Hooks、狀態管理到部署，打造可上線的互動式網站。", price:1680, old:2280, rate:4.8, n:"3,940", h:40, c1:"#d8f6f1", c2:"#1fb6a6", icon:"code" },
+    { t:"UI/UX 設計入門", cat:"設計創作", lvl:"入門", desc:"從使用者研究到 Figma 原型，設計出好用又好看的介面。", price:1280, old:1680, rate:4.9, n:"6,120", h:28, c1:"#ffe2de", c2:"#ff6b5e", icon:"pen" },
+    { t:"SQL 與資料庫設計", cat:"資料科學", lvl:"進階", desc:"複雜查詢、索引優化、資料建模，讓資料為你工作。", price:1480, old:1980, rate:4.7, n:"2,310", h:34, c1:"#e6e2fb", c2:"#6c5ce7", icon:"db" },
+    { t:"Google Ads 投放實戰", cat:"數位行銷", lvl:"入門", desc:"關鍵字、出價策略到成效分析，把預算花在刀口上。", price:1180, old:1580, rate:4.6, n:"1,870", h:22, c1:"#fff3d1", c2:"#f7b500", icon:"mega" },
+    { t:"機器學習工程實務", cat:"資料科學", lvl:"專家", desc:"從特徵工程到模型部署，建立可維運的 ML 流程。", price:2280, old:2980, rate:4.8, n:"1,240", h:46, c1:"#d8f6f1", c2:"#128c80", icon:"brain" },
+    { t:"品牌視覺設計系統", cat:"設計創作", lvl:"進階", desc:"色彩、字體到設計規範，打造一致而有記憶點的品牌。", price:1580, old:2080, rate:4.9, n:"2,650", h:30, c1:"#ffe2de", c2:"#ff6b5e", icon:"palette" },
+    { t:"TypeScript 全端開發", cat:"程式開發", lvl:"專家", desc:"型別系統、Node 後端到全端整合，寫出更穩健的程式。", price:1980, old:2580, rate:4.8, n:"1,560", h:44, c1:"#d8f6f1", c2:"#1fb6a6", icon:"code" },
+    { t:"內容行銷與社群經營", cat:"數位行銷", lvl:"入門", desc:"內容策略、社群節奏到數據復盤，養出忠實的粉絲群。", price:1180, old:1480, rate:4.7, n:"3,020", h:24, c1:"#fff3d1", c2:"#ffcb3d", icon:"mega" }
+  ];
+
+  const ICONS = {
+    chart:'<rect x="4" y="13" width="4" height="7" rx="1.5"/><rect x="10" y="8" width="4" height="12" rx="1.5"/><rect x="16" y="4" width="4" height="16" rx="1.5"/>',
+    code:'<path d="M9 8l-5 4 5 4M15 8l5 4-5 4" fill="none" stroke="#20283a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+    pen:'<path d="M4 20l4-1 11-11-3-3L5 16l-1 4z" fill="none" stroke="#20283a" stroke-width="2.2" stroke-linejoin="round"/>',
+    db:'<ellipse cx="12" cy="6" rx="7" ry="3" fill="none" stroke="#20283a" stroke-width="2.2"/><path d="M5 6v12c0 1.6 3 3 7 3s7-1.4 7-3V6" fill="none" stroke="#20283a" stroke-width="2.2"/>',
+    mega:'<path d="M4 10v4h3l8 4V6l-8 4H4z" fill="none" stroke="#20283a" stroke-width="2.2" stroke-linejoin="round"/><path d="M18 9a4 4 0 010 6" fill="none" stroke="#20283a" stroke-width="2.2" stroke-linecap="round"/>',
+    brain:'<path d="M9 4a3 3 0 00-3 3 3 3 0 00-1 5 3 3 0 002 4 3 3 0 005 1V5a3 3 0 00-3-1zM15 4a3 3 0 013 3 3 3 0 011 5 3 3 0 01-2 4 3 3 0 01-5 1" fill="none" stroke="#20283a" stroke-width="2" stroke-linejoin="round"/>',
+    palette:'<path d="M12 3a9 9 0 100 18c1 0 1.5-1 1.5-2 0-1.5 1-2 2.5-2H18a3 3 0 003-3c0-5-4-9-9-9z" fill="none" stroke="#20283a" stroke-width="2.2"/><circle cx="8" cy="11" r="1.3" fill="#20283a"/><circle cx="12" cy="8" r="1.3" fill="#20283a"/><circle cx="16" cy="11" r="1.3" fill="#20283a"/>'
+  };
+
+  const CURRICULUM = [
+    { t:"環境準備與 Python 基礎", sub:"4 小節 · 約 1.5 小時", lessons:[
+      { t:"安裝 Anaconda 與 Jupyter", d:"12:30" },
+      { t:"變數、資料型別與運算", d:"18:05" },
+      { t:"串列、字典與迴圈", d:"22:40" },
+      { t:"小練習：第一支分析腳本", d:"15:20" }
+    ]},
+    { t:"用 pandas 整理資料", sub:"4 小節 · 約 2 小時", lessons:[
+      { t:"DataFrame 與 Series 入門", d:"16:10" },
+      { t:"篩選、排序與分組彙整", d:"24:55" },
+      { t:"缺失值與資料清洗", d:"19:30" },
+      { t:"實戰：清理電商訂單資料", d:"28:15" }
+    ]},
+    { t:"資料視覺化說故事", sub:"3 小節 · 約 1.5 小時", lessons:[
+      { t:"Matplotlib 圖表基礎", d:"20:00" },
+      { t:"Seaborn 美化與統計圖", d:"23:40" },
+      { t:"打造互動式儀表板", d:"26:30" }
+    ]},
+    { t:"期末專案：銷售洞察報告", sub:"2 小節 · 約 1 小時", lessons:[
+      { t:"專案規劃與資料探索", d:"21:15" },
+      { t:"產出報告並上台簡報", d:"24:50" }
+    ]}
+  ];
+
+  const INSTRUCTORS = [
+    { n:"林雨柔", r:"資料科學總監", d:"前電商數據團隊負責人，10 年資料分析經驗，擅長把複雜觀念講得超好懂。", tags:["Python","資料分析","機器學習"], c:"#ffcb3d", ic:"chart" },
+    { n:"陳柏宇", r:"資深前端工程師", d:"接案與新創背景，做過數十個上線專案，相信「動手做」是最快的學習法。", tags:["React","TypeScript","效能優化"], c:"#1fb6a6", ic:"code" },
+    { n:"黃詩涵", r:"產品設計顧問", d:"曾任 SaaS 產品設計主管，重視使用者與商業的平衡，作品多次獲獎。", tags:["UI/UX","Figma","設計系統"], c:"#ff6b5e", ic:"pen" }
+  ];
+
+  const QUIZ = [
+    { q:"想分析一份 Excel 銷售資料、找出每月趨勢，最適合先學哪一門？", opts:["Python 資料分析實戰","品牌視覺設計系統","Google Ads 投放實戰","TypeScript 全端開發"], a:0, ok:"答對了！pandas + 視覺化正是處理表格資料的利器。", no:"其實「Python 資料分析實戰」最對味，它專門教你處理表格資料。" },
+    { q:"完全沒寫過程式，想做出一個會互動的個人網站，建議的學習順序是？", opts:["直接從機器學習開始","先學 HTML/CSS 再進 React","只看設計課程就好","先學 SQL 資料庫"], a:1, ok:"沒錯！先打好網頁基礎，再進 React 會順很多。", no:"建議先學 HTML/CSS 打底，再進 React，循序漸進最扎實。" },
+    { q:"在學途，完成一門課後你會獲得什麼？", opts:["只有觀看紀錄","實作專案作品 + 完課證書","什麼都沒有","下一堂課的折價券而已"], a:1, ok:"完全正確！作品集與證書帶著走，求職更有底氣。", no:"正解是「實作專案作品 + 完課證書」，學完就能放進作品集。" }
+  ];
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  /* ---------- CATALOG ---------- */
+  const grid = $("#courseGrid");
+  let curCat = "all", curLvl = "all", curQ = "";
+
+  function thumb(c) {
+    const svg = `<svg viewBox="0 0 24 24">${ICONS[c.icon] || ""}</svg>`;
+    return `<div class="thumb" style="background:linear-gradient(135deg,${c.c1},${c.c2}33);"><span class="lvl">${c.lvl}</span>${svg}</div>`;
+  }
+  function card(c, i) {
+    const catColor = { "程式開發":"var(--teal-deep)","設計創作":"var(--coral)","資料科學":"var(--grape)","數位行銷":"var(--sun-deep)" }[c.cat];
+    return `<article class="course" style="animation-delay:${i*60}ms" tabindex="0">
+      ${thumb(c)}
+      <div class="body">
+        <div class="cat" style="color:${catColor}">${c.cat}</div>
+        <h3>${c.t}</h3>
+        <p class="desc">${c.desc}</p>
+        <div class="meta"><span class="star">★ ${c.rate}</span><span>· ${c.n} 人</span><span>· ${c.h} 小時</span></div>
+        <div class="foot">
+          <span class="price"><s>NT$${c.old}</s>NT$${c.price}</span>
+          <span class="enroll">立即報名 →</span>
+        </div>
+      </div>
+    </article>`;
+  }
+  function render() {
+    const list = COURSES.filter(c =>
+      (curCat === "all" || c.cat === curCat) &&
+      (curLvl === "all" || c.lvl === curLvl) &&
+      (curQ === "" || (c.t + c.cat + c.desc).toLowerCase().includes(curQ))
+    );
+    grid.innerHTML = list.length
+      ? list.map(card).join("")
+      : `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="#c9bfac" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg><p>找不到符合的課程，換個關鍵字或分類試試？</p></div>`;
+  }
+  $("#chips").addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    $$(".chip").forEach(x => x.classList.remove("active")); b.classList.add("active");
+    curCat = b.dataset.cat; render();
+  });
+  $("#levelSeg").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("#levelSeg button").forEach(x => x.classList.remove("on")); b.classList.add("on");
+    curLvl = b.dataset.lvl; render();
+  });
+  $("#searchInput").addEventListener("input", e => { curQ = e.target.value.trim().toLowerCase(); render(); });
+  render();
+
+  /* ---------- CURRICULUM ---------- */
+  const acc = $("#acc");
+  const total = CURRICULUM.reduce((s, m) => s + m.lessons.length, 0);
+  acc.innerHTML = CURRICULUM.map((m, mi) => `
+    <div class="mod${mi === 0 ? " open" : ""}">
+      <button class="mod-head" data-mi="${mi}">
+        <span class="idx">${mi + 1}</span>
+        <span class="ti"><b>${m.t}</b><span>${m.sub}</span></span>
+        <svg class="chev" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="mod-body">
+        ${m.lessons.map((l, li) => `
+          <div class="lesson" data-id="${mi}-${li}">
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="lt">${l.t}</span>
+            <span class="dur">${l.d}</span>
+          </div>`).join("")}
+      </div>
+    </div>`).join("");
+
+  $("#totalCount").textContent = total;
+  const ringFg = $("#ringFg"), C = 2 * Math.PI * 52;
+  ringFg.style.strokeDasharray = C;
+
+  function updateProgress() {
+    const done = $$(".lesson.done").length;
+    const pct = Math.round((done / total) * 100);
+    $("#doneCount").textContent = done;
+    $("#ringPct").textContent = pct + "%";
+    ringFg.style.strokeDashoffset = C * (1 - done / total);
+    $$("#badges .pb").forEach(b => b.classList.toggle("earned", pct >= +b.dataset.need));
+  }
+  acc.addEventListener("click", e => {
+    const head = e.target.closest(".mod-head");
+    if (head) { head.parentElement.classList.toggle("open"); return; }
+    const les = e.target.closest(".lesson");
+    if (les) { les.classList.toggle("done"); updateProgress(); }
+  });
+  updateProgress();
+
+  /* ---------- QUIZ ---------- */
+  let qi = 0, score = 0, answered = false;
+  const qText = $("#qText"), qOpts = $("#qOpts"), qFb = $("#qFb"), qNext = $("#qNext");
+  const keys = ["A", "B", "C", "D"];
+
+  function loadQ() {
+    answered = false;
+    const item = QUIZ[qi];
+    $("#qNow").textContent = qi + 1;
+    $("#qProg").style.width = ((qi) / QUIZ.length * 100 + 33) + "%";
+    qText.textContent = item.q;
+    qFb.className = "q-feedback"; qFb.textContent = "";
+    qNext.style.display = "none";
+    qNext.textContent = qi === QUIZ.length - 1 ? "看結果 →" : "下一題 →";
+    qOpts.innerHTML = item.opts.map((o, i) =>
+      `<button class="opt" data-i="${i}"><span class="key">${keys[i]}</span><span>${o}</span></button>`).join("");
+  }
+  qOpts.addEventListener("click", e => {
+    const b = e.target.closest(".opt"); if (!b || answered) return;
+    answered = true;
+    const pick = +b.dataset.i, item = QUIZ[qi];
+    $$(".opt").forEach(o => o.disabled = true);
+    if (pick === item.a) {
+      b.classList.add("correct"); score++;
+      qFb.className = "q-feedback ok show"; qFb.textContent = "✅ " + item.ok;
+    } else {
+      b.classList.add("wrong");
+      qOpts.children[item.a].classList.add("correct");
+      qFb.className = "q-feedback no show"; qFb.textContent = "💡 " + item.no;
+    }
+    qNext.style.display = "inline-flex";
+  });
+  qNext.addEventListener("click", () => {
+    if (qi < QUIZ.length - 1) { qi++; loadQ(); }
+    else showResult();
+  });
+  function showResult() {
+    $("#quizBody").style.display = "none";
+    const r = $("#quizResult"); r.style.display = "block";
+    $("#resScore").textContent = score;
+    const msg = score === 3 ? ["🏆", "太厲害了！你對學習方向很有概念，直接挑進階課也沒問題。"]
+      : score === 2 ? ["🎉", "很不錯！基礎觀念清楚，從入門課開始很快就能上手。"]
+      : ["🌱", "完美的起點！跟著入門課與學習路徑，你會進步得很快。"];
+    $("#resEmoji").textContent = msg[0];
+    $("#resMsg").textContent = msg[1];
+  }
+  $("#qRetry").addEventListener("click", () => {
+    qi = 0; score = 0; $("#quizResult").style.display = "none";
+    $("#quizBody").style.display = "block"; loadQ();
+  });
+  loadQ();
+
+  /* ---------- PATH ---------- */
+  $$("#pathSteps .step").forEach(st => {
+    st.addEventListener("mouseenter", () => {
+      $$("#pathSteps .step").forEach(x => x.classList.remove("active"));
+      st.classList.add("active");
+    });
+  });
+
+  /* ---------- INSTRUCTORS ---------- */
+  $("#instGrid").innerHTML = INSTRUCTORS.map(p => `
+    <div class="inst">
+      <svg class="ava" viewBox="0 0 84 84"><rect width="84" height="84" rx="26" fill="${p.c}22"/><circle cx="42" cy="33" r="15" fill="${p.c}"/><path d="M14 76c0-15 12-23 28-23s28 8 28 23" fill="${p.c}"/></svg>
+      <h4>${p.n}</h4>
+      <div class="role">${p.r}</div>
+      <p>${p.d}</p>
+      <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join("")}</div>
+    </div>`).join("");
+
+  /* ---------- ENROLL FORM ---------- */
+  const form = $("#enrollForm");
+  const validators = {
+    "f-name": () => $("#i-name").value.trim().length >= 1,
+    "f-email": () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("#i-email").value.trim()),
+    "f-course": () => $("#i-course").value !== "",
+    "f-plan": () => $("#i-plan").value !== ""
+  };
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    let ok = true;
+    for (const [id, fn] of Object.entries(validators)) {
+      const bad = !fn();
+      $("#" + id).classList.toggle("bad", bad);
+      if (bad) ok = false;
+    }
+    if (!ok) { $("#" + Object.keys(validators).find(id => !validators[id]())).querySelector("input,select").focus(); return; }
+    $("#okEmail").textContent = $("#i-email").value.trim();
+    form.style.display = "none";
+    $("#formOk").classList.add("show");
+  });
+  $$("#enrollForm input, #enrollForm select").forEach(el => {
+    el.addEventListener("input", () => el.closest(".field").classList.remove("bad"));
+    el.addEventListener("change", () => el.closest(".field").classList.remove("bad"));
+  });
+
+  /* ---------- COUNTERS ---------- */
+  function animCount(el) {
+    const to = +el.parentElement.dataset.to, dur = 1400, t0 = performance.now();
+    function tick(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(to * e).toLocaleString("en-US");
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- REVEAL + TRIGGERS ---------- */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      if (en.target.querySelector?.(".stat")) $$(".stat .val").forEach(animCount);
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.18 });
+  $$(".reveal").forEach(el => io.observe(el));
+
+  /* hero progress fill */
+  setTimeout(() => {
+    $("#acFill").style.width = "68%";
+    let p = 0; const t = setInterval(() => { p += 4; if (p >= 68) { p = 68; clearInterval(t); } $("#acPct").textContent = p + "%"; }, 70);
+  }, 350);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="warm">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>林筱晴 Sunny Lin — 領導力講師 / 品牌策略顧問 / 作家</title>
+<meta name="description" content="林筱晴 Sunny Lin 個人品牌一頁式範例。柔奢編輯風、手寫簽名、輪播角色標語、滾動數字、講題與服務、見證輪播、媒體露出、Podcast 集數篩選、預約表單。自包含靜態前端範例。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Sunny Lin — Personal Brand / Speaker (showcase #10)
+   Aesthetic: warm soft-luxury "soulful coach" editorial brand.
+   Cream/clay canvas (#f6efe6), deep ink (#211c17), forest-teal
+   accent (#1f5d4c) + warm gold (#c89a4e). Big editorial serif
+   (Crimson Pro) + handwritten signature accent (Caveat) for the
+   personal touch, Manrope for UI/body. Tasteful grain, soft
+   shadows, paper warmth. Distinct from studio mint/indigo and
+   every prior demo (fonts, palette, mood all fresh).
+   All imagery is inline SVG / CSS art (offline-safe).
+   ============================================================ */
+:root{
+  --paper:#f6efe6; --paper2:#efe5d7; --card:#fffaf2;
+  --ink:#211c17; --ink2:#4a4239; --mut:#7c7164;
+  --line:rgba(33,28,23,.12); --line2:rgba(33,28,23,.07);
+  --teal:#1f5d4c; --teal2:#2c7a64; --gold:#c89a4e; --gold2:#e3b96a;
+  --coral:#c8654e;
+  --maxw:1160px;
+  --disp:"Crimson Pro",Georgia,serif;
+  --sign:"Caveat",cursive;
+  --ui:"Manrope","Noto Sans TC",system-ui,sans-serif;
+  --sh1:0 1px 2px rgba(33,28,23,.05),0 8px 28px rgba(33,28,23,.08);
+  --sh2:0 2px 6px rgba(33,28,23,.07),0 22px 60px rgba(33,28,23,.14);
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--ui); line-height:1.65; font-size:16px;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* paper grain overlay */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  opacity:.5; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea{font-family:inherit;font-size:1rem}
+.wrap{width:min(100% - 40px,var(--maxw));margin-inline:auto;position:relative;z-index:1}
+.serif{font-family:var(--disp)}
+.script{font-family:var(--sign)}
+.eyebrow{font-family:var(--ui);font-weight:700;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal)}
+.gold-eyebrow{color:var(--gold)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  transition:background .4s,box-shadow .4s,padding .3s;
+  padding:20px 0;
+}
+header.nav.scrolled{background:rgba(246,239,230,.86);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line);padding:12px 0}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.01em}
+.brand .mono{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--ink);color:var(--paper);font-family:var(--disp);font-size:1.25rem;font-weight:600;
+  box-shadow:var(--sh1)
+}
+.brand b{font-size:1.05rem}
+.brand .role{font-size:.72rem;color:var(--mut);font-weight:600;letter-spacing:.04em}
+nav.links{display:flex;align-items:center;gap:30px}
+nav.links a{font-weight:600;font-size:.92rem;color:var(--ink2);position:relative;transition:color .25s}
+nav.links a::after{content:"";position:absolute;left:0;bottom:-5px;height:2px;width:0;background:var(--gold);transition:width .3s var(--ease)}
+nav.links a:hover{color:var(--ink)}
+nav.links a:hover::after{width:100%}
+.nav-cta{
+  background:var(--ink);color:var(--paper);padding:11px 22px;border-radius:40px;font-weight:700;font-size:.9rem;
+  transition:transform .25s var(--ease),background .25s;box-shadow:var(--sh1)
+}
+.nav-cta:hover{transform:translateY(-2px);background:var(--teal)}
+.burger{display:none;flex-direction:column;gap:5px;padding:8px}
+.burger span{width:24px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:152px 0 70px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5}
+.b1{width:520px;height:520px;background:radial-gradient(circle,#bcdcd1,transparent 70%);top:-120px;right:-80px}
+.b2{width:440px;height:440px;background:radial-gradient(circle,#f0d9a8,transparent 70%);bottom:-160px;left:-120px;opacity:.55}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:54px;align-items:center;position:relative;z-index:1}
+.hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(2.9rem,6.2vw,5rem);line-height:1.02;letter-spacing:-.01em;margin:18px 0 8px}
+.hero h1 em{font-style:italic;color:var(--teal)}
+.signature{font-family:var(--sign);font-size:clamp(2rem,4vw,3.1rem);color:var(--gold);line-height:1;margin:-4px 0 6px;transform:rotate(-3deg);transform-origin:left}
+.rotline{font-size:clamp(1.15rem,2.4vw,1.5rem);font-weight:600;color:var(--ink2);min-height:1.5em;display:flex;align-items:center;gap:.5ch;margin-top:10px}
+.rotline .pre{color:var(--mut);font-weight:500}
+.rotword{color:var(--teal);position:relative;border-right:2px solid var(--gold);padding-right:2px}
+.hero p.lead{color:var(--ink2);font-size:1.06rem;max-width:42ch;margin:22px 0 30px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;border-radius:42px;padding:14px 28px;transition:transform .25s var(--ease),box-shadow .25s,background .25s,color .25s}
+.btn-primary{background:var(--teal);color:#fff;box-shadow:var(--sh1)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:var(--sh2);background:var(--teal2)}
+.btn-ghost{border:1.5px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--ink);transform:translateY(-3px)}
+.btn svg{transition:transform .3s var(--ease)}
+.btn-primary:hover svg{transform:translate(3px,-3px)}
+.hero-trust{display:flex;align-items:center;gap:14px;margin-top:28px;color:var(--mut);font-size:.88rem;font-weight:600}
+.avatars{display:flex}
+.avatars span{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--paper);margin-left:-10px;background:var(--teal);display:grid;place-items:center;color:#fff;font-weight:700;font-size:.78rem}
+.avatars span:first-child{margin-left:0}
+.avatars span:nth-child(2){background:var(--gold)}
+.avatars span:nth-child(3){background:var(--coral)}
+.avatars span:nth-child(4){background:var(--ink)}
+
+/* portrait */
+.portrait-wrap{position:relative;display:grid;place-items:center}
+.portrait-card{
+  position:relative;width:min(100%,400px);aspect-ratio:4/5;border-radius:200px 200px 22px 22px;overflow:hidden;
+  background:linear-gradient(160deg,#2c7a64,#1f5d4c);box-shadow:var(--sh2);border:6px solid var(--card)
+}
+.portrait-card svg{width:100%;height:100%}
+.pf-badge{
+  position:absolute;background:var(--card);border-radius:18px;padding:11px 15px;box-shadow:var(--sh2);
+  display:flex;align-items:center;gap:10px;font-weight:700;font-size:.84rem
+}
+.pf-badge .ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:#fff}
+.pf-badge small{display:block;color:var(--mut);font-weight:600;font-size:.72rem}
+.pf1{top:24px;left:-26px;animation:floaty 6s ease-in-out infinite}
+.pf2{bottom:38px;right:-30px;animation:floaty 6s ease-in-out infinite .8s}
+@keyframes floaty{50%{transform:translateY(-12px)}}
+@media(prefers-reduced-motion:reduce){.pf1,.pf2{animation:none}}
+
+/* ---------- marquee logos ---------- */
+.media{padding:40px 0 8px;border-top:1px solid var(--line2)}
+.media .lab{text-align:center;color:var(--mut);font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:22px}
+.marquee{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;gap:54px;width:max-content;animation:scroll 28s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink2);font-weight:800;font-size:1.18rem;opacity:.62;white-space:nowrap;transition:opacity .3s,color .3s}
+.logo:hover{opacity:1;color:var(--teal)}
+.logo svg{width:26px;height:26px}
+
+/* ---------- section shell ---------- */
+section.blk{padding:84px 0;position:relative}
+.sec-head{max-width:620px;margin-bottom:46px}
+.sec-head h2{font-family:var(--disp);font-weight:600;font-size:clamp(2rem,4vw,3.1rem);line-height:1.08;letter-spacing:-.01em;margin:12px 0 12px}
+.sec-head p{color:var(--ink2);font-size:1.04rem}
+.sec-head.center{margin-inline:auto;text-align:center}
+
+/* ---------- stats ---------- */
+.stats{background:var(--ink);color:var(--paper);border-radius:30px;padding:54px 40px;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.stats::after{content:"";position:absolute;inset:0;background:radial-gradient(700px 300px at 80% -20%,rgba(200,154,78,.18),transparent)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;position:relative;z-index:1}
+.stat{text-align:center}
+.stat .num{font-family:var(--disp);font-weight:600;font-size:clamp(2.6rem,5vw,3.6rem);line-height:1;color:var(--gold2)}
+.stat .num .suf{font-size:.55em;color:var(--paper)}
+.stat .cap{margin-top:8px;color:#d9cfc0;font-weight:600;font-size:.9rem;letter-spacing:.02em}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:54px;align-items:center}
+.about-card{background:var(--card);border-radius:26px;padding:34px;box-shadow:var(--sh1);border:1px solid var(--line2)}
+.about-card .quote{font-family:var(--disp);font-style:italic;font-size:1.5rem;line-height:1.4;color:var(--ink)}
+.about-card .quote::before{content:"“";font-size:2.6rem;color:var(--gold);line-height:0;vertical-align:-.3em;margin-right:.05em}
+.about-sign{font-family:var(--sign);font-size:2rem;color:var(--teal);margin-top:20px}
+.about-body h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.9rem,3.6vw,2.7rem);line-height:1.12;margin:12px 0 16px}
+.about-body p{color:var(--ink2);margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.chip{background:var(--paper2);border:1px solid var(--line);border-radius:30px;padding:7px 15px;font-weight:600;font-size:.85rem;color:var(--ink2);transition:.25s}
+.chip:hover{background:var(--teal);color:#fff;border-color:var(--teal);transform:translateY(-2px)}
+
+/* ---------- talks/services ---------- */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.svc{background:var(--card);border:1px solid var(--line2);border-radius:24px;padding:30px;box-shadow:var(--sh1);transition:transform .35s var(--ease),box-shadow .35s;position:relative;overflow:hidden}
+.svc::before{content:"";position:absolute;left:0;top:0;height:4px;width:100%;background:linear-gradient(90deg,var(--teal),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.svc:hover{transform:translateY(-8px);box-shadow:var(--sh2)}
+.svc:hover::before{transform:scaleX(1)}
+.svc .ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--paper2);color:var(--teal);margin-bottom:18px;transition:.35s}
+.svc:hover .ic{background:var(--teal);color:#fff;transform:rotate(-6deg) scale(1.06)}
+.svc h3{font-family:var(--disp);font-weight:600;font-size:1.4rem;margin-bottom:8px}
+.svc p{color:var(--ink2);font-size:.95rem}
+.svc .meta{margin-top:16px;display:flex;align-items:center;gap:8px;color:var(--gold);font-weight:700;font-size:.86rem}
+
+/* ---------- podcast / episodes ---------- */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.tab{padding:9px 20px;border-radius:30px;border:1.5px solid var(--line);font-weight:700;font-size:.9rem;color:var(--ink2);transition:.25s}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tab:hover{border-color:var(--ink)}
+.eps{display:flex;flex-direction:column;gap:12px}
+.ep{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;background:var(--card);border:1px solid var(--line2);border-radius:20px;padding:18px 22px;box-shadow:var(--sh1);transition:transform .3s var(--ease),box-shadow .3s}
+.ep:hover{transform:translateX(6px);box-shadow:var(--sh2)}
+.ep .play{width:52px;height:52px;border-radius:50%;background:var(--paper2);display:grid;place-items:center;color:var(--teal);flex-shrink:0;transition:.3s}
+.ep:hover .play{background:var(--teal);color:#fff;transform:scale(1.08)}
+.ep .epno{font-family:var(--disp);color:var(--gold);font-weight:600;font-size:.9rem}
+.ep h4{font-size:1.06rem;font-weight:700;margin:2px 0 2px}
+.ep .epmeta{color:var(--mut);font-size:.85rem;font-weight:600}
+.ep .dur{color:var(--ink2);font-weight:700;font-size:.86rem;white-space:nowrap}
+.ep-tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--teal);background:#dcebe4;padding:2px 9px;border-radius:20px;margin-left:8px}
+
+/* ---------- testimonials ---------- */
+.tst{background:var(--paper2);border-radius:0;padding:84px 0;position:relative}
+.tst-stage{position:relative;max-width:760px;margin:0 auto;min-height:280px}
+.slide{position:absolute;inset:0;opacity:0;transform:translateY(18px) scale(.985);transition:opacity .6s var(--ease),transform .6s var(--ease);pointer-events:none;text-align:center}
+.slide.active{opacity:1;transform:none;pointer-events:auto;position:relative}
+.slide .stars{color:var(--gold);letter-spacing:3px;font-size:1.1rem;margin-bottom:18px}
+.slide blockquote{font-family:var(--disp);font-weight:500;font-size:clamp(1.3rem,3vw,1.85rem);line-height:1.45;color:var(--ink)}
+.slide .who{margin-top:26px;display:flex;align-items:center;justify-content:center;gap:13px}
+.slide .who .av{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-family:var(--disp);font-size:1.2rem}
+.slide .who .nm{text-align:left}
+.slide .who .nm b{font-weight:800;font-size:.98rem}
+.slide .who .nm small{display:block;color:var(--mut);font-weight:600;font-size:.84rem}
+.tst-ctrl{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:34px}
+.tst-ctrl .arr{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--ink);transition:.25s}
+.tst-ctrl .arr:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dots{display:flex;gap:9px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line);transition:.3s}
+.dot.active{background:var(--teal);width:26px;border-radius:6px}
+
+/* ---------- CTA / form ---------- */
+.book{background:var(--ink);color:var(--paper);border-radius:30px;padding:0;overflow:hidden;box-shadow:var(--sh2);display:grid;grid-template-columns:1fr 1fr}
+.book-side{padding:54px 44px;position:relative}
+.book-side.left{background:linear-gradient(160deg,#27332d,#1f5d4c)}
+.book-side .eyebrow{color:var(--gold2)}
+.book-side h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.1;margin:12px 0 16px}
+.book-side p{color:#d6cdbf;margin-bottom:24px}
+.book-list{list-style:none;display:flex;flex-direction:column;gap:13px}
+.book-list li{display:flex;gap:12px;align-items:flex-start;color:#e8e0d3;font-weight:500}
+.book-list svg{flex-shrink:0;margin-top:3px;color:var(--gold2)}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:700;font-size:.82rem;margin-bottom:7px;color:#d6cdbf}
+.field input,.field textarea,.field select{
+  width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);color:var(--paper);transition:border .25s,background .25s
+}
+.field textarea{resize:vertical;min-height:88px}
+.field input::placeholder,.field textarea::placeholder{color:#8c8377}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--gold2);background:rgba(255,255,255,.08)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23c89a4e'%3E%3Cpath d='M7 10L2 4h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center}
+.field option{color:#211c17}
+.err{color:#f0a58e;font-size:.78rem;font-weight:600;margin-top:5px;display:none}
+.field.bad input,.field.bad textarea,.field.bad select{border-color:#e08b73}
+.field.bad .err{display:block}
+.book-submit{width:100%;background:var(--gold);color:var(--ink);font-weight:800;padding:15px;border-radius:12px;font-size:1rem;transition:.25s;margin-top:4px}
+.book-submit:hover{background:var(--gold2);transform:translateY(-2px)}
+.form-ok{display:none;text-align:center;padding:40px 10px}
+.form-ok.show{display:block;animation:pop .5s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.form-ok .ring{width:74px;height:74px;border-radius:50%;background:rgba(200,154,78,.16);display:grid;place-items:center;margin:0 auto 18px;color:var(--gold2)}
+.form-ok h3{font-family:var(--disp);font-weight:600;font-size:1.7rem;margin-bottom:8px}
+.form-ok p{color:#d6cdbf}
+
+/* ---------- newsletter ribbon ---------- */
+.news{margin:84px 0 0;text-align:center;padding:64px 24px;background:linear-gradient(160deg,#2c7a64,#1f5d4c);border-radius:30px;color:#fff;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.news::after{content:"";position:absolute;inset:0;background:radial-gradient(600px 240px at 50% -30%,rgba(255,255,255,.16),transparent)}
+.news .inner{position:relative;z-index:1;max-width:560px;margin:0 auto}
+.news h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.8rem,3.4vw,2.5rem);margin:10px 0 10px}
+.news p{color:#d8ece4;margin-bottom:24px}
+.news-form{display:flex;gap:10px;max-width:420px;margin:0 auto}
+.news-form input{flex:1;padding:14px 16px;border-radius:40px;border:none;background:rgba(255,255,255,.95);color:var(--ink)}
+.news-form button{background:var(--gold);color:var(--ink);font-weight:800;padding:14px 24px;border-radius:40px;transition:.25s;white-space:nowrap}
+.news-form button:hover{background:var(--gold2);transform:translateY(-2px)}
+.news-msg{margin-top:14px;font-weight:700;color:#ffe7bf;min-height:1.2em;font-size:.92rem}
+
+/* ---------- footer ---------- */
+footer.ft{padding:60px 0 30px;border-top:1px solid var(--line);margin-top:84px}
+.ft-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:30px;align-items:flex-start}
+.ft-brand .sig{font-family:var(--sign);font-size:2.2rem;color:var(--teal)}
+.ft-brand p{color:var(--mut);font-size:.9rem;max-width:30ch;margin-top:6px}
+.ft-soc{display:flex;gap:12px;margin-top:16px}
+.ft-soc a{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink2);transition:.25s}
+.ft-soc a:hover{background:var(--teal);color:#fff;border-color:var(--teal);transform:translateY(-3px)}
+.ft-cols{display:flex;gap:54px;flex-wrap:wrap}
+.ft-col h5{font-weight:800;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:12px}
+.ft-col a{display:block;color:var(--ink2);font-weight:600;font-size:.92rem;margin-bottom:9px;transition:color .2s}
+.ft-col a:hover{color:var(--teal)}
+.ft-foot{margin-top:42px;padding-top:22px;border-top:1px solid var(--line2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center;color:var(--mut);font-size:.84rem}
+.ft-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:7px 15px;font-weight:700;font-size:.82rem;color:var(--ink2)}
+.ft-badge b{color:var(--teal)}
+.ft-badge .dot-g{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+
+/* ---------- sticky mobile CTA ---------- */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(246,239,230,.92);backdrop-filter:blur(12px);box-shadow:0 -1px 0 var(--line)}
+.sticky-cta a{display:block;text-align:center;background:var(--ink);color:var(--paper);font-weight:800;padding:14px;border-radius:40px}
+
+/* ---------- responsive ---------- */
+@media(max-width:900px){
+  .hero-grid,.about-grid,.book{grid-template-columns:1fr}
+  .book{border-radius:24px}
+  .portrait-wrap{order:-1;margin-bottom:10px}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:34px 20px}
+  nav.links,.nav-cta{display:none}
+  .burger{display:flex}
+  .sticky-cta{display:block}
+}
+@media(max-width:560px){
+  .svc-grid,.stats-grid{grid-template-columns:1fr}
+  .news-form{flex-direction:column}
+  .ep{grid-template-columns:auto 1fr;gap:14px}
+  .ep .dur{display:none}
+  .hero{padding-top:120px}
+  .pf1{left:0}.pf2{right:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="mono">S</span>
+      <span><b>林筱晴</b><br><span class="role">Sunny Lin · 領導力講師</span></span>
+    </a>
+    <nav class="links">
+      <a href="#about">關於我</a>
+      <a href="#talks">講題與服務</a>
+      <a href="#podcast">Podcast</a>
+      <a href="#voices">學員見證</a>
+      <a href="#book">預約合作</a>
+    </nav>
+    <a href="#book" class="nav-cta">預約演講 →</a>
+    <button class="burger" aria-label="選單" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg"><div class="blob b1"></div><div class="blob b2"></div></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow rv">領導力講師 · 品牌策略顧問 · 暢銷作家</div>
+      <div class="signature rv" style="transition-delay:.05s">Hi, 我是筱晴 —</div>
+      <h1 class="rv" style="transition-delay:.1s">用更<em>溫柔</em>的方式，<br>帶人走得更遠。</h1>
+      <div class="rotline rv" style="transition-delay:.15s">
+        <span class="pre">我幫助你成為更好的</span><span class="rotword" id="rotword">領導者</span>
+      </div>
+      <p class="lead rv" style="transition-delay:.2s">十二年來，我陪伴超過 240 個團隊與創辦人，把「不敢開口」的內在力量，轉化成能帶領、能影響、能被信任的真實領導力。</p>
+      <div class="hero-cta rv" style="transition-delay:.25s">
+        <a href="#book" class="btn btn-primary">預約一場演講
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+        </a>
+        <a href="#podcast" class="btn btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          聽我的 Podcast
+        </a>
+      </div>
+      <div class="hero-trust rv" style="transition-delay:.3s">
+        <div class="avatars"><span>陳</span><span>Y</span><span>林</span><span>+</span></div>
+        <span>受 240+ 團隊與品牌信任</span>
+      </div>
+    </div>
+
+    <div class="portrait-wrap rv" style="transition-delay:.15s">
+      <div class="portrait-card">
+        <!-- stylized abstract portrait, inline SVG -->
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="林筱晴的風格化肖像">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3a9079"/><stop offset="1" stop-color="#1f5d4c"/>
+            </linearGradient>
+            <radialGradient id="sun" cx="50%" cy="34%" r="40%">
+              <stop offset="0" stop-color="#f3d79a"/><stop offset="1" stop-color="#f3d79a" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f6d9be"/><stop offset="1" stop-color="#e9bd9b"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="500" fill="url(#sky)"/>
+          <circle cx="200" cy="170" r="150" fill="url(#sun)"/>
+          <circle cx="200" cy="160" r="92" fill="#f0c27b" opacity=".5"/>
+          <!-- shoulders -->
+          <path d="M70 500 C70 380 130 340 200 340 C270 340 330 380 330 500 Z" fill="#c89a4e"/>
+          <path d="M96 500 C100 408 150 372 200 372 C250 372 300 408 304 500 Z" fill="#e3b96a"/>
+          <!-- neck -->
+          <rect x="178" y="298" width="44" height="70" rx="20" fill="#e9bd9b"/>
+          <!-- hair back -->
+          <path d="M118 240 C112 150 150 96 200 96 C250 96 288 150 282 240 C300 300 286 330 270 330 C262 270 250 250 250 250 L150 250 C150 250 138 270 130 330 C114 330 100 300 118 240Z" fill="#2a211a"/>
+          <!-- face -->
+          <ellipse cx="200" cy="210" rx="76" ry="90" fill="url(#skin)"/>
+          <!-- cheeks -->
+          <circle cx="160" cy="232" r="14" fill="#f0a98a" opacity=".45"/>
+          <circle cx="240" cy="232" r="14" fill="#f0a98a" opacity=".45"/>
+          <!-- eyes -->
+          <path d="M158 198 q12 -12 26 0" stroke="#2a211a" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M216 198 q12 -12 26 0" stroke="#2a211a" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- nose + smile -->
+          <path d="M200 214 v14" stroke="#cf9c79" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M174 250 q26 26 52 0" stroke="#c8654e" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <!-- hair front -->
+          <path d="M124 210 C120 130 156 92 200 92 C244 92 280 130 276 210 C262 168 240 150 200 150 C168 150 140 162 124 210Z" fill="#352a20"/>
+          <!-- earrings -->
+          <circle cx="126" cy="246" r="5" fill="#e3b96a"/><circle cx="274" cy="246" r="5" fill="#e3b96a"/>
+        </svg>
+      </div>
+      <div class="pf-badge pf1">
+        <span class="ic" style="background:var(--teal)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.8 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg>
+        </span>
+        <span><b>4.9 / 5</b><small>學員滿意度</small></span>
+      </div>
+      <div class="pf-badge pf2">
+        <span class="ic" style="background:var(--gold)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </span>
+        <span><b>3 本著作</b><small>2 本登上暢銷榜</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEDIA STRIP ============ -->
+<section class="media">
+  <div class="wrap">
+    <div class="lab">媒體露出與合作品牌</div>
+    <div class="marquee">
+      <div class="marquee-track" id="logos"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="blk" style="padding-top:64px">
+  <div class="wrap">
+    <div class="stats rv">
+      <div class="stats-grid" id="stats">
+        <div class="stat"><div class="num"><span data-to="640">0</span><span class="suf">+</span></div><div class="cap">場演講與工作坊</div></div>
+        <div class="stat"><div class="num"><span data-to="3">0</span></div><div class="cap">本出版著作</div></div>
+        <div class="stat"><div class="num"><span data-to="58">0</span><span class="suf">K</span></div><div class="cap">電子報訂閱者</div></div>
+        <div class="stat"><div class="num"><span data-to="42">0</span></div><div class="cap">合作品牌與企業</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="blk" id="about" style="padding-top:30px">
+  <div class="wrap about-grid">
+    <div class="about-card rv">
+      <p class="quote">領導不是站在最前面發號施令，而是讓身邊的人，因為你而願意走得更遠一點。</p>
+      <div class="about-sign">— 筱晴</div>
+    </div>
+    <div class="about-body rv" style="transition-delay:.1s">
+      <div class="eyebrow gold-eyebrow">關於我</div>
+      <h2>從不敢上台的工程師，<br>到站上 TEDx 的講師。</h2>
+      <p>我曾經是一個害怕開會發言的軟體工程師。直到我發現，真正的領導力不是天賦，而是一套可以被練習、被設計、被傳遞的能力。</p>
+      <p>過去十二年，我把這套方法帶進新創團隊、上市企業與大學講堂，主題涵蓋向上溝通、團隊心理安全感、與個人品牌敘事。我相信溫柔與堅定可以並存，而每個人都能找到屬於自己的領導語言。</p>
+      <div class="chips">
+        <span class="chip">領導力工作坊</span>
+        <span class="chip">主題演講</span>
+        <span class="chip">高階教練</span>
+        <span class="chip">個人品牌策略</span>
+        <span class="chip">團隊敘事</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TALKS / SERVICES ============ -->
+<section class="blk" id="talks">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">我能如何幫助你</div>
+      <h2>三種一起前進的方式</h2>
+      <p>從一場點燃全場的演講，到陪你走一整季的深度教練。選一個最適合你現在階段的合作模式。</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc rv">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+        <h3>主題演講</h3>
+        <p>45–90 分鐘，為企業年會、領導論壇與校園量身設計。把抽象的領導概念變成台下能立刻帶走的行動。</p>
+        <div class="meta">最受歡迎 · 240+ 場經驗 →</div>
+      </div>
+      <div class="svc rv" style="transition-delay:.08s">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>領導力工作坊</h3>
+        <p>半天到兩天的團隊共學。透過真實情境演練，建立團隊的心理安全感、回饋文化與向上溝通能力。</p>
+        <div class="meta">企業內訓首選 →</div>
+      </div>
+      <div class="svc rv" style="transition-delay:.16s">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <h3>一對一高階教練</h3>
+        <p>為創辦人與高階主管設計的 12 週深度陪伴。釐清領導盲點、打造個人品牌敘事，找回篤定的內在節奏。</p>
+        <div class="meta">每季僅收 6 位 →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PODCAST ============ -->
+<section class="blk" id="podcast" style="background:var(--paper2)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">《溫柔而堅定》Podcast</div>
+      <h2>每週一集，陪你練習領導</h2>
+      <p>關於溝通、自我覺察與職涯選擇的真實對話。已累積超過 180 集，下載破 320 萬次。</p>
+    </div>
+    <div class="tabs rv" id="tabs" role="tablist">
+      <button class="tab" role="tab" data-cat="all" aria-selected="true">全部</button>
+      <button class="tab" role="tab" data-cat="領導" aria-selected="false">領導力</button>
+      <button class="tab" role="tab" data-cat="溝通" aria-selected="false">溝通表達</button>
+      <button class="tab" role="tab" data-cat="品牌" aria-selected="false">個人品牌</button>
+      <button class="tab" role="tab" data-cat="心理" aria-selected="false">內在覺察</button>
+    </div>
+    <div class="eps rv" id="eps"></div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="tst" id="voices">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow gold-eyebrow">學員與主辦方的聲音</div>
+      <h2>他們後來的故事</h2>
+    </div>
+    <div class="tst-stage" id="stage"></div>
+    <div class="tst-ctrl rv">
+      <button class="arr" id="prev" aria-label="上一則"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="dots" id="dots"></div>
+      <button class="arr" id="next" aria-label="下一則"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOKING ============ -->
+<section class="blk" id="book">
+  <div class="wrap">
+    <div class="book rv">
+      <div class="book-side left">
+        <div class="eyebrow">預約合作</div>
+        <h2>讓我們一起，<br>把你的下一場說好。</h2>
+        <p>無論是一場年會主題演講、一季團隊共學，還是高階一對一教練——填寫右側表單，我或團隊會在 2 個工作天內親自回覆。</p>
+        <ul class="book-list">
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>免費 30 分鐘需求釐清通話</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>依主題與時數客製內容</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>提供講後行動指南與簡報</li>
+        </ul>
+      </div>
+      <div class="book-side right" style="background:#26201a">
+        <form id="bookForm" novalidate>
+          <div class="field">
+            <label for="bf-name">您的姓名 *</label>
+            <input id="bf-name" name="name" type="text" placeholder="王小明" />
+            <div class="err">請填寫您的姓名</div>
+          </div>
+          <div class="field">
+            <label for="bf-email">電子信箱 *</label>
+            <input id="bf-email" name="email" type="email" placeholder="you@company.com" />
+            <div class="err">請填寫有效的電子信箱</div>
+          </div>
+          <div class="field">
+            <label for="bf-type">合作類型 *</label>
+            <select id="bf-type" name="type">
+              <option value="">請選擇…</option>
+              <option>主題演講</option>
+              <option>領導力工作坊</option>
+              <option>一對一高階教練</option>
+              <option>媒體 / Podcast 邀約</option>
+            </select>
+            <div class="err">請選擇合作類型</div>
+          </div>
+          <div class="field">
+            <label for="bf-msg">想聊聊的內容</label>
+            <textarea id="bf-msg" name="msg" placeholder="活動日期、對象、人數、想達成的目標…"></textarea>
+          </div>
+          <button type="submit" class="book-submit">送出預約需求</button>
+        </form>
+        <div class="form-ok" id="bookOk">
+          <div class="ring"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3>收到了，謝謝你！</h3>
+          <p>你的需求已送出，我或團隊會在 2 個工作天內，用 email 親自回覆你。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- newsletter -->
+    <div class="news rv">
+      <div class="inner">
+        <div class="eyebrow" style="color:#ffe7bf">每週四・免費電子報</div>
+        <h2>《週四的一封信》</h2>
+        <p>每週一篇關於領導、溝通與自我覺察的短文，陪 58,000+ 位讀者，把一週重新校準。</p>
+        <form class="news-form" id="newsForm" novalidate>
+          <input id="news-email" type="email" placeholder="輸入你的 email" aria-label="電子信箱" />
+          <button type="submit">免費訂閱</button>
+        </form>
+        <div class="news-msg" id="newsMsg"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-grid">
+      <div class="ft-brand">
+        <div class="sig">Sunny Lin</div>
+        <p>領導力講師 · 品牌策略顧問 · 作家。用溫柔而堅定的方式，陪你成為更好的領導者。</p>
+        <div class="ft-soc">
+          <a href="#book" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#book" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-9h4v1.5"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="#podcast" aria-label="Podcast"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></a>
+          <a href="#voices" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 8.6a3 3 0 0 0-2.1-2.1C18 6 12 6 12 6s-6 0-7.9.5A3 3 0 0 0 2 8.6 31 31 0 0 0 1.7 12 31 31 0 0 0 2 15.4a3 3 0 0 0 2.1 2.1C6 18 12 18 12 18s6 0 7.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .3-3.4 31 31 0 0 0-.3-3.4z"/><path d="M10 15l5-3-5-3z" fill="currentColor"/></svg></a>
+        </div>
+      </div>
+      <div class="ft-cols">
+        <div class="ft-col">
+          <h5>探索</h5>
+          <a href="#about">關於我</a>
+          <a href="#talks">講題與服務</a>
+          <a href="#podcast">Podcast</a>
+          <a href="#voices">學員見證</a>
+        </div>
+        <div class="ft-col">
+          <h5>合作</h5>
+          <a href="#book">預約演講</a>
+          <a href="#book">企業內訓</a>
+          <a href="#book">媒體邀約</a>
+          <a href="#book">電子報</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-foot">
+      <span>© 2026 林筱晴 Sunny Lin. 範例內容，人物為虛構。</span>
+      <a class="ft-badge" href="https://service.e-life-ai.com" target="_blank" rel="noopener">
+        <span class="dot-g"></span>Template by <b>e-life-ai</b> · service.e-life-ai.com
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ STICKY MOBILE CTA ============ -->
+<div class="sticky-cta"><a href="#book">預約一場演講 →</a></div>
+
+<script>
+(function(){
+  "use strict";
+  const $=(s,c)=>(c||document).querySelector(s);
+  const $$=(s,c)=>Array.from((c||document).querySelectorAll(s));
+
+  /* ---- nav scroll state ---- */
+  const nav=$('#nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>30);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+  $('#burger').addEventListener('click',()=>{
+    const links=$('.links');
+    links.style.display=links.style.display==='flex'?'':'flex';
+    if(links.style.display==='flex'){
+      Object.assign(links.style,{position:'absolute',top:'100%',right:'20px',flexDirection:'column',background:'var(--card)',padding:'18px 24px',borderRadius:'16px',boxShadow:'var(--sh2)',gap:'14px'});
+    }
+  });
+
+  /* ---- reveal on scroll ---- */
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.14});
+  $$('.rv').forEach(el=>io.observe(el));
+
+  /* ---- rotating tagline ---- */
+  const roles=['領導者','溝通者','說書人','品牌主理人','值得信任的人'];
+  const rw=$('#rotword');let ri=0,ci=0,del=false;
+  function type(){
+    const w=roles[ri];
+    rw.textContent=del?w.slice(0,ci--):w.slice(0,ci++);
+    let t=del?55:110;
+    if(!del&&ci===w.length+1){del=true;t=1400;ci=w.length;}
+    else if(del&&ci<0){del=false;ri=(ri+1)%roles.length;ci=0;t=320;}
+    setTimeout(type,t);
+  }
+  setTimeout(type,700);
+
+  /* ---- count-up stats ---- */
+  let counted=false;
+  const statsIO=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting&&!counted){
+        counted=true;
+        $$('[data-to]',e.target).forEach(el=>{
+          const to=+el.dataset.to,dur=1500,t0=performance.now();
+          (function step(t){
+            const p=Math.min((t-t0)/dur,1),eased=1-Math.pow(1-p,3);
+            el.textContent=Math.round(to*eased);
+            if(p<1)requestAnimationFrame(step);
+          })(t0);
+        });
+      }
+    });
+  },{threshold:.4});
+  statsIO.observe($('#stats'));
+
+  /* ---- media logos ---- */
+  const brands=['天下雜誌','Cheers','TEDx Taipei','商業周刊','遠見','GREMLIN','PAGE ONE','緯創','聯合報','女人迷'];
+  const logoEl=$('#logos');
+  const mk=(n)=>`<div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>${n}</div>`;
+  logoEl.innerHTML=(brands.map(mk).join('')).repeat(2);
+
+  /* ---- podcast episodes (filterable) ---- */
+  const episodes=[
+    {no:'EP.184',cat:'領導',t:'當你成為主管那天，沒人教你的三件事',meta:'與 行銷長 Vivian',dur:'42 分',tag:'熱門'},
+    {no:'EP.181',cat:'溝通',t:'如何向上溝通，又不讓老闆覺得你在挑戰他',meta:'單集深談',dur:'36 分',tag:''},
+    {no:'EP.178',cat:'品牌',t:'內向的人，也能經營出有溫度的個人品牌',meta:'與 設計師 阿哲',dur:'48 分',tag:'熱門'},
+    {no:'EP.175',cat:'心理',t:'冒牌者症候群：你不是不夠好，是太誠實',meta:'單集深談',dur:'31 分',tag:''},
+    {no:'EP.172',cat:'領導',t:'打造團隊心理安全感的四個具體動作',meta:'與 HR 主管 Karen',dur:'45 分',tag:''},
+    {no:'EP.169',cat:'溝通',t:'給回饋的藝術：把難說的話，說進對方心裡',meta:'單集深談',dur:'29 分',tag:''},
+    {no:'EP.166',cat:'品牌',t:'從零開始，我如何寫出第一本暢銷書',meta:'幕後故事',dur:'52 分',tag:''},
+    {no:'EP.163',cat:'心理',t:'倦怠不是你不努力，是你太久沒被自己看見',meta:'單集深談',dur:'34 分',tag:''}
+  ];
+  const epEl=$('#eps');
+  function renderEps(cat){
+    const list=cat==='all'?episodes:episodes.filter(e=>e.cat===cat);
+    epEl.innerHTML=list.map(e=>`
+      <div class="ep">
+        <div class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div>
+          <span class="epno">${e.no}</span>
+          <h4>${e.t}${e.tag?`<span class="ep-tag">${e.tag}</span>`:''}</h4>
+          <span class="epmeta">${e.meta}</span>
+        </div>
+        <span class="dur">${e.dur}</span>
+      </div>`).join('');
+  }
+  renderEps('all');
+  $$('#tabs .tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      $$('#tabs .tab').forEach(t=>t.setAttribute('aria-selected','false'));
+      tab.setAttribute('aria-selected','true');
+      renderEps(tab.dataset.cat);
+    });
+  });
+
+  /* ---- testimonials carousel ---- */
+  const tsts=[
+    {q:'筱晴的演講不是那種聽完很熱血、隔天就忘的演講。三個月後，我們團隊的會議文化是真的改變了。',n:'陳怡君',r:'某科技公司・人資長',c:'#1f5d4c'},
+    {q:'我請她來做年會主講，原本擔心領導力太嚴肅。結果全場笑著聽完，最後很多同仁紅了眼眶。',n:'林承翰',r:'活動主辦・行銷總監',c:'#c89a4e'},
+    {q:'12 週的一對一教練，幫我這個技術背景的創辦人，第一次真正說清楚自己的品牌故事。',n:'Yuki Watanabe',r:'新創共同創辦人',c:'#c8654e'},
+    {q:'她讓「溫柔」這件事，在職場聽起來不再像是弱點，而是一種很有力量的領導方式。',n:'張維仁',r:'上市公司・營運長',c:'#26201a'}
+  ];
+  const stage=$('#stage'),dots=$('#dots');
+  stage.innerHTML=tsts.map((t,i)=>`
+    <div class="slide${i===0?' active':''}" data-i="${i}">
+      <div class="stars">★★★★★</div>
+      <blockquote>${t.q}</blockquote>
+      <div class="who">
+        <div class="av" style="background:${t.c}">${t.n.slice(0,1)}</div>
+        <div class="nm"><b>${t.n}</b><small>${t.r}</small></div>
+      </div>
+    </div>`).join('');
+  dots.innerHTML=tsts.map((_,i)=>`<button class="dot${i===0?' active':''}" data-i="${i}" aria-label="第 ${i+1} 則"></button>`).join('');
+  const slides=$$('.slide',stage),dotEls=$$('.dot',dots);
+  let cur=0,timer;
+  function go(i){
+    cur=(i+slides.length)%slides.length;
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    dotEls.forEach((d,k)=>d.classList.toggle('active',k===cur));
+  }
+  function auto(){clearInterval(timer);timer=setInterval(()=>go(cur+1),5500);}
+  $('#next').addEventListener('click',()=>{go(cur+1);auto();});
+  $('#prev').addEventListener('click',()=>{go(cur-1);auto();});
+  dotEls.forEach(d=>d.addEventListener('click',()=>{go(+d.dataset.i);auto();}));
+  auto();
+
+  /* ---- booking form validation ---- */
+  const form=$('#bookForm'),ok=$('#bookOk');
+  const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function setBad(id,bad){$('#'+id).closest('.field').classList.toggle('bad',bad);}
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const name=$('#bf-name').value.trim();
+    const email=$('#bf-email').value.trim();
+    const type=$('#bf-type').value;
+    let bad=false;
+    setBad('bf-name',!name);bad=bad||!name;
+    setBad('bf-email',!emailRe.test(email));bad=bad||!emailRe.test(email);
+    setBad('bf-type',!type);bad=bad||!type;
+    if(bad)return;
+    form.style.display='none';
+    ok.classList.add('show');
+  });
+  $$('#bf-name,#bf-email,#bf-type').forEach(()=>{});
+  ['bf-name','bf-email','bf-type'].forEach(id=>{
+    $('#'+id).addEventListener('input',()=>$('#'+id).closest('.field').classList.remove('bad'));
+  });
+
+  /* ---- newsletter ---- */
+  const nf=$('#newsForm'),nm=$('#newsMsg');
+  nf.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const v=$('#news-email').value.trim();
+    if(!emailRe.test(v)){nm.style.color='#ffd0c0';nm.textContent='請輸入有效的 email 才能訂閱喔。';return;}
+    nm.style.color='#ffe7bf';nm.textContent='訂閱成功！下一封《週四的一封信》就會寄到你的信箱 ✦';
+    nf.reset();
+  });
+})();
+</script>
+</body>
+</html>

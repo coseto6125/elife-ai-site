@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臺灣智慧運算高峰會 2026 TCS｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="臺灣智慧運算高峰會 TCS 2026，9 月 24-25 日於高雄展覽館登場。三大議程軌、四十場議題、來自產學界的講者陣容，現正開放早鳥購票。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0E14;
+    --ink-2:#141925;
+    --bone:#F2EEE3;
+    --vermilion:#FF4D2E;
+    --green:#3DDC97;
+    --amber:#FFC93C;
+    --steel:#7B8794;
+    --line:rgba(242,238,227,.14);
+    --display:'Archivo Black',sans-serif;
+    --head:'Archivo','Noto Sans TC',sans-serif;
+    --body:'Noto Sans TC',sans-serif;
+    --mono:'Space Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--vermilion);color:#fff}
+  :focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .mono{font-family:var(--mono);letter-spacing:.04em}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--vermilion);font-weight:700;
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--vermilion)}
+
+  /* ===== TOP BAR ===== */
+  .topbar{
+    position:sticky;top:0;z-index:60;
+    background:rgba(11,14,20,.82);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-weight:700;font-size:.86rem;letter-spacing:.06em}
+  .brand .badge{
+    width:30px;height:30px;display:grid;place-items:center;
+    background:var(--vermilion);color:#fff;font-family:var(--display);font-size:.78rem;
+    transform:skewX(-8deg);
+  }
+  .navlinks{display:flex;gap:26px;font-size:.82rem;font-weight:700;font-family:var(--head)}
+  .navlinks a{color:var(--steel);transition:color .2s}
+  .navlinks a:hover{color:var(--bone)}
+  .nav-cta{
+    background:var(--bone);color:var(--ink);padding:9px 18px;font-weight:800;
+    font-family:var(--head);font-size:.82rem;transform:skewX(-8deg);transition:background .2s,color .2s;
+  }
+  .nav-cta span{display:inline-block;transform:skewX(8deg)}
+  .nav-cta:hover{background:var(--vermilion);color:#fff}
+  @media(max-width:820px){.navlinks{display:none}}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;padding:54px 0 0;overflow:hidden}
+  .hero-bg{
+    position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(900px 500px at 78% -10%,rgba(255,77,46,.20),transparent 60%),
+      radial-gradient(700px 500px at 8% 110%,rgba(61,220,151,.14),transparent 60%);
+  }
+  .grid-overlay{
+    position:absolute;inset:0;z-index:0;opacity:.5;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:54px 54px;
+    -webkit-mask-image:radial-gradient(circle at 60% 30%,#000,transparent 75%);
+    mask-image:radial-gradient(circle at 60% 30%,#000,transparent 75%);
+  }
+  .hero .wrap{position:relative;z-index:2}
+
+  .edition{
+    display:inline-flex;align-items:stretch;gap:0;margin-bottom:26px;
+    border:1px solid var(--line);font-family:var(--mono);font-size:.74rem;font-weight:700;
+  }
+  .edition span{padding:8px 14px;display:flex;align-items:center;letter-spacing:.1em}
+  .edition .e-a{background:var(--vermilion);color:#fff}
+  .edition .e-b{color:var(--bone)}
+  .edition .e-c{color:var(--green);border-left:1px solid var(--line)}
+
+  .hero-title{
+    font-family:var(--display);
+    font-size:clamp(3rem,11.5vw,8.4rem);
+    line-height:.92;letter-spacing:-.01em;text-transform:none;
+    margin:6px 0 2px;
+  }
+  .hero-title .row{display:block}
+  .hero-title .out{
+    color:transparent;-webkit-text-stroke:1.6px var(--bone);
+  }
+  .hero-title .hl{color:var(--vermilion)}
+  .hero-sub{
+    font-family:var(--head);font-weight:800;font-size:clamp(1rem,3.4vw,1.55rem);
+    letter-spacing:.02em;color:var(--bone);margin-top:18px;max-width:660px;line-height:1.35;
+  }
+  .hero-sub em{color:var(--amber);font-style:normal}
+
+  .hero-meta{
+    display:flex;flex-wrap:wrap;gap:0;margin:34px 0 30px;border:1px solid var(--line);
+  }
+  .hero-meta div{
+    flex:1 1 160px;padding:16px 20px;border-right:1px solid var(--line);
+  }
+  .hero-meta div:last-child{border-right:none}
+  .hero-meta .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;color:var(--steel);text-transform:uppercase}
+  .hero-meta .v{font-family:var(--head);font-weight:800;font-size:1.05rem;margin-top:6px}
+  .hero-meta .v small{color:var(--green);font-size:.78rem;font-weight:700}
+
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding-bottom:30px}
+  .btn{
+    font-family:var(--head);font-weight:800;font-size:.95rem;
+    padding:15px 28px;cursor:pointer;border:none;transform:skewX(-8deg);
+    transition:transform .15s,box-shadow .2s,background .2s;display:inline-block;
+  }
+  .btn span{display:inline-block;transform:skewX(8deg)}
+  .btn-primary{background:var(--vermilion);color:#fff;box-shadow:6px 6px 0 rgba(255,77,46,.25)}
+  .btn-primary:hover{transform:skewX(-8deg) translate(-2px,-2px);box-shadow:9px 9px 0 rgba(255,77,46,.3)}
+  .btn-ghost{background:transparent;color:var(--bone);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--bone)}
+
+  /* ===== MARQUEE ===== */
+  .marquee{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:var(--vermilion);color:#fff;overflow:hidden;white-space:nowrap;
+    font-family:var(--display);font-size:1.1rem;letter-spacing:.02em;
+  }
+  .marquee-track{display:inline-block;padding:13px 0;animation:scroll 28s linear infinite}
+  .marquee-track span{padding:0 28px}
+  .marquee-track .dot{color:var(--ink)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ===== SECTION SHELL ===== */
+  section{position:relative}
+  .sec{padding:88px 0}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:44px;flex-wrap:wrap}
+  .sec-title{font-family:var(--display);font-size:clamp(1.8rem,5vw,3rem);line-height:1;letter-spacing:-.01em}
+  .sec-num{font-family:var(--mono);color:var(--steel);font-size:.8rem;letter-spacing:.2em}
+
+  /* ===== SPEAKERS ===== */
+  .spk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.spk-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.spk-grid{grid-template-columns:1fr}}
+  .spk{
+    background:var(--ink-2);border:1px solid var(--line);padding:0;cursor:pointer;
+    text-align:left;color:inherit;font-family:inherit;display:flex;flex-direction:column;
+    transition:border-color .2s,transform .2s;position:relative;overflow:hidden;
+  }
+  .spk:hover{border-color:var(--vermilion);transform:translateY(-3px)}
+  .spk .avatar{
+    height:140px;display:grid;place-items:center;font-family:var(--display);font-size:2.4rem;color:var(--ink);
+    position:relative;
+  }
+  .spk .avatar::after{content:attr(data-tag);position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;background:var(--ink);color:var(--bone);padding:4px 8px}
+  .spk .body{padding:18px 18px 20px}
+  .spk .name{font-family:var(--head);font-weight:800;font-size:1.15rem}
+  .spk .role{font-size:.82rem;color:var(--steel);margin-top:3px}
+  .spk .topic{font-family:var(--head);font-weight:700;font-size:.9rem;margin-top:12px;color:var(--amber);line-height:1.4}
+  .spk .bio{
+    max-height:0;opacity:0;overflow:hidden;font-size:.86rem;color:var(--bone);line-height:1.6;
+    transition:max-height .4s ease,opacity .3s,margin-top .3s;
+  }
+  .spk.open .bio{max-height:240px;opacity:1;margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+  .spk .more{
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--green);margin-top:14px;
+    display:flex;align-items:center;gap:8px;text-transform:uppercase;
+  }
+  .spk .more .pm{font-family:var(--head);font-weight:800;font-size:1rem;line-height:1}
+  .spk.open .more .pm{transform:rotate(45deg)}
+  .spk .more .pm{display:inline-block;transition:transform .3s}
+
+  /* ===== AGENDA (SIGNATURE) ===== */
+  #agenda{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .agenda-ctrl{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end;margin-bottom:30px}
+  .day-tabs{display:inline-flex;border:1px solid var(--line);background:var(--ink)}
+  .day-tabs button{
+    background:transparent;border:none;color:var(--steel);cursor:pointer;
+    font-family:var(--head);font-weight:800;font-size:.9rem;padding:12px 22px;
+    transition:color .2s,background .2s;border-right:1px solid var(--line);
+  }
+  .day-tabs button:last-child{border-right:none}
+  .day-tabs button .d{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--steel);margin-top:2px;font-weight:400}
+  .day-tabs button.active{background:var(--vermilion);color:#fff}
+  .day-tabs button.active .d{color:rgba(255,255,255,.8)}
+
+  .track-filter{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .track-filter .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--steel);text-transform:uppercase;margin-right:4px}
+  .chip{
+    background:transparent;border:1px solid var(--line);color:var(--steel);cursor:pointer;
+    font-family:var(--head);font-weight:700;font-size:.78rem;padding:7px 14px;border-radius:999px;
+    transition:all .2s;display:inline-flex;align-items:center;gap:7px;
+  }
+  .chip .swatch{width:9px;height:9px;border-radius:50%}
+  .chip[data-track="core"] .swatch{background:var(--vermilion)}
+  .chip[data-track="infra"] .swatch{background:var(--green)}
+  .chip[data-track="apply"] .swatch{background:var(--amber)}
+  .chip.active{color:var(--ink);background:var(--bone);border-color:var(--bone)}
+  .chip[data-track="all"].active{background:var(--bone)}
+
+  .agenda-list{display:flex;flex-direction:column}
+  .slot{
+    display:grid;grid-template-columns:96px 1fr;gap:0;border-bottom:1px solid var(--line);
+    transition:opacity .25s,transform .25s;
+  }
+  .slot.hide{display:none}
+  .slot .time{
+    padding:20px 16px;font-family:var(--mono);font-weight:700;font-size:.84rem;color:var(--amber);
+    border-right:1px solid var(--line);
+  }
+  .slot .time small{display:block;color:var(--steel);font-weight:400;font-size:.62rem;margin-top:4px;letter-spacing:.1em}
+  .slot .sessions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+  @media(max-width:780px){.slot .sessions{grid-template-columns:1fr}}
+  .ses{padding:18px 18px;border-left:1px solid var(--line);transition:background .2s,opacity .25s}
+  .slot .sessions .ses:first-child{border-left:none}
+  @media(max-width:780px){.slot .sessions .ses{border-left:none;border-top:1px solid var(--line)}.slot .sessions .ses:first-child{border-top:none}}
+  .ses.dim{opacity:.18;filter:grayscale(1)}
+  .ses .tk{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;margin-bottom:8px}
+  .ses .tk .swatch{width:8px;height:8px;border-radius:50%}
+  .ses[data-track="core"] .tk{color:var(--vermilion)}.ses[data-track="core"] .swatch{background:var(--vermilion)}
+  .ses[data-track="infra"] .tk{color:var(--green)}.ses[data-track="infra"] .swatch{background:var(--green)}
+  .ses[data-track="apply"] .tk{color:var(--amber)}.ses[data-track="apply"] .swatch{background:var(--amber)}
+  .ses .t{font-family:var(--head);font-weight:700;font-size:.96rem;line-height:1.35}
+  .ses .who{font-size:.78rem;color:var(--steel);margin-top:7px}
+  .ses.plenary{grid-column:1/-1;background:rgba(255,77,46,.06)}
+  .ses .room{font-family:var(--mono);font-size:.64rem;color:var(--steel);margin-top:6px;letter-spacing:.08em}
+
+  /* ===== TICKETS (SIGNATURE 2) ===== */
+  .ticket-wrap{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start}
+  .ticket-wrap>*{min-width:0}
+  @media(max-width:880px){.ticket-wrap{grid-template-columns:1fr}}
+  .countdown{
+    border:1px solid var(--line);background:var(--ink-2);padding:22px 24px;margin-bottom:18px;
+    display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  }
+  .countdown .cd-lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--amber);text-transform:uppercase}
+  .countdown .cd-lbl strong{color:var(--bone);display:block;font-family:var(--head);font-size:.95rem;letter-spacing:0;margin-top:4px}
+  .cd-clock{display:flex;gap:10px}
+  .cd-clock div{text-align:center;min-width:54px}
+  .cd-clock .num{font-family:var(--display);font-size:1.7rem;color:var(--bone);line-height:1;font-variant-numeric:tabular-nums}
+  .cd-clock .u{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;color:var(--steel);text-transform:uppercase;margin-top:6px}
+
+  .tiers{display:flex;flex-direction:column;gap:12px}
+  .tier{
+    border:1px solid var(--line);background:var(--ink-2);padding:18px 20px;cursor:pointer;
+    display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+    transition:border-color .2s,background .2s;text-align:left;color:inherit;font-family:inherit;width:100%;
+  }
+  .tier>span:nth-child(2){min-width:0}
+  .tier:hover{border-color:var(--steel)}
+  .tier.sel{border-color:var(--vermilion);background:rgba(255,77,46,.07)}
+  .tier .ck{
+    width:22px;height:22px;border:2px solid var(--steel);border-radius:50%;display:grid;place-items:center;flex:none;transition:all .2s;
+  }
+  .tier.sel .ck{border-color:var(--vermilion);background:var(--vermilion)}
+  .tier .ck::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;transform:scale(0);transition:transform .2s}
+  .tier.sel .ck::after{transform:scale(1)}
+  .tier .tname{font-family:var(--head);font-weight:800;font-size:1.05rem}
+  .tier .tdesc{font-size:.78rem;color:var(--steel);margin-top:3px}
+  .tier .tag{display:inline-block;font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;background:var(--amber);color:var(--ink);padding:2px 7px;margin-top:7px;font-weight:700}
+  .tier .price{font-family:var(--display);font-size:1.5rem;text-align:right;white-space:nowrap}
+  .tier .price small{font-family:var(--mono);font-size:.62rem;color:var(--steel);display:block;font-weight:400;letter-spacing:.06em}
+  .tier .price .old{text-decoration:line-through;color:var(--steel);font-family:var(--head);font-size:.85rem;margin-right:6px}
+
+  .order{position:sticky;top:80px;border:1px solid var(--line);background:var(--bone);color:var(--ink);padding:24px}
+  .order h3{font-family:var(--display);font-size:1.3rem;margin-bottom:4px}
+  .order .o-sub{font-size:.78rem;color:#5a5247;margin-bottom:18px}
+  .qty-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid rgba(11,14,20,.12)}
+  .qty-row .qn{font-family:var(--head);font-weight:800;font-size:.92rem}
+  .qty-row .qn small{display:block;color:#7a7263;font-weight:400;font-size:.72rem;font-family:var(--body)}
+  .stepper{display:flex;align-items:center;gap:0;border:1px solid var(--ink)}
+  .stepper button{
+    width:32px;height:32px;background:var(--ink);color:var(--bone);border:none;cursor:pointer;
+    font-family:var(--head);font-size:1.1rem;font-weight:800;line-height:1;display:grid;place-items:center;
+  }
+  .stepper button:disabled{opacity:.3;cursor:not-allowed}
+  .stepper .qv{width:38px;text-align:center;font-family:var(--mono);font-weight:700;font-size:.95rem}
+  .o-total{display:flex;align-items:baseline;justify-content:space-between;margin:18px 0;padding-top:16px;border-top:2px solid var(--ink)}
+  .o-total .tl{font-family:var(--head);font-weight:800}
+  .o-total .tv{font-family:var(--display);font-size:2rem;color:var(--vermilion)}
+  .o-save{font-family:var(--mono);font-size:.72rem;color:#2a8c5e;margin-top:-8px;margin-bottom:14px}
+  .order .btn-primary{width:100%;text-align:center}
+  .order .fine{font-size:.68rem;color:#7a7263;margin-top:12px;text-align:center;line-height:1.5}
+
+  /* ===== SPONSORS ===== */
+  .spon-tier{margin-bottom:34px}
+  .spon-tier .stl{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--steel);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+  .spon-tier .stl::after{content:"";flex:1;height:1px;background:var(--line)}
+  .spon-grid{display:flex;flex-wrap:wrap;gap:12px}
+  .spon{
+    border:1px solid var(--line);padding:16px 26px;font-family:var(--head);font-weight:800;
+    font-size:1.05rem;letter-spacing:.02em;color:var(--bone);background:var(--ink-2);
+    display:flex;align-items:center;gap:10px;transition:border-color .2s,color .2s;
+  }
+  .spon:hover{border-color:var(--green);color:var(--green)}
+  .spon .glyph{font-family:var(--display);color:var(--vermilion)}
+  .spon-tier.gold .spon{font-size:1.3rem;padding:22px 34px}
+
+  /* ===== VENUE STRIP ===== */
+  .venue{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+  @media(max-width:760px){.venue{grid-template-columns:1fr}}
+  .venue .v-text{padding:40px}
+  .venue .v-map{
+    background:
+      radial-gradient(400px 300px at 70% 40%,rgba(61,220,151,.18),transparent 60%),
+      var(--ink-2);
+    position:relative;min-height:280px;overflow:hidden;border-left:1px solid var(--line);
+  }
+  @media(max-width:760px){.venue .v-map{border-left:none;border-top:1px solid var(--line)}}
+  .venue .v-map svg{position:absolute;inset:0;width:100%;height:100%}
+  .venue .pin{position:absolute;top:42%;left:62%;transform:translate(-50%,-50%);text-align:center}
+  .venue .pin .dot{width:18px;height:18px;background:var(--vermilion);border-radius:50%;margin:0 auto;box-shadow:0 0 0 0 rgba(255,77,46,.5);animation:pulse 2.2s infinite}
+  .venue .pin .lab{font-family:var(--mono);font-size:.68rem;margin-top:8px;background:var(--ink);padding:4px 8px;letter-spacing:.08em}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,77,46,.45)}70%{box-shadow:0 0 0 22px rgba(255,77,46,0)}100%{box-shadow:0 0 0 0 rgba(255,77,46,0)}}
+  .venue h3{font-family:var(--display);font-size:1.6rem;margin:10px 0 12px}
+  .venue p{color:var(--steel);font-size:.92rem;margin-bottom:10px}
+  .venue .v-meta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .venue .v-meta div{display:flex;gap:12px;align-items:baseline;font-size:.88rem}
+  .venue .v-meta .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--vermilion);min-width:64px;text-transform:uppercase}
+
+  /* ===== FOOTER ===== */
+  footer{border-top:1px solid var(--line);padding:54px 0 40px;background:var(--ink-2)}
+  .foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;margin-bottom:40px}
+  .foot-brand{font-family:var(--display);font-size:1.8rem;line-height:1}
+  .foot-brand .y{color:var(--vermilion)}
+  .foot-tag{color:var(--steel);font-size:.88rem;margin-top:12px;max-width:320px}
+  .foot-cols{display:flex;gap:48px;flex-wrap:wrap}
+  .foot-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;color:var(--steel);text-transform:uppercase;margin-bottom:14px}
+  .foot-col a{display:block;font-size:.88rem;color:var(--bone);margin-bottom:9px;transition:color .2s}
+  .foot-col a:hover{color:var(--vermilion)}
+  .foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;padding-top:24px;border-top:1px solid var(--line);align-items:center}
+  .foot-credit{font-family:var(--mono);font-size:.78rem;color:var(--steel)}
+  .foot-credit a{color:var(--green);font-weight:700}
+  .foot-legal{font-size:.74rem;color:var(--steel)}
+
+  /* ===== TOAST ===== */
+  .toast{
+    position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(140%);
+    background:var(--bone);color:var(--ink);padding:16px 22px;z-index:200;
+    display:flex;align-items:center;gap:14px;max-width:92vw;
+    box-shadow:0 16px 40px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.2,.9,.3,1.2);
+    border-left:5px solid var(--vermilion);
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast .ti{font-family:var(--display);background:var(--vermilion);color:#fff;width:34px;height:34px;display:grid;place-items:center;flex:none}
+  .toast .tt{font-family:var(--head);font-weight:800;font-size:.95rem}
+  .toast .ts{font-size:.78rem;color:#5a5247}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+    .marquee-track{animation:none}
+  }
+  @media(max-width:600px){
+    .sec{padding:60px 0}
+    .hero-meta div{flex:1 1 50%;border-right:1px solid var(--line)}
+    .order{position:static}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="badge">TCS</span>智慧運算高峰會 2026</div>
+    <nav class="navlinks" aria-label="主要導覽">
+      <a href="#speakers">講者</a>
+      <a href="#agenda">議程</a>
+      <a href="#tickets">票券</a>
+      <a href="#sponsors">合作夥伴</a>
+    </nav>
+    <a href="#tickets" class="nav-cta"><span>立即購票</span></a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="wrap">
+    <div class="edition">
+      <span class="e-a">第 7 屆</span>
+      <span class="e-b">TAIWAN COMPUTE SUMMIT</span>
+      <span class="e-c">2026 / 高雄</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="row">運算</span>
+      <span class="row hl">不設限</span>
+      <span class="row out">COMPUTE</span>
+    </h1>
+
+    <p class="hero-sub">兩天、三大議程軌、<em>四十場</em>第一線實戰議題。臺灣最大的智慧運算與系統工程年度盛會，為打造下一代產品的工程師與決策者而生。</p>
+
+    <div class="hero-meta">
+      <div><div class="k">日期</div><div class="v">2026 / 09 / 24–25</div></div>
+      <div><div class="k">地點</div><div class="v">高雄展覽館</div></div>
+      <div><div class="k">講者</div><div class="v">42 位 <small>產學界</small></div></div>
+      <div><div class="k">名額</div><div class="v">2,400 席 <small>早鳥開放中</small></div></div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#tickets" class="btn btn-primary"><span>搶購早鳥票 →</span></a>
+      <a href="#agenda" class="btn btn-ghost"><span>瀏覽完整議程</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>大型語言模型</span><span class="dot">◆</span><span>邊緣推論</span><span class="dot">◆</span><span>分散式系統</span><span class="dot">◆</span><span>晶片設計</span><span class="dot">◆</span><span>資料工程</span><span class="dot">◆</span><span>MLOps</span><span class="dot">◆</span>
+    <span>大型語言模型</span><span class="dot">◆</span><span>邊緣推論</span><span class="dot">◆</span><span>分散式系統</span><span class="dot">◆</span><span>晶片設計</span><span class="dot">◆</span><span>資料工程</span><span class="dot">◆</span><span>MLOps</span><span class="dot">◆</span>
+  </div>
+</div>
+
+<!-- SPEAKERS -->
+<section id="speakers" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Keynote &amp; Speakers</span>
+        <h2 class="sec-title" style="margin-top:14px">講者陣容</h2>
+      </div>
+      <span class="sec-num">// 點擊展開講者簡介</span>
+    </div>
+    <div class="spk-grid" id="spkGrid">
+      <!-- speakers injected -->
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA (SIGNATURE) -->
+<section id="agenda" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Agenda · 雙日三軌</span>
+        <h2 class="sec-title" style="margin-top:14px">議程總覽</h2>
+      </div>
+      <span class="sec-num">// 切換日次・篩選議程軌</span>
+    </div>
+
+    <div class="agenda-ctrl">
+      <div class="day-tabs" role="tablist" aria-label="議程日次">
+        <button class="active" data-day="1" role="tab" aria-selected="true">Day 1<span class="d">09 / 24 週四</span></button>
+        <button data-day="2" role="tab" aria-selected="false">Day 2<span class="d">09 / 25 週五</span></button>
+      </div>
+      <div class="track-filter" role="group" aria-label="議程軌篩選">
+        <span class="lbl">議程軌</span>
+        <button class="chip active" data-track="all">全部</button>
+        <button class="chip" data-track="core"><span class="swatch"></span>核心模型</button>
+        <button class="chip" data-track="infra"><span class="swatch"></span>運算基建</button>
+        <button class="chip" data-track="apply"><span class="swatch"></span>產業應用</button>
+      </div>
+    </div>
+
+    <div class="agenda-list" id="agendaList"></div>
+  </div>
+</section>
+
+<!-- TICKETS (SIGNATURE 2) -->
+<section id="tickets" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Tickets · 早鳥優惠</span>
+        <h2 class="sec-title" style="margin-top:14px">選擇你的票券</h2>
+      </div>
+      <span class="sec-num">// 即時試算總額</span>
+    </div>
+
+    <div class="countdown" aria-live="off">
+      <div class="cd-lbl">EARLY BIRD 倒數<strong>早鳥優惠 8 月 15 日截止</strong></div>
+      <div class="cd-clock" id="cdClock" aria-label="早鳥優惠倒數計時">
+        <div><div class="num" data-cd="d">--</div><div class="u">Days</div></div>
+        <div><div class="num" data-cd="h">--</div><div class="u">Hrs</div></div>
+        <div><div class="num" data-cd="m">--</div><div class="u">Min</div></div>
+        <div><div class="num" data-cd="s">--</div><div class="u">Sec</div></div>
+      </div>
+    </div>
+
+    <div class="ticket-wrap">
+      <div class="tiers" id="tiers" role="radiogroup" aria-label="票種選擇">
+        <button class="tier sel" data-tier="early" data-price="6800" data-old="8800">
+          <span class="ck" aria-hidden="true"></span>
+          <span><span class="tname">早鳥全票</span><span class="tdesc">兩日入場・全議程・午餐・會後交流</span><br><span class="tag">省 NT$2,000</span></span>
+          <span class="price"><span class="old">NT$8,800</span>NT$6,800<small>/ 人</small></span>
+        </button>
+        <button class="tier" data-tier="single" data-price="3800" data-old="0">
+          <span class="ck" aria-hidden="true"></span>
+          <span><span class="tname">單日票</span><span class="tdesc">擇一日入場・該日全議程・午餐</span></span>
+          <span class="price">NT$3,800<small>/ 人</small></span>
+        </button>
+        <button class="tier" data-tier="student" data-price="1800" data-old="0">
+          <span class="ck" aria-hidden="true"></span>
+          <span><span class="tname">學生票</span><span class="tdesc">兩日入場・需出示有效學生證</span></span>
+          <span class="price">NT$1,800<small>/ 人</small></span>
+        </button>
+        <button class="tier" data-tier="vip" data-price="12800" data-old="0">
+          <span class="ck" aria-hidden="true"></span>
+          <span><span class="tname">VIP 全票</span><span class="tdesc">前排保留席・講者晚宴・限量周邊</span><br><span class="tag">限 120 席</span></span>
+          <span class="price">NT$12,800<small>/ 人</small></span>
+        </button>
+      </div>
+
+      <div class="order">
+        <h3>購票試算</h3>
+        <p class="o-sub" id="orderSub">早鳥全票 · NT$6,800 / 人</p>
+        <div class="qty-row">
+          <div class="qn">張數<small>每筆訂單上限 10 張</small></div>
+          <div class="stepper">
+            <button id="minus" aria-label="減少張數">−</button>
+            <span class="qv" id="qty" aria-live="polite">1</span>
+            <button id="plus" aria-label="增加張數">+</button>
+          </div>
+        </div>
+        <div class="o-total">
+          <span class="tl">應付總額</span>
+          <span class="tv" id="total">NT$6,800</span>
+        </div>
+        <div class="o-save" id="save">早鳥已為你省下 NT$2,000</div>
+        <button class="btn btn-primary" id="registerBtn"><span>確認購票 →</span></button>
+        <p class="fine">付款頁為設計樣板示意，不會產生實際交易。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="venue">
+      <div class="v-text">
+        <span class="eyebrow">Venue</span>
+        <h3>高雄展覽館</h3>
+        <p>毗鄰高雄軟體園區與亞洲新灣區，步行可達輕軌與捷運站，南臺灣最具規模的會展空間。</p>
+        <div class="v-meta">
+          <div><span class="k">地址</span><span>高雄市前鎮區成功二路 39 號</span></div>
+          <div><span class="k">交通</span><span>輕軌 C8 高雄展覽館站・捷運紅線 R8 三多商圈站轉乘</span></div>
+          <div><span class="k">展區</span><span>主會場 A 廳・分軌會議室 B1–B3</span></div>
+        </div>
+      </div>
+      <div class="v-map" aria-label="會場位置示意圖">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <g stroke="rgba(242,238,227,.10)" stroke-width="1" fill="none">
+            <path d="M0 60 L400 90"/><path d="M0 150 L400 130"/><path d="M0 230 L400 210"/>
+            <path d="M90 0 L120 300"/><path d="M220 0 L240 300"/><path d="M330 0 L350 300"/>
+          </g>
+          <path d="M0 140 Q120 120 240 160 T400 150" stroke="rgba(61,220,151,.35)" stroke-width="2.5" fill="none"/>
+        </svg>
+        <div class="pin"><div class="dot"></div><div class="lab mono">TCS 主會場</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section id="sponsors" class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Partners</span>
+        <h2 class="sec-title" style="margin-top:14px">合作夥伴</h2>
+      </div>
+      <span class="sec-num">// 期待你的品牌加入</span>
+    </div>
+
+    <div class="spon-tier gold">
+      <div class="stl">鑽石級 Diamond</div>
+      <div class="spon-grid">
+        <div class="spon"><span class="glyph">◆</span>沛思半導體</div>
+        <div class="spon"><span class="glyph">◆</span>雲樞科技</div>
+        <div class="spon"><span class="glyph">◆</span>恆星運算</div>
+      </div>
+    </div>
+    <div class="spon-tier">
+      <div class="stl">白金級 Platinum</div>
+      <div class="spon-grid">
+        <div class="spon"><span class="glyph">▲</span>啟元數據</div>
+        <div class="spon"><span class="glyph">▲</span>緯川電子</div>
+        <div class="spon"><span class="glyph">▲</span>智弦軟體</div>
+        <div class="spon"><span class="glyph">▲</span>南方雲端</div>
+      </div>
+    </div>
+    <div class="spon-tier">
+      <div class="stl">社群夥伴 Community</div>
+      <div class="spon-grid">
+        <div class="spon" style="font-size:.92rem">高雄 AI 工程師社群</div>
+        <div class="spon" style="font-size:.92rem">臺灣開源促進會</div>
+        <div class="spon" style="font-size:.92rem">PyData Taiwan</div>
+        <div class="spon" style="font-size:.92rem">資料科學年會</div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;border:1px solid var(--line);padding:30px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:var(--ink-2)">
+      <div>
+        <div style="font-family:var(--head);font-weight:800;font-size:1.2rem">想成為 TCS 2026 贊助夥伴？</div>
+        <div style="color:var(--steel);font-size:.88rem;margin-top:6px">索取贊助方案手冊，與 2,400 位技術決策者面對面。</div>
+      </div>
+      <a href="#tickets" class="btn btn-ghost"><span>索取贊助方案</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">TCS <span class="y">2026</span></div>
+        <div class="foot-tag">臺灣智慧運算高峰會・2026 年 9 月 24–25 日・高雄展覽館。為打造下一代產品的工程師與決策者而生。</div>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>大會</h4>
+          <a href="#speakers">講者陣容</a>
+          <a href="#agenda">完整議程</a>
+          <a href="#sponsors">合作夥伴</a>
+        </div>
+        <div class="foot-col">
+          <h4>參加</h4>
+          <a href="#tickets">購票</a>
+          <a href="#tickets">團體報名</a>
+          <a href="#sponsors">贊助方案</a>
+        </div>
+        <div class="foot-col">
+          <h4>聯絡</h4>
+          <a href="#">hello@tcs.tw</a>
+          <a href="#">媒體採訪</a>
+          <a href="#">志工招募</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-credit">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></div>
+      <div class="foot-legal">本頁為前端設計範例，所有單位、講者與票價均為虛構展示用途。</div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <div class="ti">✓</div>
+  <div>
+    <div class="tt" id="toastTitle">報名已送出</div>
+    <div class="ts" id="toastSub">我們將寄送確認信至你的信箱</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===== SPEAKERS DATA ===== */
+  var speakers = [
+    {n:"林之衡",r:"沛思半導體 / 首席架構師",t:"主題演講：當推論成本逼近物理極限",tag:"KEYNOTE",c:"var(--vermilion)",
+     bio:"主導沛思第三代 AI 加速器設計，曾任國際晶片大廠資深主任工程師。將分享在記憶體頻寬牆下，如何以共封裝光學與稀疏化重新定義單位推論成本。"},
+    {n:"陳渼瑄",r:"雲樞科技 / 技術長",t:"從單機到萬卡：訓練叢集的調度哲學",tag:"INFRA",c:"var(--green)",
+     bio:"帶領團隊營運臺灣規模最大的 GPU 訓練叢集。談容錯排程、彈性擴縮與成本歸因，以及在電力與散熱約束下的真實取捨。"},
+    {n:"黃柏睿",r:"啟元數據 / 研究主任",t:"小模型的逆襲：領域特化與蒸餾",tag:"CORE",c:"var(--vermilion)",
+     bio:"專注於把大型模型壓縮進邊緣裝置，研究成果涵蓋量化感知訓練與檢索增強。將展示如何以 30 億參數模型打敗通用大模型於垂直任務。"},
+    {n:"Sara Okafor",r:"開源基金會 / 核心維護者",t:"開放權重生態的下一步",tag:"CORE",c:"var(--vermilion)",
+     bio:"長期維護廣受採用的開源推論框架，倡議可重現與可審計的模型發布流程。本場以中英雙語進行，現場提供即時口譯。"},
+    {n:"郭芷昀",r:"恆星運算 / 產品副總",t:"把 AI 變成可被信賴的產品",tag:"APPLY",c:"var(--amber)",
+     bio:"十五年企業軟體產品經驗，主導多項導入金融與製造場域的 AI 系統。談如何建立評測、護欄與人機協作流程，讓模型真正進入生產。"},
+    {n:"吳承翰",r:"緯川電子 / 邊緣運算總監",t:"工廠裡的即時視覺檢測實戰",tag:"APPLY",c:"var(--amber)",
+     bio:"在數十座產線部署邊緣視覺系統。分享資料飛輪、模型在地化更新與停機零容忍環境下的部署紀律。"}
+  ];
+
+  var grid = document.getElementById("spkGrid");
+  speakers.forEach(function(s){
+    var card = document.createElement("button");
+    card.className = "spk";
+    card.type = "button";
+    card.setAttribute("aria-expanded","false");
+    var initial = s.n.charAt(0);
+    card.innerHTML =
+      '<div class="avatar" data-tag="'+s.tag+'" style="background:linear-gradient(135deg,'+s.c+',rgba(11,14,20,.4))">'+initial+'</div>'+
+      '<div class="body">'+
+        '<div class="name">'+s.n+'</div>'+
+        '<div class="role">'+s.r+'</div>'+
+        '<div class="topic">'+s.t+'</div>'+
+        '<div class="bio">'+s.bio+'</div>'+
+        '<div class="more"><span class="pm">+</span><span class="mtxt">展開簡介</span></div>'+
+      '</div>';
+    card.addEventListener("click",function(){
+      var open = card.classList.toggle("open");
+      card.setAttribute("aria-expanded", open ? "true":"false");
+      card.querySelector(".mtxt").textContent = open ? "收合簡介" : "展開簡介";
+    });
+    grid.appendChild(card);
+  });
+
+  /* ===== AGENDA DATA ===== */
+  var TRACK = {core:"核心模型", infra:"運算基建", apply:"產業應用"};
+  var agenda = {
+    1:[
+      {time:"09:30", end:"開幕", plenary:{t:"開幕主題演講：當推論成本逼近物理極限", who:"林之衡 · 沛思半導體 首席架構師", track:"core"}},
+      {time:"10:40", end:"並行場次", s:[
+        {track:"core", t:"小模型的逆襲：領域特化與蒸餾", who:"黃柏睿 · 啟元數據", room:"A 廳"},
+        {track:"infra", t:"從單機到萬卡：叢集調度哲學", who:"陳渼瑄 · 雲樞科技", room:"B1"},
+        {track:"apply", t:"把 AI 變成可被信賴的產品", who:"郭芷昀 · 恆星運算", room:"B2"}
+      ]},
+      {time:"13:30", end:"並行場次", s:[
+        {track:"core", t:"長上下文的真相：注意力的工程取捨", who:"研究小組 圓桌", room:"A 廳"},
+        {track:"infra", t:"高效能網路：RDMA 與拓樸設計", who:"緯川電子 技術團隊", room:"B1"},
+        {track:"apply", t:"工廠裡的即時視覺檢測實戰", who:"吳承翰 · 緯川電子", room:"B2"}
+      ]},
+      {time:"15:20", end:"並行場次", s:[
+        {track:"core", t:"開放權重生態的下一步（中英雙語）", who:"Sara Okafor · 開源基金會", room:"A 廳"},
+        {track:"infra", t:"推論服務的自動擴縮與成本歸因", who:"南方雲端 SRE 團隊", room:"B1"},
+        {track:"apply", t:"金融場域的合規 AI 落地", who:"智弦軟體 解決方案", room:"B2"}
+      ]},
+      {time:"17:00", end:"閉幕", plenary:{t:"Day 1 爐邊對談：臺灣運算產業的下一個十年", who:"產學界代表 · 共同主持", track:"infra"}}
+    ],
+    2:[
+      {time:"09:30", end:"並行場次", s:[
+        {track:"core", t:"多模態模型的訓練資料策展", who:"啟元數據 研究團隊", room:"A 廳"},
+        {track:"infra", t:"晶片到系統：共封裝與散熱前沿", who:"沛思半導體 架構團隊", room:"B1"},
+        {track:"apply", t:"醫療影像 AI 的臨床驗證之路", who:"恆星運算 醫療事業群", room:"B2"}
+      ]},
+      {time:"11:00", end:"並行場次", s:[
+        {track:"core", t:"強化學習與對齊的實務工作坊", who:"開源社群 講師群", room:"A 廳"},
+        {track:"infra", t:"資料湖到特徵商店的工程化", who:"PyData Taiwan", room:"B1"},
+        {track:"apply", t:"零售需求預測的端到端落地", who:"雲樞科技 應用團隊", room:"B2"}
+      ]},
+      {time:"13:30", end:"並行場次", s:[
+        {track:"core", t:"評測即護欄：建立可信的離線評估", who:"郭芷昀 · 恆星運算", room:"A 廳"},
+        {track:"infra", t:"邊緣推論的能耗與量化權衡", who:"吳承翰 · 緯川電子", room:"B1"},
+        {track:"apply", t:"客服自動化的人機協作設計", who:"智弦軟體 產品團隊", room:"B2"}
+      ]},
+      {time:"15:40", end:"閉幕", plenary:{t:"閉幕主題演講：開放、可信、在地的運算未來", who:"大會主席 · 總結致詞", track:"core"}}
+    ]
+  };
+
+  var listEl = document.getElementById("agendaList");
+  var curDay = 1, curTrack = "all";
+
+  function trackChip(tk){
+    return '<span class="tk"><span class="swatch"></span>'+TRACK[tk]+'</span>';
+  }
+
+  function renderAgenda(){
+    var rows = agenda[curDay];
+    var html = "";
+    rows.forEach(function(slot){
+      var inner = "";
+      if(slot.plenary){
+        var p = slot.plenary;
+        inner = '<div class="ses plenary" data-track="'+p.track+'">'+
+                  trackChip(p.track)+
+                  '<div class="t">★ 全體場次｜'+p.t+'</div>'+
+                  '<div class="who">'+p.who+'</div>'+
+                '</div>';
+      } else {
+        inner = '<div class="sessions">';
+        slot.s.forEach(function(se){
+          inner += '<div class="ses" data-track="'+se.track+'">'+
+                     trackChip(se.track)+
+                     '<div class="t">'+se.t+'</div>'+
+                     '<div class="who">'+se.who+'</div>'+
+                     '<div class="room">'+se.room+'</div>'+
+                   '</div>';
+        });
+        inner += '</div>';
+      }
+      html += '<div class="slot"><div class="time">'+slot.time+'<small>'+slot.end+'</small></div>'+inner+'</div>';
+    });
+    listEl.innerHTML = html;
+    applyFilter();
+  }
+
+  function applyFilter(){
+    var slots = listEl.querySelectorAll(".slot");
+    slots.forEach(function(slot){
+      var sessions = slot.querySelectorAll(".ses");
+      var anyVisible = false;
+      sessions.forEach(function(se){
+        var match = (curTrack === "all" || se.getAttribute("data-track") === curTrack);
+        // plenary sessions always count as visible regardless of filter dim
+        if(se.classList.contains("plenary")){
+          se.classList.remove("dim"); anyVisible = true; return;
+        }
+        if(match){ se.classList.remove("dim"); anyVisible = true; }
+        else { se.classList.add("dim"); }
+      });
+      slot.classList.toggle("hide", !anyVisible && curTrack !== "all");
+    });
+  }
+
+  // day tabs
+  document.querySelectorAll(".day-tabs button").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      document.querySelectorAll(".day-tabs button").forEach(function(b){
+        b.classList.remove("active"); b.setAttribute("aria-selected","false");
+      });
+      btn.classList.add("active"); btn.setAttribute("aria-selected","true");
+      curDay = btn.getAttribute("data-day");
+      renderAgenda();
+    });
+  });
+
+  // track filter chips
+  document.querySelectorAll(".chip").forEach(function(chip){
+    chip.addEventListener("click",function(){
+      document.querySelectorAll(".chip").forEach(function(c){c.classList.remove("active");});
+      chip.classList.add("active");
+      curTrack = chip.getAttribute("data-track");
+      applyFilter();
+    });
+  });
+
+  renderAgenda();
+
+  /* ===== TICKETS ===== */
+  var tiers = document.querySelectorAll(".tier");
+  var qtyEl = document.getElementById("qty");
+  var totalEl = document.getElementById("total");
+  var subEl = document.getElementById("orderSub");
+  var saveEl = document.getElementById("save");
+  var minus = document.getElementById("minus");
+  var plus = document.getElementById("plus");
+
+  var state = { price:6800, old:8800, name:"早鳥全票", qty:1 };
+  var MAX = 10;
+
+  function fmt(n){ return "NT$" + n.toLocaleString("en-US"); }
+
+  function updateOrder(){
+    qtyEl.textContent = state.qty;
+    totalEl.textContent = fmt(state.price * state.qty);
+    subEl.textContent = state.name + " · " + fmt(state.price) + " / 人";
+    var saved = state.old > 0 ? (state.old - state.price) * state.qty : 0;
+    if(saved > 0){
+      saveEl.style.display = "block";
+      saveEl.textContent = "早鳥已為你省下 " + fmt(saved);
+    } else {
+      saveEl.style.display = "none";
+    }
+    minus.disabled = state.qty <= 1;
+    plus.disabled = state.qty >= MAX;
+  }
+
+  tiers.forEach(function(t){
+    t.addEventListener("click",function(){
+      tiers.forEach(function(x){x.classList.remove("sel");});
+      t.classList.add("sel");
+      state.price = parseInt(t.getAttribute("data-price"),10);
+      state.old = parseInt(t.getAttribute("data-old"),10);
+      state.name = t.querySelector(".tname").textContent;
+      updateOrder();
+    });
+  });
+
+  minus.addEventListener("click",function(){ if(state.qty>1){state.qty--; updateOrder();} });
+  plus.addEventListener("click",function(){ if(state.qty<MAX){state.qty++; updateOrder();} });
+  updateOrder();
+
+  /* ===== COUNTDOWN ===== */
+  var deadline = new Date("2026-08-15T23:59:59+08:00").getTime();
+  var cd = {
+    d: document.querySelector('[data-cd="d"]'),
+    h: document.querySelector('[data-cd="h"]'),
+    m: document.querySelector('[data-cd="m"]'),
+    s: document.querySelector('[data-cd="s"]')
+  };
+  function pad(n){ return n < 10 ? "0"+n : ""+n; }
+  function tick(){
+    var diff = deadline - Date.now();
+    if(diff < 0){ diff = 0; }
+    var d = Math.floor(diff/86400000);
+    var h = Math.floor(diff%86400000/3600000);
+    var m = Math.floor(diff%3600000/60000);
+    var s = Math.floor(diff%60000/1000);
+    cd.d.textContent = pad(d); cd.h.textContent = pad(h);
+    cd.m.textContent = pad(m); cd.s.textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* ===== REGISTER → TOAST ===== */
+  var toast = document.getElementById("toast");
+  var toastTitle = document.getElementById("toastTitle");
+  var toastSub = document.getElementById("toastSub");
+  var toastTimer;
+  document.getElementById("registerBtn").addEventListener("click",function(){
+    toastTitle.textContent = "已加入購票清單";
+    toastSub.textContent = state.qty + " 張 " + state.name + " · 合計 " + fmt(state.price*state.qty);
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 4200);
+  });
+
+})();
+</script>
+</body>
+</html>

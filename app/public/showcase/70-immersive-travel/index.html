@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>緲遠旅誌 Liminal Voyages｜沉浸式旅遊行程設計｜e-life-ai</title>
+<meta name="description" content="緲遠旅誌 Liminal Voyages — 為嚮往遠方的人打造的精品沉浸式旅程。冰島、京都、摩洛哥、紐西蘭，每一段路都是一幅風景。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@500;700;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #f5ecdf;
+    --ink-soft: rgba(245, 236, 223, 0.72);
+    --ink-faint: rgba(245, 236, 223, 0.5);
+    --gold: #e8b87a;
+    --gold-deep: #c98b4b;
+    /* default scene = Iceland aurora dusk */
+    --sky-1: #0c1830;
+    --sky-2: #1b2f55;
+    --sky-3: #2e5a6e;
+    --glow: #6fe3c4;
+    --accent: #7fd8ff;
+    --mtn-far: #243a5e;
+    --mtn-mid: #16263f;
+    --mtn-near: #0a1422;
+    --ground: #060b14;
+    --serif: "Cormorant Garamond", "Noto Serif TC", serif;
+    --serif-cjk: "Noto Serif TC", serif;
+    --sans: "Manrope", system-ui, sans-serif;
+    --maxw: 1240px;
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--ground);
+    color: var(--ink);
+    overflow-x: hidden;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.01em;
+  }
+
+  ::selection { background: var(--gold); color: #1a1206; }
+
+  img, svg { display: block; max-width: 100%; }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 56px);
+  }
+
+  /* ---------------- NAV ---------------- */
+  header.nav {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 60;
+    transition: background 0.5s var(--ease), backdrop-filter 0.5s var(--ease), border-color 0.5s var(--ease);
+    border-block-end: 1px solid transparent;
+  }
+  header.nav.scrolled {
+    background: rgba(8, 13, 22, 0.62);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border-block-end: 1px solid rgba(232, 184, 122, 0.14);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 20px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--serif);
+    font-size: 1.42rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .brand .mark {
+    width: 30px; height: 30px;
+    flex: 0 0 auto;
+  }
+  .brand .zh { font-family: var(--serif-cjk); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.12em; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 2.6vw, 38px);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+  }
+  .nav-links a { transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    border: 1px solid rgba(232, 184, 122, 0.5);
+    color: var(--gold);
+    padding: 9px 20px;
+    border-radius: 100px;
+    font-size: 0.74rem;
+    letter-spacing: 0.2em;
+    transition: all 0.35s var(--ease);
+  }
+  .nav-cta:hover { background: var(--gold); color: #160f04; border-color: var(--gold); }
+  @media (max-width: 860px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  /* ---------------- HERO / SCENE ---------------- */
+  .scene {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+    background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 42%, var(--sky-3) 100%);
+    transition: background 1.1s var(--ease);
+  }
+  .layer {
+    position: absolute;
+    inset-inline: -8%;
+    width: 116%;
+    will-change: transform;
+    transition: background 1.1s var(--ease);
+    pointer-events: none;
+  }
+  .layer svg { width: 100%; height: 100%; }
+
+  .sky-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(70% 50% at 50% 8%, color-mix(in srgb, var(--glow) 36%, transparent) 0%, transparent 60%),
+      radial-gradient(120% 80% at 50% 100%, color-mix(in srgb, var(--gold) 14%, transparent) 0%, transparent 55%);
+    transition: background 1.1s var(--ease);
+    mix-blend-mode: screen;
+    z-index: 1;
+  }
+  /* aurora ribbons (Iceland) */
+  .aurora {
+    position: absolute;
+    inset-block-start: -6%;
+    inset-inline: -10%;
+    width: 120%;
+    height: 64%;
+    z-index: 1;
+    opacity: 0.9;
+    mix-blend-mode: screen;
+    transition: opacity 0.9s var(--ease);
+    pointer-events: none;
+  }
+  .aurora path { mix-blend-mode: screen; }
+
+  .stars { position: absolute; inset: 0; z-index: 0; opacity: 0.85; transition: opacity 0.9s; }
+  .stars circle { fill: #fff; }
+
+  .l-far  { inset-block-end: 0; height: 60%; z-index: 2; }
+  .l-mid  { inset-block-end: 0; height: 46%; z-index: 3; }
+  .l-near { inset-block-end: 0; height: 34%; z-index: 4; }
+  .l-fore { inset-block-end: 0; height: 22%; z-index: 6; }
+
+  .scene-haze {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    height: 40%;
+    z-index: 5;
+    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ground) 70%, transparent) 70%, var(--ground));
+    pointer-events: none;
+  }
+
+  /* HERO CONTENT */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-block-end: 26px;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    width: 40px; height: 1px;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .hero h1 {
+    font-family: var(--serif-cjk);
+    font-weight: 900;
+    font-size: clamp(2.9rem, 8vw, 6.4rem);
+    line-height: 1.02;
+    letter-spacing: 0.02em;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.7);
+  }
+  .hero h1 em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0;
+  }
+  .hero-sub {
+    margin-block-start: 28px;
+    max-width: 30ch;
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: var(--ink-soft);
+    font-weight: 300;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.6);
+  }
+  .hero-actions {
+    margin-block-start: 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 15px 30px;
+    border-radius: 100px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.4s var(--ease);
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    color: #1a1206;
+    font-weight: 600;
+    box-shadow: 0 10px 30px -8px rgba(201, 139, 75, 0.6);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px -8px rgba(201, 139, 75, 0.7); }
+  .btn-ghost {
+    border-color: rgba(245, 236, 223, 0.35);
+    color: var(--ink);
+    background: rgba(245, 236, 223, 0.04);
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .scroll-cue {
+    position: absolute;
+    inset-block-end: 30px;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .scroll-cue .dot {
+    width: 1px; height: 44px;
+    background: linear-gradient(var(--gold), transparent);
+    animation: cue 2.4s var(--ease) infinite;
+  }
+  @keyframes cue { 0%,100%{transform:scaleY(0.4);opacity:0.4;transform-origin:top} 50%{transform:scaleY(1);opacity:1;transform-origin:top} }
+
+  /* ---------------- DESTINATION SELECTOR ---------------- */
+  .dest-bar {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    z-index: 11;
+    border-block-start: 1px solid rgba(232, 184, 122, 0.16);
+    background: linear-gradient(180deg, transparent, rgba(6,11,20,0.7));
+    backdrop-filter: blur(4px);
+  }
+  .dest-track {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dest-track::-webkit-scrollbar { display: none; }
+  .dest-btn {
+    flex: 1 0 auto;
+    min-width: 140px;
+    padding-block: 16px;
+    padding-inline: 20px;
+    text-align: start;
+    background: transparent;
+    border: none;
+    border-inline-end: 1px solid rgba(232,184,122,0.1);
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: all 0.4s var(--ease);
+    font-family: var(--sans);
+  }
+  .dest-btn:last-child { border-inline-end: none; }
+  .dest-btn .idx { font-size: 0.62rem; letter-spacing: 0.2em; opacity: 0.6; }
+  .dest-btn .nm { font-family: var(--serif-cjk); font-weight: 700; font-size: 1.04rem; margin-block-start: 4px; color: var(--ink-soft); transition: color 0.4s; letter-spacing: 0.06em; }
+  .dest-btn .en { font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.55; }
+  .dest-btn:hover { background: rgba(232,184,122,0.06); }
+  .dest-btn.active { background: rgba(232,184,122,0.1); color: var(--gold); }
+  .dest-btn.active .nm { color: var(--gold); }
+  .dest-btn.active { box-shadow: inset 0 2px 0 var(--gold); }
+
+  /* ---------------- SECTIONS ---------------- */
+  section { position: relative; }
+  .sec-pad { padding-block: clamp(80px, 11vh, 150px); }
+
+  .sec-head { max-width: 640px; margin-block-end: 60px; }
+  .sec-kicker {
+    font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--gold-deep); margin-block-end: 18px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sec-kicker::before { content:""; width: 28px; height: 1px; background: var(--gold-deep); }
+  .sec-title {
+    font-family: var(--serif-cjk);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4.4vw, 3.2rem);
+    line-height: 1.12;
+    letter-spacing: 0.02em;
+  }
+  .sec-title em { font-family: var(--serif); font-style: italic; font-weight: 500; color: var(--gold); }
+  .sec-lead { margin-block-start: 20px; color: var(--ink-soft); font-weight: 300; font-size: 1.05rem; }
+
+  /* destination detail panel */
+  .detail {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .detail { grid-template-columns: 1fr; } }
+  .detail-card {
+    border: 1px solid rgba(232,184,122,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(160deg, rgba(232,184,122,0.06), rgba(255,255,255,0.01));
+    box-shadow: 0 30px 70px -30px rgba(0,0,0,0.7);
+  }
+  .detail-svg {
+    aspect-ratio: 4 / 3;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--sky-1), var(--sky-3));
+    transition: background 1s var(--ease);
+  }
+  .detail-svg svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .detail-meta {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-block-start: 1px solid rgba(232,184,122,0.14);
+  }
+  .detail-meta div { padding: 18px 16px; border-inline-end: 1px solid rgba(232,184,122,0.1); }
+  .detail-meta div:last-child { border-inline-end: none; }
+  .detail-meta .k { font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+  .detail-meta .v { font-family: var(--serif-cjk); font-weight: 700; font-size: 1.1rem; margin-block-start: 6px; color: var(--ink); }
+
+  .detail-body h3 {
+    font-family: var(--serif-cjk);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+    line-height: 1.14;
+  }
+  .detail-body .place-en { font-family: var(--serif); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-block-start: 4px; }
+  .detail-body p { margin-block-start: 22px; color: var(--ink-soft); font-weight: 300; }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-block-start: 26px; }
+  .tag {
+    font-size: 0.72rem; letter-spacing: 0.08em;
+    border: 1px solid rgba(232,184,122,0.3);
+    color: var(--gold); padding: 6px 14px; border-radius: 100px;
+  }
+
+  /* ---------------- ITINERARY ACCORDION ---------------- */
+  .itin { border-block-start: 1px solid rgba(232,184,122,0.14); margin-block-start: 40px; }
+  .day {
+    border-block-end: 1px solid rgba(232,184,122,0.14);
+  }
+  .day-head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding-block: 26px;
+    background: none; border: none; cursor: pointer;
+    text-align: start;
+    color: var(--ink);
+    font-family: var(--sans);
+    transition: padding-inline-start 0.4s var(--ease);
+  }
+  .day-head:hover { padding-inline-start: 8px; }
+  .day-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.7rem;
+    color: var(--gold);
+    flex: 0 0 auto;
+    min-width: 64px;
+  }
+  .day-title { font-family: var(--serif-cjk); font-weight: 700; font-size: clamp(1.05rem, 2.2vw, 1.4rem); flex: 1; letter-spacing: 0.03em; }
+  .day-loc { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); flex: 0 0 auto; }
+  .day-plus { flex: 0 0 auto; width: 22px; height: 22px; position: relative; }
+  .day-plus::before, .day-plus::after {
+    content: ""; position: absolute; inset-block-start: 50%; inset-inline-start: 50%;
+    background: var(--gold); transition: transform 0.4s var(--ease);
+  }
+  .day-plus::before { width: 16px; height: 1.5px; transform: translate(-50%, -50%); }
+  .day-plus::after { width: 1.5px; height: 16px; transform: translate(-50%, -50%); }
+  .day.open .day-plus::after { transform: translate(-50%, -50%) scaleY(0); }
+  .day-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s var(--ease);
+  }
+  .day-body-inner {
+    padding-inline-start: 86px;
+    padding-block-end: 30px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 60ch;
+  }
+  @media (max-width: 620px) {
+    .day-head { flex-wrap: wrap; gap: 10px 18px; }
+    .day-loc { width: 100%; padding-inline-start: 64px; }
+    .day-body-inner { padding-inline-start: 0; }
+  }
+
+  /* ---------------- COST ESTIMATOR ---------------- */
+  .estimator {
+    display: grid;
+    grid-template-columns: 1fr 0.85fr;
+    gap: clamp(28px, 4vw, 56px);
+    border: 1px solid rgba(232,184,122,0.2);
+    border-radius: 24px;
+    padding: clamp(28px, 4vw, 52px);
+    background: linear-gradient(160deg, rgba(232,184,122,0.05), rgba(255,255,255,0.01));
+    align-items: center;
+  }
+  @media (max-width: 820px) { .estimator { grid-template-columns: 1fr; } }
+  .field { margin-block-end: 30px; }
+  .field:last-child { margin-block-end: 0; }
+  .field label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-faint); margin-block-end: 14px;
+  }
+  .field .out { font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--gold); letter-spacing: 0; text-transform: none; }
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 3px; border-radius: 3px;
+    background: rgba(232,184,122,0.25);
+    outline: none; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    box-shadow: 0 0 0 5px rgba(232,184,122,0.18), 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.12); }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px; height: 22px; border: none; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    box-shadow: 0 0 0 5px rgba(232,184,122,0.18);
+  }
+  .seg { display: flex; gap: 8px; flex-wrap: wrap; }
+  .seg button {
+    flex: 1; min-width: 78px;
+    padding: 11px 8px;
+    background: rgba(245,236,223,0.04);
+    border: 1px solid rgba(232,184,122,0.2);
+    border-radius: 12px;
+    color: var(--ink-soft);
+    font-family: var(--sans); font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    cursor: pointer; transition: all 0.3s var(--ease);
+  }
+  .seg button.on { background: rgba(232,184,122,0.16); border-color: var(--gold); color: var(--gold); }
+  .est-out {
+    text-align: center;
+    padding: 10px;
+  }
+  .est-out .lbl { font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-faint); }
+  .est-out .price {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    color: var(--gold);
+    line-height: 1.1;
+    margin-block: 12px;
+    letter-spacing: 0.01em;
+  }
+  .est-out .price small { font-size: 1.1rem; color: var(--ink-soft); font-family: var(--sans); font-weight: 400; }
+  .est-out .note { font-size: 0.8rem; color: var(--ink-faint); font-weight: 300; max-width: 34ch; margin-inline: auto; }
+
+  /* ---------------- ENQUIRY FORM ---------------- */
+  .enquiry {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  @media (max-width: 880px) { .enquiry { grid-template-columns: 1fr; } }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .form-grid .full { grid-column: 1 / -1; }
+  @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+  .inp-wrap { position: relative; }
+  .inp-wrap label {
+    font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-faint); display: block; margin-block-end: 9px;
+  }
+  .inp-wrap input, .inp-wrap select, .inp-wrap textarea {
+    width: 100%;
+    background: rgba(245,236,223,0.04);
+    border: 1px solid rgba(232,184,122,0.22);
+    border-radius: 12px;
+    padding: 13px 16px;
+    color: var(--ink);
+    font-family: var(--sans); font-size: 0.95rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .inp-wrap textarea { resize: vertical; min-height: 110px; }
+  .inp-wrap input:focus, .inp-wrap select:focus, .inp-wrap textarea:focus {
+    outline: none; border-color: var(--gold); background: rgba(232,184,122,0.07);
+  }
+  .inp-wrap select option { background: #0c1422; color: var(--ink); }
+  .inp-wrap.err input, .inp-wrap.err select, .inp-wrap.err textarea { border-color: #e8736a; }
+  .err-msg { color: #f0938b; font-size: 0.72rem; margin-block-start: 6px; display: none; letter-spacing: 0.04em; }
+  .inp-wrap.err .err-msg { display: block; }
+  .form-ok {
+    display: none;
+    margin-block-start: 22px;
+    padding: 16px 20px;
+    border: 1px solid rgba(111,227,196,0.4);
+    background: rgba(111,227,196,0.08);
+    border-radius: 12px;
+    color: #9fe9d3;
+    font-size: 0.92rem;
+  }
+  .form-ok.show { display: block; }
+
+  /* ---------------- DESTINATION GRID ---------------- */
+  .destgrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 960px) { .destgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .destgrid { grid-template-columns: 1fr; } }
+  .dgcard {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    cursor: pointer;
+    border: 1px solid rgba(232,184,122,0.16);
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+  }
+  .dgcard:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -22px rgba(0,0,0,0.8); }
+  .dgcard svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform 0.7s var(--ease); }
+  .dgcard:hover svg { transform: scale(1.08); }
+  .dgcard .cap {
+    position: absolute; inset-block-end: 0; inset-inline: 0;
+    padding: 18px 18px 20px;
+    background: linear-gradient(transparent, rgba(4,8,16,0.86));
+    z-index: 2;
+  }
+  .dgcard .cap .en { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+  .dgcard .cap .zh { font-family: var(--serif-cjk); font-weight: 700; font-size: 1.2rem; margin-block-start: 3px; letter-spacing: 0.05em; }
+
+  /* ---------------- FOOTER ---------------- */
+  footer {
+    border-block-start: 1px solid rgba(232,184,122,0.16);
+    padding-block: 60px 40px;
+    background: linear-gradient(180deg, var(--ground), #04070d);
+  }
+  .foot-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; align-items: flex-start; }
+  .foot-brand { max-width: 34ch; }
+  .foot-brand .brand { margin-block-end: 16px; }
+  .foot-brand p { color: var(--ink-faint); font-weight: 300; font-size: 0.92rem; }
+  .foot-cols { display: flex; gap: clamp(30px, 6vw, 80px); flex-wrap: wrap; }
+  .foot-col h4 { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-deep); margin-block-end: 16px; }
+  .foot-col a { display: block; color: var(--ink-soft); font-size: 0.9rem; padding-block: 5px; transition: color 0.3s; }
+  .foot-col a:hover { color: var(--gold); }
+  .foot-bot {
+    margin-block-start: 50px; padding-block-start: 24px;
+    border-block-start: 1px solid rgba(232,184,122,0.1);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    color: var(--ink-faint); font-size: 0.78rem; letter-spacing: 0.04em;
+  }
+  .foot-bot a { color: var(--gold); }
+
+  /* ---------------- BADGE ---------------- */
+  .badge {
+    position: fixed;
+    inset-block-end: 18px;
+    inset-inline-end: 18px;
+    z-index: 80;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 15px;
+    border-radius: 100px;
+    background: rgba(8,13,22,0.78);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(232,184,122,0.34);
+    color: var(--gold);
+    font-size: 0.72rem; letter-spacing: 0.12em; font-weight: 500;
+    box-shadow: 0 8px 28px -8px rgba(0,0,0,0.7);
+    transition: transform 0.35s var(--ease), border-color 0.35s;
+  }
+  .badge:hover { transform: translateY(-2px); border-color: var(--gold); }
+  .badge .pin { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+
+  /* ---------------- LOAD ANIMATION ---------------- */
+  [data-rise] { opacity: 0; transform: translateY(34px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+  [data-rise].in { opacity: 1; transform: none; }
+  .hero [data-rise] { transition-duration: 1.1s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+    [data-rise] { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="緲遠旅誌 首頁">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" stroke="var(--gold)" stroke-width="1.4"/>
+        <path d="M16 4 L19 16 L16 28 L13 16 Z" fill="var(--gold)" opacity="0.9"/>
+        <path d="M4 16 L16 13 L28 16 L16 19 Z" fill="var(--gold)" opacity="0.45"/>
+      </svg>
+      <span><span class="zh">緲遠旅誌</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#destinations">目的地</a>
+      <a href="#itinerary">行程</a>
+      <a href="#estimate">預算</a>
+      <a href="#enquiry">洽詢</a>
+      <a href="#enquiry" class="nav-cta">預約旅程</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO SCENE -->
+<main id="top">
+<section class="scene" id="scene">
+  <!-- background star + glow layers -->
+  <svg class="stars layer" id="stars" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <div class="sky-glow" id="skyGlow"></div>
+
+  <!-- aurora ribbons -->
+  <svg class="aurora" id="aurora" viewBox="0 0 1440 460" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="aur1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--glow)" stop-opacity="0"/>
+        <stop offset="0.5" stop-color="var(--glow)" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="var(--accent)" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="aur2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--accent)" stop-opacity="0"/>
+        <stop offset="0.5" stop-color="var(--accent)" stop-opacity="0.4"/>
+        <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M-40,120 C260,30 460,200 720,120 C980,40 1180,210 1480,110 L1480,300 C1180,360 980,220 720,300 C460,380 260,210 -40,300 Z" fill="url(#aur1)"/>
+    <path d="M-40,200 C300,120 520,270 760,190 C1020,100 1220,260 1480,180 L1480,330 C1220,400 1020,250 760,330 C520,410 300,250 -40,340 Z" fill="url(#aur2)" opacity="0.7"/>
+  </svg>
+
+  <!-- parallax mountain / scenery layers (swapped per destination) -->
+  <div class="layer l-far"  id="lFar"></div>
+  <div class="layer l-mid"  id="lMid"></div>
+  <div class="layer l-near" id="lNear"></div>
+  <div class="layer l-fore" id="lFore"></div>
+  <div class="scene-haze"></div>
+
+  <!-- HERO content -->
+  <div class="wrap hero-content hero">
+    <div data-rise class="hero-eyebrow">沉浸式精品旅程 · Boutique Voyages</div>
+    <h1 data-rise>走進風景之中，<br>而非<em> 路過</em>它。</h1>
+    <p data-rise class="hero-sub" id="heroSub">在極光與火山之間，緲遠旅誌為你寫一段慢下來的冰島旅程。</p>
+    <div data-rise class="hero-actions">
+      <a href="#destinations" class="btn btn-primary">探索目的地</a>
+      <a href="#itinerary" class="btn btn-ghost">查看行程</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>Scroll</span><span class="dot"></span></div>
+
+  <!-- DESTINATION SELECTOR -->
+  <div class="dest-bar">
+    <div class="wrap" style="padding-inline:0">
+    <div class="dest-track" id="destTrack" role="tablist" aria-label="選擇目的地">
+      <!-- buttons injected -->
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTINATION DETAIL -->
+<section class="sec-pad" id="destinations">
+  <div class="wrap">
+    <div class="sec-head" data-rise>
+      <div class="sec-kicker">當前目的地</div>
+      <h2 class="sec-title" id="detailHeading">每一段路，<em>都是一幅風景</em></h2>
+    </div>
+
+    <div class="detail">
+      <div class="detail-card" data-rise>
+        <div class="detail-svg" id="detailScene"></div>
+        <div class="detail-meta" id="detailMeta"></div>
+      </div>
+      <div class="detail-body" data-rise>
+        <h3 id="dName">冰島</h3>
+        <div class="place-en" id="dEn">Iceland</div>
+        <p id="dDesc"></p>
+        <div class="tags" id="dTags"></div>
+        <div class="hero-actions" style="margin-block-start:30px">
+          <a href="#itinerary" class="btn btn-primary">查看此行程</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section class="sec-pad" id="itinerary" style="background:linear-gradient(180deg,#04070d,#070d18);">
+  <div class="wrap">
+    <div class="sec-head" data-rise>
+      <div class="sec-kicker">逐日行程</div>
+      <h2 class="sec-title" id="itinTitle">慢旅 · <em>每日節奏</em></h2>
+      <p class="sec-lead">每一段旅程都由在地策劃人親手編排——保留留白，讓你真正走進當地的時間裡。</p>
+    </div>
+    <div class="itin" id="itin"></div>
+  </div>
+</section>
+
+<!-- COST ESTIMATOR -->
+<section class="sec-pad" id="estimate">
+  <div class="wrap">
+    <div class="sec-head" data-rise>
+      <div class="sec-kicker">旅程預算</div>
+      <h2 class="sec-title">為你的遠方，<em>估算一段價格</em></h2>
+      <p class="sec-lead">滑動天數與人數，即時估算每人費用。實際報價依季節與住宿等級調整。</p>
+    </div>
+
+    <div class="estimator" data-rise>
+      <div>
+        <div class="field">
+          <label>旅程天數 <span class="out" id="outDays">8 天</span></label>
+          <input type="range" id="rngDays" min="4" max="16" step="1" value="8" />
+        </div>
+        <div class="field">
+          <label>旅人人數 <span class="out" id="outPax">2 人</span></label>
+          <input type="range" id="rngPax" min="1" max="8" step="1" value="2" />
+        </div>
+        <div class="field">
+          <label>住宿等級</label>
+          <div class="seg" id="segTier">
+            <button data-tier="1" data-mult="1">精選</button>
+            <button data-tier="1.5" data-mult="1.5" class="on">奢享</button>
+            <button data-tier="2.2" data-mult="2.2">典藏</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>選定目的地</label>
+          <div class="seg" id="segDestEst"></div>
+        </div>
+      </div>
+      <div class="est-out">
+        <div class="lbl">每人預估費用</div>
+        <div class="price" id="estPrice">NT$ 0</div>
+        <div class="lbl" style="margin-block-end:8px">行程總計（<span id="estPaxLbl">2</span> 人）</div>
+        <div class="out" style="font-size:1.5rem;color:var(--ink)" id="estTotal">NT$ 0</div>
+        <p class="note">含住宿、在地嚮導、私人接送與精選體驗；不含國際機票。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTINATION GRID -->
+<section class="sec-pad" style="background:linear-gradient(180deg,#070d18,#04070d);">
+  <div class="wrap">
+    <div class="sec-head" data-rise>
+      <div class="sec-kicker">全系列目的地</div>
+      <h2 class="sec-title">四個遠方，<em>四種沉浸</em></h2>
+      <p class="sec-lead">點選任一目的地，回到頂端的場景中沉浸感受。</p>
+    </div>
+    <div class="destgrid" id="destGrid"></div>
+  </div>
+</section>
+
+<!-- ENQUIRY -->
+<section class="sec-pad" id="enquiry">
+  <div class="wrap">
+    <div class="enquiry">
+      <div class="sec-head" data-rise style="margin-block-end:0">
+        <div class="sec-kicker">預約洽詢</div>
+        <h2 class="sec-title">告訴我們，<em>你嚮往的遠方</em></h2>
+        <p class="sec-lead">填寫以下資訊，緲遠旅誌的旅程策劃人將於兩個工作日內，為你量身回覆一份初步行程提案。</p>
+      </div>
+
+      <form id="enqForm" novalidate data-rise>
+        <div class="form-grid">
+          <div class="inp-wrap">
+            <label for="fName">稱呼</label>
+            <input type="text" id="fName" name="name" placeholder="您的姓名" />
+            <div class="err-msg">請填寫您的稱呼</div>
+          </div>
+          <div class="inp-wrap">
+            <label for="fEmail">電子郵件</label>
+            <input type="email" id="fEmail" name="email" placeholder="you@example.com" />
+            <div class="err-msg">請填寫有效的電子郵件</div>
+          </div>
+          <div class="inp-wrap">
+            <label for="fDest">嚮往目的地</label>
+            <select id="fDest" name="dest"></select>
+            <div class="err-msg">請選擇目的地</div>
+          </div>
+          <div class="inp-wrap">
+            <label for="fMonth">預計出發</label>
+            <select id="fMonth" name="month">
+              <option value="">請選擇月份</option>
+            </select>
+            <div class="err-msg">請選擇出發月份</div>
+          </div>
+          <div class="inp-wrap full">
+            <label for="fMsg">想對策劃人說的話</label>
+            <textarea id="fMsg" name="msg" placeholder="想要的旅程節奏、特別想體驗的事、同行夥伴…"></textarea>
+            <div class="err-msg">請簡單描述您的需求（至少 10 字）</div>
+          </div>
+        </div>
+        <div class="hero-actions" style="margin-block-start:26px">
+          <button type="submit" class="btn btn-primary">送出洽詢</button>
+        </div>
+        <div class="form-ok" id="formOk">已收到您的洽詢，緲遠旅誌將盡快與您聯繫。（此為作品集示範，未實際送出）</div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="brand">
+          <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="15" stroke="var(--gold)" stroke-width="1.4"/>
+            <path d="M16 4 L19 16 L16 28 L13 16 Z" fill="var(--gold)" opacity="0.9"/>
+            <path d="M4 16 L16 13 L28 16 L16 19 Z" fill="var(--gold)" opacity="0.45"/>
+          </svg>
+          <span><span class="zh">緲遠旅誌</span></span>
+        </a>
+        <p>Liminal Voyages — 為嚮往遠方的人，設計一段慢下來、走進風景之中的沉浸式旅程。</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>目的地</h4>
+          <a href="#destinations">冰島 Iceland</a>
+          <a href="#destinations">京都 Kyoto</a>
+          <a href="#destinations">摩洛哥 Morocco</a>
+          <a href="#destinations">紐西蘭 New Zealand</a>
+        </div>
+        <div class="foot-col">
+          <h4>探索</h4>
+          <a href="#itinerary">逐日行程</a>
+          <a href="#estimate">旅程預算</a>
+          <a href="#enquiry">預約洽詢</a>
+        </div>
+        <div class="foot-col">
+          <h4>聯繫</h4>
+          <a href="#enquiry">hello@liminal.travel</a>
+          <a href="#top">台北市大安區遠方巷 8 號</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 緲遠旅誌 Liminal Voyages · 作品集示範站</span>
+      <span>由 <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a> 設計開發 · Crafted by e-life-ai</span>
+    </div>
+  </div>
+</footer>
+
+<!-- BADGE -->
+<a class="badge" href="https://elife-ai.com" target="_blank" rel="noopener" aria-label="由 e-life-ai 製作">
+  <span class="pin"></span> elife-ai.com
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- DATA ---------- */
+  const DEST = {
+    iceland: {
+      zh: "冰島", en: "Iceland", idx: "01",
+      heroSub: "在極光與火山之間，緲遠旅誌為你寫一段慢下來的冰島旅程。",
+      desc: "黑沙灘、玄武岩柱、蒸騰的地熱與冬夜裡舞動的綠色極光。我們避開觀光巴士的節奏，帶你在無人的峽灣邊，等一場屬於自己的光。",
+      tags: ["極光獵人", "地熱溫泉", "黑沙海岸", "冰川健行"],
+      base: 86000,
+      palette: { sky1:"#0c1830", sky2:"#1b2f55", sky3:"#2e5a6e", glow:"#6fe3c4", accent:"#7fd8ff", far:"#243a5e", mid:"#16263f", near:"#0a1422", aurora:1 },
+      meta: [["最佳季節","9–3 月"],["建議天數","8 天"],["氣候","凜冬寒帶"]],
+      days: [
+        ["雷克雅維克 · 抵達","Reykjavík",  "降落於凱夫拉維克，私人接送進城。傍晚漫步老港與彩色屋舍，於在地小館享用第一餐——慢慢開始。"],
+        ["黃金圈 · 大地的裂縫","Golden Circle", "辛格維利爾國家公園、間歇泉與黃金瀑布。午後泡進祕境地熱池，看蒸氣在冷空氣裡升起。"],
+        ["南岸 · 黑沙與瀑布","South Coast", "塞里雅蘭瀑布的水簾、雷尼斯黑沙灘的玄武岩柱。夜宿無光害的鄉間旅宿，靜候極光。"],
+        ["傑古沙龍 · 冰河湖","Jökulsárlón", "在藍白冰山漂浮的冰河湖畔，搭乘水陸船穿行；鑽石海灘上拾光。"],
+        ["啟程歸途 · 帶走一片光","Departure", "返回雷克雅維克，自由探索設計小店與咖啡。把這段慢下來的時間，一起帶回家。"]
+      ]
+    },
+    kyoto: {
+      zh: "京都", en: "Kyoto", idx: "02",
+      heroSub: "在千年古都的晨霧與紅葉之間，走一段安靜而深刻的京都。",
+      desc: "竹林的光、苔寺的綠、清晨無人的鳥居。我們在觀光人潮抵達之前出發，讓你獨享一座從容呼吸的古都，伴隨懷石與茶席的緩慢時光。",
+      tags: ["晨間參拜", "懷石料理", "茶道體驗", "紅葉散策"],
+      base: 72000,
+      palette: { sky1:"#2a1426", sky2:"#5a2438", sky3:"#9c5a4a", glow:"#f4a878", accent:"#ffd1a3", far:"#7a3a44", mid:"#4a2030", near:"#2a1220", aurora:0 },
+      meta: [["最佳季節","11 月 / 4 月"],["建議天數","6 天"],["氣候","溫帶四季"]],
+      days: [
+        ["祇園 · 入夜的花見小路","Gion", "抵達後入住町家旅宿。黃昏漫步祇園石板巷，偶遇藝伎身影，於割烹品味第一道時令。"],
+        ["嵐山 · 竹林與渡月橋","Arashiyama", "清晨無人的竹林小徑，光從葉隙落下。午後嵯峨野小火車，傍晚桂川邊的靜謐。"],
+        ["東山 · 古寺巡禮","Higashiyama", "清水寺、二年坂、高台寺。午後茶道體驗，親手點一碗抹茶，學習一期一會。"],
+        ["大原 · 苔與紅葉","Ōhara", "離開市區，前往山間的三千院與寂光院。苔庭的綠與楓紅交織，是京都最安靜的角落。"],
+        ["伏見 · 千本鳥居","Fushimi", "清晨登伏見稻荷，趕在人潮前穿越無盡朱紅鳥居。午後自由散策，帶走一份和菓子。"]
+      ]
+    },
+    morocco: {
+      zh: "摩洛哥", en: "Morocco", idx: "03",
+      heroSub: "在撒哈拉的金色沙丘與星空之下，展開一場熾熱而浪漫的旅程。",
+      desc: "馬拉喀什的香料市集、藍色的舍夫沙萬、撒哈拉的無垠沙海。我們帶你在沙丘上看日落、在帳篷裡數星星，體驗北非最濃烈的色彩與溫度。",
+      tags: ["撒哈拉沙漠", "麥地那市集", "藍色山城", "星空帳篷"],
+      base: 68000,
+      palette: { sky1:"#3a1e08", sky2:"#7a3e12", sky3:"#d98a3a", glow:"#ffcf8a", accent:"#ffe6b0", far:"#a85e22", mid:"#6e3a14", near:"#3e1f0a", aurora:0 },
+      meta: [["最佳季節","3–5 月 / 10 月"],["建議天數","9 天"],["氣候","乾熱沙漠"]],
+      days: [
+        ["馬拉喀什 · 紅色之城","Marrakech", "抵達後入住麥地那中的傳統 Riad。傍晚走進德吉瑪廣場，香料、鼓聲與煙火氣撲面而來。"],
+        ["阿特拉斯 · 越過山脈","Atlas Mts", "翻越高阿特拉斯山的蜿蜒山路，造訪柏柏爾村落，於山間綠洲午餐。"],
+        ["撒哈拉 · 金色沙海","Sahara", "抵達梅祖卡，騎乘駱駝深入沙丘，於丘頂迎接燃燒般的日落。夜宿豪華沙漠帳篷。"],
+        ["沙漠晨光 · 星空之後","Erg Chebbi", "在無光害的沙海中醒來，看日出染金沙丘。返程途中穿越壯麗峽谷。"],
+        ["舍夫沙萬 · 藍色之夢","Chefchaouen", "前往山城舍夫沙萬，整座城浸在深淺不一的藍裡。在巷弄間慢慢迷路，是這裡最好的事。"]
+      ]
+    },
+    nz: {
+      zh: "紐西蘭", en: "New Zealand", idx: "04",
+      heroSub: "在南島的雪峰、峽灣與翠綠湖泊之間，呼吸最純淨的遠方。",
+      desc: "庫克山的雪、瓦納卡的湖、米爾福德峽灣的瀑布。我們帶你深入南島的壯闊地景，在最純淨的空氣裡健行、靜坐、仰望南半球的銀河。",
+      tags: ["雪山健行", "峽灣巡航", "星空保護區", "湖畔靜居"],
+      base: 94000,
+      palette: { sky1:"#0a1f2a", sky2:"#16404a", sky3:"#3a8a86", glow:"#a8f0d8", accent:"#d6f7ec", far:"#2a6a66", mid:"#16403e", near:"#0a2422", aurora:0 },
+      meta: [["最佳季節","12–2 月"],["建議天數","10 天"],["氣候","溫帶清涼"]],
+      days: [
+        ["皇后鎮 · 群山環抱","Queenstown", "抵達後入住瓦卡蒂普湖畔。傍晚搭纜車登山，俯瞰被雪峰擁抱的湖光小鎮。"],
+        ["米爾福德 · 峽灣之心","Milford Sound", "穿越霍默隧道，搭船深入米爾福德峽灣，仰望千米峭壁與懸瀑，海豹與海豚同行。"],
+        ["瓦納卡 · 湖中孤樹","Wānaka", "造訪舉世聞名的瓦納卡之樹，於湖畔健行。入夜後，蒂卡波星空保護區的銀河傾瀉而下。"],
+        ["庫克山 · 雪峰之下","Aoraki", "前往紐西蘭最高峰庫克山，沿胡克谷步道健行至冰川湖，雪峰倒映在碧藍湖面。"],
+        ["啟程歸途 · 收藏純淨","Departure", "返回皇后鎮，自由探索湖畔小鎮與在地酒莊。把這片純淨，深深記在心裡。"]
+      ]
+    }
+  };
+  const ORDER = ["iceland","kyoto","morocco","nz"];
+
+  /* ---------- SVG SCENE BUILDER ---------- */
+  // Returns a layered set of SVG strings for far/mid/near/fore using palette vars.
+  function ridge(seed, amp, baseY){
+    // deterministic jagged ridge path across 1440 width
+    let x = 0, y = baseY, d = "M0,300 L0," + baseY;
+    let s = seed;
+    while (x < 1440){
+      s = (s * 9301 + 49297) % 233280;
+      const r = s / 233280;
+      const step = 90 + r * 120;
+      x += step;
+      const ny = baseY - (r - 0.5) * amp * 2;
+      const peakY = Math.max(20, Math.min(290, ny));
+      d += " L" + Math.min(x - step/2, 1440).toFixed(0) + "," + peakY.toFixed(0);
+      d += " L" + Math.min(x, 1440).toFixed(0) + "," + (baseY + (r-0.5)*amp*0.4).toFixed(0);
+    }
+    d += " L1440,300 Z";
+    return d;
+  }
+
+  function sceneSVG(key){
+    const far  = ridge(7, 130, 150);
+    const mid  = ridge(21, 170, 200);
+    const near = ridge(53, 150, 250);
+    const isDesert = key === "morocco";
+    // desert -> smooth dunes instead of jagged ridges
+    const duneFar  = "M0,300 L0,180 C300,120 600,210 900,160 C1140,120 1320,200 1440,150 L1440,300 Z";
+    const duneMid  = "M0,300 L0,230 C260,180 560,260 860,210 C1120,170 1320,250 1440,210 L1440,300 Z";
+    const duneNear = "M0,300 L0,270 C320,230 620,290 920,255 C1180,225 1340,285 1440,260 L1440,300 Z";
+    return {
+      far:  '<svg viewBox="0 0 1440 300" preserveAspectRatio="none"><path d="'+(isDesert?duneFar:far)+'" fill="var(--mtn-far)"/></svg>',
+      mid:  '<svg viewBox="0 0 1440 300" preserveAspectRatio="none"><path d="'+(isDesert?duneMid:mid)+'" fill="var(--mtn-mid)"/></svg>',
+      near: '<svg viewBox="0 0 1440 300" preserveAspectRatio="none"><path d="'+(isDesert?duneNear:near)+'" fill="var(--mtn-near)"/></svg>',
+      fore: foreground(key)
+    };
+  }
+
+  function foreground(key){
+    // small atmospheric foreground silhouettes per destination
+    let extra = "";
+    if (key === "iceland"){
+      extra = '<path d="M0,300 L0,255 C200,240 380,250 520,238 C700,222 880,248 1060,234 C1240,222 1360,242 1440,232 L1440,300 Z" fill="var(--ground)"/>'+
+              '<g opacity="0.85" fill="var(--mtn-near)"><path d="M700,300 L700,210 L716,210 L716,300 Z"/><path d="M740,300 L740,200 L756,200 L756,300 Z"/></g>'; // distant pylons
+    } else if (key === "kyoto"){
+      // torii gate silhouette
+      extra = '<path d="M0,300 L0,260 C300,248 600,256 900,246 C1140,238 1340,254 1440,246 L1440,300 Z" fill="var(--ground)"/>'+
+              '<g fill="var(--mtn-near)" opacity="0.92">'+
+              '<rect x="660" y="190" width="14" height="110"/><rect x="766" y="190" width="14" height="110"/>'+
+              '<rect x="636" y="186" width="168" height="12" rx="3"/><rect x="648" y="206" width="144" height="9"/></g>';
+    } else if (key === "morocco"){
+      // palm + tents
+      extra = '<path d="M0,300 L0,268 C300,256 600,266 900,256 C1140,248 1340,262 1440,256 L1440,300 Z" fill="var(--ground)"/>'+
+              '<g fill="var(--mtn-near)" opacity="0.9"><rect x="704" y="210" width="6" height="90"/>'+
+              '<path d="M707,212 C680,196 660,196 642,206 C668,200 690,204 707,214 Z"/>'+
+              '<path d="M707,212 C734,196 754,196 772,206 C746,200 724,204 707,214 Z"/>'+
+              '<path d="M707,212 C700,184 706,168 716,156 C708,178 712,196 707,214 Z"/></g>'+
+              '<path d="M880,300 L920,250 L960,300 Z" fill="var(--mtn-near)" opacity="0.7"/>';
+    } else {
+      // nz: lone tree
+      extra = '<path d="M0,300 L0,262 C300,250 600,260 900,250 C1140,242 1340,256 1440,250 L1440,300 Z" fill="var(--ground)"/>'+
+              '<g fill="var(--mtn-near)" opacity="0.9"><rect x="715" y="220" width="8" height="80"/>'+
+              '<ellipse cx="719" cy="206" rx="46" ry="30"/><ellipse cx="690" cy="218" rx="26" ry="18"/><ellipse cx="748" cy="218" rx="26" ry="18"/></g>';
+    }
+    return '<svg viewBox="0 0 1440 300" preserveAspectRatio="none">'+extra+'</svg>';
+  }
+
+  /* ---------- APPLY PALETTE ---------- */
+  const root = document.documentElement;
+  function applyDest(key, scrollTop){
+    const d = DEST[key];
+    const p = d.palette;
+    root.style.setProperty("--sky-1", p.sky1);
+    root.style.setProperty("--sky-2", p.sky2);
+    root.style.setProperty("--sky-3", p.sky3);
+    root.style.setProperty("--glow",  p.glow);
+    root.style.setProperty("--accent",p.accent);
+    root.style.setProperty("--mtn-far", p.far);
+    root.style.setProperty("--mtn-mid", p.mid);
+    root.style.setProperty("--mtn-near", p.near);
+
+    const svg = sceneSVG(key);
+    document.getElementById("lFar").innerHTML = svg.far;
+    document.getElementById("lMid").innerHTML = svg.mid;
+    document.getElementById("lNear").innerHTML = svg.near;
+    document.getElementById("lFore").innerHTML = svg.fore;
+
+    document.getElementById("aurora").style.opacity = p.aurora ? "0.92" : "0";
+    document.getElementById("stars").style.opacity = p.aurora ? "0.85" : "0.35";
+    document.getElementById("heroSub").textContent = d.heroSub;
+
+    // detail panel
+    document.getElementById("dName").textContent = d.zh;
+    document.getElementById("dEn").textContent = d.en;
+    document.getElementById("dDesc").textContent = d.desc;
+    document.getElementById("dTags").innerHTML = d.tags.map(t=>'<span class="tag">'+t+'</span>').join("");
+    document.getElementById("detailScene").innerHTML =
+      '<div class="layer" style="position:absolute;inset:0;height:100%;width:100%;background:linear-gradient(180deg,'+p.sky1+','+p.sky2+' 45%,'+p.sky3+');"></div>'+
+      (p.aurora ? '<svg viewBox="0 0 1440 460" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:60%;opacity:.85;mix-blend-mode:screen;"><defs><linearGradient id="da1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+p.glow+'" stop-opacity="0"/><stop offset=".5" stop-color="'+p.glow+'" stop-opacity=".6"/><stop offset="1" stop-color="'+p.accent+'" stop-opacity="0"/></linearGradient></defs><path d="M-40,120 C260,30 460,200 720,120 C980,40 1180,210 1480,110 L1480,300 C1180,360 980,220 720,300 C460,380 260,210 -40,300 Z" fill="url(#da1)"/></svg>' : '')+
+      '<div style="position:absolute;inset:0;bottom:0;height:55%;">'+svg.far.replace("<svg","<svg style='position:absolute;bottom:0;left:0;width:100%;height:55%'")+'</div>'+
+      '<div style="position:absolute;inset:0;bottom:0;">'+svg.mid.replace("<svg","<svg style='position:absolute;bottom:0;left:0;width:100%;height:42%'")+'</div>'+
+      '<div style="position:absolute;inset:0;bottom:0;">'+svg.near.replace("<svg","<svg style='position:absolute;bottom:0;left:0;width:100%;height:30%'")+'</div>';
+    document.getElementById("detailMeta").innerHTML = d.meta.map(m=>'<div><div class="k">'+m[0]+'</div><div class="v">'+m[1]+'</div></div>').join("");
+
+    // itinerary
+    buildItinerary(d);
+
+    // estimator state
+    state.dest = key;
+    syncDestSeg();
+    recalc();
+
+    // selector active state
+    document.querySelectorAll(".dest-btn").forEach(b=>{
+      b.classList.toggle("active", b.dataset.key === key);
+      b.setAttribute("aria-selected", b.dataset.key === key);
+    });
+  }
+
+  /* ---------- ITINERARY ---------- */
+  function buildItinerary(d){
+    const wrap = document.getElementById("itin");
+    wrap.innerHTML = d.days.map((day,i)=>(
+      '<div class="day'+(i===0?" open":"")+'">'+
+        '<button class="day-head" aria-expanded="'+(i===0)+'">'+
+          '<span class="day-num">'+String(i+1).padStart(2,"0")+'</span>'+
+          '<span class="day-title">'+day[0]+'</span>'+
+          '<span class="day-loc">'+day[1]+'</span>'+
+          '<span class="day-plus"></span>'+
+        '</button>'+
+        '<div class="day-body"><div class="day-body-inner">'+day[2]+'</div></div>'+
+      '</div>'
+    )).join("");
+    // open first
+    wrap.querySelectorAll(".day").forEach(setDayHeight);
+    bindDays();
+  }
+  function setDayHeight(day){
+    const body = day.querySelector(".day-body");
+    body.style.maxHeight = day.classList.contains("open") ? body.firstElementChild.scrollHeight + "px" : "0px";
+  }
+  function bindDays(){
+    document.querySelectorAll("#itin .day-head").forEach(head=>{
+      head.addEventListener("click",()=>{
+        const day = head.parentElement;
+        const isOpen = day.classList.contains("open");
+        document.querySelectorAll("#itin .day").forEach(o=>{
+          o.classList.remove("open");
+          o.querySelector(".day-head").setAttribute("aria-expanded","false");
+          setDayHeight(o);
+        });
+        if(!isOpen){
+          day.classList.add("open");
+          head.setAttribute("aria-expanded","true");
+          setDayHeight(day);
+        }
+      });
+    });
+  }
+
+  /* ---------- ESTIMATOR ---------- */
+  const state = { days: 8, pax: 2, tier: 1.5, dest: "iceland" };
+  const fmt = n => "NT$ " + Math.round(n).toLocaleString("en-US");
+  function recalc(){
+    const base = DEST[state.dest].base;
+    // per-person: base scaled by days (baseline 8 days), tier multiplier, mild group discount
+    const dayFactor = 0.55 + (state.days / 8) * 0.45;
+    const groupDisc = state.pax >= 4 ? 0.9 : (state.pax >= 2 ? 0.95 : 1);
+    const perPerson = base * dayFactor * state.tier * groupDisc;
+    document.getElementById("estPrice").textContent = fmt(perPerson);
+    document.getElementById("estTotal").textContent = fmt(perPerson * state.pax);
+    document.getElementById("estPaxLbl").textContent = state.pax;
+  }
+  function syncDestSeg(){
+    document.querySelectorAll("#segDestEst button").forEach(b=>b.classList.toggle("on", b.dataset.key===state.dest));
+  }
+
+  /* ---------- INIT ---------- */
+  function init(){
+    // build destination selector buttons
+    const track = document.getElementById("destTrack");
+    track.innerHTML = ORDER.map(k=>{
+      const d = DEST[k];
+      return '<button class="dest-btn'+(k==="iceland"?" active":"")+'" role="tab" data-key="'+k+'" aria-selected="'+(k==="iceland")+'">'+
+        '<div class="idx">'+d.idx+'</div><div class="nm">'+d.zh+'</div><div class="en">'+d.en+'</div></button>';
+    }).join("");
+    track.querySelectorAll(".dest-btn").forEach(b=>{
+      b.addEventListener("click",()=>{ applyDest(b.dataset.key); document.getElementById("scene").scrollIntoView({behavior:"smooth"}); });
+    });
+
+    // destination grid
+    const grid = document.getElementById("destGrid");
+    grid.innerHTML = ORDER.map(k=>{
+      const d = DEST[k]; const p = d.palette;
+      const sv = sceneSVG(k);
+      return '<button class="dgcard" data-key="'+k+'" aria-label="切換到'+d.zh+'">'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(180deg,'+p.sky1+','+p.sky2+' 50%,'+p.sky3+');"></div>'+
+        '<div style="position:absolute;inset:0;bottom:0;">'+sv.far.replace("<svg","<svg style='position:absolute;bottom:0;width:100%;height:55%'")+'</div>'+
+        '<div style="position:absolute;inset:0;bottom:0;">'+sv.mid.replace("<svg","<svg style='position:absolute;bottom:0;width:100%;height:40%'")+'</div>'+
+        '<div style="position:absolute;inset:0;bottom:0;">'+sv.near.replace("<svg","<svg style='position:absolute;bottom:0;width:100%;height:28%'")+'</div>'+
+        '<div class="cap"><div class="en">'+d.en+'</div><div class="zh">'+d.zh+'</div></div>'+
+      '</button>';
+    }).join("");
+    grid.querySelectorAll(".dgcard").forEach(b=>{
+      b.addEventListener("click",()=>{ applyDest(b.dataset.key); document.getElementById("scene").scrollIntoView({behavior:"smooth"}); });
+    });
+
+    // estimator dest segment + form selects + months
+    const segDest = document.getElementById("segDestEst");
+    segDest.innerHTML = ORDER.map(k=>'<button data-key="'+k+'"'+(k==="iceland"?' class="on"':'')+'>'+DEST[k].zh+'</button>').join("");
+    segDest.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ applyDest(b.dataset.key); }));
+
+    const fDest = document.getElementById("fDest");
+    fDest.innerHTML = '<option value="">請選擇目的地</option>' + ORDER.map(k=>'<option value="'+k+'">'+DEST[k].zh+' '+DEST[k].en+'</option>').join("");
+    const fMonth = document.getElementById("fMonth");
+    for(let m=1;m<=12;m++){ const o=document.createElement("option"); o.value=m; o.textContent=m+" 月"; fMonth.appendChild(o); }
+
+    // range bindings
+    const rngDays = document.getElementById("rngDays");
+    const rngPax  = document.getElementById("rngPax");
+    rngDays.addEventListener("input",()=>{ state.days=+rngDays.value; document.getElementById("outDays").textContent=state.days+" 天"; recalc(); });
+    rngPax.addEventListener("input",()=>{ state.pax=+rngPax.value; document.getElementById("outPax").textContent=state.pax+" 人"; recalc(); });
+
+    document.querySelectorAll("#segTier button").forEach(b=>{
+      b.addEventListener("click",()=>{
+        document.querySelectorAll("#segTier button").forEach(x=>x.classList.remove("on"));
+        b.classList.add("on"); state.tier=+b.dataset.mult; recalc();
+      });
+    });
+
+    // form validation
+    const form = document.getElementById("enqForm");
+    form.addEventListener("submit",e=>{
+      e.preventDefault();
+      let ok = true;
+      const checks = [
+        ["fName", v=>v.trim().length>0],
+        ["fEmail", v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],
+        ["fDest", v=>v!==""],
+        ["fMonth", v=>v!==""],
+        ["fMsg", v=>v.trim().length>=10]
+      ];
+      checks.forEach(([id,fn])=>{
+        const el = document.getElementById(id);
+        const wrap = el.closest(".inp-wrap");
+        const valid = fn(el.value);
+        wrap.classList.toggle("err", !valid);
+        if(!valid) ok=false;
+      });
+      const okBox = document.getElementById("formOk");
+      if(ok){ okBox.classList.add("show"); form.reset(); setTimeout(()=>okBox.classList.remove("show"),6000); }
+      else { okBox.classList.remove("show"); }
+    });
+    form.querySelectorAll("input,select,textarea").forEach(el=>{
+      el.addEventListener("input",()=>el.closest(".inp-wrap").classList.remove("err"));
+    });
+
+    // nav scrolled state
+    const nav = document.getElementById("nav");
+    const onScroll = ()=>{ nav.classList.toggle("scrolled", window.scrollY>40); parallax(); };
+    window.addEventListener("scroll", onScroll, {passive:true});
+
+    // reveal on scroll
+    const io = new IntersectionObserver((es)=>{
+      es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, {threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+    const rises = document.querySelectorAll("[data-rise]");
+    rises.forEach(el=>io.observe(el));
+    // safety: never leave content stuck invisible (e.g. no scroll, reduced motion)
+    setTimeout(()=>rises.forEach(el=>el.classList.add("in")), 2600);
+
+    // stars
+    buildStars();
+
+    // first destination
+    applyDest("iceland");
+
+    // staggered hero load
+    document.querySelectorAll(".hero [data-rise]").forEach((el,i)=>{
+      setTimeout(()=>el.classList.add("in"), 200 + i*180);
+    });
+
+    // pointer + scroll parallax
+    bindParallax();
+    parallax();
+  }
+
+  /* ---------- STARS ---------- */
+  function buildStars(){
+    const svg = document.getElementById("stars");
+    let s="";
+    for(let i=0;i<140;i++){
+      const x=Math.random()*1440, y=Math.random()*620, r=Math.random()*1.4+0.3, o=Math.random()*0.7+0.3;
+      s += '<circle cx="'+x.toFixed(0)+'" cy="'+y.toFixed(0)+'" r="'+r.toFixed(1)+'" opacity="'+o.toFixed(2)+'"/>';
+    }
+    svg.innerHTML = s;
+  }
+
+  /* ---------- PARALLAX ---------- */
+  let px=0, py=0;
+  function bindParallax(){
+    if (window.matchMedia("(pointer:fine)").matches){
+      window.addEventListener("pointermove",e=>{
+        px = (e.clientX/window.innerWidth - 0.5);
+        py = (e.clientY/window.innerHeight - 0.5);
+        parallax();
+      }, {passive:true});
+    }
+  }
+  function parallax(){
+    const sc = window.scrollY;
+    const layers = [
+      ["stars", 0.06, 6],
+      ["aurora",0.10, 10],
+      ["lFar",  0.14, 14],
+      ["lMid",  0.24, 22],
+      ["lNear", 0.36, 32],
+      ["lFore", 0.50, 44]
+    ];
+    layers.forEach(([id,sf,pf])=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      const ty = -sc*sf + py*pf*0.4;
+      const tx = px*pf;
+      el.style.transform = "translate3d("+tx.toFixed(1)+"px,"+ty.toFixed(1)+"px,0)";
+    });
+  }
+
+  if(document.readyState!=="loading") init();
+  else document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

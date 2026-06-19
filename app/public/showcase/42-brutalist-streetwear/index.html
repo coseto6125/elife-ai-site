@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>破格 BRKR — DROP 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@600;700;900&family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --black: #0a0a0a;
+    --paper: #f4f1e8;
+    --yellow: #ffe600;
+    --red: #ff2e1f;
+    --cobalt: #1d3fff;
+    --line: 3px;
+    --shadow: 8px 8px 0 var(--black);
+    --shadow-sm: 5px 5px 0 var(--black);
+    --font-display: "Anton", "Noto Sans TC", sans-serif;
+    --font-grotesk: "Archivo", "Noto Sans TC", sans-serif;
+    --font-mono: "Space Mono", monospace;
+    --font-body: "Noto Sans TC", "Archivo", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--black);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--yellow); color: var(--black); }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: var(--line) solid var(--black);
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 14px;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .logo .mark {
+    background: var(--black);
+    color: var(--yellow);
+    padding: 4px 9px;
+    line-height: 1;
+    transform: skewX(-7deg);
+    border: var(--line) solid var(--black);
+  }
+  .logo .mark span { display: inline-block; transform: skewX(7deg); }
+  .logo .zh { font-family: var(--font-body); font-weight: 900; font-size: 1.05rem; }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .nav a {
+    padding: 6px 12px;
+    border: var(--line) solid transparent;
+    transition: all 0.12s;
+  }
+  .nav a:hover { background: var(--black); color: var(--yellow); }
+
+  .right { display: flex; align-items: center; gap: 10px; }
+
+  .cart-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--yellow);
+    border: var(--line) solid var(--black);
+    box-shadow: var(--shadow-sm);
+    padding: 8px 14px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-transform: uppercase;
+  }
+  .cart-pill:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--black); }
+  .cart-pill:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--black); }
+  .cart-count {
+    background: var(--black);
+    color: var(--yellow);
+    min-width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    font-size: 0.82rem;
+  }
+  .cart-count.bump { animation: bump 0.32s ease; }
+  @keyframes bump {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.55) rotate(-6deg); background: var(--red); }
+    100% { transform: scale(1); }
+  }
+
+  .menu-btn {
+    display: none;
+    background: var(--black);
+    color: var(--yellow);
+    border: var(--line) solid var(--black);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+
+  /* ===== MARQUEE ===== */
+  .marquee {
+    background: var(--black);
+    color: var(--yellow);
+    border-bottom: var(--line) solid var(--black);
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 9px 0;
+  }
+  .marquee-track {
+    display: inline-block;
+    will-change: transform;
+    animation: scroll 22s linear infinite;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track span { padding: 0 22px; }
+  .marquee-track .star { color: var(--red); }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    border-bottom: var(--line) solid var(--black);
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 22px, rgba(0,0,0,0.025) 22px, rgba(0,0,0,0.025) 24px);
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .hero-left { padding: 54px 0 46px; }
+  .drop-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--red);
+    color: var(--paper);
+    border: var(--line) solid var(--black);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    padding: 7px 13px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .drop-tag .dot { width: 9px; height: 9px; background: var(--paper); border-radius: 50%; animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0.2; } }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 11vw, 8.4rem);
+    line-height: 0.86;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero h1 .hl {
+    background: var(--yellow);
+    border: var(--line) solid var(--black);
+    box-shadow: var(--shadow-sm);
+    padding: 0 12px;
+    display: inline-block;
+    transform: rotate(-1.5deg);
+  }
+  .hero h1 .out {
+    color: transparent;
+    -webkit-text-stroke: 2.5px var(--black);
+  }
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    max-width: 30ch;
+    margin: 24px 0 30px;
+    font-weight: 700;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn {
+    font-family: var(--font-grotesk);
+    font-weight: 900;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border: var(--line) solid var(--black);
+    box-shadow: var(--shadow);
+    padding: 15px 26px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn:hover { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--black); }
+  .btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--black); }
+  .btn-primary { background: var(--black); color: var(--yellow); }
+  .btn-ghost { background: var(--paper); color: var(--black); }
+  .btn-yellow { background: var(--yellow); color: var(--black); }
+
+  .hero-right {
+    border-left: var(--line) solid var(--black);
+    background: var(--cobalt);
+    position: relative;
+    overflow: hidden;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-graphic { width: 100%; height: 100%; position: absolute; inset: 0; }
+  .hero-badge {
+    position: absolute;
+    right: -34px;
+    top: 28px;
+    background: var(--yellow);
+    border: var(--line) solid var(--black);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 8px 44px;
+    transform: rotate(34deg);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow: var(--shadow-sm);
+    z-index: 3;
+  }
+
+  /* ===== SECTION HEAD ===== */
+  .sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 44px 0 22px;
+    flex-wrap: wrap;
+  }
+  .sec-head h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+  }
+  .sec-head .count {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: var(--line) solid var(--black);
+    padding: 5px 11px;
+    background: var(--paper);
+    text-transform: uppercase;
+  }
+
+  /* ===== PRODUCT GRID ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    padding-bottom: 30px;
+  }
+  .card {
+    border: var(--line) solid var(--black);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(26px);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card.in { animation: cardIn 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards; }
+  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+  .card:hover { transform: translate(-3px, -3px); box-shadow: 12px 12px 0 var(--black); }
+
+  .card-art {
+    height: 230px;
+    border-bottom: var(--line) solid var(--black);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.68rem;
+    background: var(--black);
+    color: var(--paper);
+    padding: 4px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    z-index: 2;
+  }
+  .card-tag.hot { background: var(--red); color: var(--paper); }
+  .card-tag.cobalt { background: var(--cobalt); color: var(--paper); }
+
+  .card-body { padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .card-name {
+    font-family: var(--font-grotesk);
+    font-weight: 900;
+    font-size: 1.12rem;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  .card-meta { font-family: var(--font-mono); font-size: 0.74rem; color: #555; }
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .price { font-family: var(--font-mono); font-weight: 700; font-size: 1.18rem; }
+  .price s { color: #999; font-size: 0.82rem; font-weight: 400; margin-right: 6px; }
+
+  .add-btn {
+    font-family: var(--font-grotesk);
+    font-weight: 900;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--yellow);
+    color: var(--black);
+    border: var(--line) solid var(--black);
+    box-shadow: 4px 4px 0 var(--black);
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: transform 0.09s, box-shadow 0.09s, background 0.09s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { background: var(--black); color: var(--yellow); }
+  .add-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--black); }
+  .add-btn.added { background: var(--cobalt); color: var(--paper); }
+
+  .card.sold { opacity: 1; }
+  .card.sold .card-art::after {
+    content: "SOLD OUT";
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,10,0.78);
+    color: var(--red);
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .add-btn.dead { background: var(--paper); color: #999; border-color: #bbb; box-shadow: 4px 4px 0 #ccc; cursor: not-allowed; }
+  .add-btn.dead:hover { background: var(--paper); color: #999; }
+
+  /* product SVG silhouettes share a frame */
+  .art-fill { width: 100%; height: 100%; }
+
+  /* ===== MANIFESTO BAND ===== */
+  .manifesto {
+    background: var(--black);
+    color: var(--paper);
+    border-top: var(--line) solid var(--black);
+    border-bottom: var(--line) solid var(--black);
+    padding: 60px 0;
+    overflow: hidden;
+  }
+  .manifesto .eyebrow {
+    font-family: var(--font-mono);
+    color: var(--yellow);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .manifesto h3 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 5.6rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .manifesto h3 em { font-style: normal; color: var(--yellow); }
+  .manifesto h3 .strike { -webkit-text-stroke: 2px var(--yellow); color: transparent; }
+  .mani-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 34px;
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+  }
+  .mani-row span {
+    border: var(--line) solid var(--paper);
+    padding: 8px 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== NEWSLETTER ===== */
+  .news {
+    background: var(--yellow);
+    border-bottom: var(--line) solid var(--black);
+    padding: 56px 0;
+  }
+  .news-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+  }
+  .news h3 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .news p { font-family: var(--font-mono); font-weight: 700; margin-top: 12px; font-size: 0.9rem; }
+  .news-form { display: flex; gap: 0; box-shadow: var(--shadow); }
+  .news-form input {
+    flex: 1;
+    min-width: 0;
+    border: var(--line) solid var(--black);
+    border-right: none;
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 16px 18px;
+    outline: none;
+  }
+  .news-form input:focus { background: #fff; }
+  .news-form button {
+    border: var(--line) solid var(--black);
+    background: var(--black);
+    color: var(--yellow);
+    font-family: var(--font-grotesk);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.92rem;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+  .news-form button:hover { background: var(--red); color: var(--paper); }
+  .news-ok {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: var(--black);
+    color: var(--yellow);
+    border: var(--line) solid var(--black);
+    padding: 10px 14px;
+    display: none;
+  }
+  .news-ok.show { display: block; animation: cardIn 0.4s ease forwards; opacity: 1; transform: none; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--paper);
+    padding: 50px 0 26px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 26px;
+    padding-bottom: 36px;
+  }
+  .foot-brand .logo { font-size: 1.9rem; margin-bottom: 14px; }
+  .foot-brand p { font-family: var(--font-mono); font-size: 0.82rem; max-width: 28ch; }
+  .foot-col h4 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: var(--line) solid var(--black);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .foot-col a {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 5px 0;
+    transition: padding 0.12s;
+  }
+  .foot-col a:hover { padding-left: 8px; color: var(--red); }
+  .foot-bottom {
+    border-top: var(--line) solid var(--black);
+    padding-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .foot-bottom .credit { font-weight: 700; }
+  .foot-bottom .credit a { color: var(--cobalt); border-bottom: 2px solid var(--cobalt); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-right { border-left: none; border-top: var(--line) solid var(--black); min-height: 280px; }
+    .news-inner { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 680px) {
+    .nav { display: none; }
+    .nav.open {
+      display: flex;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: var(--paper);
+      border-bottom: var(--line) solid var(--black);
+      padding: 8px;
+    }
+    .nav.open a { border: var(--line) solid var(--black); margin-bottom: 6px; }
+    .menu-btn { display: block; }
+  }
+  @media (max-width: 540px) {
+    .grid { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .logo .zh { display: none; }
+  }
+  @media (max-width: 360px) {
+    .wrap { padding: 0 14px; }
+    .btn { padding: 13px 18px; font-size: 0.9rem; }
+    .hero h1 { font-size: clamp(2.6rem, 14vw, 4rem); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#" class="logo">
+        <span class="mark"><span>BRKR</span></span>
+        <span class="zh">破格</span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#drop">DROP 01</a>
+        <a href="#shop">SHOP</a>
+        <a href="#manifesto">MANIFESTO</a>
+        <a href="#news">JOIN</a>
+      </nav>
+      <div class="right">
+        <button class="menu-btn" id="menuBtn" aria-label="menu">☰</button>
+        <button class="cart-pill" id="cartPill" aria-label="cart">
+          CART <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="drop">
+    <div class="wrap hero-inner">
+      <div class="hero-left">
+        <span class="drop-tag"><span class="dot"></span> DROP 01 · 限量發售中</span>
+        <h1>
+          <span class="out">破格</span><br />
+          <span class="hl">BREAK</span> 格<br />
+          的 規<span class="out">則</span>
+        </h1>
+        <p class="hero-sub">不合身的世界，自己剪裁。DROP 01 共 6 款，每款限量 200 件，售完絕版。</p>
+        <div class="hero-cta">
+          <a href="#shop" class="btn btn-primary">SHOP DROP 01 →</a>
+          <a href="#manifesto" class="btn btn-ghost">看宣言</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <span class="hero-badge">LIMITED · 限量</span>
+        <svg class="hero-graphic" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <pattern id="hgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="400" fill="url(#hgrid)"/>
+          <text x="-10" y="150" font-family="Anton, sans-serif" font-size="190" fill="#ffe600" opacity="0.95" letter-spacing="-8">01</text>
+          <rect x="60" y="210" width="280" height="60" fill="#0a0a0a"/>
+          <text x="76" y="252" font-family="Space Mono, monospace" font-size="34" font-weight="700" fill="#ffe600">破格 / 2026</text>
+          <rect x="40" y="300" width="120" height="120" fill="#ff2e1f" transform="rotate(8 100 360)"/>
+          <circle cx="300" cy="340" r="58" fill="none" stroke="#fff" stroke-width="6"/>
+          <path d="M270 340 L330 340 M300 310 L300 370" stroke="#fff" stroke-width="6"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT GRID -->
+  <section id="shop">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>THE DROP<br />/ 商品</h2>
+        <span class="count">6 件 · IN STOCK</span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" id="manifesto">
+    <div class="wrap">
+      <p class="eyebrow">// BRKR MANIFESTO · 破格宣言</p>
+      <h3>
+        我們 <span class="strike">不</span> 做<br />
+        <em>安全</em> 的衣服。<br />
+        只做 <em>有種</em> 的。
+      </h3>
+      <div class="mani-row">
+        <span>★ 全部限量 200 件</span>
+        <span>★ 售完絕不補貨</span>
+        <span>★ 台灣設計製造</span>
+        <span>★ FREE SHIP $99+</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="news" id="news">
+    <div class="wrap news-inner">
+      <div>
+        <h3>下一波 DROP<br />先搶先贏</h3>
+        <p>// 留下信箱，DROP 02 開賣提前 24 小時通知你。</p>
+      </div>
+      <div>
+        <form class="news-form" id="newsForm" novalidate>
+          <input type="email" id="newsEmail" placeholder="你的信箱 / your@email" aria-label="email" required />
+          <button type="submit">訂閱 →</button>
+        </form>
+        <div class="news-ok" id="newsOk">✓ 收到了！DROP 02 開賣會第一個通知你。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="#" class="logo">
+            <span class="mark"><span>BRKR</span></span>
+            <span class="zh">破格</span>
+          </a>
+          <p>破格 BRKR — 台灣街頭潮牌。限量、絕版、有種。DROP 01 發售中。</p>
+        </div>
+        <div class="foot-col">
+          <h4>SHOP</h4>
+          <a href="#shop">DROP 01</a>
+          <a href="#shop">TEES</a>
+          <a href="#shop">HOODIES</a>
+          <a href="#shop">CAPS</a>
+        </div>
+        <div class="foot-col">
+          <h4>INFO</h4>
+          <a href="#">配送說明</a>
+          <a href="#">退換貨</a>
+          <a href="#">尺寸表</a>
+          <a href="#">常見問題</a>
+        </div>
+        <div class="foot-col">
+          <h4>SOCIAL</h4>
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">Discord</a>
+          <a href="#">LINE</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 破格 BRKR — ALL RIGHTS RESERVED</span>
+        <span class="credit">範例設計 · <a href="https://e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // ===== Marquee build (duplicated track for seamless loop) =====
+  (function () {
+    const items = [
+      "NEW DROP 01", "FREE SHIPPING OVER $99", "限量 200 件",
+      "售完絕版 SOLD OUT FOREVER", "台灣設計 MADE IN TAIWAN",
+      "DROP 02 COMING SOON", "BREAK THE RULES 破格"
+    ];
+    const half = items.map(function (t) {
+      return '<span><span class="star">✦</span> ' + t + '</span>';
+    }).join('');
+    document.getElementById('marqueeTrack').innerHTML = half + half;
+  })();
+
+  // ===== Products =====
+  const PRODUCTS = [
+    { id: 'p1', name: 'CHAOS TEE', meta: '重磅純棉 · OVERSIZE', price: 980, old: null, tag: 'NEW', tagClass: '', kind: 'tee', col: '#ffe600', sold: false },
+    { id: 'p2', name: 'VOID HOODIE', meta: '420g 連帽 · BLACK', price: 2280, old: 2680, tag: 'HOT', tagClass: 'hot', kind: 'hoodie', col: '#1d3fff', sold: false },
+    { id: 'p3', name: 'GRID CAP', meta: '六片帽 · 可調節', price: 720, old: null, tag: 'DROP 01', tagClass: 'cobalt', kind: 'cap', col: '#ff2e1f', sold: false },
+    { id: 'p4', name: 'BRKR TEE 紅', meta: '重磅純棉 · BOX FIT', price: 980, old: null, tag: 'NEW', tagClass: '', kind: 'tee', col: '#ff2e1f', sold: false },
+    { id: 'p5', name: 'RULE HOODIE', meta: '420g 連帽 · YELLOW', price: 2280, old: null, tag: 'SOLD', tagClass: 'hot', kind: 'hoodie', col: '#ffe600', sold: true },
+    { id: 'p6', name: 'STREET CAP 黑', meta: '五片帽 · LOW PRO', price: 720, old: 880, tag: 'HOT', tagClass: 'hot', kind: 'cap', col: '#0a0a0a', sold: false }
+  ];
+
+  // SVG silhouettes for apparel — drawn as bold CSS-block / SVG shapes
+  function artSVG(kind, col) {
+    const stroke = '#0a0a0a';
+    const bg =
+      'background: repeating-linear-gradient(135deg,' + col + ',' + col + ' 16px, rgba(0,0,0,0.06) 16px, rgba(0,0,0,0.06) 18px);';
+    let shape = '';
+    if (kind === 'tee') {
+      shape =
+        '<path d="M70 40 L120 25 L160 55 L200 55 L240 25 L290 40 L268 92 L240 80 L240 215 L120 215 L120 80 L92 92 Z" fill="' + col + '" stroke="' + stroke + '" stroke-width="6" stroke-linejoin="round"/>' +
+        '<rect x="150" y="100" width="60" height="60" fill="' + stroke + '"/>';
+    } else if (kind === 'hoodie') {
+      shape =
+        '<path d="M120 50 Q180 10 240 50 L300 90 L272 138 L248 124 L248 222 L112 222 L112 124 L88 138 L60 90 Z" fill="' + col + '" stroke="' + stroke + '" stroke-width="6" stroke-linejoin="round"/>' +
+        '<path d="M150 50 Q180 96 210 50" fill="none" stroke="' + stroke + '" stroke-width="6"/>' +
+        '<rect x="150" y="150" width="60" height="46" rx="6" fill="none" stroke="' + stroke + '" stroke-width="6"/>';
+    } else {
+      shape =
+        '<path d="M60 170 Q60 80 180 80 Q300 80 300 170 L300 178 L60 178 Z" fill="' + col + '" stroke="' + stroke + '" stroke-width="6" stroke-linejoin="round"/>' +
+        '<path d="M180 178 L330 196 L330 220 L180 200 Z" fill="' + col + '" stroke="' + stroke + '" stroke-width="6" stroke-linejoin="round"/>' +
+        '<line x1="180" y1="82" x2="180" y2="176" stroke="' + stroke + '" stroke-width="5"/>';
+    }
+    return '<div class="art-fill" style="' + bg + '"><svg viewBox="0 0 360 260" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' + shape + '</svg></div>';
+  }
+
+  function fmt(n) { return 'NT$' + n.toLocaleString('en-US'); }
+
+  // ===== Render grid =====
+  const grid = document.getElementById('grid');
+  grid.innerHTML = PRODUCTS.map(function (p, i) {
+    const soldCls = p.sold ? ' sold' : '';
+    const btn = p.sold
+      ? '<button class="add-btn dead" disabled>SOLD OUT</button>'
+      : '<button class="add-btn" data-id="' + p.id + '">ADD +</button>';
+    const oldPrice = p.old ? '<s>' + fmt(p.old) + '</s>' : '';
+    return '' +
+      '<article class="card' + soldCls + '" style="animation-delay:' + (i * 80) + 'ms">' +
+        '<div class="card-art">' +
+          '<span class="card-tag ' + p.tagClass + '">' + p.tag + '</span>' +
+          artSVG(p.kind, p.col) +
+        '</div>' +
+        '<div class="card-body">' +
+          '<div class="card-name">' + p.name + '</div>' +
+          '<div class="card-meta">' + p.meta + '</div>' +
+          '<div class="card-foot">' +
+            '<div class="price">' + oldPrice + fmt(p.price) + '</div>' +
+            btn +
+          '</div>' +
+        '</div>' +
+      '</article>';
+  }).join('');
+
+  // ===== Staggered load-in via IntersectionObserver =====
+  (function () {
+    const cards = document.querySelectorAll('.card');
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(function (c) { c.classList.add('in'); });
+      return;
+    }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(function (c) { io.observe(c); });
+  })();
+
+  // ===== Cart (simulated) =====
+  let cart = 0;
+  const cartCount = document.getElementById('cartCount');
+  function bumpCart() {
+    cart += 1;
+    cartCount.textContent = cart;
+    cartCount.classList.remove('bump');
+    void cartCount.offsetWidth; // reflow to restart animation
+    cartCount.classList.add('bump');
+  }
+
+  grid.addEventListener('click', function (e) {
+    const btn = e.target.closest('.add-btn');
+    if (!btn || btn.classList.contains('dead')) return;
+    bumpCart();
+    btn.classList.add('added');
+    btn.textContent = '✓ 已加入';
+    setTimeout(function () {
+      btn.classList.remove('added');
+      btn.textContent = 'ADD +';
+    }, 900);
+  });
+
+  // cart pill feedback (faux — no real cart page)
+  document.getElementById('cartPill').addEventListener('click', function () {
+    if (cart === 0) {
+      cartCount.classList.remove('bump');
+      void cartCount.offsetWidth;
+      cartCount.classList.add('bump');
+    }
+  });
+
+  // ===== Mobile menu =====
+  document.getElementById('menuBtn').addEventListener('click', function () {
+    document.getElementById('nav').classList.toggle('open');
+  });
+  document.getElementById('nav').addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') document.getElementById('nav').classList.remove('open');
+  });
+
+  // ===== Newsletter (faux submit) =====
+  document.getElementById('newsForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('newsEmail').value.trim();
+    if (!email || email.indexOf('@') === -1) {
+      document.getElementById('newsEmail').focus();
+      return;
+    }
+    document.getElementById('newsForm').reset();
+    document.getElementById('newsOk').classList.add('show');
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>靈樞 Synapse — 團隊知識的即時答案引擎｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="靈樞 Synapse 是一套企業知識中樞，把散落各處的文件、對話與規範匯整成一個會回答問題的語意引擎。問一句話，得到附來源的答案。立即加入候補名單或預約展示。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0a0a18;
+    --void-2:#10102a;
+    --iris:#6d5efc;
+    --cyan:#2fe6d6;
+    --magenta:#ff5ea8;
+    --coral:#ff9b6a;
+    --mist:#c9c7e8;
+    --mist-dim:#8b89b8;
+    --line:rgba(149,142,255,.16);
+    --glass:rgba(28,26,58,.55);
+    --glass-brd:rgba(160,150,255,.18);
+    --disp:"Space Grotesk","Noto Sans TC",sans-serif;
+    --body:"Manrope","Noto Sans TC",sans-serif;
+    --mono:"Space Mono",monospace;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--void);
+    color:var(--mist);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--magenta);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img,canvas,svg{display:block;max-width:100%}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+
+  /* ---------- ambient backdrop ---------- */
+  .mesh{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(60vw 50vh at 12% -8%, rgba(109,94,252,.32), transparent 60%),
+      radial-gradient(55vw 55vh at 92% 8%, rgba(255,94,168,.20), transparent 60%),
+      radial-gradient(70vw 60vh at 78% 96%, rgba(47,230,214,.16), transparent 62%),
+      var(--void);
+  }
+  .grain{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+    background-image:radial-gradient(rgba(255,255,255,.7) .6px,transparent .6px);
+    background-size:3px 3px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- nav ---------- */
+  header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,10,24,.55);border-bottom:1px solid var(--line)}
+  nav{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:20px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:700;font-size:1.12rem;letter-spacing:.01em;color:#fff}
+  .brand .glyph{width:30px;height:30px;border-radius:9px;background:conic-gradient(from 200deg,var(--iris),var(--magenta),var(--cyan),var(--iris));box-shadow:0 0 18px rgba(109,94,252,.6);position:relative}
+  .brand .glyph::after{content:"";position:absolute;inset:7px;border-radius:5px;background:var(--void);}
+  .brand small{font-family:var(--mono);font-size:.62rem;color:var(--mist-dim);letter-spacing:.18em;font-weight:400}
+  .nav-links{display:flex;gap:26px;margin-left:auto;font-size:.92rem;color:var(--mist-dim);font-weight:500}
+  .nav-links a{transition:color .2s}
+  .nav-links a:hover{color:#fff}
+  .nav-cta{font-family:var(--disp);font-weight:600;font-size:.9rem;padding:9px 18px;border-radius:999px;color:#fff;
+    background:linear-gradient(120deg,var(--iris),var(--magenta));box-shadow:0 6px 20px -6px rgba(255,94,168,.6);transition:transform .2s,box-shadow .2s}
+  .nav-cta:hover{transform:translateY(-2px);box-shadow:0 10px 26px -6px rgba(255,94,168,.75)}
+  .burger{display:none;margin-left:auto;background:none;border:1px solid var(--glass-brd);color:#fff;border-radius:8px;padding:7px 10px;font-size:1rem;cursor:pointer}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:74px 0 40px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:38px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--cyan);padding:6px 13px;border:1px solid var(--glass-brd);border-radius:999px;background:var(--glass);margin-bottom:22px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:blip 2.4s infinite}
+  @keyframes blip{0%,100%{opacity:1}50%{opacity:.25}}
+  h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.5rem,5.6vw,4.1rem);line-height:1.04;letter-spacing:-.02em;color:#fff;margin-bottom:20px}
+  h1 .grad{background:linear-gradient(105deg,var(--cyan),var(--iris) 45%,var(--magenta));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:1.12rem;color:var(--mist);max-width:30em;margin-bottom:30px;line-height:1.72}
+  .lede b{color:#fff;font-weight:700}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:var(--disp);font-weight:600;font-size:1rem;padding:14px 26px;border-radius:13px;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s}
+  .btn-primary{color:#11052a;background:linear-gradient(120deg,var(--cyan),var(--coral));box-shadow:0 12px 34px -10px rgba(47,230,214,.7)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px -10px rgba(47,230,214,.85)}
+  .btn-ghost{color:#fff;background:var(--glass);border:1px solid var(--glass-brd)}
+  .btn-ghost:hover{transform:translateY(-3px);border-color:var(--iris)}
+  .hero-meta{display:flex;gap:24px;margin-top:32px;flex-wrap:wrap}
+  .hero-meta div{font-size:.86rem;color:var(--mist-dim)}
+  .hero-meta b{display:block;font-family:var(--disp);font-size:1.5rem;color:#fff;font-weight:700;letter-spacing:-.01em}
+
+  /* signature orb */
+  .orb-stage{position:relative;aspect-ratio:1/1;width:100%;max-width:460px;margin-inline:auto}
+  #orb{width:100%;height:100%;cursor:crosshair;border-radius:50%}
+  .orb-stage::before{content:"";position:absolute;inset:-6%;border-radius:50%;
+    background:radial-gradient(circle,rgba(109,94,252,.22),transparent 65%);filter:blur(8px);z-index:-1}
+  .orb-tag{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.66rem;color:var(--mist-dim);letter-spacing:.12em;white-space:nowrap}
+
+  /* ---------- logos / trust ---------- */
+  .trust{padding:8px 0 18px}
+  .trust p{text-align:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;color:var(--mist-dim);margin-bottom:18px;text-transform:uppercase}
+  .logos{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 34px;opacity:.78}
+  .logos span{font-family:var(--disp);font-weight:600;font-size:1.05rem;color:var(--mist);display:flex;align-items:center;gap:8px}
+  .logos span i{font-style:normal;color:var(--cyan)}
+
+  /* ---------- section shell ---------- */
+  section.block{padding:78px 0}
+  .sec-head{max-width:40em;margin-bottom:44px}
+  .sec-kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:14px;display:block}
+  h2{font-family:var(--disp);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.12;letter-spacing:-.015em;color:#fff}
+  .sec-head p{margin-top:14px;color:var(--mist);font-size:1.05rem}
+
+  /* ---------- live demo ---------- */
+  .demo{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px;align-items:start}
+  .demo-prompts{display:flex;flex-direction:column;gap:10px}
+  .pchip{text-align:left;font-family:var(--body);font-size:.94rem;color:var(--mist);background:var(--glass);border:1px solid var(--glass-brd);
+    border-radius:13px;padding:14px 16px;cursor:pointer;transition:.2s;line-height:1.4}
+  .pchip:hover{border-color:var(--iris);color:#fff;transform:translateX(4px)}
+  .pchip.active{border-color:var(--cyan);color:#fff;background:linear-gradient(120deg,rgba(47,230,214,.14),rgba(109,94,252,.14))}
+  .pchip span{font-family:var(--mono);font-size:.7rem;color:var(--mist-dim);display:block;margin-bottom:3px}
+  .console{background:linear-gradient(180deg,rgba(20,18,46,.85),rgba(12,11,30,.9));border:1px solid var(--glass-brd);border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+  .console-bar{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.74rem;color:var(--mist-dim)}
+  .console-bar .d{width:11px;height:11px;border-radius:50%}
+  .console-bar .d1{background:var(--magenta)}.console-bar .d2{background:var(--coral)}.console-bar .d3{background:var(--cyan)}
+  .console-bar .path{margin-left:8px;letter-spacing:.05em}
+  .console-body{padding:20px 22px;min-height:248px}
+  .q-line{font-family:var(--mono);font-size:.9rem;color:var(--cyan);margin-bottom:16px}
+  .q-line::before{content:"› ";color:var(--magenta)}
+  .answer{font-size:1rem;color:#fff;line-height:1.78;min-height:80px;font-weight:500}
+  .answer .cursor{display:inline-block;width:8px;height:1.05em;background:var(--cyan);vertical-align:-2px;animation:cb .9s steps(2) infinite}
+  @keyframes cb{50%{opacity:0}}
+  .sources{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;opacity:0;transition:opacity .4s}
+  .sources.show{opacity:1}
+  .src{font-family:var(--mono);font-size:.72rem;color:var(--mist);background:rgba(109,94,252,.14);border:1px solid var(--glass-brd);padding:5px 11px;border-radius:8px;display:flex;gap:6px;align-items:center}
+  .src i{font-style:normal;color:var(--cyan)}
+  .conf{margin-top:14px;font-family:var(--mono);font-size:.72rem;color:var(--mist-dim)}
+  .conf b{color:var(--cyan)}
+
+  /* ---------- features switcher ---------- */
+  .feat{display:grid;grid-template-columns:1fr 1.15fr;gap:36px;align-items:center}
+  .feat-tabs{display:flex;flex-direction:column;gap:6px}
+  .ftab{text-align:left;background:none;border:none;border-left:2px solid var(--line);padding:16px 18px;cursor:pointer;transition:.2s;color:var(--mist-dim)}
+  .ftab:hover{color:#fff}
+  .ftab.active{border-left-color:var(--cyan);background:linear-gradient(90deg,rgba(47,230,214,.08),transparent)}
+  .ftab h3{font-family:var(--disp);font-size:1.12rem;color:#fff;margin-bottom:5px;display:flex;align-items:center;gap:9px}
+  .ftab h3 em{font-style:normal;font-size:1.1rem}
+  .ftab.active h3{color:var(--cyan)}
+  .ftab p{font-size:.9rem;line-height:1.55}
+  .feat-stage{position:relative;aspect-ratio:4/3;border-radius:20px;border:1px solid var(--glass-brd);overflow:hidden;
+    background:linear-gradient(160deg,rgba(20,18,46,.7),rgba(10,10,24,.9))}
+  .fpanel{position:absolute;inset:0;padding:26px;opacity:0;transform:scale(.96);transition:opacity .5s,transform .5s;pointer-events:none;display:flex;flex-direction:column;justify-content:center;gap:14px}
+  .fpanel.show{opacity:1;transform:scale(1);pointer-events:auto}
+  .viz-row{display:flex;align-items:center;gap:12px;background:var(--glass);border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:.9rem;color:#fff}
+  .viz-row .ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:1.1rem;flex:0 0 auto;background:linear-gradient(135deg,var(--iris),var(--magenta))}
+  .viz-row small{display:block;color:var(--mist-dim);font-size:.74rem;font-family:var(--mono)}
+  .bar{height:8px;border-radius:6px;background:rgba(149,142,255,.14);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--cyan),var(--iris));width:0;transition:width 1s ease}
+  .fpanel.show .bar i{width:var(--w,70%)}
+  .pill-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pill-flow .pf{font-family:var(--mono);font-size:.74rem;padding:6px 11px;border-radius:8px;background:rgba(47,230,214,.12);border:1px solid var(--glass-brd);color:var(--cyan)}
+  .pill-flow .arr{color:var(--mist-dim)}
+
+  /* ---------- how / steps ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .step{background:var(--glass);border:1px solid var(--glass-brd);border-radius:18px;padding:26px;position:relative;overflow:hidden}
+  .step::before{content:attr(data-n);position:absolute;top:-14px;right:6px;font-family:var(--disp);font-weight:700;font-size:5rem;color:rgba(149,142,255,.08);line-height:1}
+  .step .ic{font-size:1.6rem;margin-bottom:14px}
+  .step h3{font-family:var(--disp);color:#fff;font-size:1.18rem;margin-bottom:9px}
+  .step p{font-size:.94rem;color:var(--mist-dim);line-height:1.6}
+
+  /* ---------- metrics ---------- */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+  .metric{padding:28px 14px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(20,18,46,.45),transparent)}
+  .metric b{display:block;font-family:var(--disp);font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);
+    background:linear-gradient(120deg,var(--cyan),var(--magenta));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.02em}
+  .metric span{font-size:.84rem;color:var(--mist-dim);margin-top:6px;display:block}
+
+  /* ---------- pricing teaser ---------- */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .plan{background:var(--glass);border:1px solid var(--glass-brd);border-radius:20px;padding:30px 26px;display:flex;flex-direction:column}
+  .plan.hot{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 30px 60px -30px rgba(47,230,214,.4);position:relative}
+  .plan.hot::after{content:"早鳥名額";position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:#11052a;background:var(--cyan);padding:4px 9px;border-radius:7px}
+  .plan h3{font-family:var(--disp);color:#fff;font-size:1.3rem;margin-bottom:6px}
+  .plan .price{font-family:var(--disp);font-weight:700;font-size:2.3rem;color:#fff;margin:10px 0 4px;letter-spacing:-.02em}
+  .plan .price small{font-size:.9rem;color:var(--mist-dim);font-weight:400}
+  .plan .desc{font-size:.9rem;color:var(--mist-dim);margin-bottom:18px}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;flex:1}
+  .plan li{font-size:.92rem;color:var(--mist);display:flex;gap:9px;align-items:flex-start}
+  .plan li::before{content:"◆";color:var(--cyan);font-size:.7rem;margin-top:5px}
+  .plan .pbtn{margin-top:auto;text-align:center;font-family:var(--disp);font-weight:600;padding:12px;border-radius:12px;cursor:pointer;border:1px solid var(--glass-brd);background:var(--glass);color:#fff;transition:.2s}
+  .plan.hot .pbtn{background:linear-gradient(120deg,var(--cyan),var(--coral));color:#11052a;border:none}
+  .plan .pbtn:hover{transform:translateY(-2px)}
+
+  /* ---------- waitlist ---------- */
+  .cta-band{margin:30px auto 0;max-width:760px;text-align:center;background:linear-gradient(160deg,rgba(28,26,58,.7),rgba(14,13,34,.8));
+    border:1px solid var(--glass-brd);border-radius:26px;padding:46px 34px;position:relative;overflow:hidden}
+  .cta-band::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:radial-gradient(50% 60% at 50% 0%,rgba(109,94,252,.3),transparent 70%)}
+  .cta-band h2{margin-bottom:12px}
+  .cta-band p{color:var(--mist);margin-bottom:26px;max-width:34em;margin-inline:auto}
+  form{display:flex;gap:10px;max-width:460px;margin:0 auto;flex-wrap:wrap}
+  .field{flex:1;min-width:200px;text-align:left}
+  form input{width:100%;font-family:var(--body);font-size:1rem;color:#fff;background:rgba(10,10,24,.6);
+    border:1px solid var(--glass-brd);border-radius:12px;padding:14px 16px;transition:.2s}
+  form input::placeholder{color:var(--mist-dim)}
+  form input:focus{border-color:var(--cyan);outline:none}
+  form input.err{border-color:var(--magenta)}
+  .ferr{display:block;font-size:.76rem;color:var(--magenta);margin-top:6px;min-height:1em;font-family:var(--mono)}
+  form button{font-family:var(--disp);font-weight:600;font-size:1rem;padding:14px 24px;border-radius:12px;border:none;cursor:pointer;
+    color:#11052a;background:linear-gradient(120deg,var(--cyan),var(--coral));transition:transform .2s;white-space:nowrap}
+  form button:hover{transform:translateY(-2px)}
+  .form-note{font-size:.78rem;color:var(--mist-dim);margin-top:16px;font-family:var(--mono)}
+
+  /* ---------- toast ---------- */
+  .toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,150%);z-index:100;
+    background:linear-gradient(120deg,var(--iris),var(--magenta));color:#fff;font-weight:600;font-family:var(--disp);
+    padding:14px 22px;border-radius:14px;box-shadow:0 18px 44px -12px rgba(255,94,168,.6);transition:transform .5s cubic-bezier(.2,1.3,.4,1);display:flex;gap:10px;align-items:center}
+  .toast.show{transform:translate(-50%,0)}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:48px 0 36px;margin-top:30px}
+  .foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .foot-grid .brand{margin-bottom:14px}
+  .foot-col h4{font-family:var(--disp);color:#fff;font-size:.86rem;margin-bottom:13px;letter-spacing:.04em}
+  .foot-col a{display:block;font-size:.88rem;color:var(--mist-dim);margin-bottom:9px;transition:color .2s}
+  .foot-col a:hover{color:var(--cyan)}
+  .foot-bottom{margin-top:38px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-size:.82rem;color:var(--mist-dim)}
+  .stamp{font-family:var(--mono);letter-spacing:.04em}
+  .stamp a{color:var(--cyan)}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:880px){
+    .hero-grid,.demo,.feat{grid-template-columns:1fr;gap:30px}
+    .orb-stage{max-width:340px;order:-1}
+    .steps,.metrics,.plans{grid-template-columns:1fr}
+    .metrics{grid-template-columns:1fr 1fr}
+    .nav-links{display:none}
+    .burger{display:block}
+    .nav-cta{display:none}
+    nav.open .nav-links{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(10,10,24,.97);
+      padding:20px 24px;border-bottom:1px solid var(--line);gap:16px}
+  }
+  @media(max-width:430px){
+    .wrap{padding:0 16px}
+    section.block{padding:56px 0}
+    .metrics{grid-template-columns:1fr 1fr;gap:10px}
+    .cta-band{padding:34px 20px}
+    form button{width:100%}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="mesh" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header>
+  <nav id="nav">
+    <a class="brand" href="#top" aria-label="靈樞 Synapse 首頁">
+      <span class="glyph" aria-hidden="true"></span>
+      <span>靈樞 Synapse<br><small>KNOWLEDGE ENGINE</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#demo">即時試問</a>
+      <a href="#features">核心能力</a>
+      <a href="#how">運作方式</a>
+      <a href="#plans">方案</a>
+    </div>
+    <a class="nav-cta" href="#join">加入候補</a>
+    <button class="burger" aria-label="開啟選單" aria-expanded="false" id="burger">☰</button>
+  </nav>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot" aria-hidden="true"></span>內測開放中 · 候補第三批</span>
+        <h1>問一句話，<br>得到<span class="grad">附來源</span>的答案。</h1>
+        <p class="lede">靈樞 Synapse 把公司散落在文件、訊息、會議紀錄與規範裡的知識，編織成一個<b>會回答問題的語意中樞</b>。不再翻群組、找不到那份簡報——直接問它。</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" data-scroll="#join">免費加入候補名單</button>
+          <button class="btn btn-ghost" data-scroll="#demo">先看它怎麼回答 ↘</button>
+        </div>
+        <div class="hero-meta">
+          <div><b>0.4 秒</b>平均回答延遲</div>
+          <div><b>17 種</b>支援文件格式</div>
+          <div><b>100%</b>答案附原文出處</div>
+        </div>
+      </div>
+      <div class="orb-stage">
+        <canvas id="orb" aria-label="靈樞語意網絡示意動畫，會隨指標移動而牽引"></canvas>
+        <span class="orb-tag" id="orbTag">移動指標牽引知識網絡</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust wrap">
+    <p>內測團隊涵蓋的場景</p>
+    <div class="logos" aria-label="使用場景">
+      <span><i>◐</i> 跨國法遵團隊</span>
+      <span><i>◑</i> 產品工程組</span>
+      <span><i>◒</i> 客服知識庫</span>
+      <span><i>◓</i> 投顧研究室</span>
+      <span><i>●</i> HR 制度中心</span>
+    </div>
+  </section>
+
+  <!-- LIVE DEMO -->
+  <section class="block wrap" id="demo">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">LIVE · 模擬回答</span>
+      <h2>選一個問題，看它怎麼答</h2>
+      <p>以下為前端模擬，展示靈樞「提問 → 摘要 → 標註來源」的回答介面與節奏。</p>
+    </div>
+    <div class="demo reveal">
+      <div class="demo-prompts" id="prompts" role="tablist" aria-label="示範問題"></div>
+      <div class="console">
+        <div class="console-bar">
+          <span class="d d1"></span><span class="d d2"></span><span class="d d3"></span>
+          <span class="path">synapse://workspace/答案</span>
+        </div>
+        <div class="console-body">
+          <div class="q-line" id="qLine">請從左側選擇一個問題</div>
+          <div class="answer" id="answer"><span class="cursor"></span></div>
+          <div class="sources" id="sources" aria-live="polite"></div>
+          <div class="conf" id="conf"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SWITCHER -->
+  <section class="block wrap" id="features">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">核心能力</span>
+      <h2>不只是搜尋，是會推理的知識層</h2>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-tabs" id="ftabs" role="tablist" aria-label="核心能力切換">
+        <button class="ftab active" data-f="0" role="tab" aria-selected="true">
+          <h3><em>🧭</em>語意檢索</h3><p>用問句找答案，而非關鍵字。同義、口語、跨語言都能對得上。</p>
+        </button>
+        <button class="ftab" data-f="1" role="tab" aria-selected="false">
+          <h3><em>🔗</em>來源標註</h3><p>每一句回答都連回原始段落，可一鍵跳轉查證，杜絕幻覺。</p>
+        </button>
+        <button class="ftab" data-f="2" role="tab" aria-selected="false">
+          <h3><em>🛡️</em>權限隔離</h3><p>依職位與群組過濾，員工只會看到自己有權存取的知識。</p>
+        </button>
+        <button class="ftab" data-f="3" role="tab" aria-selected="false">
+          <h3><em>⚡</em>即時同步</h3><p>文件一更新，索引隨之重建，答案永遠引用最新版本。</p>
+        </button>
+      </div>
+      <div class="feat-stage" id="fstage" aria-live="polite">
+        <div class="fpanel show" data-p="0">
+          <div class="viz-row"><span class="ico">🗣️</span><div>「上季退費政策是什麼？」<small>口語提問</small></div></div>
+          <div class="pill-flow"><span class="pf">語意向量</span><span class="arr">→</span><span class="pf">混合檢索</span><span class="arr">→</span><span class="pf">重排序</span></div>
+          <div class="viz-row"><span class="ico">🎯</span><div>命中《退費辦法 v4》第 3 條<small>相關度 0.94</small></div></div>
+        </div>
+        <div class="fpanel" data-p="1">
+          <div class="viz-row"><span class="ico">📎</span><div>答案：14 天內未開通可全額退費<small>已標註 2 處原文</small></div></div>
+          <div class="viz-row"><span class="ico">🔎</span><div>來源 ① 退費辦法 v4 · §3<small>一鍵跳轉原文段落</small></div></div>
+          <div class="viz-row"><span class="ico">🔎</span><div>來源 ② 客服 SOP · 2026Q1<small>可標記為已查證</small></div></div>
+        </div>
+        <div class="fpanel" data-p="2">
+          <div class="viz-row"><span class="ico">👤</span><div>查詢者：客服專員<small>可見：客服知識庫</small></div></div>
+          <div class="viz-row"><span class="ico">🚫</span><div>已隱藏：薪酬制度、董事會紀錄<small>權限不符，不進入檢索</small></div></div>
+          <div class="bar" style="--w:62%"><i></i></div>
+        </div>
+        <div class="fpanel" data-p="3">
+          <div class="viz-row"><span class="ico">📤</span><div>《定價策略》剛更新<small>14:02 由 Amber 上傳</small></div></div>
+          <div class="bar" style="--w:100%"><i></i></div>
+          <div class="viz-row"><span class="ico">✅</span><div>索引已重建，舊版本自動下線<small>耗時 1.8 秒</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="block wrap">
+    <div class="metrics reveal">
+      <div class="metric"><b data-c="73">0</b><span>找資料時間減少（%）</span></div>
+      <div class="metric"><b data-c="0.4" data-dec="1">0</b><span>平均回答延遲（秒）</span></div>
+      <div class="metric"><b data-c="12">0</b><span>串接的知識來源</span></div>
+      <div class="metric"><b data-c="98" data-suf="%">0</b><span>來源標註正確率</span></div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="block wrap" id="how">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">運作方式</span>
+      <h2>三步上線，當天就能問</h2>
+      <p>順序即流程：先接上知識，再讓它理解，最後團隊開始對話。</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step" data-n="01"><div class="ic">🔌</div><h3>接上你的知識</h3><p>連結雲端硬碟、Notion、Confluence、客服系統或直接拖入檔案，17 種格式皆可。</p></div>
+      <div class="step" data-n="02"><div class="ic">🧠</div><h3>靈樞讀懂它</h3><p>自動切段、建立語意索引並套用權限規則，過程在你的租戶內完成，資料不外流訓練。</p></div>
+      <div class="step" data-n="03"><div class="ic">💬</div><h3>團隊開始問</h3><p>在網頁、Slack 或 Teams 直接提問，得到附來源的答案，並可一鍵回饋校正。</p></div>
+    </div>
+  </section>
+
+  <!-- PLANS -->
+  <section class="block wrap" id="plans">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">方案</span>
+      <h2>內測期的早鳥定價</h2>
+      <p>正式上線後將調整，候補名單成員享受鎖定價。</p>
+    </div>
+    <div class="plans reveal">
+      <div class="plan">
+        <h3>探索</h3>
+        <div class="price">免費<small> / 內測期</small></div>
+        <div class="desc">適合小團隊先試水溫</div>
+        <ul>
+          <li>最多 5 位成員</li>
+          <li>2 個知識來源串接</li>
+          <li>每月 500 次提問</li>
+          <li>網頁介面</li>
+        </ul>
+        <button class="pbtn" data-scroll="#join">加入候補</button>
+      </div>
+      <div class="plan hot">
+        <h3>團隊</h3>
+        <div class="price">NT$2,400<small> / 月</small></div>
+        <div class="desc">成長中團隊的主力方案</div>
+        <ul>
+          <li>無限成員</li>
+          <li>串接全部 17 種來源</li>
+          <li>權限隔離與稽核紀錄</li>
+          <li>Slack / Teams 整合</li>
+          <li>來源校正與回饋迴圈</li>
+        </ul>
+        <button class="pbtn" data-scroll="#join">鎖定早鳥價</button>
+      </div>
+      <div class="plan">
+        <h3>企業</h3>
+        <div class="price">洽詢</div>
+        <div class="desc">需要私有部署與合規</div>
+        <ul>
+          <li>單一租戶私有部署</li>
+          <li>SSO 與資料落地選項</li>
+          <li>專屬導入顧問</li>
+          <li>SLA 與優先支援</li>
+        </ul>
+        <button class="pbtn" data-scroll="#join">預約展示</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST -->
+  <section class="block wrap" id="join">
+    <div class="cta-band reveal">
+      <span class="sec-kicker">CANDIDATE · 候補名單</span>
+      <h2>成為最早問靈樞的人</h2>
+      <p>留下信箱，我們會依批次寄出內測邀請，並附上早鳥價鎖定連結。前 200 名額外贈送一場一對一導入諮詢。</p>
+      <form id="waitForm" novalidate>
+        <div class="field">
+          <input type="email" id="email" name="email" placeholder="你的工作信箱" autocomplete="email" aria-label="工作信箱" aria-describedby="emailErr">
+          <span class="ferr" id="emailErr"></span>
+        </div>
+        <button type="submit">加入候補</button>
+      </form>
+      <p class="form-note">已有 1,840+ 人在等待 · 我們不會寄送行銷信</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="glyph" aria-hidden="true"></span>
+          <span>靈樞 Synapse<br><small>KNOWLEDGE ENGINE</small></span>
+        </a>
+        <p style="max-width:24em;color:var(--mist-dim);font-size:.9rem">讓團隊的每一份知識，都能被一句話喚回。</p>
+      </div>
+      <div class="foot-col"><h4>產品</h4><a href="#demo">即時試問</a><a href="#features">核心能力</a><a href="#plans">方案定價</a></div>
+      <div class="foot-col"><h4>資源</h4><a href="#how">運作方式</a><a href="#join">候補名單</a><a href="#top">回到頂端</a></div>
+      <div class="foot-col"><h4>聯絡</h4><a href="#join">預約展示</a><a href="https://service.e-life-ai.com">關於製作方</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 靈樞 Synapse（虛構展示產品）</span>
+      <span class="stamp">設計樣板 · <a href="https://service.e-life-ai.com">e-life-ai.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span>✦</span><span id="toastMsg">已加入候補名單！</span></div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- nav ---------- */
+  var nav = document.getElementById("nav"), burger = document.getElementById("burger");
+  burger.addEventListener("click", function(){
+    var open = nav.classList.toggle("open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  document.querySelectorAll("[data-scroll]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var t = document.querySelector(b.getAttribute("data-scroll"));
+      if(t) t.scrollIntoView({behavior: reduce ? "auto":"smooth"});
+    });
+  });
+  document.querySelectorAll(".nav-links a").forEach(function(a){
+    a.addEventListener("click", function(){ nav.classList.remove("open"); burger.setAttribute("aria-expanded","false"); });
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+    },{threshold:.16});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ============================================================
+     SIGNATURE: pointer-reactive generative synapse orb (canvas)
+     ============================================================ */
+  var canvas = document.getElementById("orb"), ctx = canvas.getContext("2d");
+  var DPR = Math.min(window.devicePixelRatio||1, 2);
+  var W=0,H=0,CX=0,CY=0,R=0;
+  var nodes=[], pointer={x:0,y:0,active:false};
+
+  function size(){
+    var rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W*DPR; canvas.height = H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    CX=W/2; CY=H/2; R=Math.min(W,H)*0.42;
+    pointer.x=CX; pointer.y=CY;
+  }
+  function build(){
+    nodes=[];
+    var N = W<360?26:38;
+    for(var i=0;i<N;i++){
+      // distribute roughly in a sphere-ish disc
+      var ang = Math.random()*Math.PI*2;
+      var rad = Math.pow(Math.random(),0.65)*R;
+      var bx = CX+Math.cos(ang)*rad, by = CY+Math.sin(ang)*rad*0.92;
+      nodes.push({
+        bx:bx, by:by, x:bx, y:by,
+        r: 1.2+Math.random()*2.4,
+        ph: Math.random()*Math.PI*2,
+        sp: 0.4+Math.random()*0.8,
+        hue: Math.random()  // 0..1 picks colour
+      });
+    }
+  }
+  var palette = [[109,94,252],[47,230,214],[255,94,168],[255,155,106]];
+  function col(h,a){
+    var i = Math.min(palette.length-1, Math.floor(h*palette.length));
+    var c = palette[i];
+    return "rgba("+c[0]+","+c[1]+","+c[2]+","+a+")";
+  }
+
+  var t=0, raf=null;
+  function frame(){
+    t += 0.016;
+    ctx.clearRect(0,0,W,H);
+
+    // glowing core
+    var coreR = R*0.34 + Math.sin(t*1.3)*4;
+    var g = ctx.createRadialGradient(CX,CY,2,CX,CY,coreR*2.2);
+    g.addColorStop(0,"rgba(150,140,255,0.55)");
+    g.addColorStop(0.4,"rgba(109,94,252,0.18)");
+    g.addColorStop(1,"rgba(10,10,24,0)");
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(CX,CY,coreR*2.2,0,Math.PI*2); ctx.fill();
+
+    // update nodes: drift + pointer attraction
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      var driftX = Math.cos(t*n.sp+n.ph)*5;
+      var driftY = Math.sin(t*n.sp*0.9+n.ph)*5;
+      var tx = n.bx+driftX, ty = n.by+driftY;
+      if(pointer.active){
+        var dx = pointer.x-n.x, dy = pointer.y-n.y;
+        var d = Math.sqrt(dx*dx+dy*dy)||1;
+        var pull = Math.min(60, 1800/(d+40));
+        tx += dx/d*pull; ty += dy/d*pull;
+      }
+      n.x += (tx-n.x)*0.08; n.y += (ty-n.y)*0.08;
+    }
+
+    // links between near nodes
+    for(var a=0;a<nodes.length;a++){
+      for(var b=a+1;b<nodes.length;b++){
+        var na=nodes[a], nb=nodes[b];
+        var dx=na.x-nb.x, dy=na.y-nb.y;
+        var dist=Math.sqrt(dx*dx+dy*dy);
+        var max = R*0.5;
+        if(dist<max){
+          var alpha = (1-dist/max)*0.5;
+          var pulse = 0.6+0.4*Math.sin(t*2 + a*0.3);
+          ctx.strokeStyle = col((na.hue+nb.hue)/2, alpha*pulse);
+          ctx.lineWidth = 0.8;
+          ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y); ctx.stroke();
+        }
+      }
+    }
+    // nodes
+    for(var k=0;k<nodes.length;k++){
+      var nd=nodes[k];
+      var glow = 0.6+0.4*Math.sin(t*1.6+nd.ph);
+      ctx.fillStyle = col(nd.hue, 0.9);
+      ctx.shadowColor = col(nd.hue, 0.9);
+      ctx.shadowBlur = 8*glow;
+      ctx.beginPath(); ctx.arc(nd.x,nd.y,nd.r,0,Math.PI*2); ctx.fill();
+    }
+    ctx.shadowBlur=0;
+
+    raf = requestAnimationFrame(frame);
+  }
+  function staticFrame(){
+    // composed still image for reduced motion
+    ctx.clearRect(0,0,W,H);
+    var g = ctx.createRadialGradient(CX,CY,2,CX,CY,R*0.8);
+    g.addColorStop(0,"rgba(150,140,255,0.5)");
+    g.addColorStop(0.45,"rgba(109,94,252,0.15)");
+    g.addColorStop(1,"rgba(10,10,24,0)");
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(CX,CY,R*0.8,0,Math.PI*2); ctx.fill();
+    for(var a=0;a<nodes.length;a++){
+      for(var b=a+1;b<nodes.length;b++){
+        var na=nodes[a], nb=nodes[b], dx=na.x-nb.x,dy=na.y-nb.y,dist=Math.sqrt(dx*dx+dy*dy),max=R*0.5;
+        if(dist<max){ ctx.strokeStyle=col((na.hue+nb.hue)/2,(1-dist/max)*0.4); ctx.lineWidth=0.8;
+          ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y); ctx.stroke(); }
+      }
+    }
+    for(var k=0;k<nodes.length;k++){ var nd=nodes[k]; ctx.fillStyle=col(nd.hue,0.9);
+      ctx.beginPath(); ctx.arc(nd.x,nd.y,nd.r,0,Math.PI*2); ctx.fill(); }
+  }
+  function start(){
+    size(); build();
+    if(reduce){ staticFrame(); document.getElementById("orbTag").textContent="語意網絡（已暫停動畫）"; }
+    else { if(raf) cancelAnimationFrame(raf); frame(); }
+  }
+  canvas.addEventListener("pointermove", function(e){
+    if(reduce) return;
+    var rect = canvas.getBoundingClientRect();
+    pointer.x = e.clientX-rect.left; pointer.y = e.clientY-rect.top; pointer.active=true;
+  });
+  canvas.addEventListener("pointerleave", function(){ pointer.active=false; });
+  window.addEventListener("resize", function(){ clearTimeout(window.__rz); window.__rz=setTimeout(start,180); });
+  start();
+
+  /* ============================================================
+     LIVE DEMO: prompt -> typed answer + sources
+     ============================================================ */
+  var QA = [
+    { q:"上一季的退費政策是什麼？",
+      a:"購買後 14 天內、且尚未開通服務者可申請全額退費；已開通則依使用天數比例計算。退費將於 7 個工作天內退回原付款方式。",
+      src:[["退費辦法 v4","§3"],["客服 SOP","2026Q1"]], conf:"0.94" },
+    { q:"新人第一天要完成哪些設定？",
+      a:"領取公司帳號並啟用兩階段驗證、加入所屬團隊的 Slack 頻道、完成資安基礎課程，並向直屬主管確認首週目標。",
+      src:[["新人指南","Day 1"],["資安政策","2.1"]], conf:"0.91" },
+    { q:"我們對外可以公開哪些技術細節？",
+      a:"架構概念、已上線的公開功能與效能指標可對外分享；尚未發佈的演算法、客戶名單與內部定價策略屬機密，需經法遵核准。",
+      src:[["對外溝通準則","§5"],["法遵 FAQ","機密分級"]], conf:"0.88" },
+    { q:"報帳的差旅上限是多少？",
+      a:"國內出差住宿每晚上限 NT$3,500，餐費每日 NT$800；國際差旅依地區分級，超額需附主管事前核准信。",
+      src:[["差旅報銷辦法","附表二"]], conf:"0.96" }
+  ];
+  var promptsEl=document.getElementById("prompts"), qLine=document.getElementById("qLine"),
+      answerEl=document.getElementById("answer"), sourcesEl=document.getElementById("sources"), confEl=document.getElementById("conf");
+  var typer=null;
+
+  QA.forEach(function(item,idx){
+    var b=document.createElement("button");
+    b.className="pchip"; b.setAttribute("role","tab");
+    b.innerHTML="<span>問題 0"+(idx+1)+"</span>"+item.q;
+    b.addEventListener("click", function(){ selectQ(idx,b); });
+    promptsEl.appendChild(b);
+  });
+
+  function selectQ(idx,btn){
+    document.querySelectorAll(".pchip").forEach(function(c){c.classList.remove("active");c.setAttribute("aria-selected","false");});
+    btn.classList.add("active"); btn.setAttribute("aria-selected","true");
+    var item=QA[idx];
+    qLine.textContent=item.q;
+    sourcesEl.classList.remove("show"); sourcesEl.innerHTML=""; confEl.innerHTML="";
+    if(typer) clearInterval(typer);
+    if(reduce){
+      answerEl.innerHTML=item.a;
+      showMeta(item); return;
+    }
+    var txt=item.a, i=0;
+    answerEl.innerHTML='<span class="cursor"></span>';
+    typer=setInterval(function(){
+      i++;
+      answerEl.innerHTML=txt.slice(0,i)+'<span class="cursor"></span>';
+      if(i>=txt.length){ clearInterval(typer); answerEl.innerHTML=txt; showMeta(item); }
+    },22);
+  }
+  function showMeta(item){
+    sourcesEl.innerHTML=item.src.map(function(s){
+      return '<span class="src"><i>◈</i>'+s[0]+' · '+s[1]+'</span>';
+    }).join("");
+    sourcesEl.classList.add("show");
+    confEl.innerHTML='答案信心度 <b>'+item.conf+'</b> · 已比對 '+item.src.length+' 處原文';
+  }
+  // auto-pick first prompt
+  var firstChip=promptsEl.querySelector(".pchip");
+  if(firstChip) selectQ(0,firstChip);
+
+  /* ============================================================
+     FEATURE SWITCHER
+     ============================================================ */
+  var ftabs=document.querySelectorAll(".ftab"), fpanels=document.querySelectorAll(".fpanel");
+  ftabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      var f=tab.getAttribute("data-f");
+      ftabs.forEach(function(x){x.classList.remove("active");x.setAttribute("aria-selected","false");});
+      tab.classList.add("active"); tab.setAttribute("aria-selected","true");
+      fpanels.forEach(function(p){ p.classList.toggle("show", p.getAttribute("data-p")===f); });
+    });
+  });
+
+  /* ============================================================
+     METRIC COUNT-UP
+     ============================================================ */
+  function countUp(el){
+    var target=parseFloat(el.getAttribute("data-c")),
+        dec=parseInt(el.getAttribute("data-dec")||"0",10),
+        suf=el.getAttribute("data-suf")||"";
+    if(reduce){ el.textContent=target.toFixed(dec)+suf; return; }
+    var start=performance.now(), dur=1300;
+    function tick(now){
+      var p=Math.min(1,(now-start)/dur), e=1-Math.pow(1-p,3);
+      el.textContent=(target*e).toFixed(dec)+suf;
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if("IntersectionObserver" in window){
+    var mo=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); mo.unobserve(e.target);} });
+    },{threshold:.6});
+    document.querySelectorAll(".metric b").forEach(function(b){ mo.observe(b); });
+  } else {
+    document.querySelectorAll(".metric b").forEach(countUp);
+  }
+
+  /* ============================================================
+     WAITLIST FORM + TOAST
+     ============================================================ */
+  var form=document.getElementById("waitForm"), email=document.getElementById("email"),
+      emailErr=document.getElementById("emailErr"), toast=document.getElementById("toast"), toastMsg=document.getElementById("toastMsg");
+  var toastTimer=null;
+  function showToast(msg){
+    toastMsg.textContent=msg; toast.classList.add("show");
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ toast.classList.remove("show"); },3400);
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var v=email.value.trim();
+    var ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if(!ok){
+      email.classList.add("err");
+      emailErr.textContent = v ? "信箱格式看起來不太對，再檢查一下" : "請先填入工作信箱";
+      email.focus();
+      return;
+    }
+    email.classList.remove("err"); emailErr.textContent="";
+    showToast("已加入候補！邀請函將寄到 "+v.split("@")[0]+"…");
+    form.reset();
+  });
+  email.addEventListener("input", function(){ if(email.classList.contains("err")){ email.classList.remove("err"); emailErr.textContent=""; } });
+
+  // plan buttons -> scroll handled by data-scroll already
+})();
+</script>
+</body>
+</html>

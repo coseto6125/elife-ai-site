@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="clinic">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>晴野診所 Sereno Clinic — 牙科 · 醫美 · 健檢 · 皮膚 | 安心溫柔的整合照護</title>
+<meta name="description" content="晴野診所 Sereno Clinic 整合醫療一頁式範例。柔和水療風米白／鼠尾草綠／玫瑰膚色美學，療程分類篩選、療程細節手風琴、醫師團隊卡片、線上預約表單（部門／日期／時段／個資驗證與確認摘要）、術前術後拖曳對比、FAQ 與捲動進場動畫。自包含靜態前端範例。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Figtree:wght@300;400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   晴野診所 Sereno Clinic — Medical Clinic / Aesthetic / Dental (showcase #12)
+   Aesthetic: soft pastel spa-wellness. Warm ivory canvas (#f6f1e9),
+   sage green (#7d9183 / deep #3f5249), blush-rose accent (#d98e8a)
+   + muted clay (#c9a98c). Calm, trustworthy, premium-care. Generous
+   whitespace, rounded organic forms, gentle slow motion.
+   Display serif: Newsreader; body humanist sans: Figtree; soft
+   accent caps: Quicksand. Fonts + palette fresh vs studio mint/indigo
+   and every prior demo (#01-#11).
+   All imagery is inline SVG / CSS gradient art (offline-safe):
+   clinic interior hero, doctor avatars, treatment icons, before/after.
+   ============================================================ */
+:root{
+  --ivory:#f6f1e9; --paper:#fffdf8; --cream:#efe7d8;
+  --ink:#33403a; --ink2:#5b6862; --line:#e3dccd;
+  --sage:#7d9183; --sage-d:#3f5249; --sage-soft:#dfe6df;
+  --rose:#d98e8a; --rose-d:#bd6d6a; --rose-soft:#f5e2df;
+  --clay:#c9a98c; --gold:#b9925f;
+  --r:22px; --r-s:14px; --r-l:34px;
+  --sh:0 18px 48px -22px rgba(63,82,73,.30);
+  --sh-s:0 8px 26px -16px rgba(63,82,73,.30);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Figtree",system-ui,sans-serif;
+  background:var(--ivory); color:var(--ink);
+  line-height:1.65; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:"Newsreader",Georgia,serif;font-weight:500;line-height:1.12;letter-spacing:-.01em}
+.serif{font-family:"Newsreader",serif}
+.eyebrow{font-family:"Quicksand",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.72rem;color:var(--sage);display:inline-flex;align-items:center;gap:.55em}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:var(--rose);border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{position:relative}
+.btn{font-family:"Quicksand",sans-serif;font-weight:600;border:none;cursor:pointer;border-radius:999px;padding:.92em 1.7em;font-size:.95rem;transition:transform .4s var(--ease),box-shadow .4s var(--ease),background .3s;display:inline-flex;align-items:center;gap:.5em;text-decoration:none}
+.btn-p{background:var(--sage-d);color:#fbf8f1;box-shadow:0 12px 26px -14px rgba(63,82,73,.7)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 18px 34px -14px rgba(63,82,73,.8)}
+.btn-o{background:transparent;color:var(--sage-d);border:1.5px solid var(--sage)}
+.btn-o:hover{background:var(--sage-soft);transform:translateY(-2px)}
+.btn-rose{background:var(--rose);color:#fff;box-shadow:0 12px 26px -14px rgba(189,109,106,.7)}
+.btn-rose:hover{transform:translateY(-3px);background:var(--rose-d)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ===== NAV ===== */
+header.nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(12px);background:rgba(246,241,233,.78);border-bottom:1px solid transparent;transition:border-color .4s,box-shadow .4s}
+header.nav.scrolled{border-color:var(--line);box-shadow:0 6px 24px -18px rgba(63,82,73,.5)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:74px}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:"Newsreader",serif;font-size:1.4rem;font-weight:600;color:var(--sage-d);text-decoration:none}
+.brand .mk{width:38px;height:38px;flex:0 0 auto}
+.brand small{font-family:"Quicksand";font-size:.6rem;letter-spacing:.24em;color:var(--sage);display:block;font-weight:600;margin-top:-2px}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{color:var(--ink2);text-decoration:none;font-size:.94rem;font-weight:500;position:relative;transition:color .3s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-5px;height:2px;width:0;background:var(--rose);border-radius:2px;transition:width .35s var(--ease)}
+.nav-links a:hover{color:var(--sage-d)}.nav-links a:hover::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:1.2rem}
+.nav-tel{font-family:"Quicksand";font-weight:600;color:var(--sage-d);font-size:.9rem;display:flex;align-items:center;gap:.4em}
+.burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+.burger span{width:24px;height:2px;background:var(--sage-d);border-radius:2px;transition:.3s}
+
+/* ===== HERO ===== */
+.hero{padding:64px 0 90px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
+.hero h1{font-size:clamp(2.7rem,5.4vw,4.5rem);color:var(--sage-d)}
+.hero h1 em{font-style:italic;color:var(--rose-d)}
+.hero p.lead{font-size:1.15rem;color:var(--ink2);max-width:34ch;margin:1.4rem 0 2rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2.2rem}
+.htag{font-family:"Quicksand";font-weight:600;font-size:.82rem;background:var(--paper);border:1px solid var(--line);color:var(--sage-d);padding:.5em 1em;border-radius:999px;box-shadow:var(--sh-s)}
+.hero-cta{display:flex;gap:.9rem;flex-wrap:wrap}
+.hero-stats{display:flex;gap:2.2rem;margin-top:2.6rem;flex-wrap:wrap}
+.hstat b{font-family:"Newsreader";font-size:1.9rem;color:var(--sage-d);display:block;line-height:1}
+.hstat span{font-size:.82rem;color:var(--ink2)}
+.hero-art{position:relative}
+.hero-card{position:relative;border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh);background:var(--paper)}
+.hero-card svg{display:block;width:100%;height:auto}
+.float-badge{position:absolute;background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:.85rem 1.1rem;display:flex;align-items:center;gap:.7rem;animation:floaty 5s ease-in-out infinite}
+.float-badge .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto}
+.fb1{top:24px;left:-26px;animation-delay:0s}
+.fb2{bottom:34px;right:-22px;animation-delay:1.6s}
+.float-badge b{font-family:"Quicksand";font-size:.9rem;color:var(--sage-d);display:block;line-height:1.2}
+.float-badge span{font-size:.72rem;color:var(--ink2)}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.blob{position:absolute;border-radius:50%;filter:blur(46px);opacity:.5;z-index:-1}
+.blob.b1{width:340px;height:340px;background:var(--rose-soft);top:-60px;right:-50px}
+.blob.b2{width:300px;height:300px;background:var(--sage-soft);bottom:-70px;left:-40px}
+
+/* ===== TRUST STRIP ===== */
+.trust{background:var(--sage-d);color:#eef2ee;padding:30px 0}
+.trust-in{display:flex;justify-content:space-around;flex-wrap:wrap;gap:1.4rem;align-items:center;text-align:center}
+.trust-item{display:flex;align-items:center;gap:.7rem;font-family:"Quicksand";font-weight:600;font-size:.95rem;opacity:.95}
+.trust-item svg{width:26px;height:26px;flex:0 0 auto;color:#bcd0c4}
+
+/* ===== SECTION HEAD ===== */
+.shead{text-align:center;max-width:640px;margin:0 auto 48px}
+.shead h2{font-size:clamp(2rem,4vw,3rem);color:var(--sage-d);margin:.7rem 0}
+.shead p{color:var(--ink2);font-size:1.05rem}
+.pad{padding:96px 0}
+
+/* ===== SERVICES / TREATMENTS ===== */
+.tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-bottom:42px}
+.tab{font-family:"Quicksand";font-weight:600;background:var(--paper);border:1px solid var(--line);color:var(--ink2);padding:.6em 1.4em;border-radius:999px;cursor:pointer;transition:all .35s var(--ease);font-size:.92rem}
+.tab:hover{border-color:var(--sage);color:var(--sage-d)}
+.tab.active{background:var(--sage-d);color:#fbf8f1;border-color:var(--sage-d);box-shadow:0 10px 22px -14px rgba(63,82,73,.7)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tcard{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease),opacity .4s;display:flex;flex-direction:column}
+.tcard:hover{transform:translateY(-7px);box-shadow:var(--sh)}
+.tcard.hide{display:none}
+.tcard-top{position:relative;padding:26px 24px 0}
+.tcat{font-family:"Quicksand";font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.3em .8em;border-radius:999px;display:inline-block}
+.cat-dental{background:#dde9ee;color:#3e6477}
+.cat-aesthetic{background:var(--rose-soft);color:var(--rose-d)}
+.cat-health{background:var(--sage-soft);color:var(--sage-d)}
+.cat-skin{background:#f0e6d4;color:var(--gold)}
+.tcard .ticon{width:64px;height:64px;margin:16px 0 6px}
+.tcard h3{font-size:1.4rem;color:var(--sage-d);margin-bottom:.3rem}
+.tcard .tdesc{padding:0 24px;color:var(--ink2);font-size:.94rem;flex:1}
+.tmeta{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--line);margin-top:18px}
+.tprice{font-family:"Newsreader";font-size:1.3rem;color:var(--rose-d);font-weight:600}
+.tprice small{font-family:"Figtree";font-size:.74rem;color:var(--ink2);font-weight:400}
+.tmore{font-family:"Quicksand";font-weight:600;font-size:.85rem;color:var(--sage-d);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.35em;transition:gap .3s}
+.tmore:hover{gap:.6em}
+.tmore svg{width:15px;height:15px;transition:transform .4s}
+.tcard.open .tmore svg{transform:rotate(180deg)}
+.tdetail{max-height:0;overflow:hidden;transition:max-height .5s var(--ease);background:var(--cream)}
+.tcard.open .tdetail{max-height:360px}
+.tdetail-in{padding:20px 24px}
+.tdetail-in ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.tdetail-in li{display:flex;gap:.6rem;font-size:.9rem;color:var(--ink)}
+.tdetail-in li svg{width:18px;height:18px;flex:0 0 auto;color:var(--sage);margin-top:2px}
+.tdetail-row{display:flex;gap:1.4rem;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.tdetail-row div b{font-family:"Quicksand";font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);display:block}
+.tdetail-row div span{font-family:"Newsreader";font-size:1.05rem;color:var(--sage-d)}
+
+/* ===== DOCTORS ===== */
+.docs{background:linear-gradient(180deg,var(--cream),var(--ivory))}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.dcard{background:var(--paper);border-radius:var(--r);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.dcard:hover{transform:translateY(-7px);box-shadow:var(--sh)}
+.davatar{height:210px;position:relative;overflow:hidden}
+.davatar svg{position:absolute;inset:0;width:100%;height:100%}
+.dcard-body{padding:20px}
+.dcard h3{font-size:1.3rem;color:var(--sage-d)}
+.dcard .drole{font-family:"Quicksand";font-weight:600;font-size:.8rem;color:var(--rose-d);margin:.2rem 0 .7rem}
+.dtags{display:flex;flex-wrap:wrap;gap:.4rem}
+.dtags span{font-size:.72rem;background:var(--sage-soft);color:var(--sage-d);padding:.25em .7em;border-radius:999px}
+.dhint{font-family:"Quicksand";font-weight:600;font-size:.78rem;color:var(--sage);margin-top:.9rem;display:flex;align-items:center;gap:.35em}
+/* modal */
+.modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:24px}
+.modal.show{display:grid}
+.modal-bg{position:absolute;inset:0;background:rgba(51,64,58,.45);backdrop-filter:blur(4px);opacity:0;transition:opacity .3s}
+.modal.show .modal-bg{opacity:1}
+.modal-card{position:relative;background:var(--paper);border-radius:var(--r-l);max-width:580px;width:100%;box-shadow:var(--sh);overflow:hidden;transform:translateY(20px) scale(.97);opacity:0;transition:transform .45s var(--ease),opacity .45s}
+.modal.show .modal-card{transform:none;opacity:1}
+.modal-head{display:flex;gap:18px;padding:28px 28px 0;align-items:center}
+.modal-head .mav{width:88px;height:88px;border-radius:20px;overflow:hidden;flex:0 0 auto}
+.modal-head .mav svg{width:100%;height:100%}
+.modal-head h3{font-size:1.7rem;color:var(--sage-d)}
+.modal-head .drole{font-family:"Quicksand";font-weight:600;color:var(--rose-d);font-size:.85rem}
+.modal-body{padding:18px 28px 28px}
+.modal-body p{color:var(--ink2);font-size:.96rem;margin-bottom:1rem}
+.modal-body h4{font-family:"Quicksand";font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);margin-bottom:.5rem}
+.modal-body ul{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.modal-body li{font-size:.92rem;display:flex;gap:.5em}.modal-body li::before{content:"•";color:var(--rose)}
+.modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:none;background:var(--cream);cursor:pointer;font-size:1.2rem;color:var(--ink2);transition:background .3s,transform .3s}
+.modal-close:hover{background:var(--rose-soft);transform:rotate(90deg)}
+
+/* ===== BEFORE / AFTER ===== */
+.ba-wrap{max-width:780px;margin:0 auto}
+.ba{position:relative;border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh);user-select:none;aspect-ratio:16/10;touch-action:none}
+.ba .layer{position:absolute;inset:0}
+.ba .layer svg{width:100%;height:100%;display:block}
+.ba .after{clip-path:inset(0 0 0 50%)}
+.ba .lbl{position:absolute;bottom:18px;font-family:"Quicksand";font-weight:600;font-size:.82rem;padding:.4em 1em;border-radius:999px;background:rgba(255,253,248,.9);color:var(--sage-d);box-shadow:var(--sh-s)}
+.ba .lbl.l{left:18px}.ba .lbl.r{right:18px}
+.ba-handle{position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--paper);transform:translateX(-50%);cursor:ew-resize;box-shadow:0 0 0 1px rgba(63,82,73,.15)}
+.ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:var(--paper);box-shadow:var(--sh);display:grid;place-items:center;color:var(--sage-d)}
+.ba-knob svg{width:22px;height:22px}
+.ba-hint{text-align:center;margin-top:1.2rem;font-family:"Quicksand";font-weight:600;color:var(--ink2);font-size:.86rem}
+
+/* ===== BOOKING ===== */
+.book{background:var(--sage-d);color:#eef2ee}
+.book .shead h2{color:#fbf8f1}.book .shead p{color:#cdd8d1}.book .eyebrow{color:#bcd0c4}.book .eyebrow::before{background:var(--rose)}
+.book-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:start}
+.book-aside{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-l);padding:34px}
+.book-aside h3{color:#fbf8f1;font-size:1.6rem;margin-bottom:1rem}
+.book-aside .bi{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.2rem}
+.book-aside .bi svg{width:24px;height:24px;flex:0 0 auto;color:#bcd0c4;margin-top:3px}
+.book-aside .bi b{display:block;font-family:"Quicksand";color:#fbf8f1;font-size:.95rem}
+.book-aside .bi span{color:#cdd8d1;font-size:.88rem}
+.bform{background:var(--paper);border-radius:var(--r-l);padding:34px;box-shadow:var(--sh);color:var(--ink)}
+.field{margin-bottom:18px}
+.field label{display:block;font-family:"Quicksand";font-weight:600;font-size:.82rem;color:var(--sage-d);margin-bottom:.45rem;letter-spacing:.02em}
+.field label .req{color:var(--rose-d)}
+.field input,.field select{width:100%;font-family:"Figtree";font-size:.96rem;padding:.82em 1em;border:1.5px solid var(--line);border-radius:var(--r-s);background:var(--ivory);color:var(--ink);transition:border-color .3s,box-shadow .3s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-soft)}
+.field.bad input,.field.bad select{border-color:var(--rose-d);box-shadow:0 0 0 3px var(--rose-soft)}
+.err{color:var(--rose-d);font-size:.78rem;font-family:"Quicksand";font-weight:600;margin-top:.35rem;display:none}
+.field.bad .err{display:block}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.slots{display:flex;flex-wrap:wrap;gap:.55rem}
+.slot{font-family:"Quicksand";font-weight:600;font-size:.86rem;padding:.55em 1.05em;border:1.5px solid var(--line);border-radius:999px;background:var(--ivory);color:var(--ink2);cursor:pointer;transition:all .3s var(--ease)}
+.slot:hover{border-color:var(--sage)}
+.slot.sel{background:var(--rose);border-color:var(--rose);color:#fff;box-shadow:0 8px 18px -10px rgba(189,109,106,.7)}
+.slot.taken{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+/* confirmation */
+.confirm{display:none;text-align:center;padding:14px 6px}
+.confirm.show{display:block;animation:pop .5s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.confirm .ok{width:78px;height:78px;margin:0 auto 16px;border-radius:50%;background:var(--sage-soft);display:grid;place-items:center;color:var(--sage-d)}
+.confirm .ok svg{width:40px;height:40px}
+.confirm h3{font-size:1.7rem;color:var(--sage-d);margin-bottom:.4rem}
+.confirm p{color:var(--ink2);margin-bottom:1.2rem}
+.summary{text-align:left;background:var(--cream);border-radius:var(--r);padding:20px 22px;margin-bottom:1.4rem}
+.summary .srow{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px dashed var(--line);font-size:.93rem}
+.summary .srow:last-child{border:none}
+.summary .srow b{font-family:"Quicksand";color:var(--ink2);font-weight:600}
+.summary .srow span{font-family:"Newsreader";color:var(--sage-d);font-size:1.02rem}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.fitem{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:box-shadow .4s}
+.fitem.open{box-shadow:var(--sh-s)}
+.fq{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-family:"Newsreader";font-size:1.18rem;color:var(--sage-d)}
+.fq .pm{width:30px;height:30px;flex:0 0 auto;border-radius:50%;background:var(--sage-soft);display:grid;place-items:center;color:var(--sage-d);transition:transform .4s var(--ease),background .3s}
+.fitem.open .fq .pm{transform:rotate(135deg);background:var(--rose-soft);color:var(--rose-d)}
+.fa{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.fitem.open .fa{max-height:240px}
+.fa p{padding:0 26px 24px;color:var(--ink2);font-size:.96rem}
+
+/* ===== CTA BANNER ===== */
+.cta-banner{background:linear-gradient(135deg,var(--rose-soft),var(--sage-soft));border-radius:var(--r-l);padding:60px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-banner h2{font-size:clamp(2rem,4vw,3rem);color:var(--sage-d);margin-bottom:.6rem}
+.cta-banner p{color:var(--ink2);max-width:46ch;margin:0 auto 1.8rem}
+
+/* ===== FOOTER ===== */
+footer{background:var(--sage-d);color:#cdd8d1;padding:64px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px}
+.foot-brand .brand{color:#fbf8f1}.foot-brand .brand small{color:#bcd0c4}
+.foot-brand p{margin-top:1rem;font-size:.9rem;max-width:30ch;color:#bcd0c4}
+.fcol h4{font-family:"Quicksand";font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:#bcd0c4;margin-bottom:1rem}
+.fcol a,.fcol p{display:block;color:#dbe4dd;text-decoration:none;font-size:.92rem;margin-bottom:.6rem;transition:color .3s}
+.fcol a:hover{color:#fff}
+.foot-bot{border-top:1px solid rgba(255,255,255,.14);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.84rem;color:#bcd0c4}
+.badge{font-family:"Quicksand";font-weight:600;font-size:.82rem;text-decoration:none;color:#fbf8f1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:.55em 1.1em;border-radius:999px;transition:background .3s}
+.badge:hover{background:rgba(255,255,255,.16)}
+.badge b{color:var(--rose)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .hero-art{order:-1;max-width:480px;margin:0 auto;width:100%}
+  .tgrid{grid-template-columns:repeat(2,1fr)}
+  .dgrid{grid-template-columns:repeat(2,1fr)}
+  .book-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:28px}
+}
+@media(max-width:640px){
+  .nav-links,.nav-tel{display:none}
+  .burger{display:flex}
+  .nav-links.mob{display:flex;position:absolute;top:74px;left:0;right:0;flex-direction:column;background:var(--paper);padding:20px 24px;gap:1.1rem;box-shadow:var(--sh);border-bottom:1px solid var(--line)}
+  .nav-links.mob a{font-size:1rem}
+  .tgrid{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .pad{padding:70px 0}
+  .cta-banner{padding:44px 24px}
+  .float-badge{display:none}
+  .hero-stats{gap:1.4rem}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand">
+      <svg class="mk" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" fill="#dfe6df"/><path d="M24 11c-6 6-9 10-9 15a9 9 0 0018 0c0-5-3-9-9-15z" fill="#7d9183"/><circle cx="24" cy="27" r="4.4" fill="#d98e8a"/></svg>
+      <span>晴野診所<small>SERENO CLINIC</small></span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#services">療程服務</a>
+      <a href="#doctors">醫師團隊</a>
+      <a href="#result">術前術後</a>
+      <a href="#booking">線上預約</a>
+      <a href="#faq">常見問題</a>
+    </nav>
+    <div class="nav-cta">
+      <span class="nav-tel">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+        02-2700-8888
+      </span>
+      <a href="#booking" class="btn btn-rose">立即預約</a>
+      <button class="burger" id="burger" aria-label="選單"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow rv">牙科 · 醫美 · 健檢 · 皮膚</span>
+      <h1 class="rv d1">在最溫柔的光裡，<br>遇見<em>更安心</em>的自己</h1>
+      <p class="lead rv d2">晴野診所以整合式照護，將牙科、醫學美容、預防健檢與皮膚專科匯聚於一處——讓每一次就醫，都像回到一片晴朗的原野。</p>
+      <div class="hero-tags rv d2">
+        <span class="htag">衛福部核可院所</span>
+        <span class="htag">無痛舒眠選項</span>
+        <span class="htag">一對一療程顧問</span>
+      </div>
+      <div class="hero-cta rv d3">
+        <a href="#booking" class="btn btn-p">預約初診諮詢</a>
+        <a href="#services" class="btn btn-o">瀏覽療程服務</a>
+      </div>
+      <div class="hero-stats rv d4">
+        <div class="hstat"><b>18<span style="font-size:1rem">年</span></b><span>專科臨床經驗</span></div>
+        <div class="hstat"><b>32,000+</b><span>累計安心個案</span></div>
+        <div class="hstat"><b>4.9<span style="font-size:1rem">／5</span></b><span>就醫滿意評分</span></div>
+      </div>
+    </div>
+    <div class="hero-art rv d2">
+      <div class="blob b1"></div><div class="blob b2"></div>
+      <div class="hero-card">
+        <svg viewBox="0 0 640 560" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#efe7d8"/></linearGradient>
+            <linearGradient id="hwin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe6df"/><stop offset="1" stop-color="#cdd8c8"/></linearGradient>
+            <linearGradient id="hsofa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d9c3"/><stop offset="1" stop-color="#d8c2a4"/></linearGradient>
+          </defs>
+          <rect width="640" height="560" fill="url(#hbg)"/>
+          <!-- floor -->
+          <rect x="0" y="420" width="640" height="140" fill="#e6dcc9"/>
+          <!-- window with plants -->
+          <rect x="70" y="70" width="230" height="290" rx="14" fill="url(#hwin)"/>
+          <rect x="70" y="70" width="230" height="290" rx="14" fill="none" stroke="#bcae8c" stroke-width="5"/>
+          <line x1="185" y1="70" x2="185" y2="360" stroke="#bcae8c" stroke-width="4"/>
+          <circle cx="245" cy="135" r="46" fill="#f3e8cf" opacity=".85"/>
+          <path d="M70 300 Q140 250 200 300 T300 300 V360 H70Z" fill="#9aab98" opacity=".55"/>
+          <!-- counter / reception -->
+          <rect x="360" y="220" width="230" height="150" rx="16" fill="url(#hsofa)"/>
+          <rect x="360" y="200" width="230" height="32" rx="12" fill="#e3d3b8"/>
+          <!-- plant pot -->
+          <rect x="392" y="120" width="46" height="80" rx="8" fill="#c9a98c"/>
+          <path d="M415 120 C390 70 410 50 392 30" stroke="#7d9183" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M415 120 C440 70 422 48 444 34" stroke="#7d9183" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <circle cx="392" cy="30" r="13" fill="#8ca08e"/><circle cx="444" cy="34" r="13" fill="#8ca08e"/>
+          <!-- soft lamp -->
+          <circle cx="520" cy="100" r="30" fill="#f7ecd4"/><circle cx="520" cy="100" r="18" fill="#fcf5e2"/>
+          <!-- chair -->
+          <rect x="120" y="400" width="150" height="70" rx="16" fill="url(#hsofa)"/>
+          <rect x="120" y="350" width="150" height="70" rx="20" fill="#e0cdb0"/>
+          <!-- accent circle -->
+          <circle cx="560" cy="430" r="40" fill="#f5e2df"/>
+          <path d="M560 414c-8 8-12 13-12 19a12 12 0 0024 0c0-6-4-11-12-19z" fill="#d98e8a"/>
+        </svg>
+      </div>
+      <div class="float-badge fb1">
+        <div class="ic" style="background:var(--sage-soft);color:var(--sage-d)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <div><b>當日回診</b><span>多數療程免住院</span></div>
+      </div>
+      <div class="float-badge fb2">
+        <div class="ic" style="background:var(--rose-soft);color:var(--rose-d)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6.5C19 16.65 12 21 12 21z"/></svg></div>
+        <div><b>溫柔陪伴</b><span>專屬療程顧問</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST STRIP ===== -->
+<div class="trust">
+  <div class="wrap trust-in">
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>嚴格感控標準</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>專科主治醫師</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>線上即時預約</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>術後關懷追蹤</div>
+  </div>
+</div>
+
+<!-- ===== SERVICES ===== -->
+<section class="pad" id="services">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="eyebrow">療程服務</span>
+      <h2>為每一種需求，準備一份溫柔的方案</h2>
+      <p>從牙齒到肌膚、從預防到修護——點選分類即可篩選，展開卡片可查看療程說明、價格與所需時間。</p>
+    </div>
+    <div class="tabs rv" id="tabs">
+      <button class="tab active" data-cat="all">全部療程</button>
+      <button class="tab" data-cat="dental">牙科</button>
+      <button class="tab" data-cat="aesthetic">醫美</button>
+      <button class="tab" data-cat="health">健檢</button>
+      <button class="tab" data-cat="skin">皮膚</button>
+    </div>
+    <div class="tgrid" id="tgrid"></div>
+  </div>
+</section>
+
+<!-- ===== DOCTORS ===== -->
+<section class="pad docs" id="doctors">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="eyebrow">醫師團隊</span>
+      <h2>把專業，化為一份安心</h2>
+      <p>各科專科主治醫師親自看診，點選卡片可閱讀完整經歷與專長。</p>
+    </div>
+    <div class="dgrid" id="dgrid"></div>
+  </div>
+</section>
+
+<!-- ===== BEFORE / AFTER ===== -->
+<section class="pad" id="result">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="eyebrow">術前 · 術後</span>
+      <h2>看得見的，溫柔轉變</h2>
+      <p>拖曳中間的圓鈕，左右滑動比較陶瓷貼片療程前後的示意呈現（為美術示意，非真實病例）。</p>
+    </div>
+    <div class="ba-wrap rv">
+      <div class="ba" id="ba">
+        <div class="layer before">
+          <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efe7d8"/><stop offset="1" stop-color="#e0d3bd"/></linearGradient></defs>
+            <rect width="640" height="400" fill="url(#bg1)"/>
+            <ellipse cx="320" cy="240" rx="170" ry="120" fill="#e7c9b6"/>
+            <path d="M210 230 Q320 300 430 230 Q430 320 320 340 Q210 320 210 230Z" fill="#b9605a"/>
+            <g fill="#efe2cf"><rect x="245" y="240" width="26" height="40" rx="5"/><rect x="278" y="246" width="26" height="44" rx="5"/><rect x="311" y="248" width="26" height="44" rx="5"/><rect x="344" y="246" width="26" height="44" rx="5"/><rect x="377" y="240" width="22" height="40" rx="5"/></g>
+            <g fill="#c9b89a" opacity=".7"><rect x="271" y="246" width="4" height="44"/><rect x="304" y="248" width="4" height="44"/><rect x="337" y="248" width="4" height="44"/></g>
+          </svg>
+        </div>
+        <div class="layer after">
+          <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f1e9"/><stop offset="1" stop-color="#e6ddcc"/></linearGradient></defs>
+            <rect width="640" height="400" fill="url(#bg2)"/>
+            <ellipse cx="320" cy="240" rx="170" ry="120" fill="#eccdb8"/>
+            <path d="M210 230 Q320 300 430 230 Q430 320 320 340 Q210 320 210 230Z" fill="#cf716a"/>
+            <g fill="#fffdf8"><rect x="243" y="238" width="28" height="46" rx="6"/><rect x="277" y="240" width="28" height="50" rx="6"/><rect x="311" y="240" width="28" height="50" rx="6"/><rect x="345" y="240" width="28" height="50" rx="6"/><rect x="379" y="238" width="24" height="46" rx="6"/></g>
+            <g opacity=".55"><rect x="243" y="238" width="28" height="14" rx="6" fill="#fff"/><rect x="277" y="240" width="28" height="15" rx="6" fill="#fff"/><rect x="311" y="240" width="28" height="15" rx="6" fill="#fff"/><rect x="345" y="240" width="28" height="15" rx="6" fill="#fff"/></g>
+            <circle cx="430" cy="150" r="6" fill="#fff" opacity=".9"/><circle cx="455" cy="175" r="3" fill="#fff" opacity=".8"/>
+          </svg>
+        </div>
+        <span class="lbl l">療程前</span>
+        <span class="lbl r">療程後</span>
+        <div class="ba-handle" id="baHandle">
+          <div class="ba-knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg></div>
+        </div>
+      </div>
+      <p class="ba-hint">← 拖曳比較 →</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOOKING ===== -->
+<section class="pad book" id="booking">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="eyebrow">線上預約</span>
+      <h2>預約一段，被好好照顧的時間</h2>
+      <p>填寫以下資訊，我們將於 24 小時內與您確認看診時間。</p>
+    </div>
+    <div class="book-grid">
+      <aside class="book-aside rv">
+        <h3>看診資訊</h3>
+        <div class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><b>診所地址</b><span>台北市大安區晴野路 168 號 3 樓</span></div></div>
+        <div class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>看診時間</b><span>週一至週六 09:00–21:00（週日休診）</span></div></div>
+        <div class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><div><b>預約專線</b><span>02-2700-8888</span></div></div>
+        <div class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 106 0 3 3 0 00-6 0z"/><path d="M17.5 17.5L22 22"/><path d="M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg><div><b>初診提醒</b><span>請攜帶健保卡與身分證件</span></div></div>
+      </aside>
+      <form class="bform rv d1" id="bform" novalidate>
+        <div id="formInner">
+          <div class="field">
+            <label for="f-dept">看診科別 <span class="req">*</span></label>
+            <select id="f-dept"><option value="">請選擇科別</option><option>牙科</option><option>醫學美容</option><option>預防健檢</option><option>皮膚專科</option></select>
+            <div class="err">請選擇看診科別</div>
+          </div>
+          <div class="field">
+            <label for="f-treat">指定療程（選填）</label>
+            <select id="f-treat"><option value="">不指定，由醫師評估</option></select>
+          </div>
+          <div class="frow">
+            <div class="field">
+              <label for="f-name">姓名 <span class="req">*</span></label>
+              <input id="f-name" type="text" placeholder="王小晴" autocomplete="name"/>
+              <div class="err">請填寫姓名</div>
+            </div>
+            <div class="field">
+              <label for="f-phone">手機 <span class="req">*</span></label>
+              <input id="f-phone" type="tel" placeholder="0912-345-678" inputmode="numeric" autocomplete="tel"/>
+              <div class="err">請填寫正確的手機號碼（09 開頭，10 碼）</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-date">預約日期 <span class="req">*</span></label>
+            <input id="f-date" type="date"/>
+            <div class="err">請選擇看診日期（不可選擇過去日期）</div>
+          </div>
+          <div class="field">
+            <label>看診時段 <span class="req">*</span></label>
+            <div class="slots" id="slots">
+              <button type="button" class="slot" data-t="09:30">09:30</button>
+              <button type="button" class="slot" data-t="10:30">10:30</button>
+              <button type="button" class="slot taken" data-t="11:30" disabled>11:30</button>
+              <button type="button" class="slot" data-t="14:00">14:00</button>
+              <button type="button" class="slot" data-t="15:30">15:30</button>
+              <button type="button" class="slot" data-t="17:00">17:00</button>
+              <button type="button" class="slot" data-t="19:00">19:00</button>
+              <button type="button" class="slot taken" data-t="20:00" disabled>20:00</button>
+            </div>
+            <div class="err">請選擇看診時段</div>
+          </div>
+          <button type="submit" class="btn btn-rose" style="width:100%;justify-content:center;margin-top:6px">確認送出預約</button>
+        </div>
+        <div class="confirm" id="confirm">
+          <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3>預約已送出！</h3>
+          <p>感謝您的信任，我們將於 24 小時內以電話與您確認。</p>
+          <div class="summary" id="summary"></div>
+          <button type="button" class="btn btn-o" id="resetBtn" style="margin:0 auto">再預約一筆</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="pad" id="faq">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="eyebrow">常見問題</span>
+      <h2>還有些小疑問嗎？</h2>
+      <p>我們整理了就診前最常被詢問的問題，若仍有疑慮歡迎來電。</p>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section style="padding:0 0 96px">
+  <div class="wrap">
+    <div class="cta-banner rv">
+      <span class="eyebrow" style="justify-content:center">今天，就善待自己一點</span>
+      <h2>讓晴野，陪你走每一段療程</h2>
+      <p>首次諮詢由專屬顧問一對一說明，沒有壓力、只有理解。</p>
+      <a href="#booking" class="btn btn-p">預約初診諮詢</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="brand">
+          <svg class="mk" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" fill="#dfe6df"/><path d="M24 11c-6 6-9 10-9 15a9 9 0 0018 0c0-5-3-9-9-15z" fill="#7d9183"/><circle cx="24" cy="27" r="4.4" fill="#d98e8a"/></svg>
+          <span>晴野診所<small>SERENO CLINIC</small></span>
+        </a>
+        <p>整合式溫柔照護．牙科 · 醫美 · 健檢 · 皮膚，讓就醫成為一段被善待的時光。</p>
+      </div>
+      <div class="fcol"><h4>療程服務</h4><a href="#services">牙科治療</a><a href="#services">醫學美容</a><a href="#services">預防健檢</a><a href="#services">皮膚專科</a></div>
+      <div class="fcol"><h4>關於晴野</h4><a href="#doctors">醫師團隊</a><a href="#result">術前術後</a><a href="#faq">常見問題</a><a href="#booking">線上預約</a></div>
+      <div class="fcol"><h4>聯絡我們</h4><p>台北市大安區晴野路 168 號 3 樓</p><p>02-2700-8888</p><p>週一至週六 09:00–21:00</p></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 晴野診所 Sereno Clinic．此為設計範例頁，非真實醫療機構。</span>
+      <a class="badge" href="https://service.e-life-ai.com" target="_blank" rel="noopener">Template by <b>e-life-ai</b> · service.e-life-ai.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== DOCTOR MODAL ===== -->
+<div class="modal" id="modal">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card">
+    <button class="modal-close" data-close aria-label="關閉">×</button>
+    <div class="modal-head"><div class="mav" id="mAv"></div><div><h3 id="mName"></h3><div class="drole" id="mRole"></div></div></div>
+    <div class="modal-body">
+      <p id="mBio"></p>
+      <h4>專科專長</h4><ul id="mSpec"></ul>
+      <h4>學經歷</h4><ul id="mEdu"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+/* ---------- DATA ---------- */
+const ICONS={
+  tooth:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#dde9ee"/><path d="M32 16c-7 0-12 3-12 9 0 5 2 8 3 14 .8 5 1.5 9 4 9 2.3 0 2.6-4 5-4s2.7 4 5 4c2.5 0 3.2-4 4-9 1-6 3-9 3-14 0-6-5-9-12-9z" fill="#3e6477"/><circle cx="26" cy="29" r="3" fill="#fffdf8" opacity=".7"/></svg>`,
+  implant:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#dde9ee"/><path d="M32 14c-6 0-10 3-10 8 0 4 2 6 2.5 10h15c.5-4 2.5-6 2.5-10 0-5-4-8-10-8z" fill="#3e6477"/><rect x="29" y="32" width="6" height="6" fill="#3e6477"/><path d="M30 40h4l-1 12h-2z" fill="#5b87a0"/></svg>`,
+  whiten:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#dde9ee"/><path d="M24 24h16v8c0 6-3 12-8 12s-8-6-8-12z" fill="#fffdf8" stroke="#3e6477" stroke-width="2"/><path d="M44 20l3 3M48 28h4M44 36l3-3" stroke="#3e6477" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  botox:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#f5e2df"/><path d="M22 42L40 24l4 4-18 18-6 2z" fill="#bd6d6a"/><path d="M40 24l3-3a3 3 0 014 4l-3 3z" fill="#d98e8a"/><circle cx="22" cy="42" r="2" fill="#bd6d6a"/></svg>`,
+  filler:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#f5e2df"/><ellipse cx="32" cy="34" rx="14" ry="16" fill="#d98e8a"/><ellipse cx="27" cy="28" rx="4" ry="5" fill="#fffdf8" opacity=".8"/><path d="M32 18v-4" stroke="#bd6d6a" stroke-width="3" stroke-linecap="round"/></svg>`,
+  laser:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#f5e2df"/><circle cx="32" cy="32" r="12" fill="none" stroke="#bd6d6a" stroke-width="3"/><circle cx="32" cy="32" r="4" fill="#d98e8a"/><g stroke="#bd6d6a" stroke-width="3" stroke-linecap="round"><path d="M32 12v6M32 46v6M12 32h6M46 32h6"/></g></svg>`,
+  heart:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#dfe6df"/><path d="M32 46s-12-7-12-15a7 7 0 0112-5 7 7 0 0112 5c0 8-12 15-12 15z" fill="#3f5249"/><path d="M22 32h5l2-5 3 9 2-4h8" stroke="#fffdf8" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  scan:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#dfe6df"/><rect x="20" y="18" width="24" height="28" rx="4" fill="none" stroke="#3f5249" stroke-width="2.5"/><path d="M26 26h12M26 32h12M26 38h8" stroke="#7d9183" stroke-width="2.5" stroke-linecap="round"/><circle cx="44" cy="46" r="6" fill="#d98e8a"/></svg>`,
+  blood:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#dfe6df"/><path d="M32 16c-6 8-10 13-10 19a10 10 0 0020 0c0-6-4-11-10-19z" fill="#3f5249"/><circle cx="28" cy="36" r="3" fill="#fffdf8" opacity=".7"/></svg>`,
+  derma:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#f0e6d4"/><ellipse cx="32" cy="32" rx="16" ry="13" fill="#c9a98c"/><circle cx="26" cy="30" r="2" fill="#b9925f"/><circle cx="36" cy="34" r="1.6" fill="#b9925f"/><circle cx="32" cy="26" r="1.4" fill="#b9925f"/><path d="M44 22l4-4M48 26h4" stroke="#b9925f" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  acne:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#f0e6d4"/><circle cx="32" cy="32" r="14" fill="#c9a98c"/><circle cx="28" cy="29" r="2.4" fill="#bd6d6a"/><circle cx="37" cy="35" r="2" fill="#bd6d6a"/><circle cx="34" cy="25" r="1.6" fill="#bd6d6a"/><path d="M22 40c4 3 16 3 20 0" stroke="#fffdf8" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+  peel:`<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="18" fill="#f0e6d4"/><path d="M20 40c0-10 5-18 12-18s12 8 12 18z" fill="#c9a98c"/><path d="M24 38c0-7 3-12 8-12" stroke="#fffdf8" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="44" cy="22" r="4" fill="#b9925f"/></svg>`
+};
+const CHK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+const CHV=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
+
+const TREATMENTS=[
+  {cat:'dental',name:'全瓷冠修復',icon:'tooth',price:'18,000',unit:'／顆起',desc:'高透光全瓷材質，自然貼合齒色，兼顧美觀與咬合耐用度。',points:['數位口掃，免傳統印模','色階比對，自然不突兀','當日臨時牙保護'],time:'約 60 分鐘 ×2 次',rec:'缺角、變色、根管後牙齒'},
+  {cat:'dental',name:'人工植牙',icon:'implant',price:'58,000',unit:'／顆起',desc:'導引式微創植牙，搭配 3D 斷層精準定位，恢復自然咀嚼。',points:['3D 導板精準植入','骨整合穩定支撐','舒眠選項可選'],time:'手術約 40 分鐘',rec:'單顆或多顆缺牙'},
+  {cat:'dental',name:'冷光美白',icon:'whiten',price:'8,800',unit:'／療程',desc:'低敏感冷光配方，單次有感提升齒色，亮白更自然。',points:['牙齦保護隔離','低敏感配方','搭配居家美白凝膠'],time:'約 50 分鐘',rec:'飲食染色、想快速亮白'},
+  {cat:'aesthetic',name:'動態紋路微調',icon:'botox',price:'6,800',unit:'／部位起',desc:'針對抬頭紋、皺眉紋的精準微量調整，表情自然不僵硬。',points:['原廠正品、可追溯','劑量客製化','術後即可上妝'],time:'約 20 分鐘',rec:'動態表情紋'},
+  {cat:'aesthetic',name:'玻尿酸填補',icon:'filler',price:'15,000',unit:'／cc 起',desc:'依臉型量身設計的立體輪廓填補，柔和支撐、線條自然。',points:['多層次注射技術','可逆性高、安全','術前 3D 模擬'],time:'約 30 分鐘',rec:'蘋果肌、淚溝、唇形'},
+  {cat:'aesthetic',name:'緊緻拉提',icon:'laser',price:'32,000',unit:'／療程起',desc:'非侵入式能量拉提，刺激膠原新生，輪廓更顯緊實。',points:['探頭深度分層作業','幾乎免恢復期','術後保濕修護'],time:'約 60 分鐘',rec:'輪廓鬆弛、想拉提'},
+  {cat:'health',name:'心血管預防健檢',icon:'heart',price:'12,800',unit:'／方案',desc:'結合心電圖、血脂與頸動脈超音波的整合心血管風險評估。',points:['專科醫師判讀','一對一報告解說','個人化飲食建議'],time:'約 2 小時',rec:'三高家族史、長期外食'},
+  {cat:'health',name:'高階影像健檢',icon:'scan',price:'28,000',unit:'／方案',desc:'低劑量斷層與腹部超音波，協助早期發現潛在病灶。',points:['低劑量影像設備','放射科專科判讀','報告數位即時查詢'],time:'約半日',rec:'年度全身性檢查'},
+  {cat:'health',name:'基礎抽血套組',icon:'blood',price:'3,600',unit:'／套組',desc:'涵蓋血糖、肝腎功能與血脂的基礎代謝指標檢測。',points:['空腹採檢更準確','三日內報告出爐','異常項目主動提醒'],time:'約 15 分鐘',rec:'例行年度追蹤'},
+  {cat:'skin',name:'醫療級保濕導入',icon:'derma',price:'4,800',unit:'／次',desc:'超聲波導入高濃度保濕精華，改善乾燥脫屑與細紋。',points:['醫療等級精華','即時補水鎖水','術後不泛紅'],time:'約 40 分鐘',rec:'乾燥、暗沉、細紋'},
+  {cat:'skin',name:'痘痘專科療程',icon:'acne',price:'2,800',unit:'／次起',desc:'結合清粉刺與藍光鎮定的整合痘痘管理，減少反覆生成。',points:['無菌清潔處理','藍光抗菌鎮定','居家保養指導'],time:'約 45 分鐘',rec:'反覆痘痘、毛孔粗大'},
+  {cat:'skin',name:'煥膚換膚療程',icon:'peel',price:'5,500',unit:'／次起',desc:'溫和酸類煥膚，加速角質代謝，提亮膚色、改善粗糙。',points:['濃度循序漸進','術後嚴格防曬','搭配修護面膜'],time:'約 30 分鐘',rec:'膚色不均、粗糙暗沉'}
+];
+
+function avatar(seed,bg,robe){
+  return `<svg viewBox="0 0 200 210" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ab${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${bg[0]}"/><stop offset="1" stop-color="${bg[1]}"/></linearGradient></defs><rect width="200" height="210" fill="url(#ab${seed})"/><ellipse cx="100" cy="92" rx="44" ry="46" fill="#f0d9c4"/><path d="M56 78c0-26 18-42 44-42s44 16 44 42c0 6-2 12-4 16-2-22-18-30-40-30s-38 8-40 30c-2-4-4-10-4-16z" fill="${robe[2]}"/><path d="M40 210c0-34 26-54 60-54s60 20 60 54z" fill="${robe[0]}"/><path d="M82 158l18 22 18-22 14 6-6 46H74l-6-46z" fill="#fffdf8"/><path d="M100 180l-9-12h18z" fill="${robe[1]}"/><circle cx="84" cy="92" r="4" fill="#5b4a3a"/><circle cx="116" cy="92" r="4" fill="#5b4a3a"/><path d="M88 110c5 5 19 5 24 0" stroke="#c98e7a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="124" cy="174" r="7" fill="${robe[1]}"/></svg>`;
+}
+const DOCTORS=[
+  {name:'林晴和 醫師',role:'院長 · 牙科主治',av:['#dde9ee','#cfe0e7'],robe:['#3e6477','#d98e8a','#3a4a52'],bio:'專精數位美學牙科與植牙重建，以「無痛、自然、可長久」為診療原則，陪伴病患找回自在的笑容。',spec:['數位美學贗復','導引式人工植牙','全口重建規劃'],edu:['臺大牙醫學系','美國 AO 植牙專科進修','院長 · 18 年臨床經驗']},
+  {name:'蘇宛凝 醫師',role:'醫學美容主治',av:['#f5e2df','#f0d4d0'],robe:['#bd6d6a','#7d9183','#9c4f4c'],bio:'擅長以微整與能量治療打造「自然到看不出」的輪廓，重視個人臉型協調與安全劑量。',spec:['微整注射設計','能量緊緻拉提','術前 3D 模擬'],edu:['陽明醫學系','韓國 MERZ 認證醫師','12 年醫美臨床']},
+  {name:'高睿安 醫師',role:'預防醫學主治',av:['#dfe6df','#d2ddd2'],robe:['#3f5249','#d98e8a','#33403a'],bio:'以實證醫學推動個人化健檢，重視報告後的生活型態介入，讓檢查真正轉化為健康。',spec:['心血管風險評估','高階影像判讀','個人化健康管理'],edu:['成大醫學系','預防醫學專科','15 年內科經歷']},
+  {name:'葉若蕎 醫師',role:'皮膚專科主治',av:['#f0e6d4','#e7d6b8'],robe:['#b9925f','#7d9183','#9c7846'],bio:'專注於問題肌膚的長期管理，主張溫和有效、循序漸進，讓肌膚在被理解中慢慢變好。',spec:['痘痘與毛孔管理','醫學煥膚','敏弱肌修護'],edu:['北醫醫學系','皮膚科專科醫師','10 年皮膚臨床']}
+];
+
+const FAQ=[
+  {q:'第一次來看診需要準備什麼？',a:'初診請攜帶健保卡與身分證件即可。若有過往就醫紀錄、影像或正在服用的藥物清單，也歡迎一併帶來，協助醫師更完整評估。'},
+  {q:'療程價格會不會有隱藏費用？',a:'所有療程於諮詢時皆會提供清楚的費用明細與分期選項，治療前充分說明、確認同意後才會進行，絕無未告知的額外收費。'},
+  {q:'醫美或牙科療程會很痛嗎？',a:'我們提供局部麻醉與舒眠等多種減痛選項，並由專屬顧問全程陪伴。多數療程不適感輕微，術後也會給予完整的照護衛教。'},
+  {q:'可以只先諮詢、不馬上做療程嗎？',a:'當然可以。我們鼓勵您在充分理解後再決定，初診諮詢由顧問一對一說明，沒有任何壓力，您可以回家評估後再預約。'},
+  {q:'預約後想改時間怎麼辦？',a:'若需異動，請於看診前一個工作天來電 02-2700-8888 或透過官方 LINE 告知，我們會協助您調整至合適的時段。'}
+];
+
+/* ---------- RENDER SERVICES ---------- */
+const CATNAME={dental:'牙科',aesthetic:'醫美',health:'健檢',skin:'皮膚'};
+function renderTreatments(){
+  $('#tgrid').innerHTML=TREATMENTS.map((t,i)=>`
+    <article class="tcard rv ${'d'+(i%3+1)}" data-cat="${t.cat}">
+      <div class="tcard-top">
+        <span class="tcat cat-${t.cat}">${CATNAME[t.cat]}</span>
+        <div class="ticon">${ICONS[t.icon]}</div>
+        <h3>${t.name}</h3>
+      </div>
+      <p class="tdesc">${t.desc}</p>
+      <div class="tmeta">
+        <span class="tprice">NT$ ${t.price}<small> ${t.unit}</small></span>
+        <button class="tmore" type="button" data-i="${i}">療程說明 ${CHV}</button>
+      </div>
+      <div class="tdetail"><div class="tdetail-in">
+        <ul>${t.points.map(p=>`<li>${CHK}<span>${p}</span></li>`).join('')}</ul>
+        <div class="tdetail-row">
+          <div><b>療程時間</b><span>${t.time}</span></div>
+          <div><b>適合對象</b><span>${t.rec}</span></div>
+        </div>
+      </div></div>
+    </article>`).join('');
+  bindReveal($$('#tgrid .rv'));
+}
+function filterTreatments(cat){
+  $$('#tgrid .tcard').forEach(c=>{
+    const show=cat==='all'||c.dataset.cat===cat;
+    c.classList.toggle('hide',!show);
+  });
+}
+
+/* ---------- RENDER DOCTORS ---------- */
+function renderDoctors(){
+  $('#dgrid').innerHTML=DOCTORS.map((d,i)=>`
+    <article class="dcard rv d${i%4+1}" data-i="${i}">
+      <div class="davatar">${avatar(i,d.av,d.robe)}</div>
+      <div class="dcard-body">
+        <h3>${d.name}</h3>
+        <div class="drole">${d.role}</div>
+        <div class="dtags">${d.spec.slice(0,2).map(s=>`<span>${s}</span>`).join('')}</div>
+        <div class="dhint">查看完整介紹 ${CHV}</div>
+      </div>
+    </article>`).join('');
+  bindReveal($$('#dgrid .rv'));
+}
+function openDoc(i){
+  const d=DOCTORS[i];
+  $('#mAv').innerHTML=avatar('m'+i,d.av,d.robe);
+  $('#mName').textContent=d.name; $('#mRole').textContent=d.role; $('#mBio').textContent=d.bio;
+  $('#mSpec').innerHTML=d.spec.map(s=>`<li>${s}</li>`).join('');
+  $('#mEdu').innerHTML=d.edu.map(s=>`<li>${s}</li>`).join('');
+  $('#modal').classList.add('show'); document.body.style.overflow='hidden';
+}
+function closeModal(){$('#modal').classList.remove('show'); document.body.style.overflow='';}
+
+/* ---------- RENDER FAQ ---------- */
+function renderFaq(){
+  $('#faqList').innerHTML=FAQ.map((f,i)=>`
+    <div class="fitem rv d${i%3+1}">
+      <button class="fq" type="button" data-i="${i}">${f.q}<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+      <div class="fa"><p>${f.a}</p></div>
+    </div>`).join('');
+  bindReveal($$('#faqList .rv'));
+}
+
+/* ---------- POPULATE TREATMENT SELECT ---------- */
+function syncTreatSelect(){
+  const dept=$('#f-dept').value;
+  const map={'牙科':'dental','醫學美容':'aesthetic','預防健檢':'health','皮膚專科':'skin'};
+  const cat=map[dept];
+  const opts=TREATMENTS.filter(t=>!cat||t.cat===cat).map(t=>`<option>${t.name}</option>`).join('');
+  $('#f-treat').innerHTML=`<option value="">不指定，由醫師評估</option>`+opts;
+}
+
+/* ---------- REVEAL ---------- */
+let io;
+function bindReveal(els){els.forEach(el=>io.observe(el));}
+io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+
+/* ---------- INIT ---------- */
+renderTreatments(); renderDoctors(); renderFaq(); syncTreatSelect();
+bindReveal($$('.rv'));
+
+/* nav scroll */
+addEventListener('scroll',()=>{$('#nav').classList.toggle('scrolled',scrollY>20);},{passive:true});
+/* burger */
+$('#burger').onclick=()=>$('#navlinks').classList.toggle('mob');
+$$('#navlinks a').forEach(a=>a.onclick=()=>$('#navlinks').classList.remove('mob'));
+
+/* tabs */
+$('#tabs').addEventListener('click',e=>{
+  const b=e.target.closest('.tab'); if(!b)return;
+  $$('.tab').forEach(t=>t.classList.remove('active')); b.classList.add('active');
+  filterTreatments(b.dataset.cat);
+});
+/* treatment accordion + doctor cards + faq via delegation */
+$('#tgrid').addEventListener('click',e=>{
+  const b=e.target.closest('.tmore'); if(!b)return;
+  b.closest('.tcard').classList.toggle('open');
+});
+$('#dgrid').addEventListener('click',e=>{
+  const c=e.target.closest('.dcard'); if(!c)return;
+  openDoc(+c.dataset.i);
+});
+$('#faqList').addEventListener('click',e=>{
+  const b=e.target.closest('.fq'); if(!b)return;
+  b.closest('.fitem').classList.toggle('open');
+});
+$$('[data-close]').forEach(el=>el.onclick=closeModal);
+addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* before/after slider */
+(function(){
+  const ba=$('#ba'),after=ba.querySelector('.after'),handle=$('#baHandle');
+  let drag=false;
+  function set(x){
+    const r=ba.getBoundingClientRect();
+    let p=(x-r.left)/r.width; p=Math.max(0,Math.min(1,p));
+    after.style.clipPath=`inset(0 0 0 ${p*100}%)`;
+    handle.style.left=p*100+'%';
+  }
+  const down=()=>drag=true, up=()=>drag=false;
+  handle.addEventListener('pointerdown',e=>{drag=true;handle.setPointerCapture(e.pointerId);});
+  addEventListener('pointermove',e=>{if(drag)set(e.clientX);});
+  addEventListener('pointerup',up);
+  ba.addEventListener('click',e=>{if(!e.target.closest('.ba-handle'))set(e.clientX);});
+})();
+
+/* booking form */
+const SLOTS=$('#slots'); let pickedSlot='';
+SLOTS.addEventListener('click',e=>{
+  const s=e.target.closest('.slot'); if(!s||s.classList.contains('taken'))return;
+  $$('.slot').forEach(x=>x.classList.remove('sel')); s.classList.add('sel');
+  pickedSlot=s.dataset.t; $('#slots').closest('.field').classList.remove('bad');
+});
+$('#f-dept').addEventListener('change',()=>{syncTreatSelect();$('#f-dept').closest('.field').classList.remove('bad');});
+['f-name','f-phone','f-date'].forEach(id=>$('#'+id).addEventListener('input',()=>$('#'+id).closest('.field').classList.remove('bad')));
+
+/* min date today */
+(function(){const d=new Date();const z=n=>String(n).padStart(2,'0');$('#f-date').min=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`;})();
+
+$('#bform').addEventListener('submit',e=>{
+  e.preventDefault();
+  let ok=true;
+  const bad=(id)=>{$('#'+id).closest('.field').classList.add('bad');ok=false;};
+  const dept=$('#f-dept'); if(!dept.value)bad('f-dept');
+  const name=$('#f-name'); if(name.value.trim().length<2)bad('f-name');
+  const phone=$('#f-phone'); if(!/^09\d{2}-?\d{3}-?\d{3}$/.test(phone.value.trim().replace(/\s/g,'')))bad('f-phone');
+  const date=$('#f-date');
+  if(!date.value){bad('f-date');}else if(date.value<date.min){bad('f-date');}
+  if(!pickedSlot){$('#slots').closest('.field').classList.add('bad');ok=false;}
+  if(!ok){const first=$('.field.bad');if(first)first.scrollIntoView({behavior:'smooth',block:'center'});return;}
+
+  const treat=$('#f-treat').value||'由醫師評估';
+  const dt=new Date(date.value);
+  const wd=['日','一','二','三','四','五','六'][dt.getDay()];
+  $('#summary').innerHTML=`
+    <div class="srow"><b>看診科別</b><span>${dept.value}</span></div>
+    <div class="srow"><b>指定療程</b><span>${treat}</span></div>
+    <div class="srow"><b>預約姓名</b><span>${name.value.trim()}</span></div>
+    <div class="srow"><b>聯絡手機</b><span>${phone.value.trim()}</span></div>
+    <div class="srow"><b>看診日期</b><span>${date.value}（週${wd}）</span></div>
+    <div class="srow"><b>看診時段</b><span>${pickedSlot}</span></div>`;
+  $('#formInner').style.display='none';
+  $('#confirm').classList.add('show');
+  $('#confirm').scrollIntoView({behavior:'smooth',block:'center'});
+});
+$('#resetBtn').onclick=()=>{
+  $('#bform').reset(); pickedSlot=''; $$('.slot').forEach(x=>x.classList.remove('sel'));
+  $$('.field.bad').forEach(f=>f.classList.remove('bad'));
+  syncTreatSelect();
+  $('#confirm').classList.remove('show'); $('#formInner').style.display='';
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>土生好食 — 花蓮季節菜箱直送｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="土生好食：花蓮縱谷小農的當令季節菜箱訂閱，從產地到餐桌全程可溯源。挑選菜箱份量、加購本週採收品項，立即訂閱共耕一季的好食。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#251c12;
+    --soil-2:#2f2417;
+    --loam:#3d3020;
+    --loam-2:#4a3a26;
+    --harvest:#e8a33d;
+    --harvest-dim:#c4862c;
+    --sprout:#9bb069;
+    --sprout-deep:#6f8347;
+    --paper:#f3ead8;
+    --paper-dim:#cdc0a8;
+    --clay:#cb5f3c;
+    --line:rgba(243,234,216,.14);
+    --r:14px;
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --kraft:
+      radial-gradient(120% 120% at 0% 0%, rgba(232,163,61,.05), transparent 55%),
+      radial-gradient(120% 120% at 100% 100%, rgba(155,176,105,.05), transparent 55%);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Noto Sans TC",system-ui,sans-serif;
+    color:var(--paper);
+    background:var(--soil);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* paper grain overlay */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:
+      var(--kraft),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.015) 0 2px, transparent 2px 4px);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:1}
+  a{color:inherit}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:900;line-height:1.05;margin:0;letter-spacing:-.01em}
+  .mono{font-family:"Space Mono",monospace}
+  .eyebrow{
+    font-family:"Space Mono",monospace;font-size:.72rem;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--sprout);display:inline-flex;align-items:center;gap:.6em;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--sprout)}
+  .btn{
+    font-family:"Space Mono",monospace;font-weight:700;font-size:.92rem;letter-spacing:.04em;
+    border:0;border-radius:999px;padding:.85em 1.6em;cursor:pointer;
+    display:inline-flex;align-items:center;gap:.5em;text-decoration:none;
+    transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s;
+  }
+  .btn-primary{background:var(--harvest);color:#2a1f10;box-shadow:0 8px 24px -10px rgba(232,163,61,.7)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(232,163,61,.85)}
+  .btn-ghost{background:transparent;color:var(--paper);border:1px solid var(--line)}
+  .btn-ghost:hover{background:rgba(243,234,216,.06);border-color:var(--paper-dim)}
+  :focus-visible{outline:3px solid var(--sprout);outline-offset:3px;border-radius:6px}
+
+  /* ---------- header ---------- */
+  header.site{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
+    background:linear-gradient(var(--soil) 30%, rgba(37,28,18,.7));border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:var(--maxw);margin:0 auto}
+  .brand{display:flex;align-items:center;gap:.6em;font-family:"Fraunces";font-weight:900;font-size:1.25rem;letter-spacing:-.02em}
+  .seed{width:30px;height:30px;flex:none}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{font-size:.9rem;color:var(--paper-dim);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--paper)}
+  .nav .btn{padding:.6em 1.2em;font-size:.82rem}
+  @media(max-width:820px){.nav-links a:not(.btn){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .hero-tag{margin-bottom:22px}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,4.7rem)}
+  .hero h1 em{font-style:italic;font-weight:500;color:var(--harvest)}
+  .hero .lede{font-size:1.1rem;color:var(--paper-dim);max-width:46ch;margin:22px 0 30px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .hero-meta{display:flex;gap:28px;margin-top:38px;flex-wrap:wrap}
+  .hero-meta .stat .n{font-family:"Fraunces";font-weight:900;font-size:1.9rem;color:var(--harvest);line-height:1}
+  .hero-meta .stat .l{font-size:.8rem;color:var(--paper-dim);margin-top:4px}
+
+  /* crate illustration */
+  .crate{position:relative;aspect-ratio:1/1;max-width:430px;margin-inline:auto;width:100%}
+  .crate svg{width:100%;height:auto;display:block;filter:drop-shadow(0 30px 50px rgba(0,0,0,.45))}
+  .ring{position:absolute;inset:-6% ;border:1px dashed var(--line);border-radius:50%;animation:spin 60s linear infinite}
+  .ring span{position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+    font-family:"Space Mono";font-size:.62rem;letter-spacing:.3em;color:var(--sprout);
+    background:var(--soil);padding:0 8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------- harvest board ---------- */
+  section{padding:74px 0;position:relative}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+  .sec-head h2{font-size:clamp(1.9rem,4vw,2.9rem)}
+  .sec-head p{color:var(--paper-dim);max-width:40ch;margin:.4em 0 0}
+
+  .season-tabs{display:inline-flex;background:var(--loam);border-radius:999px;padding:5px;gap:4px;border:1px solid var(--line)}
+  .season-tabs button{
+    font-family:"Space Mono";font-size:.82rem;font-weight:700;letter-spacing:.04em;
+    border:0;background:transparent;color:var(--paper-dim);padding:.55em 1.1em;border-radius:999px;cursor:pointer;transition:.25s}
+  .season-tabs button[aria-selected="true"]{background:var(--harvest);color:#2a1f10}
+
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+  .crop{
+    background:linear-gradient(160deg,var(--loam),var(--loam-2));border:1px solid var(--line);
+    border-radius:var(--r);padding:18px 16px;position:relative;overflow:hidden;
+    transition:transform .35s var(--ease),border-color .3s;
+  }
+  .crop:hover{transform:translateY(-4px);border-color:var(--harvest-dim)}
+  .crop .ico{font-size:2.2rem;line-height:1;filter:saturate(1.1)}
+  .crop .nm{font-weight:700;margin-top:12px}
+  .crop .farm{font-size:.76rem;color:var(--paper-dim);margin-top:2px}
+  .crop .pk{font-family:"Space Mono";font-size:.68rem;letter-spacing:.06em;color:var(--sprout);margin-top:10px}
+  .crop .flag{position:absolute;top:12px;right:-30px;background:var(--clay);color:#fff;
+    font-family:"Space Mono";font-size:.6rem;letter-spacing:.12em;padding:3px 34px;transform:rotate(45deg)}
+  .board-note{font-family:"Space Mono";font-size:.78rem;color:var(--paper-dim);margin-top:18px;display:flex;align-items:center;gap:.5em}
+  .board-note b{color:var(--harvest)}
+
+  /* ---------- box builder (signature) ---------- */
+  .builder{background:
+      linear-gradient(180deg,var(--soil-2),var(--soil));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .build-grid{display:grid;grid-template-columns:1fr .82fr;gap:40px;align-items:start}
+  .tiers{display:grid;gap:14px}
+  .tier{
+    display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+    background:var(--loam);border:1.5px solid var(--line);border-radius:var(--r);padding:18px 20px;
+    cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit;transition:.28s var(--ease);position:relative}
+  .tier:hover{border-color:var(--sprout-deep)}
+  .tier[aria-pressed="true"]{border-color:var(--harvest);background:linear-gradient(var(--loam),var(--loam-2));
+    box-shadow:0 0 0 1px var(--harvest),0 14px 30px -16px rgba(232,163,61,.6)}
+  .tier .ring2{width:22px;height:22px;border-radius:50%;border:2px solid var(--paper-dim);position:relative;flex:none}
+  .tier[aria-pressed="true"] .ring2{border-color:var(--harvest)}
+  .tier[aria-pressed="true"] .ring2::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--harvest)}
+  .tier h3{font-size:1.18rem}
+  .tier .desc{font-size:.84rem;color:var(--paper-dim);margin-top:2px}
+  .tier .pr{font-family:"Space Mono";font-weight:700;font-size:1.15rem;color:var(--harvest);text-align:right;white-space:nowrap}
+  .tier .pr small{display:block;font-size:.64rem;color:var(--paper-dim);letter-spacing:.05em}
+
+  .addons{margin-top:26px}
+  .addons h4{font-family:"Space Mono";font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sprout);margin:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    font-family:"Space Mono";font-size:.82rem;border:1px solid var(--line);background:transparent;color:var(--paper);
+    border-radius:999px;padding:.5em 1em;cursor:pointer;transition:.2s;display:inline-flex;gap:.4em;align-items:center}
+  .chip:hover{border-color:var(--paper-dim)}
+  .chip[aria-pressed="true"]{background:var(--sprout-deep);border-color:var(--sprout);color:var(--paper)}
+  .chip .plus{font-weight:700}
+  .chip[aria-pressed="true"] .plus{transform:rotate(45deg)}
+  .chip .plus{display:inline-block;transition:transform .2s}
+
+  /* receipt panel */
+  .receipt{
+    background:var(--paper);color:#2a2014;border-radius:var(--r);padding:26px 24px;position:sticky;top:90px;
+    box-shadow:0 30px 60px -28px rgba(0,0,0,.6);
+    background-image:repeating-linear-gradient(0deg,transparent 0 27px,rgba(42,32,20,.05) 27px 28px)}
+  .receipt .rh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px dashed rgba(42,32,20,.25);padding-bottom:12px}
+  .receipt .rh strong{font-family:"Fraunces";font-size:1.3rem}
+  .receipt .rh span{font-family:"Space Mono";font-size:.7rem;color:#7a6a4f}
+  .rlist{list-style:none;margin:14px 0;padding:0;font-family:"Space Mono";font-size:.82rem}
+  .rlist li{display:flex;justify-content:space-between;padding:5px 0;color:#403521}
+  .rlist li.add{color:var(--sprout-deep)}
+  .rtotal{border-top:2px dashed rgba(42,32,20,.25);margin-top:8px;padding-top:14px;
+    display:flex;justify-content:space-between;align-items:baseline}
+  .rtotal .lab{font-family:"Space Mono";font-size:.78rem;color:#7a6a4f}
+  .rtotal .amt{font-family:"Fraunces";font-weight:900;font-size:2rem;color:#2a2014}
+  .rtotal .amt small{font-size:.8rem;font-weight:600}
+  .receipt .freq{display:flex;gap:8px;margin:14px 0 4px}
+  .receipt .freq button{flex:1;font-family:"Space Mono";font-size:.76rem;font-weight:700;border:1.5px solid rgba(42,32,20,.25);
+    background:transparent;color:#403521;border-radius:8px;padding:.6em;cursor:pointer;transition:.2s}
+  .receipt .freq button[aria-selected="true"]{background:#2a2014;color:var(--paper);border-color:#2a2014}
+  .receipt .save{font-family:"Space Mono";font-size:.74rem;color:var(--sprout-deep);margin:10px 0 16px;display:flex;align-items:center;gap:.5em}
+  .receipt .btn{width:100%;justify-content:center}
+  .carbon{font-family:"Space Mono";font-size:.72rem;color:#7a6a4f;text-align:center;margin-top:12px}
+  .carbon b{color:var(--sprout-deep)}
+
+  /* ---------- traceability timeline ---------- */
+  .trace{background:linear-gradient(180deg,var(--soil),var(--soil-2))}
+  .timeline{position:relative;margin-top:10px}
+  .timeline::before{content:"";position:absolute;left:19px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--harvest),var(--sprout-deep))}
+  .tl-step{display:grid;grid-template-columns:40px 1fr;gap:20px;padding:14px 0;
+    opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .tl-step.in{opacity:1;transform:none}
+  .tl-dot{width:40px;height:40px;border-radius:50%;background:var(--loam);border:2px solid var(--harvest);
+    display:grid;place-items:center;font-size:1.2rem;z-index:1}
+  .tl-body h3{font-size:1.15rem}
+  .tl-body .meta{font-family:"Space Mono";font-size:.72rem;color:var(--sprout);letter-spacing:.06em;margin:2px 0 6px}
+  .tl-body p{color:var(--paper-dim);font-size:.92rem;margin:0;max-width:54ch}
+
+  /* ---------- growers ---------- */
+  .growers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .grower{background:var(--loam);border:1px solid var(--line);border-radius:var(--r);padding:24px;transition:transform .3s var(--ease)}
+  .grower:hover{transform:translateY(-5px)}
+  .grower .avatar{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-size:1.9rem;
+    background:radial-gradient(circle at 30% 30%,var(--sprout),var(--sprout-deep))}
+  .grower h3{font-size:1.2rem;margin-top:14px}
+  .grower .role{font-family:"Space Mono";font-size:.72rem;color:var(--harvest);letter-spacing:.08em;margin:3px 0 10px}
+  .grower p{font-size:.88rem;color:var(--paper-dim);margin:0}
+
+  /* ---------- pledge / CTA band ---------- */
+  .pledge{text-align:center;background:
+      radial-gradient(80% 140% at 50% 0%, rgba(232,163,61,.14), transparent 60%);border-top:1px solid var(--line)}
+  .pledge h2{font-size:clamp(2rem,5vw,3.4rem);max-width:18ch;margin:0 auto 18px}
+  .pledge h2 em{font-style:italic;color:var(--harvest);font-weight:500}
+  .pledge p{color:var(--paper-dim);max-width:48ch;margin:0 auto 28px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 0 56px;background:var(--soil-2)}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot .brand{font-size:1.05rem}
+  .foot .demo{font-family:"Space Mono";font-size:.8rem;color:var(--paper-dim)}
+  .foot .demo a{color:var(--harvest);text-decoration:none}
+  .foot .demo a:hover{text-decoration:underline}
+
+  /* ---------- toast ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,140%);z-index:200;
+    background:var(--paper);color:#2a2014;border-radius:12px;padding:14px 20px;
+    box-shadow:0 20px 50px -16px rgba(0,0,0,.6);display:flex;align-items:center;gap:12px;
+    font-size:.92rem;max-width:min(92vw,420px);transition:transform .5s var(--ease)}
+  .toast.show{transform:translate(-50%,0)}
+  .toast .ti{font-size:1.4rem}
+  .toast b{font-family:"Fraunces"}
+
+  @media(max-width:900px){
+    .hero-grid,.build-grid{grid-template-columns:1fr}
+    .crate{order:-1;max-width:320px}
+    .growers{grid-template-columns:1fr}
+    .receipt{position:static}
+  }
+  @media(max-width:520px){
+    .wrap{padding:0 18px}
+    .hero{padding:40px 0 24px}
+    section{padding:54px 0}
+    .tier{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+    .tier .pr{grid-column:2;text-align:left}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    html{scroll-behavior:auto}
+    .tl-step{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top" aria-label="土生好食 首頁">
+      <svg class="seed" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3C9 9 8 22 16 29c8-7 7-20 0-26Z" fill="#9bb069"/>
+        <path d="M16 6c-4 5-4 16 0 21 0-7 0-14 0-21Z" fill="#6f8347"/>
+      </svg>
+      土生好食
+    </a>
+    <div class="nav-links">
+      <a href="#board">本週採收</a>
+      <a href="#builder">配菜箱</a>
+      <a href="#trace">產地溯源</a>
+      <a href="#growers">耕作的人</a>
+      <a class="btn btn-primary" href="#builder">訂一箱</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow hero-tag">花蓮縱谷 · 友善耕作 · 產地直送</span>
+        <h1 id="hero-h">這一箱，<br>是土地<em>當令</em>的回答。</h1>
+        <p class="lede">我們不問你想吃什麼，我們告訴你土地這週長出了什麼。從花蓮壽豐到你家餐桌，48 小時內，連泥土的氣味都還在。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#builder">配我的季節菜箱 →</a>
+          <a class="btn btn-ghost" href="#trace">看這箱怎麼來的</a>
+        </div>
+        <div class="hero-meta">
+          <div class="stat"><div class="n">17</div><div class="l">契作小農</div></div>
+          <div class="stat"><div class="n">48hr</div><div class="l">採收到送達</div></div>
+          <div class="stat"><div class="n">0</div><div class="l">化學除草劑</div></div>
+          <div class="stat"><div class="n">2,400+</div><div class="l">共耕家庭</div></div>
+        </div>
+      </div>
+      <div class="crate">
+        <div class="ring"><span>當令 · 採收 · 直送 · 共耕</span></div>
+        <svg viewBox="0 0 360 360" role="img" aria-label="裝滿當季蔬果的木箱插畫">
+          <defs>
+            <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#7a5a36"/><stop offset="1" stop-color="#56401f"/>
+            </linearGradient>
+            <linearGradient id="woodTop" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#8a6a44"/><stop offset="1" stop-color="#6d5232"/>
+            </linearGradient>
+          </defs>
+          <!-- box back -->
+          <path d="M70 200 L290 200 L300 320 L60 320 Z" fill="url(#wood)"/>
+          <!-- veg pile (emoji as text for character) -->
+          <g font-size="56" text-anchor="middle">
+            <text x="125" y="200">🥬</text>
+            <text x="200" y="185">🍅</text>
+            <text x="255" y="205">🥕</text>
+            <text x="160" y="160">🌽</text>
+            <text x="225" y="155">🍆</text>
+            <text x="120" y="155">🫑</text>
+            <text x="285" y="170">🧄</text>
+          </g>
+          <!-- box front -->
+          <path d="M60 235 L300 235 L300 320 L60 320 Z" fill="url(#woodTop)"/>
+          <g stroke="#3f2e16" stroke-width="2" opacity=".5">
+            <line x1="60" y1="262" x2="300" y2="262"/>
+            <line x1="60" y1="290" x2="300" y2="290"/>
+            <line x1="130" y1="235" x2="130" y2="320"/>
+            <line x1="200" y1="235" x2="200" y2="320"/>
+            <line x1="270" y1="235" x2="270" y2="320"/>
+          </g>
+          <!-- stamp -->
+          <g transform="rotate(-8 180 278)">
+            <rect x="118" y="258" width="124" height="40" rx="6" fill="none" stroke="#e8a33d" stroke-width="2.5"/>
+            <text x="180" y="284" text-anchor="middle" fill="#e8a33d" font-family="Space Mono,monospace" font-size="17" font-weight="700">TŬSHĒNG · 壽豐</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+</div>
+
+  <!-- ===== HARVEST BOARD ===== -->
+  <section id="board">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Harvest Board</span>
+          <h2>本週採收</h2>
+          <p>不是菜單，是田裡的進度。切換節氣看看土地此刻給了什麼。</p>
+        </div>
+        <div class="season-tabs" role="tablist" aria-label="選擇節氣">
+          <button role="tab" aria-selected="true" data-season="芒種">芒種・初夏</button>
+          <button role="tab" aria-selected="false" data-season="秋分">秋分・轉涼</button>
+          <button role="tab" aria-selected="false" data-season="大寒">大寒・深冬</button>
+        </div>
+      </div>
+      <div class="board" id="boardGrid" aria-live="polite"></div>
+      <p class="board-note">產地直擊更新於 <span id="boardDate" class="mono"></span> ・ 本週共 <b id="boardCount">0</b> 項當令作物到田</p>
+    </div>
+  </section>
+
+  <!-- ===== BOX BUILDER (signature) ===== -->
+  <section id="builder" class="builder">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Box Builder</span>
+          <h2>配一箱屬於你家的季節</h2>
+          <p>挑份量、加你想多收的本週採收，右邊的出貨單會即時跟著算。</p>
+        </div>
+      </div>
+      <div class="build-grid">
+        <div>
+          <div class="tiers" id="tiers" role="group" aria-label="選擇菜箱份量">
+            <button class="tier" data-tier="嘗鮮" data-price="480" data-items="5" data-people="1–2 人" aria-pressed="false">
+              <span class="ring2" aria-hidden="true"></span>
+              <span><h3>嘗鮮箱</h3><span class="desc">5 種當令蔬果 · 適合 1–2 人小家庭</span></span>
+              <span class="pr">NT$480<small>每箱</small></span>
+            </button>
+            <button class="tier" data-tier="餐桌" data-price="780" data-items="8" data-people="3–4 人" aria-pressed="true">
+              <span class="ring2" aria-hidden="true"></span>
+              <span><h3>餐桌箱</h3><span class="desc">8 種當令蔬果 · 一家三四口最剛好 · 最多人選</span></span>
+              <span class="pr">NT$780<small>每箱</small></span>
+            </button>
+            <button class="tier" data-tier="共耕" data-price="1180" data-items="12" data-people="5 人以上" aria-pressed="false">
+              <span class="ring2" aria-hidden="true"></span>
+              <span><h3>共耕箱</h3><span class="desc">12 種當令蔬果＋當週農場彩蛋 · 大家庭／揪團</span></span>
+              <span class="pr">NT$1,180<small>每箱</small></span>
+            </button>
+          </div>
+
+          <div class="addons">
+            <h4>＋ 加購本週採收</h4>
+            <div class="chips" id="chips" role="group" aria-label="加購品項">
+              <button class="chip" data-name="壽豐土雞蛋(10入)" data-price="160" aria-pressed="false"><span class="plus">＋</span>🥚 土雞蛋 10 入</button>
+              <button class="chip" data-name="鳳林初榨苦茶油" data-price="320" aria-pressed="false"><span class="plus">＋</span>🫙 初榨苦茶油</button>
+              <button class="chip" data-name="光復段木香菇" data-price="180" aria-pressed="false"><span class="plus">＋</span>🍄 段木香菇</button>
+              <button class="chip" data-name="赤科山金針" data-price="140" aria-pressed="false"><span class="plus">＋</span>🌼 新鮮金針</button>
+              <button class="chip" data-name="自家熬煮野薑花蜜" data-price="260" aria-pressed="false"><span class="plus">＋</span>🍯 野薑花蜜</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- receipt -->
+        <aside class="receipt" aria-label="出貨明細">
+          <div class="rh">
+            <strong>出貨單</strong>
+            <span class="mono">No. <span id="lotNo">—</span></span>
+          </div>
+          <ul class="rlist" id="rlist"></ul>
+          <div class="freq" role="tablist" aria-label="配送頻率">
+            <button role="tab" data-freq="weekly" data-mult="1" data-label="每週一箱" aria-selected="true">每週</button>
+            <button role="tab" data-freq="biweekly" data-mult="1" data-label="隔週一箱" aria-selected="false">隔週</button>
+            <button role="tab" data-freq="monthly" data-mult="1" data-label="每月一箱" aria-selected="false">每月</button>
+          </div>
+          <div class="save" id="saveLine">🌱 訂閱享 9 折 · 隨時可暫停或換頻率</div>
+          <div class="rtotal">
+            <span class="lab" id="freqLab">每週一箱・單期</span>
+            <span class="amt">NT$<span id="total">0</span></span>
+          </div>
+          <button class="btn btn-primary" id="subscribe" type="button" style="margin-top:16px">訂閱這一箱 →</button>
+          <div class="carbon">這一箱比超市運送少排碳 <b id="carbon">0</b> kg ・ 每訂一箱我們替你種回 1 棵原生樹苗</div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRACEABILITY ===== -->
+  <section id="trace" class="trace">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Farm to Table</span>
+          <h2>這一箱怎麼來的</h2>
+          <p>每箱都有一組溯源編號，掃一下，從哪塊田、誰種的、何時採，全部攤開給你看。</p>
+        </div>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="tl-step"><div class="tl-dot">🌱</div><div class="tl-body">
+          <h3>育苗・壽豐第 7 區</h3><div class="meta">DAY 0 ・ 阿欽伯的田</div>
+          <p>非基改種子在自家育苗棚發芽，全程不用化學藥劑，靠自製木醋液防蟲。</p></div></div>
+        <div class="tl-step"><div class="tl-dot">☀️</div><div class="tl-body">
+          <h3>露天友善耕作</h3><div class="meta">DAY 1–60 ・ 中央山脈伏流水灌溉</div>
+          <p>用海岸山脈的伏流水與自然農法輪作，留三成田給瓢蟲與青蛙當夥伴。</p></div></div>
+        <div class="tl-step"><div class="tl-dot">🧺</div><div class="tl-body">
+          <h3>清晨手採・現場分級</h3><div class="meta">DAY 61・採收當天 05:30</div>
+          <p>露水未乾就下田，按熟度手選，不耐放的葉菜當天就進冷鏈，鎖住現採的脆。</p></div></div>
+        <div class="tl-step"><div class="tl-dot">📦</div><div class="tl-body">
+          <h3>裝箱・貼上溯源章</h3><div class="meta">採收當天 14:00 ・ 壽豐集貨站</div>
+          <p>每箱秤重記錄、貼上專屬溯源編號，用可回收的甘蔗渣紙箱與稻稈緩衝。</p></div></div>
+        <div class="tl-step"><div class="tl-dot">🚚</div><div class="tl-body">
+          <h3>低溫直送到府</h3><div class="meta">採收後 48 小時內</div>
+          <p>不經盤商、不進倉庫，產地直接到你家門口，連泥土的氣味都還在。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GROWERS ===== -->
+  <section id="growers">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">The Growers</span>
+          <h2>耕作的人</h2>
+          <p>你的菜箱不是來自一座工廠，而是來自有名字、有脾氣、有信念的人。</p>
+        </div>
+      </div>
+      <div class="growers">
+        <div class="grower">
+          <div class="avatar" aria-hidden="true">👨‍🌾</div>
+          <h3>陳金水</h3><div class="role">壽豐 · 葉菜與根莖</div>
+          <p>務農 32 年，民國 98 年起全面轉作友善耕作。「我種的菜，自己的孫子要吃，騙不得。」</p>
+        </div>
+        <div class="grower">
+          <div class="avatar" aria-hidden="true">👩‍🌾</div>
+          <h3>林秀蘭</h3><div class="role">光復 · 段木香菇與菇類</div>
+          <p>返鄉接手父親的菇寮，堅持段木栽培不用太空包，慢一點，但香氣是兩倍。</p>
+        </div>
+        <div class="grower">
+          <div class="avatar" aria-hidden="true">🧑‍🌾</div>
+          <h3>Lisin（拉時）</h3><div class="role">玉里 · 部落小米與野菜</div>
+          <p>阿美族青年農夫，復育部落傳統作物，把祖母的野菜餐桌重新種回縱谷。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PLEDGE / CTA ===== -->
+  <section class="pledge">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">Join the Harvest</span>
+      <h2 style="margin-top:14px">和土地<em>簽一季</em>的約</h2>
+      <p>訂一箱，不只是買菜，是讓 17 位小農安心地把下一季種下去。隨時可暫停，土地永遠等你回來。</p>
+      <a class="btn btn-primary" href="#builder">開始配我的菜箱 →</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="brand">
+      <svg class="seed" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3C9 9 8 22 16 29c8-7 7-20 0-26Z" fill="#9bb069"/>
+        <path d="M16 6c-4 5-4 16 0 21 0-7 0-14 0-21Z" fill="#6f8347"/>
+      </svg>
+      土生好食
+    </div>
+    <div class="demo">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="ti">🌾</span>
+  <span><b id="toastTitle">已加入</b><br><span id="toastBody"></span></span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const NT=n=>n.toLocaleString("zh-TW");
+
+  /* ---------- 1) HARVEST BOARD (season switcher) ---------- */
+  const CROPS={
+    "芒種":[
+      {i:"🌽",n:"水果玉米",f:"壽豐・陳金水",pk:"05/22 採收",fresh:true},
+      {i:"🍅",n:"溫室牛番茄",f:"鳳林・友善農場",pk:"05/21 採收"},
+      {i:"🫑",n:"彩椒三色",f:"壽豐・陳金水",pk:"05/20 採收"},
+      {i:"🥒",n:"有機小黃瓜",f:"光復・青農聯盟",pk:"05/22 採收",fresh:true},
+      {i:"🌿",n:"九層塔",f:"玉里・Lisin",pk:"05/21 採收"},
+      {i:"🍆",n:"麻油茄子",f:"富里・老欉田",pk:"05/20 採收"},
+      {i:"🥭",n:"在欉紅芒果",f:"玉里・部落果園",pk:"05/22 採收",fresh:true},
+      {i:"🌼",n:"赤科山金針",f:"玉里・赤科山",pk:"05/21 採收"}
+    ],
+    "秋分":[
+      {i:"🍠",n:"栗子地瓜",f:"富里・老欉田",pk:"09/20 採收"},
+      {i:"🥬",n:"自然農青江菜",f:"壽豐・陳金水",pk:"09/22 採收",fresh:true},
+      {i:"🍄",n:"段木香菇",f:"光復・林秀蘭",pk:"09/21 採收"},
+      {i:"🎃",n:"栗子南瓜",f:"鳳林・友善農場",pk:"09/20 採收"},
+      {i:"🧄",n:"獨子蒜",f:"富里・老欉田",pk:"09/19 採收"},
+      {i:"🌾",n:"新割益全香米",f:"玉里・Lisin",pk:"09/22 收割",fresh:true},
+      {i:"🫚",n:"老薑",f:"光復・青農聯盟",pk:"09/21 採收"}
+    ],
+    "大寒":[
+      {i:"🥬",n:"霜打高麗菜",f:"壽豐・陳金水",pk:"01/18 採收",fresh:true},
+      {i:"🥕",n:"甜紅蘿蔔",f:"富里・老欉田",pk:"01/17 採收"},
+      {i:"🫛",n:"甜豌豆",f:"鳳林・友善農場",pk:"01/19 採收",fresh:true},
+      {i:"🧅",n:"洋蔥",f:"光復・青農聯盟",pk:"01/16 採收"},
+      {i:"🥦",n:"青花椰",f:"壽豐・陳金水",pk:"01/18 採收"},
+      {i:"🍊",n:"鳳林帝王柑",f:"鳳林・果園",pk:"01/17 採收",fresh:true},
+      {i:"🌰",n:"放山土雞蛋",f:"壽豐・放牧場",pk:"每日現撿"}
+    ]
+  };
+  const DATES={"芒種":"2026 / 05 / 22","秋分":"2026 / 09 / 22","大寒":"2026 / 01 / 18"};
+  const grid=$("#boardGrid");
+  function renderBoard(season){
+    const list=CROPS[season];
+    grid.innerHTML=list.map(c=>`
+      <article class="crop">
+        ${c.fresh?'<span class="flag">本日現採</span>':''}
+        <div class="ico" aria-hidden="true">${c.i}</div>
+        <div class="nm">${c.n}</div>
+        <div class="farm">${c.f}</div>
+        <div class="pk">${c.pk}</div>
+      </article>`).join("");
+    $("#boardDate").textContent=DATES[season];
+    $("#boardCount").textContent=list.length;
+  }
+  $$(".season-tabs button").forEach(b=>{
+    b.addEventListener("click",()=>{
+      $$(".season-tabs button").forEach(x=>x.setAttribute("aria-selected","false"));
+      b.setAttribute("aria-selected","true");
+      renderBoard(b.dataset.season);
+    });
+  });
+  renderBoard("芒種");
+
+  /* ---------- 2) BOX BUILDER + live receipt ---------- */
+  const state={tier:null,addons:new Set(),mult:1,freqLabel:"每週一箱"};
+  const tierBtns=$$(".tier");
+  const chipBtns=$$(".chip");
+  const lot=()=>"TS"+Math.floor(1000+Math.random()*9000);
+  $("#lotNo").textContent=lot();
+
+  function selectTier(btn){
+    tierBtns.forEach(b=>b.setAttribute("aria-pressed","false"));
+    btn.setAttribute("aria-pressed","true");
+    state.tier={name:btn.dataset.tier,price:+btn.dataset.price,items:+btn.dataset.items,people:btn.dataset.people};
+    update();
+  }
+  tierBtns.forEach(b=>b.addEventListener("click",()=>selectTier(b)));
+
+  chipBtns.forEach(b=>b.addEventListener("click",()=>{
+    const on=b.getAttribute("aria-pressed")==="true";
+    b.setAttribute("aria-pressed",String(!on));
+    const key=b.dataset.name;
+    if(on)state.addons.delete(key); else state.addons.add(key);
+    update();
+  }));
+
+  $$(".freq button").forEach(b=>b.addEventListener("click",()=>{
+    $$(".freq button").forEach(x=>x.setAttribute("aria-selected","false"));
+    b.setAttribute("aria-selected","true");
+    state.freqLabel=b.dataset.label;
+    update();
+  }));
+
+  function update(){
+    const r=$("#rlist");
+    if(!state.tier){r.innerHTML='<li style="justify-content:center;color:#9a8a6c">← 先挑一個份量</li>';$("#total").textContent="0";$("#carbon").textContent="0";$("#freqLab").textContent=state.freqLabel+"・單期";return;}
+    let base=state.tier.price, rows=[`<li><span>${state.tier.name}箱 · ${state.tier.items}種 / ${state.tier.people}</span><span>NT$${NT(base)}</span></li>`];
+    let addSum=0;
+    chipBtns.forEach(b=>{
+      if(b.getAttribute("aria-pressed")==="true"){
+        const p=+b.dataset.price; addSum+=p;
+        rows.push(`<li class="add"><span>＋ ${b.dataset.name}</span><span>NT$${NT(p)}</span></li>`);
+      }
+    });
+    r.innerHTML=rows.join("");
+    // subscription 9折
+    const subtotal=base+addSum;
+    const total=Math.round(subtotal*0.9);
+    $("#total").textContent=NT(total);
+    // carbon: rough model — more items, more saved
+    const carbon=(state.tier.items*0.18 + state.addons.size*0.12).toFixed(1);
+    $("#carbon").textContent=carbon;
+    $("#freqLab").textContent=state.freqLabel+"・單期（已折）";
+  }
+
+  // init: default tier = 餐桌 (aria-pressed true in markup)
+  selectTier($('.tier[aria-pressed="true"]'));
+
+  /* ---------- 3) TRACEABILITY reveal on scroll ---------- */
+  const steps=$$(".tl-step");
+  if("IntersectionObserver"in window && !matchMedia("(prefers-reduced-motion:reduce)").matches){
+    const io=new IntersectionObserver((es)=>{
+      es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
+    },{threshold:.3});
+    steps.forEach(s=>io.observe(s));
+  }else{steps.forEach(s=>s.classList.add("in"));}
+
+  /* ---------- 4) SUBSCRIBE → toast ---------- */
+  const toast=$("#toast");let tt;
+  $("#subscribe").addEventListener("click",()=>{
+    if(!state.tier)return;
+    const total=$("#total").textContent;
+    $("#toastTitle").textContent="訂閱成功！";
+    $("#toastBody").textContent=`${state.tier.name}箱・${state.freqLabel}・NT$${total}（溯源 No.${$("#lotNo").textContent}）下一箱週四出貨。`;
+    $("#lotNo").textContent=lot();
+    toast.classList.add("show");
+    clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("show"),5200);
+  });
+})();
+</script>
+</body>
+</html>

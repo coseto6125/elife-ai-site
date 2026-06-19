@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>霽光暗房 · 黑白紀實婚禮與人像｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="霽光暗房影像工作室——以底片質地拍攝黑白紀實婚禮與人像。真實的眼神、未經安排的瞬間，沖洗成可以收藏一輩子的光。瀏覽作品系列並預約拍攝。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Noto+Serif+TC:wght@300;500;700&family=Noto+Sans+TC:wght@300;400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d0e10;
+    --ink-soft:#16181b;
+    --paper:#ece6da;
+    --amber:#c8954a;
+    --teal:#2c4a4a;
+    --rose:#b5736a;
+    --fog:#8a8578;
+    --line:rgba(236,230,218,.14);
+    --serif:"Fraunces","Noto Serif TC",serif;
+    --sans:"Noto Sans TC",system-ui,sans-serif;
+    --mono:"Spline Sans Mono",ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* film grain overlay across whole page */
+  body::after{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection{background:var(--amber);color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:1px}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--amber);
+  }
+
+  /* ============ TOPBAR ============ */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 28px;
+    transition:background .4s ease, padding .4s ease, border-color .4s ease;
+    border-bottom:1px solid transparent;
+    mix-blend-mode:difference;
+  }
+  .topbar.scrolled{
+    background:rgba(13,14,16,.82);backdrop-filter:blur(14px);
+    padding:13px 28px;border-bottom:1px solid var(--line);
+    mix-blend-mode:normal;
+  }
+  .brand{display:flex;align-items:baseline;gap:11px;font-family:var(--serif)}
+  .brand .mark{
+    font-size:1.28rem;font-weight:600;letter-spacing:.04em;
+  }
+  .brand .sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;color:var(--fog);text-transform:uppercase}
+  .topbar.scrolled .brand .sub{color:var(--fog)}
+  .nav{display:flex;gap:30px;align-items:center}
+  .nav a{font-size:.82rem;letter-spacing:.08em;color:var(--paper);opacity:.78;transition:opacity .25s}
+  .nav a:hover{opacity:1}
+  .nav .book{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    border:1px solid var(--paper);padding:8px 16px;opacity:1;
+    transition:background .25s,color .25s;
+  }
+  .nav .book:hover{background:var(--paper);color:var(--ink)}
+  @media(max-width:760px){.nav a:not(.book){display:none}}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;min-height:100svh;display:flex;flex-direction:column;
+    justify-content:flex-end;overflow:hidden;
+  }
+  /* the hero "photograph": a duotone portrait built from layered gradients */
+  .hero .frame{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 50% 62% at 62% 40%, rgba(200,149,74,.55), transparent 60%),
+      radial-gradient(ellipse 70% 90% at 38% 78%, rgba(44,74,74,.7), transparent 70%),
+      radial-gradient(circle at 60% 32%, rgba(181,115,106,.5), transparent 38%),
+      linear-gradient(160deg, #1a1614 0%, #0b0c0e 55%, #07090b 100%);
+  }
+  /* a soft silhouette suggestion */
+  .hero .frame::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 26% 40% at 60% 44%, rgba(0,0,0,.0), rgba(7,9,11,.55) 75%),
+      radial-gradient(ellipse 13% 18% at 60% 28%, rgba(232,210,180,.28), transparent 60%);
+    mix-blend-mode:multiply;
+  }
+  .hero .vignette{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse 120% 100% at 50% 30%, transparent 40%, rgba(7,9,11,.85) 100%);
+  }
+  .hero-inner{position:relative;z-index:3;padding:0 0 9vh;width:100%}
+  .hero .wrap{width:100%}
+  .hero .meta{
+    display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;
+    border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:30px;
+  }
+  .hero h1{
+    font-family:var(--serif);font-weight:300;
+    font-size:clamp(3rem,11.5vw,9.5rem);line-height:.92;letter-spacing:-.01em;
+    font-optical-sizing:auto;
+  }
+  .hero h1 em{font-style:italic;color:var(--amber);font-weight:400}
+  .hero .tagline{
+    max-width:34ch;font-size:1.04rem;color:rgba(236,230,218,.82);font-weight:300;
+  }
+  .hero .filmstrip{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;color:var(--fog);
+    text-align:right;line-height:1.9;white-space:nowrap;
+  }
+  .scrollcue{
+    display:flex;align-items:center;gap:12px;margin-top:34px;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:var(--fog);
+  }
+  .scrollcue .ln{width:46px;height:1px;background:var(--amber);transform-origin:left;animation:slide 2.6s ease-in-out infinite}
+  @keyframes slide{0%,100%{transform:scaleX(.4);opacity:.5}50%{transform:scaleX(1);opacity:1}}
+
+  /* ============ STATEMENT / CONTACT SHEET ============ */
+  .statement{padding:clamp(80px,12vh,150px) 0;border-top:1px solid var(--line)}
+  .statement .grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start}
+  @media(max-width:840px){.statement .grid{grid-template-columns:1fr;gap:34px}}
+  .statement .label{font-family:var(--mono);font-size:.72rem;letter-spacing:.3em;color:var(--fog);text-transform:uppercase}
+  .statement h2{
+    font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,4.4vw,3.2rem);
+    line-height:1.18;letter-spacing:-.01em;margin-top:18px;
+  }
+  .statement h2 em{font-style:italic;color:var(--amber)}
+  .statement p{color:rgba(236,230,218,.74);margin-top:20px;max-width:58ch}
+  .statement .sig{font-family:var(--serif);font-style:italic;font-size:1.3rem;color:var(--amber);margin-top:28px}
+  .stats{display:flex;gap:40px;flex-wrap:wrap;margin-top:40px;padding-top:30px;border-top:1px solid var(--line)}
+  .stats .s .n{font-family:var(--serif);font-size:2.4rem;line-height:1;color:var(--paper)}
+  .stats .s .t{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;color:var(--fog);text-transform:uppercase;margin-top:8px}
+
+  /* ============ GALLERY ============ */
+  .gallery-sec{padding:clamp(40px,7vh,90px) 0 clamp(80px,12vh,140px)}
+  .gallery-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:34px}
+  .gallery-head h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.9rem,5vw,3.4rem);letter-spacing:-.01em}
+  .gallery-head .count{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--fog)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+  .filter{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;
+    background:none;border:1px solid var(--line);color:var(--fog);
+    padding:9px 16px;cursor:pointer;border-radius:40px;transition:all .25s;
+  }
+  .filter:hover{color:var(--paper);border-color:var(--fog)}
+  .filter[aria-pressed="true"]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+  .masonry{columns:3;column-gap:14px}
+  @media(max-width:900px){.masonry{columns:2}}
+  @media(max-width:520px){.masonry{columns:1}}
+  .tile{
+    display:block;width:100%;padding:0;border:none;text-align:left;font:inherit;color:inherit;
+    position:relative;break-inside:avoid;margin-bottom:14px;cursor:pointer;
+    overflow:hidden;background:var(--ink-soft);
+    transition:opacity .5s ease, transform .5s ease, filter .4s;
+    filter:grayscale(.15);
+  }
+  .tile.hide{display:none}
+  .tile.fade{opacity:0;transform:translateY(14px)}
+  .tile .surface{width:100%;display:block;position:relative}
+  /* photographic vignette + grain on every frame */
+  .tile .surface::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 100% 100% at 50% 45%, transparent 52%, rgba(7,9,11,.62) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.5'/%3E%3C/svg%3E");
+    background-blend-mode:multiply, overlay;
+    mix-blend-mode:normal;opacity:.9;
+  }
+  .tile:hover{filter:grayscale(0)}
+  .tile:hover .cap{transform:translateY(0);opacity:1}
+  .tile:hover .surface{transform:scale(1.05)}
+  .tile .surface{transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+  .tile .cap{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:30px 16px 14px;
+    background:linear-gradient(transparent, rgba(7,9,11,.88));
+    transform:translateY(12px);opacity:0;transition:all .45s ease;
+  }
+  .tile .cap .t{font-family:var(--serif);font-size:1.05rem;color:var(--paper)}
+  .tile .cap .m{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--amber);margin-top:4px}
+  .tile .idx{
+    position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:.62rem;
+    letter-spacing:.1em;color:rgba(236,230,218,.7);
+  }
+
+  /* ============ SERVICES / PACKAGES ============ */
+  .services{padding:clamp(80px,12vh,150px) 0;background:var(--paper);color:var(--ink)}
+  .services .top{max-width:60ch;margin-bottom:54px}
+  .services .label{font-family:var(--mono);font-size:.72rem;letter-spacing:.3em;color:var(--teal);text-transform:uppercase}
+  .services h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.9rem,5vw,3.4rem);letter-spacing:-.01em;margin-top:16px;color:var(--ink)}
+  .services h2 em{font-style:italic;color:var(--amber)}
+  .pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(13,14,16,.16)}
+  @media(max-width:820px){.pkgs{grid-template-columns:1fr}}
+  .pkg{
+    padding:38px 30px 42px;border-bottom:1px solid rgba(13,14,16,.16);
+    border-right:1px solid rgba(13,14,16,.16);position:relative;transition:background .3s;
+  }
+  .pkg:nth-child(3){border-right:none}
+  @media(max-width:820px){.pkg{border-right:none}}
+  .pkg:hover{background:rgba(13,14,16,.035)}
+  .pkg .no{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--amber)}
+  .pkg h3{font-family:var(--serif);font-weight:500;font-size:1.5rem;margin:14px 0 6px;color:var(--ink)}
+  .pkg .price{font-family:var(--serif);font-size:2rem;color:var(--teal);margin-bottom:6px}
+  .pkg .price span{font-size:.85rem;font-family:var(--mono);color:var(--fog);letter-spacing:.05em}
+  .pkg ul{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:11px}
+  .pkg li{font-size:.92rem;color:rgba(13,14,16,.72);display:flex;gap:10px;align-items:baseline}
+  .pkg li::before{content:"—";color:var(--amber);flex:none}
+  .pkg.featured{background:var(--ink);color:var(--paper)}
+  .pkg.featured:hover{background:var(--ink-soft)}
+  .pkg.featured h3,.pkg.featured .price{color:var(--paper)}
+  .pkg.featured .price{color:var(--amber)}
+  .pkg.featured li{color:rgba(236,230,218,.78)}
+  .pkg.featured .tag{
+    position:absolute;top:18px;right:22px;font-family:var(--mono);font-size:.6rem;
+    letter-spacing:.16em;color:var(--ink);background:var(--amber);padding:4px 9px;border-radius:3px;
+  }
+
+  /* ============ CONTACT ============ */
+  .contact{padding:clamp(80px,12vh,150px) 0}
+  .contact .grid{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+  @media(max-width:820px){.contact .grid{grid-template-columns:1fr;gap:44px}}
+  .contact h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,6vw,4rem);line-height:1.05;letter-spacing:-.01em}
+  .contact h2 em{font-style:italic;color:var(--amber)}
+  .contact .lede{color:rgba(236,230,218,.74);margin-top:22px;max-width:40ch}
+  .contact .details{margin-top:38px;display:flex;flex-direction:column;gap:16px}
+  .contact .details .row{display:flex;gap:14px;align-items:baseline}
+  .contact .details .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;width:74px;flex:none}
+  .contact .details .v{color:rgba(236,230,218,.86)}
+
+  form{display:flex;flex-direction:column;gap:18px}
+  .field label{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--fog);text-transform:uppercase;margin-bottom:8px}
+  .field input,.field select,.field textarea{
+    width:100%;background:var(--ink-soft);border:1px solid var(--line);
+    color:var(--paper);font-family:var(--sans);font-size:.96rem;font-weight:300;
+    padding:13px 15px;transition:border-color .25s;
+  }
+  .field input::placeholder,.field textarea::placeholder{color:rgba(138,133,120,.7)}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--amber)}
+  .field textarea{resize:vertical;min-height:96px}
+  .field2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:480px){.field2{grid-template-columns:1fr}}
+  button.submit{
+    font-family:var(--mono);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;
+    background:var(--amber);color:var(--ink);border:none;padding:15px;cursor:pointer;
+    transition:background .25s,transform .15s;margin-top:6px;
+  }
+  button.submit:hover{background:#dba657}
+  button.submit:active{transform:translateY(1px)}
+
+  /* ============ FOOTER ============ */
+  footer{border-top:1px solid var(--line);padding:46px 0 40px}
+  footer .grid{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  footer .brand2{font-family:var(--serif);font-size:1.5rem}
+  footer .brand2 span{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.26em;color:var(--fog);text-transform:uppercase;margin-top:8px}
+  footer .credit{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--fog);text-align:right}
+  footer .credit a{color:var(--amber)}
+  footer .credit a:hover{text-decoration:underline}
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox{
+    position:fixed;inset:0;z-index:1000;display:none;
+    background:rgba(7,8,9,.97);backdrop-filter:blur(6px);
+    flex-direction:column;
+  }
+  .lightbox.open{display:flex}
+  .lb-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 26px;border-bottom:1px solid var(--line);flex:none;
+  }
+  .lb-bar .title{font-family:var(--serif);font-size:1.15rem}
+  .lb-bar .title .m{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;color:var(--amber);margin-top:3px}
+  .lb-close{
+    background:none;border:1px solid var(--line);color:var(--paper);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    padding:9px 14px;cursor:pointer;transition:all .25s;
+  }
+  .lb-close:hover{background:var(--paper);color:var(--ink)}
+  .lb-stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:24px;min-height:0}
+  .lb-img{
+    width:min(82vw,1000px);height:min(70vh,720px);
+    box-shadow:0 30px 90px rgba(0,0,0,.6);position:relative;overflow:hidden;
+  }
+  .lb-img::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:
+      radial-gradient(ellipse 100% 100% at 50% 46%, transparent 50%, rgba(7,9,11,.6) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='gl'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gl)' opacity='.45'/%3E%3C/svg%3E");
+    background-blend-mode:multiply, overlay;opacity:.85;
+  }
+  .lb-exif{
+    position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:.64rem;
+    letter-spacing:.1em;color:rgba(236,230,218,.85);z-index:2;
+    background:rgba(7,9,11,.45);padding:6px 9px;backdrop-filter:blur(2px);
+  }
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(13,14,16,.5);border:1px solid var(--line);color:var(--paper);
+    width:50px;height:50px;cursor:pointer;font-size:1.3rem;
+    display:flex;align-items:center;justify-content:center;transition:all .25s;
+  }
+  .lb-nav:hover{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+  .lb-prev{left:24px}.lb-next{right:24px}
+  @media(max-width:640px){.lb-prev{left:8px}.lb-next{right:8px}.lb-nav{width:42px;height:42px}}
+  .lb-film{
+    display:flex;gap:7px;padding:14px 26px;overflow-x:auto;border-top:1px solid var(--line);flex:none;
+    scrollbar-width:thin;
+  }
+  .lb-thumb{
+    width:64px;height:42px;flex:none;cursor:pointer;opacity:.4;
+    transition:opacity .25s,outline .15s;outline:1px solid transparent;outline-offset:2px;
+  }
+  .lb-thumb:hover{opacity:.75}
+  .lb-thumb.active{opacity:1;outline-color:var(--amber)}
+
+  /* ============ TOAST ============ */
+  .toast{
+    position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(140%);
+    z-index:1100;background:var(--paper);color:var(--ink);
+    padding:15px 24px;font-size:.9rem;display:flex;align-items:center;gap:13px;
+    box-shadow:0 16px 50px rgba(0,0,0,.5);transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    max-width:calc(100vw - 40px);
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex:none}
+  .toast strong{font-family:var(--serif);font-weight:600}
+
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    .tile:hover .surface{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top">
+    <span class="mark">霽光暗房</span>
+    <span class="sub">Jì Guāng Studio</span>
+  </a>
+  <nav class="nav" aria-label="主選單">
+    <a href="#work">作品</a>
+    <a href="#about">關於</a>
+    <a href="#services">方案</a>
+    <a href="#contact" class="book">預約拍攝</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="frame" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="wrap">
+      <div class="meta">
+        <span class="eyebrow">黑白紀實 · 婚禮與人像</span>
+        <div class="filmstrip" aria-hidden="true">
+          ILFORD HP5 PLUS · 400<br>
+          35mm · f/2 · 1/250s
+        </div>
+      </div>
+      <h1>留住<em>未被</em><br>安排的光</h1>
+      <div class="meta" style="border:none;margin-top:34px;padding:0">
+        <p class="tagline">我們不擺拍。在你最自在的時候按下快門，把真實的眼神與呼吸，沖洗成可以收藏一輩子的影像。</p>
+        <a href="#work" class="filmstrip" style="color:var(--paper);letter-spacing:.1em">查看作品系列 →</a>
+      </div>
+      <div class="scrollcue"><span class="ln" aria-hidden="true"></span>向下捲動</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT ============ -->
+<section class="statement" id="about">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="label">Artist Statement / 創作自述</span>
+        <h2>影像是<em>記憶</em>的<br>顯影液。</h2>
+      </div>
+      <div>
+        <p>我是 <strong style="font-weight:500">林霽川</strong>，霽光暗房的攝影師。從業十二年，從新聞攝影走進婚禮與人像——因為我相信最動人的畫面，從來不是「看鏡頭，笑一個」，而是擁抱時偷偷紅了的眼眶、爺爺手心的溫度、雨後逆光裡那一秒的安靜。</p>
+        <p>我偏好黑白與底片的質地。少了顏色的喧嘩，情緒反而更清楚。每一組作品我都親手在暗房放相、調整反差，讓影像有自己的重量。</p>
+        <p class="sig">— 林霽川</p>
+        <div class="stats">
+          <div class="s"><div class="n">12</div><div class="t">年資歷</div></div>
+          <div class="s"><div class="n">340+</div><div class="t">場婚禮</div></div>
+          <div class="s"><div class="n">100%</div><div class="t">手工放相</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery-sec" id="work">
+  <div class="wrap">
+    <div class="gallery-head">
+      <div>
+        <span class="eyebrow">Portfolio / 作品集</span>
+        <h2>光的切片</h2>
+      </div>
+      <span class="count" id="galleryCount">12 幀影像</span>
+    </div>
+    <div class="filters" role="group" aria-label="作品系列篩選">
+      <button class="filter" data-cat="all" aria-pressed="true">全部</button>
+      <button class="filter" data-cat="wedding" aria-pressed="false">婚禮紀實</button>
+      <button class="filter" data-cat="portrait" aria-pressed="false">人像</button>
+      <button class="filter" data-cat="family" aria-pressed="false">家族 · 親密</button>
+      <button class="filter" data-cat="street" aria-pressed="false">街頭 · 旅途</button>
+    </div>
+    <div class="masonry" id="masonry"></div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="top">
+      <span class="label">Packages / 拍攝方案</span>
+      <h2>陪你走過<em>那一天</em>。</h2>
+    </div>
+    <div class="pkgs">
+      <div class="pkg">
+        <div class="no">P · 01</div>
+        <h3>單純人像</h3>
+        <div class="price">NT$ 9,800<span> 起</span></div>
+        <ul>
+          <li>2 小時棚內 / 外景拍攝</li>
+          <li>1 套造型，可自備服裝</li>
+          <li>精修 25 張黑白數位檔</li>
+          <li>線上選片，七日交件</li>
+        </ul>
+      </div>
+      <div class="pkg featured">
+        <div class="tag">最受歡迎</div>
+        <div class="no">P · 02</div>
+        <h3>婚禮全紀錄</h3>
+        <div class="price">NT$ 38,000<span> 起</span></div>
+        <ul>
+          <li>整日跟拍，雙攝影師</li>
+          <li>儀式 + 宴客全程紀實</li>
+          <li>精修 300+ 張，含彩色版本</li>
+          <li>手工放相相冊一本</li>
+          <li>30 日完整交件</li>
+        </ul>
+      </div>
+      <div class="pkg">
+        <div class="no">P · 03</div>
+        <h3>家族 · 親密</h3>
+        <div class="price">NT$ 16,500<span> 起</span></div>
+        <ul>
+          <li>3 小時居家 / 外景</li>
+          <li>適合孕期、新生兒、三代同堂</li>
+          <li>精修 60 張數位檔</li>
+          <li>10×8 手工相片 6 張</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow">Enquiry / 預約諮詢</span>
+        <h2>說說<em>你的</em><br>那一天。</h2>
+        <p class="lede">每一場拍攝在按下快門之前，都從一次好好的聊天開始。留下資訊，我會在兩個工作天內親自回覆你。</p>
+        <div class="details">
+          <div class="row"><span class="k">Studio</span><span class="v">台北市大同區赤峰街 18 巷 7 號 2F</span></div>
+          <div class="row"><span class="k">Email</span><span class="v">hello@jiguang.studio</span></div>
+          <div class="row"><span class="k">Line</span><span class="v">@jiguang-studio</span></div>
+          <div class="row"><span class="k">Hours</span><span class="v">週二至週六 13:00–20:00（預約制）</span></div>
+        </div>
+      </div>
+      <form id="enquiry" novalidate>
+        <div class="field2">
+          <div class="field">
+            <label for="name">稱呼</label>
+            <input type="text" id="name" name="name" placeholder="你怎麼稱呼？" required>
+          </div>
+          <div class="field">
+            <label for="contact">聯絡方式</label>
+            <input type="text" id="contact" name="contact" placeholder="Email 或 Line ID" required>
+          </div>
+        </div>
+        <div class="field2">
+          <div class="field">
+            <label for="type">想拍的類型</label>
+            <select id="type" name="type">
+              <option>婚禮紀實</option>
+              <option>人像寫真</option>
+              <option>家族 · 親密</option>
+              <option>商業 · 品牌</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="date">預計日期</label>
+            <input type="text" id="date" name="date" placeholder="例如 2026 / 10 月">
+          </div>
+        </div>
+        <div class="field">
+          <label for="msg">想多說一點</label>
+          <textarea id="msg" name="msg" placeholder="場地、人數，或任何你在意的細節…"></textarea>
+        </div>
+        <button type="submit" class="submit">送出預約諮詢</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="brand2">霽光暗房<span>Jì Guāng Studio · Est. 2014</span></div>
+      <div class="credit">
+        設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a><br>
+        © 2026 影像作品為 CSS 模擬，非真實照片
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品檢視">
+  <div class="lb-bar">
+    <div class="title"><span id="lbTitle"></span><div class="m" id="lbCat"></div></div>
+    <button class="lb-close" id="lbClose" aria-label="關閉檢視（Esc）">關閉 ✕</button>
+  </div>
+  <div class="lb-stage">
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一張（←）">‹</button>
+    <div class="lb-img" id="lbImg"><div class="lb-exif" id="lbExif"></div></div>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="下一張（→）">›</button>
+  </div>
+  <div class="lb-film" id="lbFilm" aria-label="影像縮圖"></div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="dot" aria-hidden="true"></span>
+  <span><strong>收到了！</strong>&nbsp;謝謝你，我會在兩個工作天內親自回覆。</span>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ---- Photo data: each "photo" is a CSS gradient recipe (duotone + light) ----
+  const PHOTOS = [
+    {t:"晨光裡的等待",   cat:"wedding",  catLabel:"婚禮紀實", h:1.32, exif:"35mm · f/1.8 · 1/200s · ISO 800", grad:"radial-gradient(ellipse 42% 50% at 42% 36%,rgba(244,214,158,.95),rgba(200,149,74,.4) 38%,transparent 64%),radial-gradient(ellipse 90% 90% at 70% 90%,rgba(34,30,26,.9),transparent),linear-gradient(160deg,#4a4036,#211d18 60%,#14110d)"},
+    {t:"交握的手",       cat:"wedding",  catLabel:"婚禮紀實", h:0.78, exif:"50mm · f/2 · 1/320s · ISO 400",   grad:"radial-gradient(ellipse 50% 60% at 58% 52%,rgba(220,168,156,.92),rgba(181,115,106,.4) 42%,transparent 70%),linear-gradient(135deg,#453734,#211b19 58%,#120f0e)"},
+    {t:"逆光側臉",       cat:"portrait", catLabel:"人像",     h:1.42, exif:"85mm · f/1.4 · 1/500s · ISO 200", grad:"radial-gradient(ellipse 38% 48% at 66% 40%,rgba(248,232,206,.98),rgba(232,210,180,.45) 36%,transparent 60%),radial-gradient(ellipse 70% 80% at 25% 80%,rgba(20,17,14,.85),transparent),linear-gradient(150deg,#433c33,#1d1a16 58%,#100e0b)"},
+    {t:"祖母的窗",       cat:"family",   catLabel:"家族",     h:1.0,  exif:"35mm · f/2.8 · 1/125s · ISO 1600",grad:"radial-gradient(ellipse 56% 46% at 32% 40%,rgba(170,200,200,.85),rgba(44,74,74,.5) 42%,transparent 72%),linear-gradient(140deg,#324242,#1a2222 56%,#0e1212)"},
+    {t:"赤峰街的雨",     cat:"street",   catLabel:"街頭",     h:0.7,  exif:"28mm · f/4 · 1/60s · ISO 3200",  grad:"radial-gradient(ellipse 70% 50% at 50% 72%,rgba(180,196,204,.7),rgba(120,140,150,.35) 46%,transparent 74%),linear-gradient(160deg,#2c3236,#171b1e 56%,#0c0f11)"},
+    {t:"喜極而泣",       cat:"wedding",  catLabel:"婚禮紀實", h:1.2,  exif:"70mm · f/2.8 · 1/250s · ISO 640",grad:"radial-gradient(ellipse 40% 48% at 52% 44%,rgba(246,216,162,.95),rgba(200,149,74,.42) 40%,transparent 64%),linear-gradient(150deg,#4a3f33,#221d17 58%,#120f0c)"},
+    {t:"靜物 · 戒",      cat:"portrait", catLabel:"人像",     h:0.82, exif:"100mm macro · f/5.6 · 1/160s",   grad:"radial-gradient(circle at 50% 46%,rgba(248,220,168,1),rgba(200,149,74,.5) 28%,transparent 54%),linear-gradient(135deg,#332a20,#16120d 62%,#0b0907)"},
+    {t:"父親牽女兒",     cat:"family",   catLabel:"家族",     h:1.3,  exif:"35mm · f/2 · 1/200s · ISO 800",  grad:"radial-gradient(ellipse 48% 56% at 44% 46%,rgba(224,176,164,.88),rgba(181,115,106,.4) 44%,transparent 68%),linear-gradient(145deg,#473833,#211a17 58%,#110e0c)"},
+    {t:"海風中的紗",     cat:"wedding",  catLabel:"婚禮紀實", h:1.0,  exif:"50mm · f/1.8 · 1/1000s · ISO 100",grad:"radial-gradient(ellipse 64% 56% at 56% 36%,rgba(228,236,240,.9),rgba(180,200,210,.4) 44%,transparent 70%),linear-gradient(160deg,#3a4146,#1c2125 58%,#0e1113)"},
+    {t:"巷弄的背影",     cat:"street",   catLabel:"街頭",     h:1.36, exif:"35mm · f/2.8 · 1/250s · ISO 1250",grad:"radial-gradient(ellipse 46% 62% at 50% 58%,rgba(150,182,182,.78),rgba(44,74,74,.4) 46%,transparent 72%),linear-gradient(150deg,#2e3838,#171d1d 56%,#0c1010)"},
+    {t:"凝視",           cat:"portrait", catLabel:"人像",     h:1.18, exif:"85mm · f/1.4 · 1/400s · ISO 320",grad:"radial-gradient(ellipse 36% 46% at 50% 42%,rgba(248,230,204,.98),rgba(232,210,180,.45) 36%,transparent 58%),radial-gradient(ellipse 80% 70% at 50% 95%,rgba(18,15,12,.8),transparent),linear-gradient(140deg,#423a31,#1e1a15 58%,#100d0a)"},
+    {t:"三代同框",       cat:"family",   catLabel:"家族",     h:0.74, exif:"24mm · f/4 · 1/160s · ISO 1000", grad:"radial-gradient(ellipse 70% 50% at 50% 50%,rgba(244,212,158,.82),rgba(200,149,74,.36) 48%,transparent 74%),linear-gradient(155deg,#473d30,#211c15 58%,#110e0a)"}
+  ];
+
+  // build a CSS surface for a photo (gradient + subtle inner grain via box-shadow layering)
+  const surfaceStyle = (p, hPx) =>
+    `height:${hPx}px;background:${p.grad};`;
+
+  const masonry = document.getElementById("masonry");
+  const countEl = document.getElementById("galleryCount");
+
+  // render tiles
+  PHOTOS.forEach((p, i) => {
+    const tile = document.createElement("button");
+    tile.className = "tile";
+    tile.dataset.cat = p.cat;
+    tile.dataset.idx = i;
+    tile.setAttribute("aria-label", `${p.t}（${p.catLabel}），開啟大圖`);
+    const baseH = 230;
+    tile.innerHTML = `
+      <div class="surface" style="${surfaceStyle(p, Math.round(baseH * p.h))}"></div>
+      <span class="idx">${String(i + 1).padStart(2, "0")} / 12</span>
+      <div class="cap">
+        <div class="t">${p.t}</div>
+        <div class="m">${p.catLabel} · ${p.exif.split(" · ")[0]}</div>
+      </div>`;
+    tile.addEventListener("click", () => openLightbox(i));
+    masonry.appendChild(tile);
+  });
+
+  // ---- Filter (re-flow gallery) ----
+  let currentCat = "all";
+  const filters = [...document.querySelectorAll(".filter")];
+  filters.forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentCat = btn.dataset.cat;
+      filters.forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+      let shown = 0;
+      [...masonry.children].forEach(tile => {
+        const match = currentCat === "all" || tile.dataset.cat === currentCat;
+        tile.classList.toggle("fade", true);
+        setTimeout(() => {
+          tile.classList.toggle("hide", !match);
+          tile.classList.remove("fade");
+        }, 180);
+        if (match) shown++;
+      });
+      countEl.textContent = `${shown} 幀影像`;
+    });
+  });
+
+  // ---- Lightbox ----
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbExif = document.getElementById("lbExif");
+  const lbTitle = document.getElementById("lbTitle");
+  const lbCat = document.getElementById("lbCat");
+  const lbFilm = document.getElementById("lbFilm");
+  const lbClose = document.getElementById("lbClose");
+  const lbPrev = document.getElementById("lbPrev");
+  const lbNext = document.getElementById("lbNext");
+  let cur = 0, lastFocus = null;
+
+  // build filmstrip thumbs once
+  PHOTOS.forEach((p, i) => {
+    const th = document.createElement("button");
+    th.className = "lb-thumb";
+    th.style.cssText = `background:${p.grad};background-size:cover`;
+    th.setAttribute("aria-label", `跳至 ${p.t}`);
+    th.addEventListener("click", () => show(i));
+    lbFilm.appendChild(th);
+  });
+  const thumbs = [...lbFilm.children];
+
+  function show(i) {
+    cur = (i + PHOTOS.length) % PHOTOS.length;
+    const p = PHOTOS[cur];
+    lbImg.style.background = p.grad;
+    lbExif.textContent = `№${String(cur + 1).padStart(2, "0")}  ·  ${p.exif}`;
+    lbTitle.textContent = p.t;
+    lbCat.textContent = `${p.catLabel} · ILFORD HP5+`;
+    thumbs.forEach((t, ti) => t.classList.toggle("active", ti === cur));
+    thumbs[cur].scrollIntoView({block:"nearest", inline:"center", behavior:"smooth"});
+  }
+
+  function openLightbox(i) {
+    lastFocus = document.activeElement;
+    show(i);
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+    lbClose.focus();
+    document.addEventListener("keydown", onKey);
+  }
+  function closeLightbox() {
+    lb.classList.remove("open");
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", onKey);
+    if (lastFocus) lastFocus.focus();
+  }
+
+  // focus trap among interactive lightbox controls
+  function onKey(e) {
+    if (e.key === "Escape") { closeLightbox(); return; }
+    if (e.key === "ArrowRight") { show(cur + 1); return; }
+    if (e.key === "ArrowLeft") { show(cur - 1); return; }
+    if (e.key === "Tab") {
+      const f = [lbClose, lbPrev, lbNext, ...thumbs];
+      const idx = f.indexOf(document.activeElement);
+      e.preventDefault();
+      const next = e.shiftKey ? (idx <= 0 ? f.length - 1 : idx - 1) : (idx === f.length - 1 ? 0 : idx + 1);
+      f[next].focus();
+    }
+  }
+
+  lbClose.addEventListener("click", closeLightbox);
+  lbPrev.addEventListener("click", () => show(cur - 1));
+  lbNext.addEventListener("click", () => show(cur + 1));
+  lb.addEventListener("click", e => { if (e.target === lb || e.target.classList.contains("lb-stage")) closeLightbox(); });
+
+  // ---- Topbar scroll state ----
+  const topbar = document.getElementById("topbar");
+  const onScroll = () => topbar.classList.toggle("scrolled", window.scrollY > 60);
+  onScroll();
+  window.addEventListener("scroll", onScroll, {passive:true});
+
+  // ---- Enquiry form → toast ----
+  const form = document.getElementById("enquiry");
+  const toast = document.getElementById("toast");
+  let toastTimer;
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const contact = document.getElementById("contact").value.trim();
+    if (!name || !contact) {
+      toast.querySelector("span:last-child").innerHTML = "<strong>還差一點。</strong>&nbsp;請至少留下稱呼與聯絡方式。";
+      toast.querySelector(".dot").style.background = "#b5736a";
+    } else {
+      toast.querySelector("span:last-child").innerHTML = `<strong>${name}，收到了！</strong>&nbsp;我會在兩個工作天內親自回覆。`;
+      toast.querySelector(".dot").style.background = "var(--amber)";
+      form.reset();
+    }
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 4200);
+  });
+})();
+</script>
+</body>
+</html>

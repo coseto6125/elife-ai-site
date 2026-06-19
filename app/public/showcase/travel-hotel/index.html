@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>霧棲 Mist Perch｜清水斷崖崖上旅宿｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="霧棲 Mist Perch 是座落於花蓮清水斷崖的崖上旅宿。看海、聽霧、棲息——切換晨霧、日落、星夜，挑選房型與日期，即時試算住宿價格並查詢空房。e-life-ai 前端設計樣板。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Cormorant:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* dawn theme (default) — derived from 清水斷崖晨霧 */
+    --sky-top: #cfdce0;
+    --sky-mid: #e7d7c6;
+    --sky-low: #f0d9bf;
+    --ridge-far: #9fb3b8;
+    --ridge-mid: #6f8b91;
+    --ridge-near: #3f565d;
+    --sea: #335f6c;
+    --orb-color: #f3c79a;
+    --orb-glow: rgba(243,199,154,.55);
+    --orb-y: 30%;
+
+    --mist: #e8eef0;
+    --ink: #1a2429;
+    --ink-soft: #46555c;
+    --sand: #f7f3ec;
+    --sand-line: #e2dacd;
+    --dawn: #d98a5a;
+    --dawn-deep: #b96a3d;
+    --teal: #2e5d6b;
+
+    --maxw: 1160px;
+    --r: 14px;
+    --shadow: 0 18px 50px -28px rgba(20,36,41,.55);
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    font-family: "Noto Sans TC", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--sand);
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3 { font-family: "Noto Serif TC", serif; font-weight: 500; line-height: 1.25; margin: 0; letter-spacing: .02em; }
+  .latin { font-family: "Cormorant", serif; font-style: italic; letter-spacing: .01em; }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--dawn); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- top nav ---------- */
+  header.nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px clamp(20px,4vw,46px);
+    color: #fff;
+    transition: background .4s var(--ease), backdrop-filter .4s var(--ease), color .4s var(--ease);
+  }
+  header.nav.scrolled {
+    background: rgba(247,243,236,.92);
+    backdrop-filter: blur(10px);
+    color: var(--ink);
+    border-bottom: 1px solid var(--sand-line);
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; font-family: "Noto Serif TC", serif; font-size: 1.32rem; font-weight: 700; letter-spacing: .12em; }
+  .brand .en { font-family: "Cormorant", serif; font-style: italic; font-size: 1rem; opacity: .8; letter-spacing: .04em; }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: .82rem; letter-spacing: .14em; }
+  .nav-links a { text-decoration: none; opacity: .9; transition: opacity .2s; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    border: 1px solid currentColor; padding: 8px 18px; border-radius: 999px;
+    font-size: .78rem; letter-spacing: .16em; cursor: pointer; background: transparent; color: inherit;
+    font-family: inherit; transition: background .25s, color .25s;
+  }
+  header.nav.scrolled .nav-cta { border-color: var(--ink); }
+  .nav-cta:hover { background: var(--dawn); border-color: var(--dawn); color: #fff; }
+  @media (max-width: 820px){ .nav-links a { display: none; } }
+
+  /* ---------- hero scene (the signature) ---------- */
+  .hero {
+    position: relative; min-height: 100svh; overflow: hidden;
+    display: flex; align-items: flex-end;
+  }
+  .scene { position: absolute; inset: 0; z-index: 0; }
+  .sky {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 52%, var(--sky-low) 100%);
+    transition: background 1.1s var(--ease);
+  }
+  .orb {
+    position: absolute; left: 50%; top: var(--orb-y);
+    width: 190px; height: 190px; margin-left: -95px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #fff 0%, var(--orb-color) 42%, transparent 72%);
+    box-shadow: 0 0 120px 50px var(--orb-glow);
+    transition: top 1.1s var(--ease), background 1.1s var(--ease), box-shadow 1.1s var(--ease);
+  }
+  /* stars only show in night theme */
+  .stars { position: absolute; inset: 0; opacity: 0; transition: opacity 1.1s var(--ease); pointer-events: none; }
+  .stars i {
+    position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%;
+    box-shadow: 0 0 4px 1px rgba(255,255,255,.7);
+    animation: twinkle 4s infinite var(--ease);
+  }
+  @keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+  /* layered ridgelines for parallax depth */
+  .ridge { position: absolute; left: -5%; width: 110%; bottom: 0; transition: background 1.1s var(--ease); will-change: transform; }
+  .ridge svg { display: block; width: 100%; height: 100%; }
+  .ridge-1 { height: 46%; z-index: 1; }
+  .ridge-2 { height: 36%; z-index: 2; }
+  .ridge-3 { height: 26%; z-index: 3; }
+  .sea-band { position: absolute; left:0; right:0; bottom:0; height: 16%; z-index: 0; background: linear-gradient(180deg, transparent, var(--sea)); opacity: .9; transition: background 1.1s var(--ease); }
+
+  .mist {
+    position: absolute; left: 0; right: 0; z-index: 4; pointer-events: none;
+    height: 230px; bottom: 8%;
+    background: radial-gradient(120% 80% at 50% 100%, rgba(255,255,255,.85), rgba(255,255,255,0) 70%);
+    opacity: .7;
+    animation: drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift { from { transform: translateX(-4%); } to { transform: translateX(4%); } }
+
+  .hero-content {
+    position: relative; z-index: 6; width: 100%;
+    padding: 0 clamp(20px,4vw,46px) clamp(40px,7vh,90px);
+  }
+  .hero-inner { max-width: var(--maxw); margin: 0 auto; color: #fff; text-shadow: 0 2px 18px rgba(20,36,41,.35); }
+  .eyebrow { font-size: .8rem; letter-spacing: .42em; text-transform: uppercase; opacity: .92; margin-bottom: 18px; font-weight: 400; }
+  .hero h1 { font-size: clamp(2.7rem, 8vw, 5.6rem); font-weight: 500; letter-spacing: .04em; }
+  .hero h1 .sub { display:block; font-size: clamp(1rem,2.4vw,1.5rem); font-weight: 300; letter-spacing: .3em; margin-top: 14px; opacity: .9; font-family: "Noto Sans TC", sans-serif; }
+  .hero-lead { max-width: 30ch; margin: 24px 0 30px; font-size: clamp(.98rem,1.6vw,1.12rem); font-weight: 300; opacity: .95; }
+
+  /* time-of-day switcher */
+  .time-switch { display: inline-flex; gap: 6px; background: rgba(255,255,255,.16); backdrop-filter: blur(8px); padding: 6px; border-radius: 999px; border: 1px solid rgba(255,255,255,.3); }
+  .time-switch button {
+    border: 0; background: transparent; color: #fff; font-family: "Noto Sans TC", sans-serif;
+    font-size: .82rem; letter-spacing: .14em; padding: 9px 18px; border-radius: 999px; cursor: pointer;
+    transition: background .3s var(--ease), color .3s var(--ease); display: flex; align-items: center; gap: 7px;
+  }
+  .time-switch button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+  .time-switch .ic { font-size: 1rem; }
+
+  .scroll-hint { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 6; color: #fff; font-size: .7rem; letter-spacing: .3em; opacity: .8; }
+  .scroll-hint::after { content:""; display:block; width:1px; height: 34px; margin: 8px auto 0; background: linear-gradient(#fff, transparent); }
+
+  /* ---------- booking widget ---------- */
+  .booking-zone { position: relative; z-index: 20; margin-top: -56px; }
+  .booking {
+    background: var(--sand); border-radius: var(--r); box-shadow: var(--shadow);
+    border: 1px solid var(--sand-line);
+    display: grid; grid-template-columns: 1.1fr 1fr 1fr auto; gap: 0;
+    overflow: hidden;
+  }
+  .bk-field { padding: 18px 22px; border-right: 1px solid var(--sand-line); display: flex; flex-direction: column; gap: 6px; }
+  .bk-field label { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); }
+  .bk-field input, .bk-field select {
+    border: 0; background: transparent; font-family: "Noto Sans TC", sans-serif; font-size: 1rem; color: var(--ink);
+    padding: 2px 0; width: 100%; cursor: pointer; font-weight: 400;
+  }
+  .bk-field input:focus, .bk-field select:focus { outline: none; }
+  .bk-submit {
+    background: var(--ink); color: #fff; border: 0; cursor: pointer;
+    font-family: "Noto Serif TC", serif; font-size: 1rem; letter-spacing: .14em; padding: 0 34px;
+    display: flex; align-items: center; gap: 8px; transition: background .25s;
+  }
+  .bk-submit:hover { background: var(--dawn-deep); }
+  @media (max-width: 880px){
+    .booking { grid-template-columns: 1fr 1fr; }
+    .bk-field:nth-child(2){ border-right: 0; }
+    .bk-submit { grid-column: 1 / -1; padding: 16px; }
+  }
+  @media (max-width: 480px){
+    .booking { grid-template-columns: 1fr; }
+    .bk-field { border-right: 0; border-bottom: 1px solid var(--sand-line); }
+  }
+
+  /* live price summary chip */
+  .price-line {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 14px;
+    margin: 18px 4px 0; color: var(--ink-soft); font-size: .9rem;
+  }
+  .price-line .total { color: var(--ink); }
+  .price-line .total b { font-family: "Cormorant", serif; font-style: normal; font-size: 1.7rem; font-weight: 600; letter-spacing: .01em; }
+  .price-line .save { color: var(--dawn-deep); font-size: .82rem; }
+  .badge { background: rgba(217,138,90,.14); color: var(--dawn-deep); border-radius: 999px; padding: 3px 12px; font-size: .74rem; letter-spacing: .06em; }
+
+  /* ---------- section frame ---------- */
+  section.block { padding: clamp(70px,10vh,120px) 0; }
+  .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 44px; flex-wrap: wrap; }
+  .sec-head .kicker { font-size: .76rem; letter-spacing: .34em; color: var(--dawn-deep); text-transform: uppercase; margin-bottom: 12px; }
+  .sec-head h2 { font-size: clamp(1.7rem,4vw,2.7rem); }
+  .sec-head p { max-width: 38ch; color: var(--ink-soft); margin: 0; font-size: .96rem; }
+
+  /* ---------- rooms ---------- */
+  .room-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+  .room-tabs button {
+    border: 1px solid var(--sand-line); background: #fff; color: var(--ink-soft);
+    font-family: "Noto Sans TC", sans-serif; font-size: .86rem; letter-spacing: .08em;
+    padding: 10px 20px; border-radius: 999px; cursor: pointer; transition: all .25s var(--ease);
+  }
+  .room-tabs button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .room-tabs button:hover { border-color: var(--ink); }
+
+  .room-panel { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); background: #fff; }
+  .room-visual { position: relative; min-height: 420px; overflow: hidden; }
+  .room-visual .vsky { position: absolute; inset: 0; transition: background .6s var(--ease); }
+  .room-visual .vridge { position: absolute; left:0; right:0; bottom:0; height: 50%; }
+  .room-visual .vlabel { position: absolute; left: 26px; bottom: 24px; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.4); }
+  .room-visual .vlabel .latin { display: block; font-size: 2rem; opacity: .95; }
+  .room-visual .vlabel .zh { font-family: "Noto Serif TC", serif; font-size: 1.05rem; letter-spacing: .2em; }
+  .room-info { padding: clamp(26px,4vw,46px); display: flex; flex-direction: column; }
+  .room-info h3 { font-size: 1.7rem; margin-bottom: 6px; }
+  .room-info .room-en { font-family:"Cormorant", serif; font-style: italic; color: var(--ink-soft); font-size: 1.05rem; margin-bottom: 18px; }
+  .room-desc { color: var(--ink-soft); font-size: .96rem; margin-bottom: 24px; }
+  .room-feats { list-style: none; padding: 0; margin: 0 0 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; }
+  .room-feats li { font-size: .88rem; display: flex; gap: 9px; align-items: center; color: var(--ink); }
+  .room-feats .fi { color: var(--dawn-deep); font-size: 1rem; }
+  .room-foot { margin-top: auto; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid var(--sand-line); }
+  .room-rate { font-size: .82rem; color: var(--ink-soft); }
+  .room-rate b { font-family: "Cormorant", serif; font-style: normal; font-size: 1.9rem; font-weight: 600; color: var(--ink); margin-right: 4px; }
+  .room-pick { background: var(--dawn); color: #fff; border: 0; padding: 12px 26px; border-radius: 999px; font-family: "Noto Serif TC", serif; letter-spacing: .12em; cursor: pointer; transition: background .25s; }
+  .room-pick:hover { background: var(--dawn-deep); }
+  @media (max-width: 760px){ .room-panel { grid-template-columns: 1fr; } .room-visual { min-height: 280px; } }
+
+  /* ---------- itinerary scrub ---------- */
+  .itin { background: var(--ink); color: var(--mist); border-radius: var(--r); padding: clamp(34px,5vw,60px); }
+  .itin .sec-head .kicker { color: var(--orb-color); }
+  .itin .sec-head h2 { color: #fff; }
+  .itin .sec-head p { color: rgba(232,238,240,.7); }
+  .scrub-track { position: relative; margin: 10px 0 30px; }
+  .scrub-track input[type=range]{ width: 100%; }
+  .scrub-ticks { display: flex; justify-content: space-between; margin-top: 12px; }
+  .scrub-ticks button {
+    background: transparent; border: 0; color: rgba(232,238,240,.55); cursor: pointer;
+    font-family: "Noto Sans TC", sans-serif; font-size: .78rem; letter-spacing: .08em; padding: 4px; transition: color .2s;
+  }
+  .scrub-ticks button.on { color: var(--orb-color); }
+  .itin-card { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start; min-height: 130px; }
+  .itin-time { font-family: "Cormorant", serif; font-size: 2.6rem; color: var(--orb-color); line-height: 1; font-style: normal; }
+  .itin-body h3 { color: #fff; font-size: 1.5rem; margin-bottom: 8px; }
+  .itin-body p { color: rgba(232,238,240,.78); margin: 0; font-size: .96rem; max-width: 52ch; }
+  /* range slider styling */
+  input[type=range]{ -webkit-appearance: none; appearance: none; height: 4px; background: rgba(255,255,255,.2); border-radius: 4px; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--orb-color); cursor: pointer; box-shadow: 0 0 0 5px rgba(243,199,154,.25); }
+  input[type=range]::-moz-range-thumb{ width: 20px; height: 20px; border: 0; border-radius: 50%; background: var(--orb-color); cursor: pointer; box-shadow: 0 0 0 5px rgba(243,199,154,.25); }
+
+  /* ---------- testimonial ---------- */
+  .quote { text-align: center; max-width: 720px; margin: 0 auto; }
+  .quote .latin { font-size: 3rem; color: var(--dawn); display: block; line-height: 1; }
+  .quote blockquote { font-family: "Noto Serif TC", serif; font-size: clamp(1.3rem,3vw,1.9rem); font-weight: 400; line-height: 1.6; margin: 14px 0 22px; }
+  .quote cite { font-style: normal; color: var(--ink-soft); font-size: .9rem; letter-spacing: .1em; }
+
+  /* ---------- footer ---------- */
+  footer.site {
+    background: var(--ink); color: rgba(232,238,240,.8); padding: 64px 0 34px; margin-top: 10px;
+  }
+  footer.site .grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 36px; margin-bottom: 44px; }
+  footer.site h4 { color: #fff; font-family: "Noto Serif TC", serif; font-size: 1.4rem; letter-spacing: .1em; margin: 0 0 12px; }
+  footer.site .ft-en { font-family: "Cormorant", serif; font-style: italic; opacity: .7; }
+  footer.site ul { list-style: none; padding: 0; margin: 0; }
+  footer.site li { margin-bottom: 9px; font-size: .9rem; }
+  footer.site .col-h { font-size: .72rem; letter-spacing: .24em; text-transform: uppercase; color: var(--orb-color); margin-bottom: 16px; }
+  footer.site a { text-decoration: none; opacity: .85; }
+  footer.site a:hover { opacity: 1; color: var(--orb-color); }
+  .ft-bottom { border-top: 1px solid rgba(255,255,255,.12); padding-top: 22px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: .82rem; color: rgba(232,238,240,.6); }
+  .ft-demo a { color: var(--orb-color); }
+  @media (max-width: 700px){ footer.site .grid { grid-template-columns: 1fr; } }
+
+  /* ---------- toast ---------- */
+  .toast {
+    position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(140%);
+    background: var(--ink); color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow);
+    z-index: 100; max-width: 90vw; display: flex; align-items: center; gap: 14px;
+    transition: transform .5s var(--ease); border: 1px solid rgba(255,255,255,.12);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast .tic { font-size: 1.3rem; }
+  .toast .tt { font-family: "Noto Serif TC", serif; font-size: .98rem; }
+  .toast .ts { font-size: .82rem; color: rgba(232,238,240,.75); }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .mist, .stars i { animation: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+    .orb, .sky, .ridge, .sea-band, .room-visual .vsky { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="brand">霧棲<span class="en">Mist Perch</span></div>
+  <nav class="nav-links">
+    <a href="#rooms">房型</a>
+    <a href="#itinerary">一日行程</a>
+    <a href="#voices">旅人之聲</a>
+    <a href="#book">訂房</a>
+  </nav>
+  <button class="nav-cta" data-scroll="#book">查詢空房</button>
+</header>
+
+<!-- ============ HERO SCENE (signature) ============ -->
+<section class="hero" id="top">
+  <div class="scene" id="scene">
+    <div class="sky"></div>
+    <div class="stars" id="stars"></div>
+    <div class="orb"></div>
+
+    <div class="ridge ridge-1">
+      <svg viewBox="0 0 1200 300" preserveAspectRatio="none"><path d="M0,300 L0,150 C150,90 320,170 480,120 C660,65 820,160 1000,110 C1100,82 1200,130 1200,130 L1200,300 Z" fill="var(--ridge-far)"/></svg>
+    </div>
+    <div class="ridge ridge-2">
+      <svg viewBox="0 0 1200 300" preserveAspectRatio="none"><path d="M0,300 L0,180 C180,120 300,200 520,150 C720,105 880,190 1080,140 C1140,124 1200,160 1200,160 L1200,300 Z" fill="var(--ridge-mid)"/></svg>
+    </div>
+    <div class="ridge ridge-3">
+      <svg viewBox="0 0 1200 300" preserveAspectRatio="none"><path d="M0,300 L0,210 C220,160 420,230 640,190 C860,150 1020,220 1200,180 L1200,300 Z" fill="var(--ridge-near)"/></svg>
+    </div>
+    <div class="mist"></div>
+    <div class="sea-band"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-inner">
+      <div class="eyebrow">花蓮 · 清水斷崖</div>
+      <h1>看海、聽霧、棲息<span class="sub">崖上九間房 · 太平洋為窗</span></h1>
+      <p class="hero-lead">海拔一百二十公尺，霧棲懸在斷崖與洋面之間。挑一個此刻的天色，讓海風決定你的步調。</p>
+      <div class="time-switch" role="group" aria-label="切換此刻的天色">
+        <button data-time="dawn" aria-pressed="true"><span class="ic">🌅</span>晨霧</button>
+        <button data-time="dusk" aria-pressed="false"><span class="ic">🌇</span>日落</button>
+        <button data-time="night" aria-pressed="false"><span class="ic">✦</span>星夜</button>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">向下探索</div>
+</section>
+
+<!-- ============ BOOKING WIDGET ============ -->
+<div class="booking-zone wrap" id="book">
+  <form class="booking" id="bookingForm" autocomplete="off">
+    <div class="bk-field">
+      <label for="checkin">入住</label>
+      <input type="date" id="checkin" required>
+    </div>
+    <div class="bk-field">
+      <label for="checkout">退房</label>
+      <input type="date" id="checkout" required>
+    </div>
+    <div class="bk-field">
+      <label for="guests">人數</label>
+      <select id="guests">
+        <option value="1">1 位旅人</option>
+        <option value="2" selected>2 位旅人</option>
+        <option value="3">3 位旅人</option>
+        <option value="4">4 位旅人</option>
+      </select>
+    </div>
+    <button type="submit" class="bk-submit">查詢空房 →</button>
+  </form>
+  <div class="price-line" id="priceLine" aria-live="polite">
+    <span class="badge" id="roomBadge">海霧雙人房</span>
+    <span class="total tnum">合計 <b id="totalNT">NT$0</b> <span id="nightsTxt">／ 0 晚</span></span>
+    <span class="save" id="saveTxt"></span>
+  </div>
+</div>
+
+<!-- ============ ROOMS ============ -->
+<section class="block wrap reveal" id="rooms">
+  <div class="sec-head">
+    <div>
+      <div class="kicker">九間房 · 各擁一片海</div>
+      <h2>選一扇你要醒來面對的窗</h2>
+    </div>
+    <p>每間房皆面海，落地窗框住不同段的斷崖與洋流。點選房型即套用至上方訂房試算。</p>
+  </div>
+
+  <div class="room-tabs" role="tablist" aria-label="房型">
+    <button role="tab" aria-selected="true" data-room="0">海霧雙人房</button>
+    <button role="tab" aria-selected="false" data-room="1">崖頂景觀房</button>
+    <button role="tab" aria-selected="false" data-room="2">聽濤閣樓</button>
+    <button role="tab" aria-selected="false" data-room="3">棲海獨棟</button>
+  </div>
+
+  <div class="room-panel" id="roomPanel">
+    <div class="room-visual" id="roomVisual">
+      <div class="vsky"></div>
+      <div class="vridge">
+        <svg viewBox="0 0 600 200" preserveAspectRatio="none" style="width:100%;height:100%"><path d="M0,200 L0,120 C120,70 240,140 360,100 C460,68 540,130 600,100 L600,200 Z" fill="rgba(63,86,93,.85)"/></svg>
+      </div>
+      <div class="vlabel">
+        <span class="latin" id="rvEn">Sea Mist</span>
+        <span class="zh" id="rvZh">海霧雙人房</span>
+      </div>
+    </div>
+    <div class="room-info">
+      <h3 id="rName">海霧雙人房</h3>
+      <div class="room-en latin" id="rEn">Sea Mist Room · 24㎡</div>
+      <p class="room-desc" id="rDesc">晨起被霧氣輕輕喚醒。北向落地窗收進清水斷崖最柔的一段，雙人浴缸正對洋面，泡湯時海平線就在腳邊。</p>
+      <ul class="room-feats" id="rFeats"></ul>
+      <div class="room-foot">
+        <div class="room-rate">每晚 <b id="rRate">NT$5,800</b> 起 · 含早餐</div>
+        <button class="room-pick" id="roomPick">選這間 · 套用試算</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ITINERARY SCRUB ============ -->
+<section class="block wrap reveal" id="itinerary">
+  <div class="itin">
+    <div class="sec-head">
+      <div>
+        <div class="kicker">崖上的一天</div>
+        <h2>從晨霧到星空，拖曳時間軸</h2>
+      </div>
+      <p>霧棲為每位旅人安排不刻意的一天。滑動下方時間，看看此刻崖上正發生什麼。</p>
+    </div>
+    <div class="scrub-track">
+      <input type="range" id="scrub" min="0" max="4" step="1" value="0" aria-label="一日行程時間軸">
+      <div class="scrub-ticks" id="scrubTicks"></div>
+    </div>
+    <div class="itin-card">
+      <div class="itin-time latin" id="itTime">05:40</div>
+      <div class="itin-body">
+        <h3 id="itTitle">追霧 · 崖頂日出茶席</h3>
+        <p id="itDesc">管家在房門前留下一壺熱玉山金萱。披上毛毯走上觀景平台，看太陽從太平洋升起，海霧在腳下緩緩散去。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIAL ============ -->
+<section class="block wrap reveal" id="voices">
+  <div class="quote">
+    <span class="latin">“</span>
+    <blockquote>住過很多海景旅宿，第一次有一間讓我願意整個下午只是坐著，看霧來、看霧走。</blockquote>
+    <cite>—— 子瑜，台北 · 入住聽濤閣樓兩晚</cite>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site" id="contact">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h4>霧棲 <span class="ft-en">Mist Perch</span></h4>
+        <p style="max-width:34ch;font-size:.9rem;line-height:1.8;">花蓮縣秀林鄉清水斷崖崖上 · 九間面海客房<br>聽霧、看海、好好棲息。</p>
+      </div>
+      <div>
+        <div class="col-h">聯絡</div>
+        <ul>
+          <li>訂房專線 03-867-2024</li>
+          <li>stay@mistperch.tw</li>
+          <li>每日 09:00–21:00</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-h">前往</div>
+        <ul>
+          <li><a href="#book">查詢空房</a></li>
+          <li><a href="#rooms">房型介紹</a></li>
+          <li><a href="#itinerary">崖上一日</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <span>© 2026 霧棲 Mist Perch · 此為虛構品牌展示頁</span>
+      <span class="ft-demo">設計樣板 · <a href="https://service.e-life-ai.com">e-life-ai.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="tic">🌊</span>
+  <div>
+    <div class="tt" id="toastTitle">已為你查詢空房</div>
+    <div class="ts" id="toastSub"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- nav scroll state ---------- */
+  var nav = document.getElementById("nav");
+  function onScroll(){ nav.classList.toggle("scrolled", window.scrollY > 60); }
+  window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+  document.querySelectorAll("[data-scroll]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var t = document.querySelector(b.getAttribute("data-scroll"));
+      if(t) t.scrollIntoView({behavior: reduce ? "auto":"smooth", block:"center"});
+    });
+  });
+
+  /* ---------- SIGNATURE: time-of-day re-theme ---------- */
+  var root = document.documentElement;
+  var themes = {
+    dawn: { "--sky-top":"#cfdce0","--sky-mid":"#e7d7c6","--sky-low":"#f0d9bf",
+            "--ridge-far":"#9fb3b8","--ridge-mid":"#6f8b91","--ridge-near":"#3f565d",
+            "--sea":"#335f6c","--orb-color":"#f3c79a","--orb-glow":"rgba(243,199,154,.55)","--orb-y":"30%" },
+    dusk: { "--sky-top":"#3d4f72","--sky-mid":"#9b6f7e","--sky-low":"#e3a36b",
+            "--ridge-far":"#6d6a83","--ridge-mid":"#4f4a63","--ridge-near":"#2a2738",
+            "--sea":"#3a2f47","--orb-color":"#ff9d5c","--orb-glow":"rgba(255,140,70,.6)","--orb-y":"58%" },
+    night:{ "--sky-top":"#0d1530","--sky-mid":"#16224a","--sky-low":"#28335f",
+            "--ridge-far":"#1f2a4a","--ridge-mid":"#15203c","--ridge-near":"#0a1124",
+            "--sea":"#0c1530","--orb-color":"#eef3ff","--orb-glow":"rgba(180,200,255,.5)","--orb-y":"22%" }
+  };
+  var stars = document.getElementById("stars");
+  // build starfield once
+  (function(){
+    var html = "";
+    for(var i=0;i<60;i++){
+      var x = Math.random()*100, y = Math.random()*55, d = (Math.random()*4).toFixed(1);
+      html += '<i style="left:'+x.toFixed(1)+'%;top:'+y.toFixed(1)+'%;animation-delay:'+d+'s"></i>';
+    }
+    stars.innerHTML = html;
+  })();
+
+  function applyTheme(key){
+    var t = themes[key]; if(!t) return;
+    for(var k in t){ root.style.setProperty(k, t[k]); }
+    stars.style.opacity = key === "night" ? "1" : "0";
+    document.querySelectorAll(".time-switch button").forEach(function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-time") === key ? "true":"false");
+    });
+    // sync room visual sky to the same mood
+    syncRoomSky();
+  }
+  document.querySelectorAll(".time-switch button").forEach(function(b){
+    b.addEventListener("click", function(){ applyTheme(b.getAttribute("data-time")); });
+  });
+
+  /* ---------- parallax (disabled under reduced motion) ---------- */
+  if(!reduce){
+    var r1=document.querySelector(".ridge-1"), r2=document.querySelector(".ridge-2"),
+        r3=document.querySelector(".ridge-3"), orb=document.querySelector(".orb");
+    var ticking=false;
+    window.addEventListener("scroll", function(){
+      if(ticking) return; ticking=true;
+      requestAnimationFrame(function(){
+        var y = window.scrollY;
+        if(y < window.innerHeight){
+          r1.style.transform = "translateY("+(y*0.12)+"px)";
+          r2.style.transform = "translateY("+(y*0.22)+"px)";
+          r3.style.transform = "translateY("+(y*0.34)+"px)";
+          orb.style.transform = "translateY("+(y*0.5)+"px)";
+        }
+        ticking=false;
+      });
+    }, {passive:true});
+  }
+
+  /* ---------- ROOM DATA ---------- */
+  var rooms = [
+    { name:"海霧雙人房", en:"Sea Mist Room · 24㎡", rate:5800,
+      desc:"晨起被霧氣輕輕喚醒。北向落地窗收進清水斷崖最柔的一段，雙人浴缸正對洋面，泡湯時海平線就在腳邊。",
+      feats:["北向面海落地窗","檜木雙人浴缸","Marshall 音響","在地野放茶具"],
+      sky:"linear-gradient(180deg,#cfdce0,#f0d9bf)", vEn:"Sea Mist" },
+    { name:"崖頂景觀房", en:"Cliff Crest Room · 32㎡", rate:7600,
+      desc:"全旅宿最高的一間，180 度收進斷崖與海灣。獨立陽台擺著一張躺椅，傍晚最適合什麼也不做。",
+      feats:["180° 海灣陽台","King size 大床","戶外躺椅","黑膠唱機"],
+      sky:"linear-gradient(180deg,#3d4f72,#e3a36b)", vEn:"Cliff Crest" },
+    { name:"聽濤閣樓", en:"Tideloft Suite · 38㎡", rate:9200,
+      desc:"挑高斜頂閣樓，夜裡關燈就能聽見浪打在崖腳。樓中樓設計，樓上臥榻是專為看星空保留的位置。",
+      feats:["挑高樓中樓","天窗觀星臥榻","下沉式客廳","管家迎賓茶點"],
+      sky:"linear-gradient(180deg,#16224a,#28335f)", vEn:"Tideloft" },
+    { name:"棲海獨棟", en:"Solitude Villa · 56㎡", rate:14800,
+      desc:"唯一的獨棟。私人無邊際湯池懸在崖邊，與太平洋接成一線。整片海，只屬於今晚的你們。",
+      feats:["崖邊無邊際湯池","私人庭院","雙衛浴","專屬管家服務"],
+      sky:"linear-gradient(180deg,#9b6f7e,#e3a36b)", vEn:"Solitude" }
+  ];
+  var current = 0;
+
+  var rName=document.getElementById("rName"), rEn=document.getElementById("rEn"),
+      rDesc=document.getElementById("rDesc"), rRate=document.getElementById("rRate"),
+      rFeats=document.getElementById("rFeats"), rvEn=document.getElementById("rvEn"),
+      rvZh=document.getElementById("rvZh"), roomBadge=document.getElementById("roomBadge"),
+      vsky=document.querySelector(".room-visual .vsky");
+
+  function fmt(n){ return "NT$"+n.toLocaleString("en-US"); }
+
+  function renderRoom(i){
+    current = i;
+    var r = rooms[i];
+    rName.textContent = r.name;
+    rEn.textContent = r.en;
+    rDesc.textContent = r.desc;
+    rRate.textContent = fmt(r.rate);
+    rvEn.textContent = r.vEn;
+    rvZh.textContent = r.name;
+    roomBadge.textContent = r.name;
+    rFeats.innerHTML = r.feats.map(function(f){
+      return '<li><span class="fi">✦</span>'+f+'</li>';
+    }).join("");
+    syncRoomSky();
+    document.querySelectorAll('.room-tabs [role=tab]').forEach(function(t,idx){
+      t.setAttribute("aria-selected", idx===i ? "true":"false");
+    });
+    updatePrice();
+  }
+  function syncRoomSky(){ vsky.style.background = rooms[current].sky; }
+
+  document.querySelectorAll('.room-tabs [role=tab]').forEach(function(t){
+    t.addEventListener("click", function(){ renderRoom(+t.getAttribute("data-room")); });
+  });
+  document.getElementById("roomPick").addEventListener("click", function(){
+    document.getElementById("book").scrollIntoView({behavior: reduce?"auto":"smooth", block:"center"});
+    showToast("已套用「"+rooms[current].name+"」", priceSubText());
+  });
+
+  /* ---------- BOOKING: live price ---------- */
+  var ci=document.getElementById("checkin"), co=document.getElementById("checkout"),
+      guests=document.getElementById("guests"), totalNT=document.getElementById("totalNT"),
+      nightsTxt=document.getElementById("nightsTxt"), saveTxt=document.getElementById("saveTxt");
+
+  function toDate(v){ return v ? new Date(v+"T00:00:00") : null; }
+  function nightsBetween(){
+    var a=toDate(ci.value), b=toDate(co.value);
+    if(!a||!b) return 0;
+    var d = Math.round((b-a)/86400000);
+    return d>0 ? d : 0;
+  }
+  function calc(){
+    var n = nightsBetween();
+    var rate = rooms[current].rate;
+    var gross = n*rate;
+    // 早鳥折扣：連住 3 晚以上 9 折
+    var earlyBird = n>=3 ? Math.round(gross*0.1) : 0;
+    return { n:n, gross:gross, save:earlyBird, net:gross-earlyBird };
+  }
+  function priceSubText(){
+    var c=calc();
+    if(c.n===0) return "請選擇入住與退房日期";
+    return rooms[current].name+" · "+c.n+" 晚 · "+guests.options[guests.selectedIndex].text+" · "+fmt(c.net);
+  }
+  function updatePrice(){
+    var c=calc();
+    totalNT.textContent = fmt(c.net);
+    nightsTxt.textContent = "／ "+c.n+" 晚 · "+rooms[current].name;
+    if(c.save>0){ saveTxt.textContent = "已折早鳥 −"+fmt(c.save)+"（連住 3 晚 9 折）"; }
+    else if(c.n>0){ saveTxt.textContent = "連住 3 晚可享早鳥 9 折"; }
+    else { saveTxt.textContent = ""; }
+  }
+  [ci,co,guests].forEach(function(el){ el.addEventListener("change", updatePrice); });
+
+  // seed sensible default dates (next weekend, 2 nights)
+  (function(){
+    var t = new Date(); t.setDate(t.getDate()+5);
+    var t2 = new Date(t); t2.setDate(t.getDate()+2);
+    function iso(d){ return d.toISOString().slice(0,10); }
+    ci.value = iso(t); co.value = iso(t2);
+    ci.min = iso(new Date());
+  })();
+
+  document.getElementById("bookingForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var c = calc();
+    if(c.n===0){ showToast("日期再確認一下", "退房日需晚於入住日"); return; }
+    showToast("已為你保留 · "+rooms[current].name, priceSubText());
+  });
+
+  /* ---------- ITINERARY scrub ---------- */
+  var itin = [
+    { t:"05:40", title:"追霧 · 崖頂日出茶席",
+      d:"管家在房門前留下一壺熱玉山金萱。披上毛毯走上觀景平台，看太陽從太平洋升起，海霧在腳下緩緩散去。" },
+    { t:"09:30", title:"早餐 · 面海長桌",
+      d:"當令在地食材：剝皮辣椒煎蛋、現烤麻糬與秀林部落咖啡。整面窗就是海，吃多久都不會有人催。" },
+    { t:"14:00", title:"潮間帶導覽 · 在地嚮導",
+      d:"退潮時跟著部落嚮導走下崖徑，認識清水斷崖的礫石灘與潮池生態。回程在崖腰野餐喝杯洛神花茶。" },
+    { t:"17:50", title:"金色時刻 · 無邊際湯池",
+      d:"日落前回到房裡，泡進與海平線接成一線的湯池。夕陽把整片太平洋染成蜜糖色，這是霧棲最被記得的一刻。" },
+    { t:"20:30", title:"觀星 · 崖頂天文席",
+      d:"光害極低的斷崖夜空，肉眼可見銀河。蓋著毛毯、喝著熱可可，由管家用雷射筆帶你認星座，結束崖上的一天。" }
+  ];
+  var scrub=document.getElementById("scrub"), itTime=document.getElementById("itTime"),
+      itTitle=document.getElementById("itTitle"), itDesc=document.getElementById("itDesc"),
+      ticks=document.getElementById("scrubTicks");
+  ticks.innerHTML = itin.map(function(s,i){
+    return '<button data-i="'+i+'">'+s.t+'</button>';
+  }).join("");
+  function renderItin(i){
+    var s = itin[i];
+    itTime.textContent = s.t; itTitle.textContent = s.title; itDesc.textContent = s.d;
+    ticks.querySelectorAll("button").forEach(function(b,idx){ b.classList.toggle("on", idx===i); });
+  }
+  scrub.addEventListener("input", function(){ renderItin(+scrub.value); });
+  ticks.querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){ scrub.value = b.getAttribute("data-i"); renderItin(+scrub.value); });
+  });
+
+  /* ---------- toast ---------- */
+  var toast=document.getElementById("toast"), toastTitle=document.getElementById("toastTitle"),
+      toastSub=document.getElementById("toastSub"), toastTimer;
+  function showToast(title, sub){
+    toastTitle.textContent = title; toastSub.textContent = sub || "";
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 4200);
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  if("IntersectionObserver" in window && !reduce){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, {threshold:.14});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---------- init ---------- */
+  renderRoom(0);
+  renderItin(0);
+})();
+</script>
+</body>
+</html>

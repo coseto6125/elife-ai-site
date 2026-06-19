@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MÉRIDIEN — 永晝系列 Lookbook｜e-life-ai</title>
+<meta name="description" content="MÉRIDIEN 時尚電商品牌示範店 — 永晝系列。編輯式選物、快速檢視、加入購物袋與滑出式購物車模擬。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400&family=Syne:wght@500;600;700;800&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0c0b0a;
+    --ink-soft: #161412;
+    --panel: #1b1815;
+    --line: #322d27;
+    --paper: #f4efe7;
+    --muted: #948b80;
+    --accent: #d8553a;
+    --accent-soft: #e87a62;
+    --display: "Bodoni Moda", serif;
+    --grotesk: "Syne", sans-serif;
+    --body: "Jost", sans-serif;
+    --ease: cubic-bezier(.16,.84,.34,1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--body);
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  .wrap { width: min(1280px, 100% - 8vw); margin-inline: auto; }
+
+  /* ---------- NAV ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 60;
+    background: rgba(12,11,10,.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-in {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-block: 18px;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(20px, 3vw, 27px);
+    letter-spacing: .22em;
+    text-indent: .22em;
+  }
+  .nav-links { display: flex; gap: 30px; align-items: center; }
+  .nav-links a {
+    font-family: var(--grotesk);
+    font-weight: 500;
+    font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted);
+    transition: color .3s var(--ease);
+  }
+  .nav-links a:hover { color: var(--paper); }
+  .nav-actions { display: flex; gap: 18px; align-items: center; }
+  .icon-btn {
+    width: 40px; height: 40px; display: grid; place-items: center;
+    border: 1px solid var(--line); border-radius: 50%;
+    transition: border-color .3s var(--ease), color .3s var(--ease);
+    position: relative;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent-soft); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .cart-count {
+    position: absolute; top: -6px; right: -6px;
+    min-width: 19px; height: 19px; padding-inline: 4px;
+    background: var(--accent); color: #fff;
+    font-family: var(--grotesk); font-weight: 700; font-size: 10.5px;
+    border-radius: 999px; display: grid; place-items: center;
+    transform: scale(0); transition: transform .35s var(--ease);
+  }
+  .cart-count.show { transform: scale(1); }
+  @media (max-width: 760px) { .nav-links { display: none; } }
+
+  /* ---------- HERO ---------- */
+  .hero { position: relative; padding-block: clamp(48px, 9vw, 120px) clamp(40px, 6vw, 80px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(28px, 5vw, 70px);
+    align-items: center;
+  }
+  .eyebrow {
+    font-family: var(--grotesk); font-weight: 600;
+    font-size: 12px; letter-spacing: .42em; text-transform: uppercase;
+    color: var(--accent-soft);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .eyebrow::before { content: ""; width: 44px; height: 1px; background: var(--accent); }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(46px, 9vw, 116px);
+    line-height: .92; letter-spacing: -.01em;
+    margin-block: 26px 22px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent-soft); font-weight: 400; }
+  .hero p.lede {
+    color: var(--muted); max-width: 42ch; font-size: clamp(15px, 1.4vw, 17px);
+  }
+  .hero-cta { display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--grotesk); font-weight: 600;
+    font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase;
+    padding: 15px 30px; border-radius: 2px;
+    transition: transform .35s var(--ease), background .3s, color .3s;
+  }
+  .btn-solid { background: var(--paper); color: var(--ink); }
+  .btn-solid:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid var(--line); color: var(--paper); }
+  .btn-ghost:hover { border-color: var(--paper); transform: translateY(-2px); }
+
+  .hero-art {
+    position: relative; aspect-ratio: 4/5;
+    background: linear-gradient(160deg, #211d18, #14120f);
+    border: 1px solid var(--line);
+    display: grid; place-items: center; overflow: hidden;
+  }
+  .hero-art::after {
+    content: "SS / 26"; position: absolute; bottom: 16px; right: 20px;
+    font-family: var(--display); font-style: italic; font-size: 15px; color: var(--muted);
+  }
+  .hero-art .tag {
+    position: absolute; top: 18px; left: 18px;
+    font-family: var(--grotesk); font-weight: 600; font-size: 11px;
+    letter-spacing: .25em; color: var(--accent-soft);
+  }
+
+  /* ---------- MARQUEE ---------- */
+  .marquee {
+    border-block: 1px solid var(--line); overflow: hidden; padding-block: 16px;
+    background: var(--ink-soft);
+  }
+  .marquee-track {
+    display: flex; gap: 56px; white-space: nowrap; width: max-content;
+    animation: scroll 26s linear infinite;
+  }
+  .marquee span {
+    font-family: var(--display); font-style: italic; font-size: 22px; color: var(--paper);
+    display: flex; align-items: center; gap: 56px;
+  }
+  .marquee span::after { content: "✦"; color: var(--accent); font-style: normal; font-size: 14px; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  /* ---------- SHOP ---------- */
+  .shop { padding-block: clamp(56px, 8vw, 110px); }
+  .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 38px; }
+  .section-head h2 {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(32px, 5vw, 56px); line-height: 1; letter-spacing: -.01em;
+  }
+  .section-head .sub { font-family: var(--grotesk); font-weight: 500; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 34px; }
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--grotesk); font-weight: 500;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 9px 18px; border: 1px solid var(--line); border-radius: 999px;
+    color: var(--muted); transition: all .3s var(--ease);
+  }
+  .chip:hover { color: var(--paper); border-color: var(--muted); }
+  .chip.active { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  .sortwrap { display: flex; align-items: center; gap: 10px; }
+  .sortwrap label { font-family: var(--grotesk); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  select.sort {
+    font-family: var(--body); font-size: 13px;
+    background: var(--ink-soft); color: var(--paper);
+    border: 1px solid var(--line); border-radius: 2px; padding: 9px 12px;
+  }
+  select.sort:focus { outline: 1px solid var(--accent); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.2vw, 34px);
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    border: 1px solid var(--line); background: var(--ink-soft);
+    display: flex; flex-direction: column; position: relative;
+    transition: transform .5s var(--ease), border-color .4s;
+  }
+  .card:hover { transform: translateY(-6px); border-color: var(--muted); }
+  .card-art {
+    aspect-ratio: 4/5; position: relative; overflow: hidden;
+    background: radial-gradient(120% 120% at 50% 10%, #232019, #100e0c);
+    display: grid; place-items: center;
+  }
+  .card-art svg { width: 64%; height: 64%; }
+  .wish {
+    position: absolute; top: 12px; right: 12px; width: 38px; height: 38px;
+    border-radius: 50%; background: rgba(12,11,10,.5); backdrop-filter: blur(6px);
+    display: grid; place-items: center; z-index: 3;
+    transition: transform .3s var(--ease);
+  }
+  .wish svg { width: 18px; height: 18px; transition: all .3s; stroke: var(--paper); fill: none; }
+  .wish:hover { transform: scale(1.12); }
+  .wish.on svg { fill: var(--accent); stroke: var(--accent); }
+  .badge-new {
+    position: absolute; top: 14px; left: 14px; z-index: 3;
+    font-family: var(--grotesk); font-weight: 600; font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--ink); background: var(--accent-soft);
+    padding: 4px 9px;
+  }
+  .quick {
+    position: absolute; inset-inline: 14px; bottom: 14px; z-index: 3;
+    background: var(--paper); color: var(--ink);
+    font-family: var(--grotesk); font-weight: 600; font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    padding: 12px; text-align: center;
+    opacity: 0; transform: translateY(12px); transition: all .4s var(--ease);
+  }
+  .card:hover .quick { opacity: 1; transform: translateY(0); }
+  .quick:hover { background: var(--accent); color: #fff; }
+  .card-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 6px; }
+  .card-cat { font-family: var(--grotesk); font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--accent-soft); }
+  .card-name { font-family: var(--display); font-size: 21px; font-weight: 500; line-height: 1.15; }
+  .card-price { font-family: var(--grotesk); font-weight: 500; font-size: 15px; color: var(--paper); margin-top: 4px; }
+  .empty { grid-column: 1/-1; text-align: center; color: var(--muted); padding: 60px 0; font-family: var(--display); font-style: italic; font-size: 22px; }
+
+  /* ---------- LOOKBOOK ---------- */
+  .lookbook { padding-block: clamp(40px, 6vw, 90px); background: var(--ink-soft); border-block: 1px solid var(--line); }
+  .lb-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
+  .lb-cell {
+    aspect-ratio: 3/4; position: relative; overflow: hidden;
+    display: grid; place-items: center;
+    background: linear-gradient(150deg, #211d18, #14120f);
+    border: 1px solid var(--line);
+  }
+  .lb-cell:nth-child(2) { aspect-ratio: 3/4; background: linear-gradient(150deg, #2a241c, #18140f); }
+  .lb-cell svg { width: 55%; height: 70%; opacity: .9; }
+  .lb-cell figcaption {
+    position: absolute; bottom: 16px; left: 18px;
+    font-family: var(--display); font-style: italic; font-size: 17px; color: var(--paper);
+  }
+  .lb-cell .num { position: absolute; top: 14px; right: 16px; font-family: var(--grotesk); font-weight: 700; font-size: 12px; letter-spacing: .2em; color: var(--accent-soft); }
+  @media (max-width: 720px) { .lb-grid { grid-template-columns: 1fr 1fr; } .lb-cell:nth-child(3) { grid-column: 1/-1; aspect-ratio: 16/9; } }
+
+  /* ---------- NEWSLETTER ---------- */
+  .news { padding-block: clamp(56px, 8vw, 110px); text-align: center; }
+  .news h2 { font-family: var(--display); font-weight: 500; font-size: clamp(30px, 5vw, 54px); line-height: 1.02; }
+  .news h2 em { font-style: italic; color: var(--accent-soft); }
+  .news p { color: var(--muted); max-width: 46ch; margin: 18px auto 30px; }
+  .news-form { display: flex; gap: 10px; max-width: 480px; margin-inline: auto; flex-wrap: wrap; justify-content: center; }
+  .news-form input {
+    flex: 1; min-width: 220px;
+    font-family: var(--body); font-size: 15px;
+    background: transparent; color: var(--paper);
+    border: 1px solid var(--line); border-radius: 2px; padding: 15px 18px;
+    transition: border-color .3s;
+  }
+  .news-form input:focus { outline: none; border-color: var(--accent); }
+  .news-form input.err { border-color: var(--accent); }
+  .news-msg { font-family: var(--grotesk); font-size: 12px; letter-spacing: .1em; margin-top: 16px; min-height: 18px; }
+  .news-msg.ok { color: var(--accent-soft); }
+  .news-msg.bad { color: #e8806a; }
+
+  /* ---------- FOOTER ---------- */
+  footer.ft { border-top: 1px solid var(--line); padding-block: 48px 40px; background: var(--ink-soft); }
+  .ft-grid { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .ft-brand { font-family: var(--display); font-weight: 700; font-size: 24px; letter-spacing: .2em; }
+  .ft-cols { display: flex; gap: 60px; flex-wrap: wrap; }
+  .ft-col h4 { font-family: var(--grotesk); font-weight: 600; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--accent-soft); margin-bottom: 14px; }
+  .ft-col a { display: block; color: var(--muted); font-size: 14px; padding: 4px 0; transition: color .3s; }
+  .ft-col a:hover { color: var(--paper); }
+  .ft-base { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); font-family: var(--grotesk); letter-spacing: .08em; }
+  .ft-base a { color: var(--accent-soft); }
+
+  /* ---------- DRAWER (cart) ---------- */
+  .scrim {
+    position: fixed; inset: 0; z-index: 90; background: rgba(8,7,6,.62);
+    backdrop-filter: blur(3px); opacity: 0; visibility: hidden; transition: opacity .4s var(--ease), visibility .4s;
+  }
+  .scrim.open { opacity: 1; visibility: visible; }
+  .drawer {
+    position: fixed; top: 0; right: 0; z-index: 95; height: 100%;
+    width: min(430px, 100%); background: var(--ink-soft);
+    border-left: 1px solid var(--line);
+    transform: translateX(100%); transition: transform .5s var(--ease);
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 24px 26px; border-bottom: 1px solid var(--line); }
+  .drawer-head h3 { font-family: var(--display); font-size: 24px; font-weight: 500; }
+  .drawer-head .close { font-size: 26px; line-height: 1; color: var(--muted); transition: color .3s; }
+  .drawer-head .close:hover { color: var(--paper); }
+  .drawer-body { flex: 1; overflow-y: auto; padding: 10px 26px; }
+  .ci {
+    display: grid; grid-template-columns: 66px 1fr auto; gap: 14px; align-items: center;
+    padding: 18px 0; border-bottom: 1px solid var(--line);
+  }
+  .ci-art { width: 66px; height: 82px; background: radial-gradient(120% 120% at 50% 10%, #232019, #100e0c); border: 1px solid var(--line); display: grid; place-items: center; }
+  .ci-art svg { width: 60%; height: 60%; }
+  .ci-name { font-family: var(--display); font-size: 17px; font-weight: 500; line-height: 1.1; }
+  .ci-meta { font-family: var(--grotesk); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+  .ci-price { font-family: var(--grotesk); font-size: 13px; color: var(--paper); margin-top: 6px; }
+  .stepper { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 2px; margin-top: 8px; }
+  .stepper button { width: 28px; height: 28px; display: grid; place-items: center; color: var(--paper); font-size: 15px; transition: background .25s; }
+  .stepper button:hover { background: var(--panel); }
+  .stepper span { min-width: 26px; text-align: center; font-family: var(--grotesk); font-size: 13px; }
+  .ci-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .ci-remove { font-family: var(--grotesk); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); transition: color .3s; }
+  .ci-remove:hover { color: var(--accent-soft); }
+  .cart-empty { text-align: center; color: var(--muted); padding: 70px 10px; font-family: var(--display); font-style: italic; font-size: 21px; }
+  .drawer-foot { padding: 22px 26px 26px; border-top: 1px solid var(--line); }
+  .subtotal { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .subtotal .lbl { font-family: var(--grotesk); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .subtotal .amt { font-family: var(--display); font-size: 28px; font-weight: 500; }
+  .ship-note { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .checkout { width: 100%; background: var(--paper); color: var(--ink); font-family: var(--grotesk); font-weight: 600; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; padding: 16px; border-radius: 2px; transition: background .3s, color .3s; }
+  .checkout:hover { background: var(--accent); color: #fff; }
+
+  /* ---------- QUICK-VIEW MODAL ---------- */
+  .modal-scrim {
+    position: fixed; inset: 0; z-index: 100; background: rgba(8,7,6,.74);
+    backdrop-filter: blur(5px); display: grid; place-items: center; padding: 20px;
+    opacity: 0; visibility: hidden; transition: opacity .4s var(--ease), visibility .4s;
+  }
+  .modal-scrim.open { opacity: 1; visibility: visible; }
+  .modal {
+    width: min(880px, 100%); max-height: 90vh; overflow-y: auto;
+    background: var(--ink-soft); border: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr;
+    transform: scale(.96); transition: transform .4s var(--ease);
+  }
+  .modal-scrim.open .modal { transform: scale(1); }
+  .modal-art { background: radial-gradient(120% 120% at 50% 10%, #232019, #100e0c); display: grid; place-items: center; min-height: 320px; position: relative; }
+  .modal-art svg { width: 62%; height: 62%; }
+  .modal-info { padding: 34px 36px; display: flex; flex-direction: column; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 18px; font-size: 26px; color: var(--muted); transition: color .3s; }
+  .modal-close:hover { color: var(--paper); }
+  .modal-cat { font-family: var(--grotesk); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--accent-soft); }
+  .modal-name { font-family: var(--display); font-size: clamp(28px, 4vw, 40px); font-weight: 500; line-height: 1.05; margin-block: 8px 6px; }
+  .modal-price { font-family: var(--grotesk); font-size: 19px; font-weight: 500; margin-bottom: 16px; }
+  .modal-desc { color: var(--muted); font-size: 14.5px; margin-bottom: 22px; }
+  .opt-label { font-family: var(--grotesk); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; justify-content: space-between; }
+  .opt-row { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 22px; }
+  .swatch { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); position: relative; transition: transform .25s; }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch.sel { box-shadow: 0 0 0 2px var(--ink-soft), 0 0 0 3px var(--accent); }
+  .size {
+    min-width: 46px; padding: 10px 8px; border: 1px solid var(--line); border-radius: 2px;
+    font-family: var(--grotesk); font-size: 13px; letter-spacing: .06em; color: var(--paper);
+    transition: all .25s;
+  }
+  .size:hover { border-color: var(--muted); }
+  .size.sel { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  .modal-add {
+    margin-top: auto; width: 100%; background: var(--paper); color: var(--ink);
+    font-family: var(--grotesk); font-weight: 600; font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+    padding: 16px; border-radius: 2px; transition: background .3s, color .3s;
+  }
+  .modal-add:hover { background: var(--accent); color: #fff; }
+  .modal-add:disabled { opacity: .4; cursor: not-allowed; }
+  @media (max-width: 680px) { .modal { grid-template-columns: 1fr; } .modal-art { min-height: 260px; } }
+
+  /* ---------- TOAST ---------- */
+  .toast {
+    position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%) translateY(20px);
+    z-index: 120; background: var(--paper); color: var(--ink);
+    font-family: var(--grotesk); font-weight: 600; font-size: 12.5px; letter-spacing: .1em;
+    padding: 13px 24px; border-radius: 2px;
+    opacity: 0; visibility: hidden; transition: all .4s var(--ease);
+    box-shadow: 0 14px 40px rgba(0,0,0,.4);
+  }
+  .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- BADGE ---------- */
+  .elife-badge {
+    position: fixed; bottom: 16px; right: 16px; z-index: 130;
+    font-family: var(--grotesk); font-weight: 600; font-size: 11px; letter-spacing: .12em;
+    background: rgba(27,24,21,.86); backdrop-filter: blur(8px);
+    color: var(--paper); border: 1px solid var(--line);
+    padding: 8px 14px; border-radius: 999px;
+    display: flex; align-items: center; gap: 7px;
+    transition: border-color .3s, color .3s;
+  }
+  .elife-badge:hover { border-color: var(--accent); color: var(--accent-soft); }
+  .elife-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- REVEAL ---------- */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .marquee-track { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#" class="brand">MÉRIDIEN</a>
+    <nav class="nav-links">
+      <a href="#shop">店鋪</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#news">會員</a>
+      <a href="#ft">關於</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="搜尋">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" id="openCart" aria-label="購物袋">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow reveal">永晝系列 · Spring–Summer 26</div>
+        <h1 class="reveal">穿上<br><em>光的褶皺</em></h1>
+        <p class="lede reveal">MÉRIDIEN 以極簡剪裁與流動廓形，記錄日光在布料上停留的瞬間。本季限量發售，每件單品皆於台灣手工縫製。</p>
+        <div class="hero-cta reveal">
+          <a href="#shop" class="btn btn-solid">探索系列</a>
+          <a href="#lookbook" class="btn btn-ghost">觀看 Lookbook</a>
+        </div>
+      </div>
+      <div class="hero-art reveal">
+        <span class="tag">LOOK 01</span>
+        <svg viewBox="0 0 200 250" fill="none" stroke="#d8553a" stroke-width="1.4" aria-hidden="true">
+          <path d="M70 40c0-14 12-24 30-24s30 10 30 24" />
+          <path d="M70 40 40 70l16 22 14-12v118h60V80l14 12 16-22-30-30" />
+          <path d="M86 40c0 10 6 18 14 18s14-8 14-18" />
+          <path d="M76 198h48" stroke-width="0.8" stroke-dasharray="2 4"/>
+          <circle cx="100" cy="120" r="2" fill="#d8553a"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>限時免運</span><span>台灣手工縫製</span><span>永晝系列限量</span><span>新會員 9 折</span>
+      <span>限時免運</span><span>台灣手工縫製</span><span>永晝系列限量</span><span>新會員 9 折</span>
+    </div>
+  </div>
+
+  <!-- SHOP -->
+  <section class="shop" id="shop">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="sub reveal">The Collection</div>
+          <h2 class="reveal">永晝系列選物</h2>
+        </div>
+        <p class="reveal" style="color:var(--muted); max-width:34ch; font-size:14px;">滑入單品快速檢視，選擇尺寸與配色後加入購物袋。</p>
+      </div>
+
+      <div class="toolbar reveal">
+        <div class="filters" id="filters">
+          <button class="chip active" data-cat="all">全部</button>
+          <button class="chip" data-cat="outer">外套</button>
+          <button class="chip" data-cat="dress">洋裝</button>
+          <button class="chip" data-cat="knit">針織</button>
+          <button class="chip" data-cat="bag">配件</button>
+        </div>
+        <div class="sortwrap">
+          <label for="sort">排序</label>
+          <select class="sort" id="sort">
+            <option value="featured">精選</option>
+            <option value="low">價格：低至高</option>
+            <option value="high">價格：高至低</option>
+            <option value="name">名稱 A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- LOOKBOOK -->
+  <section class="lookbook" id="lookbook">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="sub reveal">Editorial</div>
+          <h2 class="reveal">永晝 Lookbook</h2>
+        </div>
+      </div>
+      <div class="lb-grid">
+        <figure class="lb-cell reveal">
+          <span class="num">01</span>
+          <svg viewBox="0 0 200 250" fill="none" stroke="#f4efe7" stroke-width="1.2"><path d="M60 30h80l-10 40 14 150H56L70 70Z"/><path d="M60 30 40 60M140 30l20 30"/><path d="M88 80q12 14 24 0" stroke="#d8553a"/></svg>
+          <figcaption>晨曦長風衣</figcaption>
+        </figure>
+        <figure class="lb-cell reveal">
+          <span class="num">02</span>
+          <svg viewBox="0 0 200 250" fill="none" stroke="#d8553a" stroke-width="1.2"><path d="M70 36c0 18 60 18 60 0M70 36 52 56l8 24 12-8v140h56V72l12 8 8-24-18-20"/><path d="M86 110h28" stroke-width="0.7"/></svg>
+          <figcaption>褶光絲質洋裝</figcaption>
+        </figure>
+        <figure class="lb-cell reveal">
+          <span class="num">03</span>
+          <svg viewBox="0 0 200 250" fill="none" stroke="#f4efe7" stroke-width="1.2"><rect x="56" y="86" width="88" height="96" rx="6"/><path d="M76 86c0-22 48-22 48 0" stroke="#d8553a"/><path d="M70 120h60" stroke-width="0.7"/></svg>
+          <figcaption>午後手提包</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="news" id="news">
+    <div class="wrap">
+      <h2 class="reveal">加入 <em>MÉRIDIEN</em> 會員</h2>
+      <p class="reveal">搶先收到永晝系列補貨與下一季預覽，首單即享專屬 9 折。</p>
+      <form class="news-form reveal" id="newsForm" novalidate>
+        <input type="email" id="newsEmail" placeholder="你的電子信箱" aria-label="電子信箱" />
+        <button type="submit" class="btn btn-solid">訂閱</button>
+      </form>
+      <div class="news-msg" id="newsMsg" role="status"></div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="ft" id="ft">
+  <div class="wrap">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-brand">MÉRIDIEN</div>
+        <p style="color:var(--muted); font-size:13px; margin-top:12px; max-width:30ch;">記錄日光褶皺的台灣設計時裝品牌。</p>
+      </div>
+      <div class="ft-cols">
+        <div class="ft-col">
+          <h4>店鋪</h4>
+          <a href="#shop">外套</a><a href="#shop">洋裝</a><a href="#shop">針織</a><a href="#shop">配件</a>
+        </div>
+        <div class="ft-col">
+          <h4>服務</h4>
+          <a href="#">配送與退換</a><a href="#">尺寸指南</a><a href="#">保養說明</a><a href="#">門市據點</a>
+        </div>
+        <div class="ft-col">
+          <h4>關注</h4>
+          <a href="#">Instagram</a><a href="#">LINE 官方</a><a href="#news">電子報</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-base">
+      <span>© 2026 MÉRIDIEN 永晝。示範店鋪，無實際交易。</span>
+      <span>網站設計與開發　<a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="購物袋">
+  <div class="drawer-head">
+    <h3>購物袋</h3>
+    <button class="close" id="closeCart" aria-label="關閉">×</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div class="subtotal">
+      <span class="lbl">小計</span>
+      <span class="amt" id="subtotal">NT$0</span>
+    </div>
+    <p class="ship-note">運費與稅金將於結帳時計算。滿 NT$3,000 免運。</p>
+    <button class="checkout" id="checkout">前往結帳</button>
+  </div>
+</aside>
+
+<!-- QUICK-VIEW MODAL -->
+<div class="modal-scrim" id="modalScrim">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-art" id="modalArt"></div>
+    <div class="modal-info">
+      <button class="modal-close" id="modalClose" aria-label="關閉">×</button>
+      <div class="modal-cat" id="modalCat"></div>
+      <h3 class="modal-name" id="modalName"></h3>
+      <div class="modal-price" id="modalPrice"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="opt-label">配色 <span id="colorName" style="color:var(--paper); letter-spacing:.04em; text-transform:none;"></span></div>
+      <div class="opt-row" id="colorRow"></div>
+      <div class="opt-label">尺寸 <span style="text-transform:none; letter-spacing:.04em;">尺寸指南</span></div>
+      <div class="opt-row" id="sizeRow"></div>
+      <button class="modal-add" id="modalAdd" disabled>選擇尺寸</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<a class="elife-badge" href="https://elife-ai.com" target="_blank" rel="noopener">elife-ai.com</a>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- SVG art per garment type ----
+  const ART = {
+    coat: '<svg viewBox="0 0 200 250" fill="none" stroke="STROKE" stroke-width="1.4"><path d="M60 30h80l-12 40 16 150H56L72 70Z"/><path d="M60 30 38 58l10 18M140 30l22 28-10 18"/><path d="M100 70v150" stroke-width="0.7" stroke-dasharray="2 4"/><circle cx="100" cy="110" r="2.5" fill="STROKE"/><circle cx="100" cy="140" r="2.5" fill="STROKE"/></svg>',
+    dress: '<svg viewBox="0 0 200 250" fill="none" stroke="STROKE" stroke-width="1.4"><path d="M72 36c0 16 56 16 56 0M72 36 54 56l8 22 12-7 -8 145h64l-8-145 12 7 8-22-18-20"/><path d="M84 120q16 18 32 0" stroke-width="0.8"/></svg>',
+    knit: '<svg viewBox="0 0 200 250" fill="none" stroke="STROKE" stroke-width="1.4"><path d="M62 56h76l18 30-20 16-8-10v100H72V92l-8 10-20-16Z"/><path d="M70 70h60M70 90h60M70 110h60" stroke-width="0.6"/><path d="M86 56c0-10 28-10 28 0" /></svg>',
+    bag: '<svg viewBox="0 0 200 250" fill="none" stroke="STROKE" stroke-width="1.4"><rect x="52" y="92" width="96" height="100" rx="8"/><path d="M74 92c0-26 52-26 52 0" stroke-width="1.4"/><path d="M52 120h96" stroke-width="0.7"/><circle cx="100" cy="150" r="3" fill="STROKE"/></svg>',
+    trench: '<svg viewBox="0 0 200 250" fill="none" stroke="STROKE" stroke-width="1.4"><path d="M58 32h84l-6 30 14 158H50L64 62Z"/><path d="M58 32 36 56M142 32l22 24"/><path d="M100 40v178" stroke-width="0.8" stroke-dasharray="3 5"/><path d="M62 130h76" stroke-width="0.7"/></svg>',
+    skirt: '<svg viewBox="0 0 200 250" fill="none" stroke="STROKE" stroke-width="1.4"><path d="M70 70h60l4 18H66Z"/><path d="M66 88 50 200h100L134 88"/><path d="M80 100v92M100 100v96M120 100v92" stroke-width="0.6"/></svg>',
+  };
+  const art = (type, stroke) => (ART[type] || ART.coat).replaceAll("STROKE", stroke || "#f4efe7");
+
+  // ---- Products ----
+  const PRODUCTS = [
+    { id: "p1", name: "晨曦長風衣", cat: "outer", type: "trench", price: 8980, feat: 6, isNew: true, desc: "輕量防風斜紋布，腰帶可調，落肩剪裁勾勒柔和廓形。", colors: [["米沙", "#cbbfa6"], ["墨黑", "#1c1a18"], ["焦糖", "#9a6b3f"]], sizes: ["XS", "S", "M", "L"] },
+    { id: "p2", name: "褶光絲質洋裝", cat: "dress", type: "dress", price: 6480, feat: 9, isNew: true, desc: "醋酸絲緞面，垂墜壓褶於日光下流動生輝。", colors: [["晨霧", "#dcd6cb"], ["赤陶", "#d8553a"], ["藏青", "#26344a"]], sizes: ["XS", "S", "M"] },
+    { id: "p3", name: "雲絨高領針織", cat: "knit", type: "knit", price: 4280, feat: 5, isNew: false, desc: "美麗諾羊毛混紡，細針高領，親膚不刺。", colors: [["燕麥", "#cdbfa4"], ["炭灰", "#3a3733"], ["酒紅", "#5e2b2b"]], sizes: ["S", "M", "L", "XL"] },
+    { id: "p4", name: "午後托特包", cat: "bag", type: "bag", price: 5680, feat: 7, isNew: false, desc: "植鞣牛皮手提包，內襯麂皮，容量俐落。", colors: [["駝棕", "#9a6b3f"], ["墨黑", "#1c1a18"]], sizes: ["均一"] },
+    { id: "p5", name: "落日羊毛大衣", cat: "outer", type: "coat", price: 12800, feat: 10, isNew: true, desc: "雙面羊毛手縫工藝，繭型廓形，是本季鎮店之作。", colors: [["駝色", "#b89368"], ["石墨", "#2e2b27"]], sizes: ["S", "M", "L"] },
+    { id: "p6", name: "微光百褶裙", cat: "dress", type: "skirt", price: 3980, feat: 4, isNew: false, desc: "聚酯細褶裙，光澤隨步伐律動，及踝長度。", colors: [["米白", "#e4ddcf"], ["墨綠", "#2f3d33"], ["赤陶", "#d8553a"]], sizes: ["XS", "S", "M", "L"] },
+    { id: "p7", name: "靜謐開襟外套", cat: "knit", type: "knit", price: 4980, feat: 6, isNew: false, desc: "羊駝混紡長版開襟，落肩寬版，layering 首選。", colors: [["奶茶", "#c8b393"], ["墨黑", "#1c1a18"]], sizes: ["S", "M", "L"] },
+    { id: "p8", name: "光弧迷你包", cat: "bag", type: "bag", price: 4380, feat: 8, isNew: true, desc: "弧形金屬扣半月包，可拆肩帶，日夜兩用。", colors: [["象牙", "#e2d9c8"], ["赤陶", "#d8553a"], ["墨黑", "#1c1a18"]], sizes: ["均一"] },
+    { id: "p9", name: "薄霧西裝外套", cat: "outer", type: "coat", price: 7680, feat: 5, isNew: false, desc: "微結構墊肩西裝，亞麻混紡，剪裁俐落不死板。", colors: [["霧灰", "#a9a298"], ["藏青", "#26344a"]], sizes: ["XS", "S", "M", "L"] },
+  ];
+
+  const fmt = (n) => "NT$" + n.toLocaleString("en-US");
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  const cart = new Map(); // key -> {p, color, size, qty}
+  let curFilter = "all", curSort = "featured";
+  const wishes = new Set();
+
+  // ---- Render grid ----
+  const grid = $("#grid");
+  function getList() {
+    let list = PRODUCTS.filter((p) => curFilter === "all" || p.cat === curFilter);
+    const by = {
+      low: (a, b) => a.price - b.price,
+      high: (a, b) => b.price - a.price,
+      name: (a, b) => a.name.localeCompare(b.name, "zh-Hant"),
+      featured: (a, b) => b.feat - a.feat,
+    }[curSort];
+    return [...list].sort(by);
+  }
+  function renderGrid() {
+    const list = getList();
+    if (!list.length) { grid.innerHTML = '<p class="empty">此分類暫無單品。</p>'; return; }
+    grid.innerHTML = list.map((p) => `
+      <article class="card" data-id="${p.id}">
+        <div class="card-art">
+          ${p.isNew ? '<span class="badge-new">New</span>' : ""}
+          <button class="wish ${wishes.has(p.id) ? "on" : ""}" data-wish="${p.id}" aria-label="加入願望清單">
+            <svg viewBox="0 0 24 24" stroke-width="1.6"><path d="M12 20s-7-4.6-9.2-9C1.3 7.5 3 4.5 6 4.5c2 0 3.2 1.3 4 2.6.8-1.3 2-2.6 4-2.6 3 0 4.7 3 3.2 6.5C19 15.4 12 20 12 20Z"/></svg>
+          </button>
+          ${art(p.type, "#d8553a")}
+          <button class="quick" data-quick="${p.id}">快速檢視</button>
+        </div>
+        <div class="card-body">
+          <span class="card-cat">${catLabel(p.cat)}</span>
+          <span class="card-name">${p.name}</span>
+          <span class="card-price">${fmt(p.price)}</span>
+        </div>
+      </article>`).join("");
+    // re-observe reveal
+    $$(".card", grid).forEach((c, i) => { c.classList.add("reveal"); c.style.transitionDelay = (i % 3) * 70 + "ms"; io.observe(c); });
+  }
+  const catLabel = (c) => ({ outer: "外套", dress: "洋裝", knit: "針織", bag: "配件" }[c] || c);
+
+  // ---- Filters & sort ----
+  $("#filters").addEventListener("click", (e) => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    $$(".chip").forEach((c) => c.classList.toggle("active", c === b));
+    curFilter = b.dataset.cat; renderGrid();
+  });
+  $("#sort").addEventListener("change", (e) => { curSort = e.target.value; renderGrid(); });
+
+  // ---- Grid clicks (wish + quick) ----
+  grid.addEventListener("click", (e) => {
+    const w = e.target.closest("[data-wish]");
+    if (w) {
+      const id = w.dataset.wish;
+      wishes.has(id) ? wishes.delete(id) : wishes.add(id);
+      w.classList.toggle("on", wishes.has(id));
+      toast(wishes.has(id) ? "已加入願望清單 ♡" : "已從願望清單移除");
+      return;
+    }
+    const q = e.target.closest("[data-quick]");
+    if (q) openModal(q.dataset.quick);
+  });
+
+  // ---- Quick-view modal ----
+  let modalP = null, selColor = null, selSize = null;
+  const modalScrim = $("#modalScrim");
+  function openModal(id) {
+    modalP = PRODUCTS.find((p) => p.id === id); if (!modalP) return;
+    selColor = 0; selSize = null;
+    $("#modalCat").textContent = catLabel(modalP.cat);
+    $("#modalName").textContent = modalP.name;
+    $("#modalPrice").textContent = fmt(modalP.price);
+    $("#modalDesc").textContent = modalP.desc;
+    $("#modalArt").innerHTML = art(modalP.type, modalP.colors[0][1] === "#1c1a18" ? "#f4efe7" : modalP.colors[0][1]);
+    $("#colorName").textContent = modalP.colors[0][0];
+    $("#colorRow").innerHTML = modalP.colors.map((c, i) =>
+      `<button class="swatch ${i === 0 ? "sel" : ""}" data-color="${i}" style="background:${c[1]}" aria-label="${c[0]}"></button>`).join("");
+    $("#sizeRow").innerHTML = modalP.sizes.map((s) =>
+      `<button class="size" data-size="${s}">${s}</button>`).join("");
+    if (modalP.sizes.length === 1) { selSize = modalP.sizes[0]; $$("#sizeRow .size")[0].classList.add("sel"); }
+    syncAdd();
+    modalScrim.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal() { modalScrim.classList.remove("open"); document.body.style.overflow = ""; }
+  function syncAdd() {
+    const btn = $("#modalAdd");
+    btn.disabled = !selSize;
+    btn.textContent = selSize ? "加入購物袋 — " + fmt(modalP.price) : "請選擇尺寸";
+  }
+  $("#colorRow").addEventListener("click", (e) => {
+    const s = e.target.closest("[data-color]"); if (!s) return;
+    selColor = +s.dataset.color;
+    $$("#colorRow .swatch").forEach((x) => x.classList.toggle("sel", x === s));
+    $("#colorName").textContent = modalP.colors[selColor][0];
+    $("#modalArt").innerHTML = art(modalP.type, modalP.colors[selColor][1] === "#1c1a18" ? "#f4efe7" : modalP.colors[selColor][1]);
+  });
+  $("#sizeRow").addEventListener("click", (e) => {
+    const s = e.target.closest("[data-size]"); if (!s) return;
+    selSize = s.dataset.size;
+    $$("#sizeRow .size").forEach((x) => x.classList.toggle("sel", x === s));
+    syncAdd();
+  });
+  $("#modalAdd").addEventListener("click", () => {
+    if (!selSize) return;
+    addToCart(modalP, modalP.colors[selColor][0], selSize);
+    closeModal();
+    openCart();
+  });
+  $("#modalClose").addEventListener("click", closeModal);
+  modalScrim.addEventListener("click", (e) => { if (e.target === modalScrim) closeModal(); });
+
+  // ---- Cart ----
+  function addToCart(p, color, size, n = 1) {
+    const key = p.id + "|" + color + "|" + size;
+    const cur = cart.get(key);
+    if (cur) cur.qty += n; else cart.set(key, { p, color, size, qty: n });
+    renderCart();
+    bumpCount();
+    toast("已加入購物袋");
+  }
+  function bumpCount() {
+    const total = [...cart.values()].reduce((s, i) => s + i.qty, 0);
+    const el = $("#cartCount");
+    el.textContent = total;
+    el.classList.toggle("show", total > 0);
+  }
+  function renderCart() {
+    const body = $("#cartBody");
+    if (!cart.size) { body.innerHTML = '<p class="cart-empty">你的購物袋是空的。</p>'; $("#subtotal").textContent = fmt(0); return; }
+    body.innerHTML = [...cart.entries()].map(([key, it]) => {
+      const cObj = it.p.colors.find((c) => c[0] === it.color) || it.p.colors[0];
+      const stroke = cObj[1] === "#1c1a18" ? "#f4efe7" : cObj[1];
+      return `<div class="ci" data-key="${key}">
+        <div class="ci-art">${art(it.p.type, stroke)}</div>
+        <div>
+          <div class="ci-name">${it.p.name}</div>
+          <div class="ci-meta">${it.color} · 尺寸 ${it.size}</div>
+          <div class="ci-price">${fmt(it.p.price)}</div>
+          <div class="stepper">
+            <button data-dec="${key}" aria-label="減少">−</button>
+            <span>${it.qty}</span>
+            <button data-inc="${key}" aria-label="增加">+</button>
+          </div>
+        </div>
+        <div class="ci-right">
+          <div class="ci-price">${fmt(it.p.price * it.qty)}</div>
+          <button class="ci-remove" data-rm="${key}">移除</button>
+        </div>
+      </div>`;
+    }).join("");
+    const sub = [...cart.values()].reduce((s, i) => s + i.p.price * i.qty, 0);
+    $("#subtotal").textContent = fmt(sub);
+  }
+  $("#cartBody").addEventListener("click", (e) => {
+    const inc = e.target.closest("[data-inc]"), dec = e.target.closest("[data-dec]"), rm = e.target.closest("[data-rm]");
+    if (inc) { cart.get(inc.dataset.inc).qty++; }
+    else if (dec) { const it = cart.get(dec.dataset.dec); if (--it.qty <= 0) cart.delete(dec.dataset.dec); }
+    else if (rm) { cart.delete(rm.dataset.rm); toast("已移除單品"); }
+    else return;
+    renderCart(); bumpCount();
+  });
+
+  // ---- Drawer open/close ----
+  const scrim = $("#scrim"), drawer = $("#drawer");
+  function openCart() { renderCart(); scrim.classList.add("open"); drawer.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function closeCart() { scrim.classList.remove("open"); drawer.classList.remove("open"); document.body.style.overflow = ""; }
+  $("#openCart").addEventListener("click", openCart);
+  $("#closeCart").addEventListener("click", closeCart);
+  scrim.addEventListener("click", closeCart);
+  $("#checkout").addEventListener("click", () => {
+    if (!cart.size) { toast("購物袋是空的"); return; }
+    toast("這是示範店鋪，結帳僅供展示 ✦");
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeCart(); closeModal(); }
+  });
+
+  // ---- Newsletter ----
+  $("#newsForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const inp = $("#newsEmail"), msg = $("#newsMsg");
+    const v = inp.value.trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    inp.classList.toggle("err", !ok);
+    msg.className = "news-msg " + (ok ? "ok" : "bad");
+    msg.textContent = ok ? "歡迎加入 MÉRIDIEN ✦ 9 折碼已寄出（示範）" : "請輸入有效的電子信箱";
+    if (ok) inp.value = "";
+  });
+
+  // ---- Toast ----
+  let toastTimer;
+  function toast(t) {
+    const el = $("#toast");
+    el.textContent = t; el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+  }
+
+  // ---- Reveal observer ----
+  const io = new IntersectionObserver((es) => {
+    es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  function initReveal() {
+    $$(".reveal").forEach((el, i) => {
+      if (el.closest(".hero")) el.style.transitionDelay = i * 90 + "ms";
+      io.observe(el);
+    });
+  }
+
+  // ---- Init ----
+  renderGrid();
+  initReveal();
+})();
+</script>
+</body>
+</html>

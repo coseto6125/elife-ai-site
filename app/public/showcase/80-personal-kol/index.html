@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>林晚星 LATE STAR ｜ 創作者品牌中心｜e-life-ai</title>
+<meta name="description" content="林晚星 LATE STAR — 旅行 × 質感生活內容創作者。粉絲數據、內容作品、品牌合作媒體包與預約洽談，一站式創作者品牌中心。（虛構展示用 Demo）" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,600&family=Sora:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#1a0e2e;
+  --bg2:#2a1244;
+  --ink:#fff7ef;
+  --muted:#cdb8e6;
+  --c1:#ff7a59;   /* sunset coral */
+  --c2:#ff4d8d;   /* hot pink */
+  --c3:#ffd166;   /* warm gold */
+  --c4:#7b5cff;   /* electric violet */
+  --card:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.14);
+  --grad:linear-gradient(120deg,var(--c1),var(--c2) 45%,var(--c4));
+  --glow:0 18px 50px -18px rgba(255,77,141,.55);
+  --r:22px;
+  --maxw:1180px;
+  font-synthesis:none;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:"Sora","Noto Sans TC",sans-serif;
+  background:
+    radial-gradient(1100px 700px at 85% -10%,rgba(255,77,141,.30),transparent 60%),
+    radial-gradient(900px 600px at 5% 5%,rgba(123,92,255,.32),transparent 55%),
+    radial-gradient(700px 500px at 50% 120%,rgba(255,209,102,.18),transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+  background-attachment:fixed;
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+
+/* ===== reveal ===== */
+.rise{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.rise.in{opacity:1;transform:none}
+
+/* ===== badge ===== */
+.badge{
+  position:fixed;right:14px;bottom:14px;z-index:90;
+  display:inline-flex;align-items:center;gap:7px;
+  padding-block:9px;padding-inline:14px;
+  font-size:12.5px;font-weight:700;letter-spacing:.3px;
+  color:#1a0e2e;border-radius:999px;
+  background:linear-gradient(120deg,var(--c3),var(--c1));
+  box-shadow:0 10px 26px -8px rgba(255,122,89,.7);
+  border:1px solid rgba(255,255,255,.4);
+}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:#1a0e2e;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+
+/* ===== nav ===== */
+nav{position:sticky;top:0;z-index:80;backdrop-filter:blur(14px);background:rgba(26,14,46,.55);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;padding-block:14px}
+.brand{display:flex;align-items:center;gap:11px;font-family:"Fraunces",serif;font-weight:900;font-size:21px;letter-spacing:.5px}
+.brand .mk{width:34px;height:34px;border-radius:11px;background:var(--grad);display:grid;place-items:center;font-size:18px;box-shadow:var(--glow);transform:rotate(-6deg)}
+.nav-links{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--muted)}
+.nav-links a{transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{padding-block:9px;padding-inline:18px;border-radius:999px;background:var(--grad);color:#fff;font-weight:700;font-size:14px;box-shadow:var(--glow);transition:transform .2s}
+.nav-cta:hover{transform:translateY(-2px)}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* ===== hero ===== */
+.hero{padding-block:clamp(40px,7vw,82px) clamp(30px,5vw,56px)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,64px);align-items:center}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:34px;text-align:center}}
+.tagpill{display:inline-flex;align-items:center;gap:8px;padding-block:7px;padding-inline:15px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--c3);margin-bottom:22px}
+.tagpill .live{width:7px;height:7px;border-radius:50%;background:var(--c2);box-shadow:0 0 0 4px rgba(255,77,141,.25);animation:pulse 1.4s infinite}
+.hero h1{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(40px,8vw,76px);line-height:1.02;letter-spacing:-1px;margin-bottom:8px}
+.hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .role{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:clamp(18px,3.4vw,26px);color:var(--c1);margin-bottom:18px}
+.hero p.lede{font-size:clamp(15px,2.3vw,18px);color:var(--muted);max-width:42ch;margin-bottom:26px}
+@media(max-width:880px){.hero p.lede{margin-inline:auto}}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+@media(max-width:880px){.hero-btns{justify-content:center}}
+.btn{padding-block:14px;padding-inline:26px;border-radius:14px;font-weight:700;font-size:15px;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;font-family:inherit}
+.btn-pri{background:var(--grad);color:#fff;box-shadow:var(--glow)}
+.btn-pri:hover{transform:translateY(-3px) scale(1.02)}
+.btn-ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{transform:translateY(-3px);border-color:var(--c3)}
+
+/* avatar card */
+.av-card{position:relative;justify-self:center}
+.av-ring{position:relative;width:clamp(230px,40vw,320px);aspect-ratio:1;border-radius:32px;background:var(--grad);padding:7px;box-shadow:var(--glow);animation:floaty 6s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+.av-inner{width:100%;height:100%;border-radius:26px;background:linear-gradient(160deg,#2a1244,#3a1a5c);overflow:hidden;position:relative}
+.av-chip{position:absolute;display:flex;align-items:center;gap:8px;background:rgba(26,14,46,.82);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding-block:9px;padding-inline:13px;font-size:12.5px;font-weight:700;box-shadow:0 12px 30px -12px rgba(0,0,0,.6)}
+.av-chip .ic{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:12px}
+.chip-1{top:-14px;left:-18px;animation:floaty 5s ease-in-out infinite}
+.chip-2{bottom:18px;right:-22px;animation:floaty 5.6s ease-in-out .4s infinite}
+.chip-3{bottom:-14px;left:20px;animation:floaty 6.2s ease-in-out .8s infinite}
+@media(max-width:880px){.chip-1{left:0}.chip-2{right:-6px}}
+
+/* ===== stats ===== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:clamp(34px,5vw,56px)}
+@media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding-block:22px;padding-inline:20px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.stat:hover{transform:translateY(-5px);border-color:var(--c2)}
+.stat::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:0;transition:opacity .3s}
+.stat:hover::before{opacity:.07}
+.stat .pf{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.stat .pf .pic{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:12px;color:#fff}
+.stat .num{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(26px,4.5vw,38px);line-height:1;letter-spacing:-.5px}
+.stat .lab{font-size:12.5px;color:var(--muted);margin-top:6px}
+.stat .up{font-size:11.5px;font-weight:700;color:#5be1a0}
+
+/* sections */
+section{padding-block:clamp(46px,7vw,80px)}
+.sec-head{margin-bottom:34px;max-width:560px}
+.sec-kick{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--c1);margin-bottom:10px}
+.sec-head h2{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(28px,5vw,46px);line-height:1.05;letter-spacing:-.5px}
+.sec-head p{color:var(--muted);margin-top:12px;font-size:15.5px}
+
+/* ===== content filter + grid ===== */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.fbtn{padding-block:9px;padding-inline:18px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.fbtn:hover{color:var(--ink);border-color:var(--c3)}
+.fbtn.active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:var(--glow)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s,border-color .3s;transform-origin:center}
+.ccard:hover{transform:translateY(-6px);box-shadow:0 22px 50px -22px rgba(255,77,141,.5);border-color:var(--c2)}
+.ccard.hide{display:none}
+.thumb{aspect-ratio:16/10;position:relative;display:grid;place-items:center;overflow:hidden}
+.thumb svg{position:absolute;inset:0;width:100%;height:100%}
+.play{position:relative;z-index:2;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;transform:scale(.85);opacity:0;transition:all .3s}
+.ccard:hover .play{transform:scale(1);opacity:1}
+.play svg{position:static;width:20px;height:20px}
+.ptag{position:absolute;top:11px;left:11px;z-index:2;font-size:11px;font-weight:700;padding-block:4px;padding-inline:9px;border-radius:7px;background:rgba(26,14,46,.78);backdrop-filter:blur(6px);border:1px solid var(--line)}
+.dur{position:absolute;bottom:11px;right:11px;z-index:2;font-size:11px;font-weight:600;padding-block:3px;padding-inline:7px;border-radius:6px;background:rgba(26,14,46,.8)}
+.cbody{padding-block:15px;padding-inline:17px}
+.cbody h3{font-size:15.5px;font-weight:700;line-height:1.35;margin-bottom:9px}
+.cmeta{display:flex;gap:14px;font-size:12.5px;color:var(--muted)}
+
+/* ===== link hub ===== */
+.links{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:680px){.links{grid-template-columns:1fr}}
+.lhub{display:flex;align-items:center;gap:15px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding-block:16px;padding-inline:18px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s;position:relative;overflow:hidden}
+.lhub:hover{transform:translateX(6px);border-color:var(--c3)}
+.lhub .lic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:19px;color:#fff;flex-shrink:0}
+.lhub .lt{flex:1;min-width:0}
+.lhub .lt b{display:block;font-size:15px;font-weight:700}
+.lhub .lt span{font-size:12.5px;color:var(--muted)}
+.lhub .arrow{color:var(--muted);transition:transform .2s}
+.lhub:hover .arrow{transform:translateX(4px);color:var(--c3)}
+.lhub .burst{position:absolute;right:18px;font-size:12px;font-weight:700;color:var(--c3);opacity:0;transform:scale(.6)}
+.lhub .burst.go{animation:burst .9s ease forwards}
+@keyframes burst{0%{opacity:0;transform:scale(.6) translateY(0)}30%{opacity:1;transform:scale(1.1) translateY(-2px)}100%{opacity:0;transform:scale(1) translateY(-22px)}}
+
+/* ===== media kit / collab ===== */
+.collab-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:start}
+@media(max-width:900px){.collab-grid{grid-template-columns:1fr}}
+.packs{display:grid;gap:14px}
+.pack{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding-block:22px;padding-inline:24px;position:relative;transition:transform .25s,border-color .25s}
+.pack:hover{transform:translateY(-4px);border-color:var(--c2)}
+.pack.feat{border-color:var(--c1);background:linear-gradient(150deg,rgba(255,122,89,.14),rgba(123,92,255,.10))}
+.pack .ph{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+.pack h3{font-family:"Fraunces",serif;font-weight:700;font-size:21px}
+.pack .price{font-family:"Fraunces",serif;font-weight:900;font-size:26px;color:var(--c3);white-space:nowrap}
+.pack .price small{font-size:13px;color:var(--muted);font-weight:500;font-family:"Sora",sans-serif}
+.pack ul{list-style:none;margin-top:12px;display:grid;gap:8px}
+.pack li{font-size:13.5px;color:var(--muted);display:flex;gap:9px;align-items:flex-start}
+.pack li::before{content:"✦";color:var(--c1);font-size:12px;margin-top:2px}
+.popular{position:absolute;top:-11px;right:18px;font-size:11px;font-weight:800;letter-spacing:.5px;padding-block:4px;padding-inline:11px;border-radius:999px;background:var(--grad);color:#fff;box-shadow:var(--glow)}
+
+/* form */
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding-block:26px;padding-inline:26px;position:sticky;top:90px}
+.form-card h3{font-family:"Fraunces",serif;font-weight:700;font-size:22px;margin-bottom:4px}
+.form-card .sub{font-size:13.5px;color:var(--muted);margin-bottom:20px}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding-block:12px;padding-inline:14px;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--c2);box-shadow:0 0 0 3px rgba(255,77,141,.18)}
+.field textarea{resize:vertical;min-height:78px}
+.field.err input,.field.err select,.field.err textarea{border-color:#ff5a6a}
+.field .msg{font-size:12px;color:#ff8a96;margin-top:5px;display:none}
+.field.err .msg{display:block}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23cdb8e6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.form-ok{display:none;text-align:center;padding-block:18px}
+.form-ok.show{display:block;animation:rise2 .5s ease}
+@keyframes rise2{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.form-ok .ok-ic{width:62px;height:62px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin-inline:auto;margin-bottom:14px;box-shadow:var(--glow);font-size:30px}
+.form-ok h4{font-family:"Fraunces",serif;font-size:21px;margin-bottom:6px}
+.form-ok p{font-size:13.5px;color:var(--muted)}
+
+/* persona switcher */
+.themebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:30px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding-block:14px;padding-inline:18px}
+.themebar .tl{font-size:13px;font-weight:600;color:var(--muted)}
+.swatches{display:flex;gap:10px}
+.sw{width:34px;height:34px;border-radius:11px;cursor:pointer;border:2px solid transparent;transition:transform .2s,border-color .2s;position:relative}
+.sw:hover{transform:scale(1.12)}
+.sw.active{border-color:var(--ink)}
+.sw.active::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:14px;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:40px;margin-top:30px;background:rgba(0,0,0,.18)}
+.foot-in{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot-brand{font-family:"Fraunces",serif;font-weight:900;font-size:19px}
+.foot-soc{display:flex;gap:12px}
+.foot-soc a{width:38px;height:38px;border-radius:11px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;transition:all .2s;color:var(--muted)}
+.foot-soc a:hover{background:var(--grad);color:#fff;transform:translateY(-3px)}
+.foot-note{font-size:13px;color:var(--muted);text-align:center;width:100%;margin-top:24px;border-top:1px solid var(--line);padding-top:22px}
+.foot-note a{color:var(--c3);font-weight:600}
+.disc{display:inline-block;margin-top:6px;font-size:12px;color:var(--muted);opacity:.8}
+
+.tip-cta{margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:linear-gradient(120deg,rgba(255,209,102,.12),rgba(255,77,141,.10));border:1px solid var(--line);border-radius:16px;padding-block:16px;padding-inline:20px}
+.tip-cta .ti{font-size:26px}
+.tip-cta b{font-size:15px}
+.tip-cta span{font-size:13px;color:var(--muted)}
+.tip-cta .btn{margin-left:auto;padding-block:10px;padding-inline:20px;font-size:14px}
+@media(max-width:560px){.tip-cta .btn{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+
+<a class="badge" href="https://elife-ai.com" target="_blank" rel="noopener"><span class="dot"></span>elife-ai.com</a>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><span class="mk">★</span>LATE STAR</a>
+    <div class="nav-links">
+      <a href="#content">內容作品</a>
+      <a href="#links">連結中心</a>
+      <a href="#collab">品牌合作</a>
+      <a href="#booking">預約洽談</a>
+    </div>
+    <a class="nav-cta" href="#booking">合作邀約</a>
+  </div>
+</nav>
+
+<header class="hero wrap" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="tagpill rise"><span class="live"></span>本月接受 3 組品牌合作</div>
+      <h1 class="rise">嗨，我是<br><span class="grad">林晚星</span></h1>
+      <div class="role rise">旅行 × 質感生活 內容創作者</div>
+      <p class="lede rise">用一支手機、一張機票，把世界各個角落的光影與故事說給你聽。誠實的開箱、有溫度的旅程，讓品牌與真實生活自然相遇。</p>
+      <div class="hero-btns rise">
+        <button class="btn btn-pri" data-scroll="booking">預約合作 / 索取媒體包</button>
+        <button class="btn btn-ghost" data-scroll="content">看我的內容 →</button>
+      </div>
+    </div>
+    <div class="av-card rise">
+      <div class="av-ring">
+        <div class="av-inner">
+          <svg viewBox="0 0 320 320" role="img" aria-label="林晚星頭像插畫">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffd166"/><stop offset=".5" stop-color="#ff7a59"/><stop offset="1" stop-color="#ff4d8d"/>
+              </linearGradient>
+              <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#3a1530"/><stop offset="1" stop-color="#6a1f4a"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="320" fill="url(#sky)"/>
+            <circle cx="245" cy="68" r="30" fill="#fff" opacity=".85"/>
+            <path d="M0 250 L70 210 L130 245 L200 200 L260 235 L320 205 L320 320 L0 320 Z" fill="#2a1244" opacity=".55"/>
+            <path d="M0 275 L60 250 L140 280 L220 245 L320 270 L320 320 L0 320 Z" fill="#1a0e2e" opacity=".7"/>
+            <g transform="translate(160 210)">
+              <ellipse cx="0" cy="60" rx="78" ry="60" fill="#7b5cff"/>
+              <circle cx="0" cy="-26" r="50" fill="#ffe0c2"/>
+              <path d="M-52 -30 Q-58 -85 0 -86 Q58 -85 52 -30 Q44 -54 30 -50 Q34 -20 22 -8 L24 -44 Q0 -36 -24 -44 L-22 -8 Q-34 -20 -30 -50 Q-44 -54 -52 -30 Z" fill="url(#hair)"/>
+              <circle cx="-17" cy="-28" r="5" fill="#2a1244"/>
+              <circle cx="17" cy="-28" r="5" fill="#2a1244"/>
+              <path d="M-20 -10 Q0 4 20 -10" stroke="#c2476a" stroke-width="4" fill="none" stroke-linecap="round"/>
+              <circle cx="-30" cy="-14" r="8" fill="#ff4d8d" opacity=".35"/>
+              <circle cx="30" cy="-14" r="8" fill="#ff4d8d" opacity=".35"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="av-chip chip-1"><span class="ic" style="background:#ff0050">♪</span>320K 追蹤</div>
+      <div class="av-chip chip-2"><span class="ic" style="background:#ff0000">▶</span>YouTube 夥伴</div>
+      <div class="av-chip chip-3"><span class="ic" style="background:linear-gradient(45deg,#f09433,#e6683c,#bc1888)">◎</span>IG 認證</div>
+    </div>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat rise"><div class="pf"><span class="pic" style="background:#ff0000">▶</span>YouTube</div><div class="num" data-to="486000" data-suffix="">0</div><div class="lab">訂閱者</div><div class="up">↑ 上月 +4.2%</div></div>
+    <div class="stat rise"><div class="pf"><span class="pic" style="background:linear-gradient(45deg,#f09433,#bc1888)">◎</span>Instagram</div><div class="num" data-to="320000" data-suffix="">0</div><div class="lab">追蹤者</div><div class="up">↑ 上月 +6.8%</div></div>
+    <div class="stat rise"><div class="pf"><span class="pic" style="background:#000">♪</span>TikTok</div><div class="num" data-to="1200000" data-suffix="">0</div><div class="lab">粉絲</div><div class="up">↑ 上月 +11%</div></div>
+    <div class="stat rise"><div class="pf"><span class="pic" style="background:var(--c4)">%</span>平均互動率</div><div class="num" data-to="78" data-div="10" data-suffix="%">0</div><div class="lab">高於同類 3 倍</div><div class="up">穩定成長中</div></div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<section id="content" class="wrap">
+  <div class="sec-head rise">
+    <div class="sec-kick">Latest Content</div>
+    <h2>近期內容作品</h2>
+    <p>橫跨影音、限動、Podcast 與長文，依平台與類型篩選，看看哪一種說故事的方式最對你的胃口。</p>
+  </div>
+  <div class="filters rise" id="filters">
+    <button class="fbtn active" data-f="all">全部</button>
+    <button class="fbtn" data-f="youtube">YouTube</button>
+    <button class="fbtn" data-f="ig">Instagram</button>
+    <button class="fbtn" data-f="podcast">Podcast</button>
+    <button class="fbtn" data-f="blog">部落格</button>
+  </div>
+  <div class="grid" id="cgrid"></div>
+</section>
+
+<!-- LINK HUB -->
+<section id="links" class="wrap">
+  <div class="sec-head rise">
+    <div class="sec-kick">Link Hub</div>
+    <h2>一鍵直達 · 連結中心</h2>
+    <p>我所有的去處，都在這裡。點一下就能跟上我的最新動態。</p>
+  </div>
+  <div class="links rise" id="linkhub"></div>
+
+  <div class="tip-cta rise">
+    <span class="ti">🌟</span>
+    <div><b>喜歡我的內容嗎？</b><br><span>請我喝杯咖啡，支持更多不被演算法綁架的真誠創作。</span></div>
+    <button class="btn btn-pri" id="tipBtn">☕ 贊助 NT$120</button>
+  </div>
+</section>
+
+<!-- COLLAB / MEDIA KIT -->
+<section id="collab" class="wrap">
+  <div class="sec-head rise">
+    <div class="sec-kick">Media Kit · Collaboration</div>
+    <h2>品牌合作方案</h2>
+    <p>下方為公開參考價（單位 NT$，未稅）。每次合作都會依品牌調性客製，先聊聊最準。</p>
+  </div>
+
+  <div class="themebar rise">
+    <span class="tl">🎨 切換我的品牌色：</span>
+    <div class="swatches" id="swatches">
+      <div class="sw active" data-t="sunset" title="日落珊瑚"></div>
+      <div class="sw" data-t="ocean" title="海洋電光"></div>
+      <div class="sw" data-t="matcha" title="抹茶清新"></div>
+      <div class="sw" data-t="berry" title="莓果暮光"></div>
+    </div>
+  </div>
+
+  <div class="collab-grid">
+    <div class="packs">
+      <div class="pack rise">
+        <div class="ph"><h3>限動 / 短影音 露出</h3><div class="price">NT$ 28,000<small> 起</small></div></div>
+        <ul>
+          <li>IG 限時動態 3 則 + Reels 1 支</li>
+          <li>導購連結貼紙 + 完整數據回報</li>
+          <li>含 1 次內容修改</li>
+        </ul>
+      </div>
+      <div class="pack feat rise">
+        <span class="popular">最熱門</span>
+        <div class="ph"><h3>YouTube 專題開箱</h3><div class="price">NT$ 95,000<small> 起</small></div></div>
+        <ul>
+          <li>8–12 分鐘專題影片，置入自然不突兀</li>
+          <li>同步 IG / TikTok 短版剪輯各 1 支</li>
+          <li>影片永久保留 + 30 天成效追蹤報告</li>
+          <li>含 2 次內容修改與腳本共創</li>
+        </ul>
+      </div>
+      <div class="pack rise">
+        <div class="ph"><h3>年度品牌大使</h3><div class="price">洽談</div></div>
+        <ul>
+          <li>季度內容規劃 × 線下活動出席</li>
+          <li>專屬折扣碼與長期數據儀表板</li>
+          <li>跨平台整合行銷，優先檔期</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BOOKING FORM -->
+    <div class="form-card rise" id="booking">
+      <div id="formBody">
+        <h3>預約合作洽談</h3>
+        <p class="sub">填寫後我會在 2 個工作天內回覆，並附上完整媒體包 PDF。</p>
+        <form id="bookForm" novalidate>
+          <div class="field"><label for="bn">品牌 / 公司名稱</label><input id="bn" type="text" placeholder="例如：晨光旅宿" /><div class="msg">請填寫品牌名稱</div></div>
+          <div class="field"><label for="be">聯絡 Email</label><input id="be" type="email" placeholder="you@brand.com" /><div class="msg">請填寫正確的 Email</div></div>
+          <div class="field"><label for="bp">想合作的方案</label>
+            <select id="bp">
+              <option value="">請選擇…</option>
+              <option>限動 / 短影音 露出</option>
+              <option>YouTube 專題開箱</option>
+              <option>年度品牌大使</option>
+              <option>其他 / 我想先聊聊</option>
+            </select><div class="msg">請選擇一個方案</div>
+          </div>
+          <div class="field"><label for="bm">合作想法 / 預算</label><textarea id="bm" placeholder="簡單描述產品、檔期與預期目標…"></textarea><div class="msg">請簡單描述合作想法</div></div>
+          <button type="submit" class="btn btn-pri" style="width:100%">送出邀約 ✦</button>
+        </form>
+      </div>
+      <div class="form-ok" id="formOk">
+        <div class="ok-ic">✓</div>
+        <h4>收到囉，謝謝你！</h4>
+        <p>我會盡快親自回覆，期待跟你一起做出好內容。<br>（這是展示用 Demo，未真正送出）</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div>
+        <div class="foot-brand">★ LATE STAR · 林晚星</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px">旅行 × 質感生活 內容創作者</div>
+      </div>
+      <div class="foot-soc">
+        <a href="#" title="YouTube">▶</a>
+        <a href="#" title="Instagram">◎</a>
+        <a href="#" title="TikTok">♪</a>
+        <a href="#" title="Podcast">🎙</a>
+      </div>
+    </div>
+    <div class="foot-note">
+      由 <a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a> 設計與開發 · 個人創作者品牌中心展示模板
+      <span class="disc">※ 本頁為虛構人物「林晚星」之展示用 Demo，所有數據、方案與報價皆為示意，非真實人物或服務。</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- staggered reveal ---------- */
+  var rises = document.querySelectorAll('.rise');
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        var sibs = Array.prototype.slice.call(e.target.parentNode.querySelectorAll('.rise'));
+        var idx = sibs.indexOf(e.target);
+        e.target.style.transitionDelay = Math.min(idx,6)*80 + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12});
+  rises.forEach(function(r){io.observe(r);});
+
+  /* ---------- animated stat counters ---------- */
+  function fmt(n){
+    if(n>=1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+    if(n>=1000) return Math.round(n/1000)+'K';
+    return n;
+  }
+  var counted = false;
+  function runCounters(){
+    if(counted) return; counted = true;
+    document.querySelectorAll('.num').forEach(function(el){
+      var to = +el.dataset.to, suf = el.dataset.suffix||'', div = +el.dataset.div||1;
+      var start = performance.now(), dur = 1500;
+      function step(t){
+        var p = Math.min((t-start)/dur,1);
+        var e = 1-Math.pow(1-p,3);
+        var val = to*e;
+        if(div>1){ el.textContent = (val/div).toFixed(1)+suf; }
+        else{ el.textContent = fmt(Math.round(val))+suf; }
+        if(p<1) requestAnimationFrame(step);
+        else{ el.textContent = (div>1?(to/div).toFixed(1):fmt(to))+suf; }
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var statIo = new IntersectionObserver(function(es){
+    if(es[0].isIntersecting) runCounters();
+  },{threshold:.4});
+  statIo.observe(document.getElementById('stats'));
+
+  /* ---------- content grid ---------- */
+  var thumbGrads = [
+    ['#ff7a59','#ff4d8d'],['#7b5cff','#ff4d8d'],['#ffd166','#ff7a59'],
+    ['#5be1a0','#7b5cff'],['#ff4d8d','#7b5cff'],['#ffd166','#ff4d8d'],
+    ['#7b5cff','#5be1a0'],['#ff7a59','#ffd166'],['#ff4d8d','#ffd166']
+  ];
+  var content = [
+    {t:'我在京都待了 7 天，只做這 3 件事',f:'youtube',pt:'YouTube',dur:'14:22',v:'48 萬次觀看',d:'3 天前',ic:'#ff0000'},
+    {t:'本季愛用旅行小物開箱｜行李箱裡的祕密',f:'youtube',pt:'YouTube',dur:'11:08',v:'31 萬次觀看',d:'1 週前',ic:'#ff0000'},
+    {t:'晚星週記 EP.42｜關於慢下來這件事',f:'podcast',pt:'Podcast',dur:'38:50',v:'2.1 萬次收聽',d:'4 天前',ic:'#7b5cff'},
+    {t:'清邁的一個下午，三家咖啡廳',f:'ig',pt:'IG Reels',dur:'0:58',v:'92 萬次播放',d:'2 天前',ic:'#bc1888'},
+    {t:'極簡打包術：14 天只帶一個登機箱',f:'blog',pt:'部落格',dur:'8 分閱讀',v:'1.4 萬次閱讀',d:'5 天前',ic:'#ffd166'},
+    {t:'與晨光旅宿合作：花蓮的一夜好眠',f:'ig',pt:'IG 貼文',dur:'圖文',v:'6.8 萬讚',d:'1 週前',ic:'#bc1888'},
+    {t:'創作者如何不被演算法綁架｜EP.41',f:'podcast',pt:'Podcast',dur:'45:12',v:'1.8 萬次收聽',d:'2 週前',ic:'#7b5cff'},
+    {t:'東京近郊一日散步路線全紀錄',f:'youtube',pt:'YouTube',dur:'18:34',v:'56 萬次觀看',d:'2 週前',ic:'#ff0000'},
+    {t:'我的居家質感工作桌 setup 2026',f:'blog',pt:'部落格',dur:'6 分閱讀',v:'9 千次閱讀',d:'3 週前',ic:'#ffd166'}
+  ];
+  var grid = document.getElementById('cgrid');
+  function thumbSvg(i){
+    var g = thumbGrads[i%thumbGrads.length];
+    return '<svg viewBox="0 0 200 125" preserveAspectRatio="none"><defs><linearGradient id="tg'+i+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+g[0]+'"/><stop offset="1" stop-color="'+g[1]+'"/></linearGradient></defs><rect width="200" height="125" fill="url(#tg'+i+')"/><circle cx="155" cy="28" r="34" fill="#fff" opacity=".14"/><circle cx="40" cy="100" r="48" fill="#000" opacity=".10"/><path d="M0 95 L50 78 L100 92 L150 72 L200 88 L200 125 L0 125Z" fill="#000" opacity=".18"/></svg>';
+  }
+  function renderGrid(filter){
+    grid.innerHTML = content.map(function(c,i){
+      var show = filter==='all'||c.f===filter;
+      return '<article class="ccard'+(show?'':' hide')+'" data-f="'+c.f+'">'+
+        '<div class="thumb">'+thumbSvg(i)+
+          '<span class="ptag">'+c.pt+'</span><span class="dur">'+c.dur+'</span>'+
+          '<span class="play"><svg viewBox="0 0 24 24" fill="#1a0e2e"><path d="M8 5v14l11-7z"/></svg></span>'+
+        '</div>'+
+        '<div class="cbody"><h3>'+c.t+'</h3><div class="cmeta"><span>👁 '+c.v+'</span><span>· '+c.d+'</span></div></div>'+
+      '</article>';
+    }).join('');
+  }
+  renderGrid('all');
+  document.getElementById('filters').addEventListener('click',function(e){
+    var b = e.target.closest('.fbtn'); if(!b) return;
+    this.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    renderGrid(b.dataset.f);
+  });
+  grid.addEventListener('click',function(e){
+    var card = e.target.closest('.ccard'); if(!card) return;
+    card.animate([{transform:'scale(1)'},{transform:'scale(.96)'},{transform:'scale(1)'}],{duration:260});
+  });
+
+  /* ---------- link hub ---------- */
+  var hubLinks = [
+    {b:'YouTube 頻道',s:'每週四晚 8 點更新',ic:'▶',bg:'#ff0000'},
+    {b:'Instagram',s:'@latestar.life · 旅程日常',ic:'◎',bg:'linear-gradient(45deg,#f09433,#bc1888)'},
+    {b:'TikTok',s:'60 秒帶你看世界',ic:'♪',bg:'#000'},
+    {b:'晚星週記 Podcast',s:'各大平台同步上線',ic:'🎙',bg:'#7b5cff'},
+    {b:'我的旅行裝備清單',s:'所有愛用品一次看',ic:'🎒',bg:'linear-gradient(120deg,#ff7a59,#ffd166)'},
+    {b:'電子報訂閱',s:'每月一封，沒有廢話',ic:'✉',bg:'linear-gradient(120deg,#ff4d8d,#7b5cff)'}
+  ];
+  document.getElementById('linkhub').innerHTML = hubLinks.map(function(l){
+    return '<a class="lhub" href="#" data-b="'+l.b+'"><span class="lic" style="background:'+l.bg+'">'+l.ic+'</span>'+
+      '<span class="lt"><b>'+l.b+'</b><span>'+l.s+'</span></span>'+
+      '<span class="burst">+1 ✦</span>'+
+      '<svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>';
+  }).join('');
+  document.getElementById('linkhub').addEventListener('click',function(e){
+    e.preventDefault();
+    var a = e.target.closest('.lhub'); if(!a) return;
+    var burst = a.querySelector('.burst');
+    burst.classList.remove('go'); void burst.offsetWidth; burst.classList.add('go');
+  });
+
+  /* ---------- tip CTA ---------- */
+  document.getElementById('tipBtn').addEventListener('click',function(){
+    var b = this, orig = b.textContent;
+    b.textContent = '💛 謝謝你的支持！';
+    b.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:380});
+    setTimeout(function(){b.textContent = orig;},2200);
+  });
+
+  /* ---------- smooth scroll buttons ---------- */
+  document.querySelectorAll('[data-scroll]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el = document.getElementById(this.dataset.scroll);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  /* ---------- persona / theme switcher ---------- */
+  var themes = {
+    sunset:{c1:'#ff7a59',c2:'#ff4d8d',c3:'#ffd166',c4:'#7b5cff',bg:'#1a0e2e',bg2:'#2a1244'},
+    ocean:{c1:'#22d3ee',c2:'#3b82f6',c3:'#a7f3d0',c4:'#818cf8',bg:'#08172e',bg2:'#0f2748'},
+    matcha:{c1:'#84cc16',c2:'#10b981',c3:'#fde68a',c4:'#34d399',bg:'#0e1f15',bg2:'#163326'},
+    berry:{c1:'#f472b6',c2:'#a855f7',c3:'#fbbf24',c4:'#6366f1',bg:'#1c0f24',bg2:'#2e163e'}
+  };
+  document.getElementById('swatches').querySelectorAll('.sw').forEach(function(sw){
+    var th = themes[sw.dataset.t];
+    sw.style.background = 'linear-gradient(135deg,'+th.c1+','+th.c2+' 55%,'+th.c4+')';
+    sw.addEventListener('click',function(){
+      document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('active');});
+      sw.classList.add('active');
+      var r = document.documentElement.style;
+      r.setProperty('--c1',th.c1); r.setProperty('--c2',th.c2);
+      r.setProperty('--c3',th.c3); r.setProperty('--c4',th.c4);
+      r.setProperty('--bg',th.bg); r.setProperty('--bg2',th.bg2);
+      r.setProperty('--grad','linear-gradient(120deg,'+th.c1+','+th.c2+' 45%,'+th.c4+')');
+    });
+  });
+
+  /* ---------- form validation ---------- */
+  var form = document.getElementById('bookForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok = true;
+    var checks = [
+      {id:'bn',test:function(v){return v.trim().length>0;}},
+      {id:'be',test:function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());}},
+      {id:'bp',test:function(v){return v!=='';}},
+      {id:'bm',test:function(v){return v.trim().length>3;}}
+    ];
+    checks.forEach(function(c){
+      var el = document.getElementById(c.id), field = el.closest('.field');
+      if(c.test(el.value)){ field.classList.remove('err'); }
+      else{ field.classList.add('err'); ok=false; }
+    });
+    if(ok){
+      document.getElementById('formBody').style.display='none';
+      document.getElementById('formOk').classList.add('show');
+    }
+  });
+  form.querySelectorAll('input,select,textarea').forEach(function(el){
+    el.addEventListener('input',function(){el.closest('.field').classList.remove('err');});
+  });
+})();
+</script>
+</body>
+</html>

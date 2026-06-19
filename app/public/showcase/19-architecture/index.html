@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>院構建築 ATELIER YUAN — 建築與室內設計事務所</title>
+<meta name="description" content="院構建築（Atelier Yuan）為一間立基於台灣的建築與室內設計事務所，專注於住宅、商業空間、公共建築與室內設計。本頁為設計範例展示頁。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Vollkorn:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Sans+TC:wght@200;300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   ATELIER YUAN 院構建築 — Architecture / interior studio (#19)
+   Aesthetic: warm concrete / plaster minimalism. Bone-plaster
+   ground, charcoal ink type, single restrained terracotta-clay
+   accent. Refined Vollkorn serif for display, Familjen Grotesk
+   for precise UI/labels, Noto Sans TC for Chinese body.
+   Strong modular grid, hairlines, large index numbers, slow
+   precise motion. All "photos" are inline SVG architectural
+   line-work. No images, no backend.
+   ============================================================ */
+
+:root{
+  --plaster:#e9e4db;       /* warm bone ground */
+  --plaster-2:#e2dcd1;     /* panel */
+  --plaster-3:#d8d1c4;     /* raised / rule fill */
+  --paper:#f3efe8;         /* lighter card */
+  --ink:#1f1d1a;           /* charcoal text */
+  --ink-2:#3a3733;         /* secondary */
+  --ink-soft:#6f6a61;      /* muted */
+  --ink-dim:#928c80;       /* faint */
+  --clay:#b4552f;          /* terracotta accent */
+  --clay-deep:#94411f;
+  --line:rgba(31,29,26,.16);
+  --line-soft:rgba(31,29,26,.08);
+  --line-strong:rgba(31,29,26,.32);
+  --maxw:1340px;
+  --serif:"Vollkorn",Georgia,"Noto Serif TC",serif;
+  --sans:"Familjen Grotesk","Noto Sans TC",system-ui,sans-serif;
+  --tc:"Noto Sans TC",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-2:cubic-bezier(.65,.05,.36,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--plaster);
+  color:var(--ink);
+  font-family:var(--tc);
+  font-weight:300;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  cursor:none;
+}
+@media (hover:none){ body{cursor:auto} }
+
+::selection{background:var(--clay);color:var(--paper)}
+
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:none}
+@media (hover:none){ button{cursor:pointer} }
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,4vw,64px)}
+.mono{font-family:var(--sans);font-weight:500}
+.eyebrow{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--clay);
+}
+.idx{
+  font-family:var(--sans);
+  font-variant-numeric:tabular-nums;
+  font-weight:500;
+  color:var(--ink-dim);
+  font-size:12px;
+  letter-spacing:.1em;
+}
+
+/* ---------- custom cursor ---------- */
+.cursor{
+  position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;
+  background:var(--clay);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);transition:transform .18s var(--ease),background .2s;
+  mix-blend-mode:normal;
+}
+.cursor-ring{
+  position:fixed;top:0;left:0;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line-strong);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:transform .32s var(--ease),width .3s var(--ease),height .3s var(--ease),border-color .3s;
+}
+body.cur-hover .cursor-ring{width:60px;height:60px;border-color:var(--clay)}
+body.cur-hover .cursor{transform:translate(-50%,-50%) scale(.4)}
+@media (hover:none){ .cursor,.cursor-ring{display:none} }
+
+/* ---------- top progress ---------- */
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--clay);width:0;z-index:200;transition:width .1s linear}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:120;
+  border-bottom:1px solid transparent;
+  transition:background .4s var(--ease),border-color .4s,backdrop-filter .4s;
+}
+header.nav.solid{
+  background:color-mix(in srgb,var(--plaster) 86%,transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:baseline;gap:12px;font-family:var(--sans);font-weight:600;letter-spacing:.04em}
+.brand .mk{font-size:17px}
+.brand .zh{font-size:13px;color:var(--ink-soft);font-family:var(--tc);font-weight:400;letter-spacing:.18em}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{
+  font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.05em;
+  color:var(--ink-2);position:relative;padding:4px 0;transition:color .3s;
+}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--clay);transition:width .35s var(--ease)}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line-strong);padding:9px 18px;border-radius:2px;transition:all .35s var(--ease);
+}
+.nav-cta:hover{background:var(--ink);color:var(--plaster);border-color:var(--ink)}
+.burger{display:none;flex-direction:column;gap:5px;padding:8px}
+.burger span{width:24px;height:1.5px;background:var(--ink);transition:.3s}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding-top:124px;padding-bottom:48px;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between}
+.hero-grid-lines{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.hero-grid-lines .v{position:absolute;top:0;bottom:0;width:1px;background:var(--line-soft)}
+.hero-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.hero-meta{font-family:var(--sans);font-size:12px;letter-spacing:.12em;color:var(--ink-soft);max-width:240px;line-height:1.8}
+.hero-title{position:relative;z-index:2;margin:auto 0}
+.hero-title h1{
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:clamp(48px,9.2vw,148px);
+  line-height:.96;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.hero-title h1 em{font-style:italic;color:var(--clay);font-weight:400}
+.hero-title .ln{overflow:hidden;display:block}
+.hero-title .ln > span{display:block;transform:translateY(105%);transition:transform 1s var(--ease)}
+.hero.in .hero-title .ln > span{transform:translateY(0)}
+.hero-title .ln:nth-child(2) > span{transition-delay:.1s}
+.hero-title .ln:nth-child(3) > span{transition-delay:.2s}
+.hero-bottom{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.hero-lede{max-width:420px;font-size:15px;color:var(--ink-2);line-height:1.85;font-weight:300}
+.hero-scroll{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
+.hero-scroll .bar{width:42px;height:1px;background:var(--ink-soft);position:relative;overflow:hidden}
+.hero-scroll .bar::after{content:"";position:absolute;inset:0;background:var(--clay);animation:slide 2.4s var(--ease-2) infinite}
+@keyframes slide{0%{transform:translateX(-100%)}50%{transform:translateX(0)}100%{transform:translateX(100%)}}
+
+/* ---------- section frame ---------- */
+.section{padding:clamp(72px,11vh,150px) 0;position:relative}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,4.4vw,52px);line-height:1.04;letter-spacing:-.01em;max-width:14ch}
+.sec-head .meta{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+
+/* reveal util */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- filters ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px;align-items:center}
+.filters .lbl{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);margin-right:8px}
+.fbtn{
+  font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.03em;
+  padding:8px 16px;border:1px solid var(--line);border-radius:2px;color:var(--ink-2);
+  transition:all .3s var(--ease);position:relative;
+}
+.fbtn:hover{border-color:var(--line-strong);color:var(--ink)}
+.fbtn.active{background:var(--ink);color:var(--plaster);border-color:var(--ink)}
+.fbtn .ct{font-size:10px;color:var(--ink-dim);margin-left:6px;font-variant-numeric:tabular-nums}
+.fbtn.active .ct{color:var(--plaster-3)}
+
+/* ---------- projects grid ---------- */
+.projects{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(18px,2vw,30px)}
+.pcard{position:relative;cursor:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+@media(hover:none){ .pcard{cursor:pointer} }
+.pcard.hide{display:none}
+.pcard:nth-child(6n+1){grid-column:span 7}
+.pcard:nth-child(6n+2){grid-column:span 5}
+.pcard:nth-child(6n+3){grid-column:span 5}
+.pcard:nth-child(6n+4){grid-column:span 7}
+.pcard:nth-child(6n+5){grid-column:span 6}
+.pcard:nth-child(6n+6){grid-column:span 6}
+.pcard .frame{position:relative;overflow:hidden;background:var(--plaster-2);border:1px solid var(--line-soft);aspect-ratio:4/3}
+.pcard .frame svg{width:100%;height:100%;transition:transform 1.1s var(--ease)}
+.pcard:hover .frame svg{transform:scale(1.035)}
+.pcard .overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;background:linear-gradient(to top,rgba(31,29,26,.62),rgba(31,29,26,0) 58%);
+  opacity:0;transition:opacity .5s var(--ease);
+}
+.pcard:hover .overlay{opacity:1}
+.pcard .overlay .ov-type{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--plaster);opacity:.85}
+.pcard .overlay .ov-view{font-family:var(--sans);font-size:12px;letter-spacing:.14em;color:var(--clay);margin-top:6px;display:flex;align-items:center;gap:8px}
+.pcard .info{display:flex;justify-content:space-between;align-items:flex-start;padding-top:14px;gap:16px}
+.pcard .info .num{font-family:var(--sans);font-variant-numeric:tabular-nums;color:var(--clay);font-weight:500;font-size:13px}
+.pcard .info h3{font-family:var(--serif);font-weight:500;font-size:clamp(18px,1.7vw,23px);letter-spacing:-.01em;line-height:1.15}
+.pcard .info .loc{font-family:var(--sans);font-size:12px;color:var(--ink-soft);letter-spacing:.04em;margin-top:3px}
+.pcard .info .yr{font-family:var(--sans);font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:13px;letter-spacing:.06em}
+.empty-note{grid-column:span 12;text-align:center;color:var(--ink-soft);font-size:14px;padding:50px 0;display:none}
+
+/* ---------- featured horizontal gallery ---------- */
+.featured{background:var(--ink);color:var(--plaster);padding:clamp(72px,11vh,140px) 0;overflow:hidden;position:relative}
+.featured ::selection{background:var(--clay);color:var(--paper)}
+.featured .sec-head{border-color:rgba(243,239,232,.16)}
+.featured .sec-head h2{color:var(--paper)}
+.featured .eyebrow{color:var(--clay)}
+.feat-meta-r{display:flex;flex-direction:column;gap:6px;align-items:flex-end;text-align:right}
+.feat-meta-r span{font-family:var(--sans);font-size:12px;letter-spacing:.08em;color:var(--plaster-3)}
+.hscroll-wrap{position:relative}
+.hscroll{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 0 28px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.hslide{flex:0 0 min(78vw,640px);scroll-snap-align:center}
+.hslide .frame{aspect-ratio:16/10;background:#26241f;border:1px solid rgba(243,239,232,.1);overflow:hidden}
+.hslide .cap{display:flex;justify-content:space-between;padding-top:14px;gap:16px;border-top:1px solid rgba(243,239,232,.12);margin-top:14px}
+.hslide .cap .t{font-family:var(--serif);font-size:20px;color:var(--paper)}
+.hslide .cap .n{font-family:var(--sans);font-size:12px;color:var(--clay);letter-spacing:.1em}
+.hslide .cap .d{font-family:var(--sans);font-size:12px;color:var(--plaster-3);max-width:50%}
+.hctrl{display:flex;gap:12px;align-items:center;margin-top:20px}
+.hctrl button{width:48px;height:48px;border:1px solid rgba(243,239,232,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .3s var(--ease)}
+.hctrl button:hover{background:var(--clay);border-color:var(--clay)}
+.hctrl button svg{width:18px;height:18px;stroke:var(--paper)}
+.hctrl .hint{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--plaster-3);margin-left:8px}
+
+/* ---------- before/after plan toggle ---------- */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,60px);align-items:center}
+.ba-stage{position:relative;border:1px solid var(--line);background:var(--paper);aspect-ratio:4/3;overflow:hidden;user-select:none}
+.ba-layer{position:absolute;inset:0}
+.ba-layer svg{width:100%;height:100%}
+.ba-after{clip-path:inset(0 0 0 50%);transition:clip-path .05s linear}
+.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--clay);transform:translateX(-1px);pointer-events:none}
+.ba-handle{position:absolute;top:50%;left:50%;width:44px;height:44px;border-radius:50%;background:var(--clay);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(31,29,26,.28)}
+.ba-handle svg{width:22px;height:22px;stroke:var(--paper)}
+.ba-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:none}
+@media(hover:none){.ba-range{cursor:ew-resize}}
+.ba-tag{position:absolute;bottom:14px;font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:color-mix(in srgb,var(--paper) 80%,transparent);padding:5px 11px;border:1px solid var(--line)}
+.ba-tag.l{left:14px}
+.ba-tag.r{right:14px;color:var(--clay)}
+.ba-text h3{font-family:var(--serif);font-size:clamp(24px,3vw,38px);font-weight:500;line-height:1.12;margin-bottom:18px;letter-spacing:-.01em}
+.ba-text p{font-size:15px;color:var(--ink-2);line-height:1.9;margin-bottom:14px;font-weight:300}
+.ba-text .specs{margin-top:26px;border-top:1px solid var(--line);padding-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ba-text .specs div .k{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+.ba-text .specs div .v{font-family:var(--serif);font-size:19px;margin-top:4px}
+
+/* ---------- approach / about ---------- */
+.approach-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(36px,6vw,90px);align-items:start}
+.approach-lead{font-family:var(--serif);font-size:clamp(22px,2.6vw,33px);font-weight:400;line-height:1.4;letter-spacing:-.005em;color:var(--ink)}
+.approach-lead em{font-style:italic;color:var(--clay)}
+.approach-body p{font-size:15px;color:var(--ink-2);line-height:1.95;margin-bottom:18px;font-weight:300}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;border-top:1px solid var(--line);padding-top:36px}
+.stat .n{font-family:var(--serif);font-size:clamp(34px,4.6vw,58px);font-weight:500;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat .n .suf{color:var(--clay);font-size:.5em;vertical-align:super}
+.stat .l{font-family:var(--sans);font-size:12px;letter-spacing:.1em;color:var(--ink-soft);margin-top:10px}
+
+/* ---------- expertise accordion ---------- */
+.exp-list{border-top:1px solid var(--line)}
+.exp-item{border-bottom:1px solid var(--line)}
+.exp-head{display:flex;align-items:center;gap:24px;padding:26px 4px;width:100%;text-align:left;transition:padding .4s var(--ease)}
+.exp-head:hover{padding-left:16px}
+.exp-head .n{font-family:var(--sans);font-variant-numeric:tabular-nums;font-size:13px;color:var(--clay);font-weight:500;width:40px;flex:none}
+.exp-head .t{font-family:var(--serif);font-size:clamp(22px,2.8vw,34px);font-weight:500;flex:1;letter-spacing:-.01em}
+.exp-head .pl{width:26px;height:26px;flex:none;position:relative}
+.exp-head .pl::before,.exp-head .pl::after{content:"";position:absolute;background:var(--ink);transition:transform .4s var(--ease)}
+.exp-head .pl::before{top:50%;left:0;right:0;height:1.5px;transform:translateY(-50%)}
+.exp-head .pl::after{left:50%;top:0;bottom:0;width:1.5px;transform:translateX(-50%)}
+.exp-item.open .pl::after{transform:translateX(-50%) scaleY(0)}
+.exp-body{max-height:0;overflow:hidden;transition:max-height .55s var(--ease)}
+.exp-body-in{padding:0 4px 30px 64px;display:grid;grid-template-columns:1.4fr 1fr;gap:36px}
+.exp-body-in p{font-size:15px;color:var(--ink-2);line-height:1.9;font-weight:300}
+.exp-body-in ul{list-style:none}
+.exp-body-in li{font-family:var(--sans);font-size:13px;color:var(--ink-soft);padding:8px 0;border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between}
+.exp-body-in li span{color:var(--clay)}
+
+/* ---------- team / awards ---------- */
+.tw-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,80px)}
+.team-list,.awards-list{display:flex;flex-direction:column}
+.team-row{display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);transition:padding .35s var(--ease)}
+.team-row:hover{padding-left:12px}
+.team-av{width:54px;height:54px;flex:none;border:1px solid var(--line);background:var(--plaster-2);border-radius:50%;overflow:hidden}
+.team-av svg{width:100%;height:100%}
+.team-row .nm{font-family:var(--serif);font-size:20px}
+.team-row .rl{font-family:var(--sans);font-size:12px;color:var(--ink-soft);letter-spacing:.05em;margin-top:2px}
+.team-row .yr{margin-left:auto;font-family:var(--sans);font-size:12px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.aw-row{display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
+.aw-row .ay{font-family:var(--sans);font-variant-numeric:tabular-nums;color:var(--clay);font-size:13px;font-weight:500}
+.aw-row .at{font-size:15px;color:var(--ink)}
+.aw-row .at small{display:block;font-family:var(--sans);color:var(--ink-soft);font-size:12px;margin-top:3px;letter-spacing:.04em}
+.aw-row .ap{font-family:var(--sans);font-size:12px;color:var(--ink-soft);text-align:right}
+
+/* ---------- contact ---------- */
+.contact{background:var(--plaster-2);border-top:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(40px,7vw,110px);align-items:start}
+.contact-left h2{font-family:var(--serif);font-size:clamp(30px,4.6vw,56px);font-weight:500;line-height:1.04;letter-spacing:-.01em;margin-bottom:24px}
+.contact-left .cdetail{margin-top:34px;display:flex;flex-direction:column;gap:20px}
+.contact-left .cdetail .k{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:5px}
+.contact-left .cdetail .v{font-size:15px;color:var(--ink)}
+form .frow{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.field{margin-bottom:26px;position:relative}
+.field label{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px}
+.field input,.field select,.field textarea{
+  width:100%;background:transparent;border:none;border-bottom:1px solid var(--line-strong);
+  padding:9px 0;font-family:var(--tc);font-size:15px;color:var(--ink);font-weight:300;
+  transition:border-color .3s;cursor:none;
+}
+@media(hover:none){.field input,.field select,.field textarea{cursor:auto}}
+.field select{cursor:none}
+.field textarea{resize:vertical;min-height:90px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--clay)}
+.field input::placeholder,.field textarea::placeholder{color:var(--ink-dim)}
+.field .err{font-family:var(--sans);font-size:11px;color:var(--clay-deep);margin-top:7px;display:none;letter-spacing:.04em}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--clay-deep)}
+.field.invalid .err{display:block}
+.submit{
+  margin-top:8px;font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--ink);color:var(--plaster);padding:16px 34px;border-radius:2px;display:inline-flex;align-items:center;gap:12px;
+  transition:all .35s var(--ease);
+}
+.submit:hover{background:var(--clay)}
+.submit svg{width:16px;height:16px;stroke:currentColor}
+.form-success{display:none;border:1px solid var(--clay);background:var(--paper);padding:38px;text-align:center;border-radius:2px}
+.form-success.show{display:block;animation:pop .5s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.form-success .ic{width:54px;height:54px;border-radius:50%;border:1.5px solid var(--clay);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.form-success .ic svg{width:24px;height:24px;stroke:var(--clay)}
+.form-success h3{font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:10px}
+.form-success p{color:var(--ink-2);font-size:14px}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:var(--plaster);padding:64px 0 40px}
+footer ::selection{background:var(--clay);color:var(--paper)}
+.foot-top{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;border-bottom:1px solid rgba(243,239,232,.14);padding-bottom:40px;margin-bottom:30px}
+.foot-brand .mk{font-family:var(--serif);font-size:34px;font-weight:500}
+.foot-brand .zh{font-family:var(--tc);font-size:13px;color:var(--plaster-3);letter-spacing:.2em;margin-top:6px}
+.foot-cols{display:flex;gap:60px;flex-wrap:wrap}
+.foot-col h4{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin-bottom:16px}
+.foot-col a,.foot-col p{display:block;font-size:13px;color:var(--plaster-3);margin-bottom:9px;transition:color .3s}
+.foot-col a:hover{color:var(--paper)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--sans);font-size:12px;color:var(--ink-dim)}
+.badge{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(243,239,232,.2);padding:8px 15px;border-radius:2px;color:var(--plaster-3);letter-spacing:.04em}
+.badge b{color:var(--paper);font-weight:600}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:var(--clay)}
+
+/* ---------- project detail overlay ---------- */
+.detail{
+  position:fixed;inset:0;z-index:300;background:var(--plaster);
+  transform:translateY(100%);transition:transform .7s var(--ease);
+  overflow-y:auto;overscroll-behavior:contain;
+}
+.detail.open{transform:translateY(0)}
+.detail-bar{
+  position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;
+  padding:18px clamp(20px,4vw,64px);background:color-mix(in srgb,var(--plaster) 90%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line-soft);
+}
+.detail-bar .lbl{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+.detail-close{display:flex;align-items:center;gap:9px;font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);transition:color .3s}
+.detail-close:hover{color:var(--clay)}
+.detail-close svg{width:18px;height:18px;stroke:currentColor}
+.detail-in{padding:clamp(34px,6vw,80px) clamp(20px,4vw,64px) 60px}
+.detail-hero{display:grid;grid-template-columns:1fr;gap:30px}
+.detail-num{font-family:var(--sans);font-variant-numeric:tabular-nums;font-size:14px;color:var(--clay);letter-spacing:.14em}
+.detail-title{font-family:var(--serif);font-size:clamp(40px,7vw,98px);font-weight:500;line-height:.98;letter-spacing:-.02em;margin:14px 0 10px}
+.detail-sub{font-family:var(--sans);font-size:15px;color:var(--ink-soft);letter-spacing:.05em}
+.detail-big{margin-top:34px;border:1px solid var(--line-soft);background:var(--plaster-2);aspect-ratio:16/9;overflow:hidden}
+.detail-big svg{width:100%;height:100%}
+.detail-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:30px 0}
+.detail-meta .k{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+.detail-meta .v{font-family:var(--serif);font-size:20px;margin-top:7px;line-height:1.2}
+.detail-cols{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(30px,5vw,72px);margin-top:48px}
+.detail-cols .lab{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+.detail-cols .desc p{font-size:16px;color:var(--ink-2);line-height:1.95;margin-bottom:18px;font-weight:300}
+.detail-cols .desc p:first-child{font-family:var(--serif);font-size:clamp(20px,2.2vw,27px);color:var(--ink);line-height:1.5;font-weight:400}
+.detail-gallery{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.detail-gallery .g{border:1px solid var(--line-soft);background:var(--plaster-2);aspect-ratio:4/3;overflow:hidden}
+.detail-gallery .g:first-child{grid-column:span 2;aspect-ratio:16/7}
+.detail-gallery svg{width:100%;height:100%}
+.detail-nav{display:flex;justify-content:space-between;align-items:stretch;gap:20px;margin-top:60px;border-top:1px solid var(--line);padding-top:30px}
+.detail-nav button{flex:1;text-align:left;padding:18px 6px;transition:all .35s var(--ease);border:1px solid transparent}
+.detail-nav button:last-child{text-align:right}
+.detail-nav button:hover{padding-left:18px}
+.detail-nav button:last-child:hover{padding-right:18px;padding-left:6px}
+.detail-nav .dir{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin-bottom:8px}
+.detail-nav .pn{font-family:var(--serif);font-size:clamp(18px,2.2vw,26px);font-weight:500}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  .approach-grid,.ba-row,.tw-grid,.contact-grid{grid-template-columns:1fr;gap:40px}
+  .ba-text .specs{grid-template-columns:1fr 1fr}
+  .detail-cols{grid-template-columns:1fr}
+  .detail-meta{grid-template-columns:1fr 1fr}
+  .exp-body-in{grid-template-columns:1fr;gap:20px}
+  .pcard:nth-child(n){grid-column:span 6}
+}
+@media (max-width:720px){
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+  .nav-links{display:none}
+  .nav-cta{display:none}
+  .burger{display:flex}
+  .hero-top{flex-direction:column}
+  .hero-meta{max-width:none}
+  .pcard:nth-child(n){grid-column:span 12}
+  .stats{grid-template-columns:1fr;gap:20px;text-align:left}
+  .detail-meta{grid-template-columns:1fr 1fr;gap:18px}
+  .detail-gallery{grid-template-columns:1fr}
+  .detail-gallery .g:first-child{grid-column:span 1;aspect-ratio:16/9}
+  form .frow{grid-template-columns:1fr;gap:0}
+  .detail-nav{flex-direction:column}
+  .detail-nav button:last-child{text-align:left}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:14px}
+  .sec-head .meta{text-align:left;align-items:flex-start}
+  .foot-top{flex-direction:column}
+}
+
+/* mobile menu */
+.mmenu{position:fixed;inset:0;z-index:130;background:var(--plaster);transform:translateY(-100%);transition:transform .55s var(--ease);display:flex;flex-direction:column;justify-content:center;padding:0 32px}
+.mmenu.open{transform:translateY(0)}
+.mmenu a{font-family:var(--serif);font-size:34px;font-weight:500;padding:14px 0;border-bottom:1px solid var(--line)}
+.mmenu .x{position:absolute;top:22px;right:26px;font-family:var(--sans);font-size:13px;letter-spacing:.14em}
+</style>
+</head>
+<body>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+<div class="progress" id="prog"></div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand" data-cur>
+      <span class="mk">ATELIER YUAN</span>
+      <span class="zh">院構建築</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#work" data-cur>作品 Work</a>
+      <a href="#approach" data-cur>理念 Approach</a>
+      <a href="#expertise" data-cur>專業 Expertise</a>
+      <a href="#studio" data-cur>事務所 Studio</a>
+      <a href="#contact" data-cur>聯繫 Contact</a>
+    </nav>
+    <a href="#contact" class="nav-cta" data-cur>委託洽談</a>
+    <button class="burger" id="burger" aria-label="選單"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mmenu" id="mmenu">
+  <button class="x" id="mclose">關閉 ✕</button>
+  <a href="#work">作品 Work</a>
+  <a href="#approach">理念 Approach</a>
+  <a href="#expertise">專業 Expertise</a>
+  <a href="#studio">事務所 Studio</a>
+  <a href="#contact">聯繫 Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-grid-lines" id="heroLines"></div>
+  <div class="wrap" style="display:flex;flex-direction:column;height:100%;flex:1">
+    <div class="hero-top">
+      <div class="eyebrow">建築 · 室內 · 公共空間 — 自 2009 年</div>
+      <div class="hero-meta">立基於台灣，<br/>實踐以材料、光線與秩序<br/>為核心的當代空間。</div>
+    </div>
+
+    <div class="hero-title">
+      <h1>
+        <span class="ln"><span>讓空間</span></span>
+        <span class="ln"><span><em>沉靜</em>地</span></span>
+        <span class="ln"><span>說話。</span></span>
+      </h1>
+    </div>
+
+    <div class="hero-bottom">
+      <p class="hero-lede">院構建築專注於住宅、商業空間與公共建築設計。我們相信好的建築不喧嘩——它以比例、材料與時間，回應每一塊基地的特質。</p>
+      <div class="hero-scroll">向下探索 <span class="bar"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK / PROJECTS INDEX -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>精選作品<br/>Selected Works</h2>
+      <div class="meta">
+        <span class="idx">索引 / INDEX 01</span>
+        <span class="idx" id="projCount">— 件作品</span>
+      </div>
+    </div>
+
+    <div class="filters rv">
+      <span class="lbl">類型篩選</span>
+      <button class="fbtn active" data-filter="all">全部<span class="ct" data-count="all"></span></button>
+      <button class="fbtn" data-filter="住宅">住宅<span class="ct" data-count="住宅"></span></button>
+      <button class="fbtn" data-filter="商空">商空<span class="ct" data-count="商空"></span></button>
+      <button class="fbtn" data-filter="公共">公共<span class="ct" data-count="公共"></span></button>
+      <button class="fbtn" data-filter="室內">室內<span class="ct" data-count="室內"></span></button>
+    </div>
+
+    <div class="projects" id="projGrid"></div>
+  </div>
+</section>
+
+<!-- FEATURED HORIZONTAL GALLERY -->
+<section class="featured" id="featured">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <div class="eyebrow" style="margin-bottom:14px">焦點專案 / Featured</div>
+        <h2>霧峰光之院<br/>House of Soft Light</h2>
+      </div>
+      <div class="feat-meta-r">
+        <span>台中 · 霧峰</span>
+        <span>住宅 / 78 坪 / 2023</span>
+        <span class="idx">索引 / INDEX 02</span>
+      </div>
+    </div>
+    <div class="hscroll-wrap">
+      <div class="hscroll" id="hscroll"></div>
+      <div class="hctrl">
+        <button id="hPrev" aria-label="上一張"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button id="hNext" aria-label="下一張"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></button>
+        <span class="hint">橫向捲動瀏覽序列</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER PLAN TOGGLE -->
+<section class="section" id="transform">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>改造前後<br/>Before / After</h2>
+      <div class="meta">
+        <span class="idx">索引 / INDEX 03</span>
+        <span class="idx">大安老屋翻新</span>
+      </div>
+    </div>
+    <div class="ba-row rv">
+      <div class="ba-stage" id="baStage">
+        <div class="ba-layer ba-before" id="baBefore"></div>
+        <div class="ba-layer ba-after" id="baAfter"></div>
+        <div class="ba-divider" id="baDivider"></div>
+        <div class="ba-handle" id="baHandle"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg></div>
+        <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="拖曳比較改造前後" />
+        <span class="ba-tag l">改造前 BEFORE</span>
+        <span class="ba-tag r">改造後 AFTER</span>
+      </div>
+      <div class="ba-text">
+        <h3>從封閉隔間，到流動的光與生活。</h3>
+        <p>大安區一棟三十年透天，原始格局以厚重隔間切割了採光與動線。我們拆除非結構牆，引入垂直天井，讓自然光自頂層滲入每一層樓。</p>
+        <p>拖曳中央滑桿，比較翻新前的封閉平面與翻新後的開放序列。</p>
+        <div class="specs">
+          <div><div class="k">基地面積</div><div class="v">42 坪</div></div>
+          <div><div class="k">完工年份</div><div class="v">2022</div></div>
+          <div><div class="k">空間類型</div><div class="v">老屋翻新</div></div>
+          <div><div class="k">設計角色</div><div class="v">主持建築 / 室內</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH / ABOUT -->
+<section class="section" id="approach">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>設計理念<br/>Approach</h2>
+      <div class="meta"><span class="idx">索引 / INDEX 04</span></div>
+    </div>
+    <div class="approach-grid">
+      <p class="approach-lead rv">「建築不只是遮蔽，而是一種<em>對日常的提案</em>——我們以材料的誠實、光線的節奏與空間的留白，書寫居住的詩意。」</p>
+      <div class="approach-body rv">
+        <p>院構建築由主持人陳邑廷於 2009 年成立。我們的工作始於對基地的長時間觀察：光如何移動、風從何處來、人在其中如何停留。每一個專案都是對這些條件的回應，而非套用既定的風格。</p>
+        <p>我們偏好誠實的材料——清水混凝土、實木、未經修飾的金屬與石材，讓時間在表面留下痕跡。少即是多，但少不等於空；我們追求的是經得起日常磨損、且隨歲月愈見溫潤的空間。</p>
+      </div>
+    </div>
+    <div class="stats rv">
+      <div class="stat"><div class="n" data-count-to="68">0</div><div class="l">完成專案 / Completed</div></div>
+      <div class="stat"><div class="n" data-count-to="15"><span></span><span class="suf">+</span></div><div class="l">設計獎項 / Awards</div></div>
+      <div class="stat"><div class="n" data-count-to="16"><span></span><span class="suf">年</span></div><div class="l">深耕在地 / Years</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE ACCORDION -->
+<section class="section" id="expertise">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>專業服務<br/>Expertise</h2>
+      <div class="meta"><span class="idx">索引 / INDEX 05</span></div>
+    </div>
+    <div class="exp-list rv" id="expList"></div>
+  </div>
+</section>
+
+<!-- STUDIO: TEAM + AWARDS -->
+<section class="section" id="studio">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>事務所<br/>The Studio</h2>
+      <div class="meta"><span class="idx">索引 / INDEX 06</span></div>
+    </div>
+    <div class="tw-grid">
+      <div class="rv">
+        <div class="eyebrow" style="margin-bottom:24px">團隊 / Team</div>
+        <div class="team-list" id="teamList"></div>
+      </div>
+      <div class="rv">
+        <div class="eyebrow" style="margin-bottom:24px">獲獎紀錄 / Awards</div>
+        <div class="awards-list" id="awardsList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-left rv">
+        <div class="eyebrow" style="margin-bottom:20px">委託洽談 / Enquiry</div>
+        <h2>讓我們<br/>談談您的基地。</h2>
+        <p style="color:var(--ink-2);font-size:15px;line-height:1.9;font-weight:300;max-width:38ch">無論是住宅、商業空間或公共專案，歡迎與我們分享您的想法與基地條件。我們將於三個工作日內回覆。</p>
+        <div class="cdetail">
+          <div><div class="k">事務所</div><div class="v">台中市西區美村路二段 188 號 5 樓</div></div>
+          <div><div class="k">電郵</div><div class="v">studio@atelier-yuan.tw</div></div>
+          <div><div class="k">電話</div><div class="v">+886 4 2376 0988</div></div>
+        </div>
+      </div>
+      <div class="contact-right rv">
+        <form id="enquiry" novalidate>
+          <div class="frow">
+            <div class="field">
+              <label for="name">姓名 Name</label>
+              <input type="text" id="name" name="name" placeholder="您的稱呼" />
+              <div class="err">請輸入您的姓名</div>
+            </div>
+            <div class="field">
+              <label for="email">電郵 Email</label>
+              <input type="text" id="email" name="email" placeholder="name@example.com" />
+              <div class="err">請輸入有效的電郵地址</div>
+            </div>
+          </div>
+          <div class="frow">
+            <div class="field">
+              <label for="ptype">專案類型 Project Type</label>
+              <select id="ptype" name="ptype">
+                <option value="">請選擇</option>
+                <option>住宅 Residential</option>
+                <option>商業空間 Commercial</option>
+                <option>公共建築 Public</option>
+                <option>室內設計 Interior</option>
+                <option>老屋翻新 Renovation</option>
+              </select>
+              <div class="err">請選擇專案類型</div>
+            </div>
+            <div class="field">
+              <label for="budget">預估規模 Scale</label>
+              <select id="budget" name="budget">
+                <option value="">請選擇</option>
+                <option>30 坪以下</option>
+                <option>30 – 80 坪</option>
+                <option>80 – 200 坪</option>
+                <option>200 坪以上</option>
+              </select>
+              <div class="err">請選擇預估規模</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="msg">專案說明 Brief</label>
+            <textarea id="msg" name="msg" placeholder="請簡述您的基地位置、需求與期望……"></textarea>
+            <div class="err">請至少輸入 10 個字的說明</div>
+          </div>
+          <button type="submit" class="submit" data-cur>
+            送出洽詢
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+        <div class="form-success" id="success">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3>已收到您的洽詢</h3>
+          <p>感謝您與院構建築聯繫，我們將於三個工作日內回覆。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="mk">Atelier Yuan</div>
+        <div class="zh">院構建築 · 建築與室內設計事務所</div>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>導覽</h4>
+          <a href="#work">精選作品</a>
+          <a href="#approach">設計理念</a>
+          <a href="#expertise">專業服務</a>
+          <a href="#studio">事務所</a>
+        </div>
+        <div class="foot-col">
+          <h4>聯繫</h4>
+          <p>studio@atelier-yuan.tw</p>
+          <p>+886 4 2376 0988</p>
+          <p>台中市西區美村路二段 188 號 5F</p>
+        </div>
+        <div class="foot-col">
+          <h4>社群</h4>
+          <a href="#contact">Instagram</a>
+          <a href="#contact">Behance</a>
+          <a href="#contact">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Atelier Yuan 院構建築. 範例展示頁面 — 內容為虛構。</span>
+      <span class="badge"><span class="dot"></span>Template by <b>e-life-ai</b> · service.e-life-ai.com</span>
+    </div>
+  </div>
+</footer>
+
+<!-- PROJECT DETAIL OVERLAY -->
+<div class="detail" id="detail" aria-hidden="true">
+  <div class="detail-bar">
+    <span class="lbl" id="dBar">專案 / PROJECT</span>
+    <button class="detail-close" id="dClose" data-cur>關閉 CLOSE <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="detail-in" id="detailIn"></div>
+</div>
+
+<script>
+/* ============================= DATA ============================= */
+const TYPES = {住宅:"Residential", 商空:"Commercial", 公共:"Public", 室內:"Interior"};
+
+/* SVG palette refs (use CSS vars via inline for crispness) */
+const C = {ink:"#1f1d1a", line:"#928c80", soft:"#b9b2a6", clay:"#b4552f", plaster:"#e9e4db", paper:"#f3efe8", panel:"#d8d1c4"};
+
+/* --- inline SVG architectural compositions --- */
+function svgElevation(seed){ // line-work facade elevation
+  const f=C; const x=seed%3;
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="${f.plaster}"/>
+    <g stroke="${f.ink}" stroke-width="1" fill="none">
+      <rect x="60" y="70" width="280" height="180"/>
+      <line x1="60" y1="130" x2="340" y2="130"/>
+      <line x1="60" y1="190" x2="340" y2="190"/>
+      <rect x="84" y="88" width="44" height="30" fill="${f.panel}"/>
+      <rect x="148" y="88" width="44" height="30" fill="${f.panel}"/>
+      <rect x="212" y="88" width="44" height="30" fill="${x===0?f.clay:f.panel}"/>
+      <rect x="276" y="88" width="44" height="30" fill="${f.panel}"/>
+      <rect x="84" y="148" width="44" height="30" fill="${f.panel}"/>
+      <rect x="276" y="148" width="44" height="30" fill="${x===1?f.clay:f.panel}"/>
+      <rect x="170" y="206" width="60" height="44" fill="${f.ink}"/>
+      <line x1="40" y1="250" x2="360" y2="250" stroke-width="1.4"/>
+    </g>
+    <g stroke="${f.soft}" stroke-width=".6" fill="none">
+      <line x1="148" y1="148" x2="256" y2="148"/><line x1="148" y1="178" x2="256" y2="178"/>
+      <line x1="148" y1="148" x2="148" y2="178"/><line x1="202" y1="148" x2="202" y2="178"/><line x1="256" y1="148" x2="256" y2="178"/>
+    </g>
+    <text x="60" y="278" font-family="monospace" font-size="9" fill="${f.line}" letter-spacing="2">ELEVATION · ${String(seed).padStart(2,"0")}</text>
+  </svg>`;
+}
+function svgAxon(seed){ // axonometric massing
+  const f=C;
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="${f.plaster}"/>
+    <g stroke="${f.ink}" stroke-width="1" fill="none">
+      <polygon points="200,80 300,130 200,180 100,130" fill="${f.panel}"/>
+      <polygon points="100,130 200,180 200,250 100,200" fill="${f.paper}"/>
+      <polygon points="300,130 200,180 200,250 300,200" fill="${f.panel}"/>
+      <polygon points="200,40 250,65 200,90 150,65" fill="${f.clay}" stroke="${f.ink}"/>
+      <polygon points="150,65 200,90 200,130 150,105" fill="${f.paper}"/>
+      <polygon points="250,65 200,90 200,130 250,105" fill="${f.soft}"/>
+    </g>
+    <g stroke="${f.soft}" stroke-width=".6" fill="none" stroke-dasharray="3 3">
+      <line x1="100" y1="200" x2="60" y2="222"/><line x1="200" y1="250" x2="200" y2="278"/><line x1="300" y1="200" x2="340" y2="222"/>
+    </g>
+    <text x="48" y="282" font-family="monospace" font-size="9" fill="${f.line}" letter-spacing="2">AXONOMETRIC · ${String(seed).padStart(2,"0")}</text>
+  </svg>`;
+}
+function svgInterior(seed){ // interior perspective scene
+  const f=C; const x=seed%2;
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="${f.paper}"/>
+    <g stroke="${f.ink}" stroke-width="1" fill="none">
+      <rect x="40" y="40" width="320" height="220"/>
+      <line x1="40" y1="40" x2="140" y2="110"/><line x1="360" y1="40" x2="260" y2="110"/>
+      <line x1="40" y1="260" x2="140" y2="200"/><line x1="360" y1="260" x2="260" y2="200"/>
+      <rect x="140" y="110" width="120" height="90" fill="${f.plaster}"/>
+      <rect x="170" y="150" width="60" height="50" fill="${x===0?f.clay:f.panel}"/>
+      <line x1="60" y1="230" x2="340" y2="230" stroke-width="1.2"/>
+      <rect x="70" y="178" width="44" height="52" fill="${f.panel}"/>
+      <ellipse cx="300" cy="180" rx="18" ry="50" fill="${f.soft}" opacity=".5" stroke="none"/>
+    </g>
+    <g stroke="${f.soft}" stroke-width=".6"><line x1="200" y1="40" x2="200" y2="110"/><line x1="140" y1="155" x2="260" y2="155"/></g>
+    <text x="48" y="284" font-family="monospace" font-size="9" fill="${f.line}" letter-spacing="2">INTERIOR · ${String(seed).padStart(2,"0")}</text>
+  </svg>`;
+}
+function svgPlan(seed){ // floor plan
+  const f=C;
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="${f.plaster}"/>
+    <g stroke="${f.ink}" stroke-width="1.4" fill="none">
+      <rect x="60" y="50" width="280" height="200"/>
+      <line x1="200" y1="50" x2="200" y2="250"/>
+      <line x1="60" y1="150" x2="200" y2="150"/>
+      <line x1="200" y1="120" x2="340" y2="120"/>
+      <line x1="270" y1="120" x2="270" y2="250"/>
+    </g>
+    <g stroke="${f.soft}" stroke-width=".7" fill="none">
+      <path d="M200 95 a30 30 0 0 1 30 25" /><path d="M60 110 a26 26 0 0 0 26 -26"/>
+      <circle cx="305" cy="185" r="18" fill="${f.clay}" opacity=".18" stroke="${f.clay}"/>
+    </g>
+    <text x="74" y="100" font-family="monospace" font-size="8" fill="${f.line}">客廳</text>
+    <text x="220" y="190" font-family="monospace" font-size="8" fill="${f.line}">主臥</text>
+    <text x="74" y="200" font-family="monospace" font-size="8" fill="${f.line}">餐廚</text>
+    <text x="48" y="284" font-family="monospace" font-size="9" fill="${f.line}" letter-spacing="2">PLAN · ${String(seed).padStart(2,"0")}</text>
+  </svg>`;
+}
+function svgFor(kind, seed){
+  if(kind==="elev")return svgElevation(seed);
+  if(kind==="axon")return svgAxon(seed);
+  if(kind==="plan")return svgPlan(seed);
+  return svgInterior(seed);
+}
+
+const PROJECTS = [
+  {n:"01",title:"霧峰光之院",en:"House of Soft Light",type:"住宅",loc:"台中 · 霧峰",year:2023,area:"78 坪 / 258 ㎡",role:"主持建築 / 室內統籌",kind:"elev",
+   desc:["一棟為三代同堂設計的鄉間住宅，以光為核心組織空間。","基地南向開闊，我們以一道貫穿全棟的天井，將正午的光導入室內最深處。清水混凝土的牆面隨日照角度變換表情，木質地坪則為赤足而設。","量體刻意壓低，與周邊農田的水平線對話；屋頂的斜面收集雨水，回灌至中庭的水景。"]},
+  {n:"02",title:"赤峰街角咖啡",en:"Corner Roastery",type:"商空",loc:"台北 · 大同",year:2024,area:"32 坪 / 106 ㎡",role:"室內設計 / 立面",kind:"interior",
+   desc:["位於赤峰街老巷的精品咖啡空間，保留街屋原始的紅磚與木構。","我們以最少的介入，讓老屋的時間感成為主角。新增的吧台以單一整塊的水磨石製成，與斑駁的牆面形成對話。","面街的折疊窗將室內外連成一氣，使咖啡香飄散至巷弄。"]},
+  {n:"03",title:"南港文創基地",en:"Nangang Cultural Hub",type:"公共",loc:"台北 · 南港",year:2022,area:"1,240 ㎡",role:"建築設計 / 競圖首獎",kind:"axon",
+   desc:["由舊廠房改造的公共文創空間，串連展演、工作坊與市民活動。","我們保留了廠房的鋼桁架結構，將其暴露為空間的記憶。新置入的盒狀量體以耐候鋼包覆，隨時間氧化出沉穩的赭色。","中央的階梯廣場既是動線，也是市民可自由停留的看台。"]},
+  {n:"04",title:"安和路宅",en:"An-He Residence",type:"室內",loc:"台北 · 大安",year:2023,area:"45 坪 / 149 ㎡",role:"室內設計",kind:"plan",
+   desc:["都會公寓的室內重整，目標是在有限坪數中創造呼吸的餘裕。","拆除多餘隔間後，公共區以一道可滑動的木屏風彈性界定。材料維持低彩度——灰泥、橡木與啞光黑鐵。","收納全數隱入牆體，讓視線得以延伸至最遠的窗景。"]},
+  {n:"05",title:"員山田中亭",en:"Pavilion in the Field",type:"公共",loc:"宜蘭 · 員山",year:2021,area:"96 ㎡",role:"建築設計",kind:"axon",
+   desc:["一座立於稻田之中的休憩亭，為農村再生計畫而設。","結構以在地竹材與輕鋼構結合，屋頂的薄殼曲面回應了周邊山形。","白晝它是遮蔭，入夜則化為田間的一盞燈籠。"]},
+  {n:"06",title:"林口透天翻新",en:"Linkou Townhouse",type:"住宅",loc:"新北 · 林口",year:2024,area:"62 坪 / 205 ㎡",role:"建築 / 室內",kind:"elev",
+   desc:["三十年透天的整體翻新，重新組織垂直動線與採光。","我們在樓梯間置入一道通高的天窗，讓光自頂層瀑布般落下。立面則以細長的格柵重新統合，賦予老屋當代的秩序。","每一層樓都擁有屬於自己的戶外平台。"]},
+  {n:"07",title:"勤美選物店",en:"Curated Goods Store",type:"商空",loc:"台中 · 西區",year:2023,area:"54 坪 / 178 ㎡",role:"室內設計",kind:"interior",
+   desc:["一間生活選物店，空間需如畫廊般襯托商品，又保有溫度。","我們以模組化的層架系統，讓陳列能隨季節彈性變換。地坪的磨石子嵌入黃銅分隔線，劃出無形的動線。","天花的軌道燈以最低限度的姿態，將光精準投向每件物件。"]},
+  {n:"08",title:"礁溪溫泉會所",en:"Onsen Retreat",type:"商空",loc:"宜蘭 · 礁溪",year:2022,area:"320 ㎡",role:"建築 / 室內",kind:"interior",
+   desc:["結合溫泉與住宿的小型會所，以「洗滌」為空間敘事。","入口的長廊刻意昏暗，使人逐步沉澱；豁然開朗的湯池區則引入大面開窗，與後方的山景相連。","材料以火山岩、檜木與夯土為主，呼應溫泉的地質本源。"]},
+  {n:"09",title:"大里圖書分館",en:"Branch Library",type:"公共",loc:"台中 · 大里",year:2020,area:"880 ㎡",role:"建築設計 / 競圖入選",kind:"plan",
+   desc:["社區型圖書分館，目標是讓閱讀成為日常的散步。","建築以一連串高低錯落的閱讀平台組成，讀者可自由選擇屬於自己的角落。大面的木格柵過濾了直射的陽光，使室內光線柔和均質。","下沉的兒童閱覽區圍塑出安心的尺度。"]},
+];
+
+/* expertise accordion */
+const EXPERTISE = [
+  {n:"01",t:"建築設計 Architecture",d:"從基地分析、概念發想到細部設計，提供完整的建築設計服務。我們重視量體與環境的關係，以及材料隨時間的變化。",items:[["住宅建築","Residential"],["公共建築","Public"],["競圖提案","Competition"],["都市設計","Urban"]]},
+  {n:"02",t:"室內設計 Interior",d:"以空間的氛圍與機能並重為原則，從格局、材料到家具軟裝整合規劃，創造經得起日常使用的細膩空間。",items:[["住宅室內","Residential"],["商業空間","Commercial"],["軟裝陳設","Styling"]]},
+  {n:"03",t:"老屋翻新 Renovation",d:"尊重老建築的時間痕跡，以最低限度的介入活化既有結構，平衡保存與當代生活的需求。",items:[["結構評估","Structure"],["機能更新","Upgrade"],["立面整治","Facade"]]},
+  {n:"04",t:"基地與規劃 Planning",d:"提供前期的基地調查、法規檢討與可行性評估，協助業主在動工前做出明智的判斷。",items:[["基地調查","Survey"],["法規檢討","Code"],["可行性評估","Feasibility"]]},
+];
+
+const TEAM = [
+  {nm:"陳邑廷",rl:"主持建築師 / Principal",yr:"2009"},
+  {nm:"林若瑄",rl:"設計總監 / Design Director",yr:"2012"},
+  {nm:"郭承佑",rl:"專案建築師 / Project Architect",yr:"2016"},
+  {nm:"黃詠晴",rl:"室內設計主任 / Interior Lead",yr:"2018"},
+];
+const AWARDS = [
+  {y:"2024",t:"TID Award 台灣室內設計大獎",s:"金獎 — 赤峰街角咖啡",p:"台北"},
+  {y:"2023",t:"ADA 新銳建築獎",s:"入圍 — 霧峰光之院",p:"台灣"},
+  {y:"2022",t:"南港文創基地公共競圖",s:"首獎 First Prize",p:"台北"},
+  {y:"2022",t:"Golden Pin Design Award 金點設計獎",s:"年度最佳設計",p:"台灣"},
+  {y:"2021",t:"遠東建築獎",s:"佳作 — 員山田中亭",p:"台灣"},
+];
+
+/* ============================= RENDER ============================= */
+const grid = document.getElementById("projGrid");
+PROJECTS.forEach((p,i)=>{
+  const el=document.createElement("article");
+  el.className="pcard rv"; el.dataset.type=p.type; el.dataset.idx=i;
+  el.setAttribute("data-cur","");
+  el.innerHTML=`
+    <div class="frame">${svgFor(p.kind, i+1)}
+      <div class="overlay">
+        <span class="ov-type">${p.type} · ${TYPES[p.type]}</span>
+        <span class="ov-view">查看專案 View Project →</span>
+      </div>
+    </div>
+    <div class="info">
+      <div>
+        <h3>${p.title}</h3>
+        <div class="loc">${p.loc} · ${p.area}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="num">${p.n}</div>
+        <div class="yr">${p.year}</div>
+      </div>
+    </div>`;
+  el.addEventListener("click",()=>openDetail(i));
+  grid.appendChild(el);
+});
+const emptyNote=document.createElement("div");
+emptyNote.className="empty-note"; emptyNote.textContent="此分類目前沒有作品。";
+grid.appendChild(emptyNote);
+
+/* counts */
+const counts={all:PROJECTS.length};
+PROJECTS.forEach(p=>counts[p.type]=(counts[p.type]||0)+1);
+document.querySelectorAll("[data-count]").forEach(s=>{const k=s.dataset.count;s.textContent=counts[k]||0;});
+document.getElementById("projCount").textContent=`${PROJECTS.length} 件作品 / Projects`;
+
+/* featured horizontal */
+const hsc=document.getElementById("hscroll");
+const featSeq=[
+  {n:"01",t:"入口序列",d:"低矮的玄關引導視線向下，再豁然開朗。",kind:"elev"},
+  {n:"02",t:"中央天井",d:"光自頂層落下，貫穿三層樓的核心。",kind:"axon"},
+  {n:"03",t:"起居空間",d:"清水牆面與木地坪，為赤足生活而設。",kind:"interior"},
+  {n:"04",t:"主臥層",d:"開窗框住遠方的農田水平線。",kind:"interior"},
+  {n:"05",t:"平面配置",d:"以天井為核心的環形動線。",kind:"plan"},
+];
+featSeq.forEach((s,i)=>{
+  const d=document.createElement("div");
+  d.className="hslide"; d.setAttribute("data-cur","");
+  d.innerHTML=`<div class="frame">${svgFor(s.kind, i+10)}</div>
+    <div class="cap"><div><div class="n">序列 ${s.n}</div><div class="t">${s.t}</div></div><div class="d">${s.d}</div></div>`;
+  hsc.appendChild(d);
+});
+function hStep(dir){const w=hsc.querySelector(".hslide").offsetWidth+24;hsc.scrollBy({left:dir*w,behavior:"smooth"});}
+document.getElementById("hNext").onclick=()=>hStep(1);
+document.getElementById("hPrev").onclick=()=>hStep(-1);
+
+/* before/after */
+document.getElementById("baBefore").innerHTML=svgPlan(91);
+document.getElementById("baAfter").innerHTML=(function(){
+  // open plan "after"
+  const f=C;
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="${f.paper}"/>
+    <g stroke="${f.ink}" stroke-width="1.4" fill="none">
+      <rect x="60" y="50" width="280" height="200"/>
+      <line x1="250" y1="50" x2="250" y2="110"/>
+      <line x1="250" y1="190" x2="250" y2="250"/>
+    </g>
+    <g stroke="${f.soft}" stroke-width=".7" fill="none">
+      <circle cx="160" cy="150" r="40" stroke-dasharray="3 4"/>
+      <rect x="280" y="130" width="46" height="46" fill="${f.clay}" opacity=".16" stroke="${f.clay}"/>
+    </g>
+    <text x="120" y="155" font-family="monospace" font-size="9" fill="${f.line}">開放起居</text>
+    <text x="48" y="284" font-family="monospace" font-size="9" fill="${f.line}" letter-spacing="2">OPEN PLAN · AFTER</text>
+  </svg>`;
+})();
+const baRange=document.getElementById("baRange"), baAfterEl=document.getElementById("baAfter"),
+      baDiv=document.getElementById("baDivider"), baHandle=document.getElementById("baHandle");
+function baSet(v){
+  baAfterEl.style.clipPath=`inset(0 0 0 ${v}%)`;
+  baDiv.style.left=v+"%"; baHandle.style.left=v+"%";
+}
+baRange.addEventListener("input",e=>baSet(e.target.value));
+baSet(50);
+
+/* expertise accordion */
+const expList=document.getElementById("expList");
+EXPERTISE.forEach((e,i)=>{
+  const it=document.createElement("div");
+  it.className="exp-item"+(i===0?" open":"");
+  it.innerHTML=`
+    <button class="exp-head" data-cur>
+      <span class="n">${e.n}</span><span class="t">${e.t}</span><span class="pl"></span>
+    </button>
+    <div class="exp-body"><div class="exp-body-in">
+      <p>${e.d}</p>
+      <ul>${e.items.map(x=>`<li>${x[0]}<span>${x[1]}</span></li>`).join("")}</ul>
+    </div></div>`;
+  expList.appendChild(it);
+  const head=it.querySelector(".exp-head"), body=it.querySelector(".exp-body");
+  head.addEventListener("click",()=>{
+    const open=it.classList.contains("open");
+    expList.querySelectorAll(".exp-item").forEach(o=>{o.classList.remove("open");o.querySelector(".exp-body").style.maxHeight=null;});
+    if(!open){it.classList.add("open");body.style.maxHeight=body.scrollHeight+"px";}
+  });
+});
+requestAnimationFrame(()=>{const o=expList.querySelector(".exp-item.open .exp-body");if(o)o.style.maxHeight=o.scrollHeight+"px";});
+
+/* team + awards */
+const teamList=document.getElementById("teamList");
+TEAM.forEach((t,i)=>{
+  const r=document.createElement("div");r.className="team-row";
+  r.innerHTML=`<div class="team-av">${svgAvatar(i)}</div>
+    <div><div class="nm">${t.nm}</div><div class="rl">${t.rl}</div></div>
+    <div class="yr">加入 ${t.yr}</div>`;
+  teamList.appendChild(r);
+});
+function svgAvatar(i){const f=C;const a=["elev","axon","plan","interior"][i%4];
+  return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" fill="${f.plaster}"/>
+  <g stroke="${f.ink}" stroke-width="1" fill="none">${a==="axon"?'<polygon points="30,14 44,22 30,30 16,22" fill="'+f.clay+'"/><polygon points="16,22 30,30 30,46 16,38"/><polygon points="44,22 30,30 30,46 44,38" fill="'+f.panel+'"/>':a==="plan"?'<rect x="14" y="14" width="32" height="32"/><line x1="30" y1="14" x2="30" y2="46"/><line x1="14" y1="30" x2="30" y2="30"/><circle cx="38" cy="38" r="5" fill="'+f.clay+'" opacity=".3"/>':a==="elev"?'<rect x="16" y="16" width="28" height="30"/><rect x="21" y="21" width="8" height="8" fill="'+f.clay+'"/><rect x="33" y="21" width="8" height="8" fill="'+f.panel+'"/><rect x="26" y="35" width="10" height="11" fill="'+f.ink+'"/>':'<rect x="14" y="16" width="32" height="28"/><line x1="14" y1="16" x2="24" y2="24"/><line x1="46" y1="16" x2="36" y2="24"/><rect x="24" y="24" width="12" height="14" fill="'+f.clay+'"/>'}</g></svg>`;
+}
+const awardsList=document.getElementById("awardsList");
+AWARDS.forEach(a=>{
+  const r=document.createElement("div");r.className="aw-row";
+  r.innerHTML=`<div class="ay">${a.y}</div><div class="at">${a.t}<small>${a.s}</small></div><div class="ap">${a.p}</div>`;
+  awardsList.appendChild(r);
+});
+
+/* ============================= FILTER ============================= */
+const fbtns=document.querySelectorAll(".fbtn");
+fbtns.forEach(b=>b.addEventListener("click",()=>{
+  fbtns.forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  const f=b.dataset.filter; let shown=0;
+  grid.querySelectorAll(".pcard").forEach(c=>{
+    const ok=f==="all"||c.dataset.type===f;
+    c.classList.toggle("hide",!ok); if(ok)shown++;
+  });
+  emptyNote.style.display=shown?"none":"block";
+}));
+
+/* ============================= DETAIL ============================= */
+const detail=document.getElementById("detail"), detailIn=document.getElementById("detailIn"), dBar=document.getElementById("dBar");
+let curIdx=0;
+function openDetail(i){
+  curIdx=i; const p=PROJECTS[i];
+  dBar.textContent=`專案 / PROJECT ${p.n}`;
+  detailIn.innerHTML=`
+    <div class="detail-hero">
+      <div>
+        <span class="detail-num">${p.n} — ${TYPES[p.type]} / ${p.type}</span>
+        <h1 class="detail-title">${p.title}</h1>
+        <span class="detail-sub">${p.en} · ${p.loc}</span>
+      </div>
+    </div>
+    <div class="detail-big">${svgFor(p.kind, i+1)}</div>
+    <div class="detail-meta">
+      <div><div class="k">基地 / Location</div><div class="v">${p.loc}</div></div>
+      <div><div class="k">面積 / Area</div><div class="v">${p.area}</div></div>
+      <div><div class="k">年份 / Year</div><div class="v">${p.year}</div></div>
+      <div><div class="k">角色 / Role</div><div class="v">${p.role}</div></div>
+    </div>
+    <div class="detail-cols">
+      <div><span class="lab">專案說明 / About</span></div>
+      <div class="desc">${p.desc.map(d=>`<p>${d}</p>`).join("")}</div>
+    </div>
+    <div class="detail-gallery">
+      <div class="g">${svgFor("interior", i+20)}</div>
+      <div class="g">${svgFor("plan", i+30)}</div>
+      <div class="g">${svgFor("axon", i+40)}</div>
+    </div>
+    <div class="detail-nav">
+      <button id="dPrev" data-cur>
+        <div class="dir">← 上一個專案 / Prev</div>
+        <div class="pn">${PROJECTS[(i-1+PROJECTS.length)%PROJECTS.length].title}</div>
+      </button>
+      <button id="dNext" data-cur>
+        <div class="dir">下一個專案 / Next →</div>
+        <div class="pn">${PROJECTS[(i+1)%PROJECTS.length].title}</div>
+      </button>
+    </div>`;
+  detail.classList.add("open"); detail.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden"; detail.scrollTop=0;
+  document.getElementById("dPrev").onclick=()=>openDetail((i-1+PROJECTS.length)%PROJECTS.length);
+  document.getElementById("dNext").onclick=()=>openDetail((i+1)%PROJECTS.length);
+}
+function closeDetail(){detail.classList.remove("open");detail.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+document.getElementById("dClose").onclick=closeDetail;
+document.addEventListener("keydown",e=>{
+  if(!detail.classList.contains("open"))return;
+  if(e.key==="Escape")closeDetail();
+  if(e.key==="ArrowLeft")openDetail((curIdx-1+PROJECTS.length)%PROJECTS.length);
+  if(e.key==="ArrowRight")openDetail((curIdx+1)%PROJECTS.length);
+});
+
+/* ============================= FORM ============================= */
+const form=document.getElementById("enquiry"), success=document.getElementById("success");
+function setErr(field,bad){field.classList.toggle("invalid",bad);return !bad;}
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  const f=id=>document.getElementById(id);
+  const name=f("name"),email=f("email"),ptype=f("ptype"),budget=f("budget"),msg=f("msg");
+  let ok=true;
+  ok=setErr(name.closest(".field"), name.value.trim()==="")&&ok;
+  ok=setErr(email.closest(".field"), !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()))&&ok;
+  ok=setErr(ptype.closest(".field"), ptype.value==="")&&ok;
+  ok=setErr(budget.closest(".field"), budget.value==="")&&ok;
+  ok=setErr(msg.closest(".field"), msg.value.trim().length<10)&&ok;
+  if(ok){form.style.display="none";success.classList.add("show");success.scrollIntoView({behavior:"smooth",block:"center"});}
+});
+form.querySelectorAll("input,select,textarea").forEach(el=>{
+  el.addEventListener("input",()=>el.closest(".field").classList.remove("invalid"));
+});
+
+/* ============================= UI FX ============================= */
+/* progress + nav solid */
+const nav=document.getElementById("nav"), prog=document.getElementById("prog");
+function onScroll(){
+  const h=document.documentElement.scrollHeight-innerHeight;
+  prog.style.width=(scrollY/h*100)+"%";
+  nav.classList.toggle("solid",scrollY>40);
+}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+/* hero grid lines */
+const hl=document.getElementById("heroLines");
+for(let i=1;i<6;i++){const v=document.createElement("div");v.className="v";v.style.left=(i/6*100)+"%";hl.appendChild(v);}
+
+/* reveal */
+const io=new IntersectionObserver((es)=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}});},{threshold:.14});
+document.querySelectorAll(".rv").forEach((el,i)=>{el.style.transitionDelay=(Math.min(i%6,5)*0.06)+"s";io.observe(el);});
+
+/* hero entrance */
+requestAnimationFrame(()=>document.querySelector(".hero").classList.add("in"));
+
+/* count up */
+const cio=new IntersectionObserver((es)=>{es.forEach(en=>{
+  if(!en.isIntersecting)return; cio.unobserve(en.target);
+  const to=+en.target.dataset.countTo; const span=en.target.querySelector("span")||en.target;
+  let cur=0; const step=Math.max(1,Math.ceil(to/45));
+  const tick=()=>{cur=Math.min(to,cur+step);span.textContent=cur;if(cur<to)requestAnimationFrame(tick);};
+  tick();
+});},{threshold:.5});
+document.querySelectorAll("[data-count-to]").forEach(el=>cio.observe(el));
+
+/* custom cursor */
+const cur=document.getElementById("cur"), ring=document.getElementById("curRing");
+let rx=0,ry=0,tx=0,ty=0;
+addEventListener("mousemove",e=>{tx=e.clientX;ty=e.clientY;cur.style.left=tx+"px";cur.style.top=ty+"px";});
+(function loop(){rx+=(tx-rx)*.18;ry+=(ty-ry)*.18;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(loop);})();
+document.addEventListener("mouseover",e=>{if(e.target.closest("[data-cur],a,button,input,select,textarea,.pcard,.hslide"))document.body.classList.add("cur-hover");});
+document.addEventListener("mouseout",e=>{if(e.target.closest("[data-cur],a,button,input,select,textarea,.pcard,.hslide"))document.body.classList.remove("cur-hover");});
+
+/* mobile menu */
+const mmenu=document.getElementById("mmenu");
+document.getElementById("burger").onclick=()=>mmenu.classList.add("open");
+document.getElementById("mclose").onclick=()=>mmenu.classList.remove("open");
+mmenu.querySelectorAll("a").forEach(a=>a.onclick=()=>mmenu.classList.remove("open"));
+</script>
+</body>
+</html>

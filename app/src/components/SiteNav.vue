@@ -8,6 +8,7 @@ const open = ref(false)
 const links = [
   { href: '#services', label: '服務' },
   { href: '#work', label: '作品' },
+  { href: '#showcase', label: '範例' },
   { href: '#about', label: '關於' },
   { href: '#pricing', label: '合作' },
   { href: '#contact', label: '聯絡' },
