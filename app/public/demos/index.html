@@ -297,9 +297,13 @@
   .render-page.is-portrait .frame-photo .no-stamp { font-size: 0.8rem; }
   .render-page.is-portrait .frame-photo .go { align-self: center; font-size: 1rem; padding-right: 4px; }
   .render-page.is-portrait .wall-head .ttl { font-size: 1.35rem; }
-  /* portrait lightbox preview shows the tall phone capture, not a wide crop */
-  .lightbox.is-portrait .lb-card { width: min(78vw, 360px); }
-  .lightbox.is-portrait .lb-img { aspect-ratio: 9 / 16; }
+  /* portrait lightbox preview: show the FULL phone capture top-to-bottom (no crop).
+     drop the forced aspect-ratio so the 9:19.4 screenshot keeps its own height,
+     capped by the card so meta + CTA stay visible. */
+  .lightbox.is-portrait .lb-card { width: min(72vw, 320px); }
+  .lightbox.is-portrait .lb-img {
+    aspect-ratio: auto; height: auto; max-height: 60vh; object-fit: contain; background: #0c0c10;
+  }
 
   @media (max-width: 760px) {
     .book { --bh: min(64vh, 560px); }
