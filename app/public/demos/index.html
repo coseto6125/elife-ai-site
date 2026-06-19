@@ -218,6 +218,28 @@
   .intro-foot { margin-top: 24px; font-family: var(--font-display); font-size: 0.76rem; letter-spacing: 0.12em; color: var(--ink-faint); }
 
   /* floating large preview shown when hovering a thumbnail on the canvas */
+  /* tap-to-preview lightbox */
+  .lightbox { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .lightbox.on { display: flex; }
+  .lb-backdrop { position: absolute; inset: 0; background: rgba(4,4,6,0.82); backdrop-filter: blur(4px); }
+  .lb-card {
+    position: relative; z-index: 1; width: min(92vw, 560px); max-height: 88vh; overflow: hidden;
+    background: #101015; border: 1px solid var(--line-bright); border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    transform: scale(0.96); opacity: 0; transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+  }
+  .lightbox.on .lb-card { transform: none; opacity: 1; }
+  .lb-img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; background: #0c0c10; }
+  .lb-meta { display: flex; flex-direction: column; gap: 3px; padding: 14px 16px 4px; }
+  .lb-kind { font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--gold); }
+  .lb-title { font-family: var(--font-body); font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+  .lb-open { display: block; margin: 12px 16px 16px; text-align: center; padding: 13px; border-radius: 999px;
+    background: var(--gold); color: #1a1a1a; font-family: var(--font-display); font-size: 0.92rem; text-decoration: none; }
+  .lb-open:active { background: var(--gold-bright); }
+  .lb-x { position: absolute; top: 8px; right: 8px; z-index: 2; width: 40px; height: 40px; border-radius: 50%;
+    border: none; background: rgba(0,0,0,0.45); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer;
+    display: grid; place-items: center; backdrop-filter: blur(4px); }
+
   .hover-preview {
     position: fixed; z-index: 40; pointer-events: none; opacity: 0;
     width: min(34vw, 460px); border-radius: 12px; overflow: hidden;
@@ -256,9 +278,11 @@
   .botbar a:hover { color: var(--gold-bright); }
 
   @media (max-width: 760px) {
-    .book { --bh: min(66vh, 560px); }
+    .book { --bh: min(64vh, 560px); }
     .boards { inset: -12px -14px; }
-    .nav { transform: translate(-50%, 150%); }
+    /* keep prev/next visible & tappable at the bottom (was pushed off-screen) */
+    .nav { transform: translateX(-50%); bottom: 14px; gap: 22px; }
+    .nav button { width: 50px; height: 50px; font-size: 1.3rem; }
     .topbar .hint { display: none; }
   }
 </style>
@@ -319,6 +343,20 @@
   </div>
 
   <div class="botbar"><a href="/">← 回到 e-life-ai.com</a></div>
+
+  <!-- tap-to-preview lightbox (mobile: tap a thumbnail → large preview; X / backdrop closes) -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lb-backdrop" data-close></div>
+    <div class="lb-card" role="dialog" aria-modal="true" aria-label="範例預覽">
+      <button class="lb-x" id="lbClose" aria-label="關閉">×</button>
+      <img class="lb-img" alt="" />
+      <div class="lb-meta">
+        <span class="lb-kind"></span>
+        <span class="lb-title"></span>
+      </div>
+      <a class="lb-open" target="_blank" rel="noopener">開啟範例 ↗</a>
+    </div>
+  </div>
 
   <script src="./vendor/html2canvas.min.js"></script>
   <script src="./vendor/page-flip.browser.js"></script>
@@ -638,9 +676,11 @@
           hotspots[idx] = [...el.querySelectorAll('.frame-photo')].map((a) => {
             const r = a.getBoundingClientRect(), pr = el.getBoundingClientRect();
             const img = a.querySelector('.shot img');
+            const kindEl = a.querySelector('.cap .kind');
             return {
               x: (r.left - pr.left) / w, y: (r.top - pr.top) / h, w: r.width / w, h: r.height / h,
               href: a.getAttribute('href'), title: a.getAttribute('title') || '',
+              kind: kindEl ? kindEl.textContent : '',
               thumb: img ? img.getAttribute('src') : null,
             };
           });
@@ -707,9 +747,29 @@
           if (!hs) return null;
           return hs.find((s) => px >= s.x && px <= s.x + s.w && py >= s.y && py <= s.y + s.h) || null;
         }
+        // lightbox (tap / click → preview)
+        const lb = document.getElementById('lightbox');
+        const lbImg = lb.querySelector('.lb-img');
+        const lbKind = lb.querySelector('.lb-kind');
+        const lbTitle = lb.querySelector('.lb-title');
+        const lbOpen = lb.querySelector('.lb-open');
+        function openLightbox(hit) {
+          lbImg.src = hit.thumb || '';
+          lbKind.textContent = hit.kind || '';
+          lbTitle.textContent = hit.title || '';
+          lbOpen.href = hit.href;
+          lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false');
+        }
+        function closeLightbox() { lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); }
+        lb.querySelector('#lbClose').addEventListener('click', closeLightbox);
+        lb.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', closeLightbox));
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+        // click a thumbnail → lightbox preview (X / backdrop / Esc closes; button opens the demo).
+        // consistent on desktop & mobile; the hover float (desktop) stays as a quick peek.
         flipEl.addEventListener('click', (e) => {
           const hit = hitAt(e.clientX, e.clientY);
-          if (hit) window.open(hit.href, '_blank', 'noopener');
+          if (hit) { hp.classList.remove('on'); openLightbox(hit); }
         });
 
         // hover → large preview near the cursor (desktop only)
