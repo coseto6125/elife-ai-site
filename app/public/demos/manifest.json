@@ -4,559 +4,639 @@
 "kind": "B2B 軟體新創",
 "title": "SaaS 產品著陸頁",
 "href": "/showcase/01-saas-landing/",
-"thumb": "/showcase/01-saas-landing/thumb.webp"
+"thumb": "/showcase/01-saas-landing/thumb.webp",
+"thumbM": "/showcase/01-saas-landing/thumb-m.webp"
 },
 {
 "no": "02",
 "kind": "零售 / DTC 品牌",
 "title": "電商商品頁",
 "href": "/showcase/02-ecommerce/",
-"thumb": "/showcase/02-ecommerce/thumb.webp"
+"thumb": "/showcase/02-ecommerce/thumb.webp",
+"thumbM": "/showcase/02-ecommerce/thumb-m.webp"
 },
 {
 "no": "03",
 "kind": "餐飲",
 "title": "餐廳訂位與菜單",
 "href": "/showcase/03-restaurant/",
-"thumb": "/showcase/03-restaurant/thumb.webp"
+"thumb": "/showcase/03-restaurant/thumb.webp",
+"thumbM": "/showcase/03-restaurant/thumb-m.webp"
 },
 {
 "no": "04",
 "kind": "設計師 / 攝影師",
 "title": "創意作品集",
 "href": "/showcase/04-portfolio/",
-"thumb": "/showcase/04-portfolio/thumb.webp"
+"thumb": "/showcase/04-portfolio/thumb.webp",
+"thumbM": "/showcase/04-portfolio/thumb-m.webp"
 },
 {
 "no": "05",
 "kind": "傳產 / B2B",
 "title": "企業形象官網",
 "href": "/showcase/05-corporate/",
-"thumb": "/showcase/05-corporate/thumb.webp"
+"thumb": "/showcase/05-corporate/thumb.webp",
+"thumbM": "/showcase/05-corporate/thumb-m.webp"
 },
 {
 "no": "06",
 "kind": "媒體 / 內容品牌",
 "title": "編輯雜誌媒體",
 "href": "/showcase/06-editorial/",
-"thumb": "/showcase/06-editorial/thumb.webp"
+"thumb": "/showcase/06-editorial/thumb.webp",
+"thumbM": "/showcase/06-editorial/thumb-m.webp"
 },
 {
 "no": "07",
 "kind": "AI 產品",
 "title": "AI 對話介面",
 "href": "/showcase/07-ai-chat/",
-"thumb": "/showcase/07-ai-chat/thumb.webp"
+"thumb": "/showcase/07-ai-chat/thumb.webp",
+"thumbM": "/showcase/07-ai-chat/thumb-m.webp"
 },
 {
 "no": "08",
 "kind": "SaaS 後台",
 "title": "數據分析儀表板",
 "href": "/showcase/08-dashboard/",
-"thumb": "/showcase/08-dashboard/thumb.webp"
+"thumb": "/showcase/08-dashboard/thumb.webp",
+"thumbM": "/showcase/08-dashboard/thumb-m.webp"
 },
 {
 "no": "09",
 "kind": "活動主辦",
 "title": "活動 / 研討會",
 "href": "/showcase/09-event/",
-"thumb": "/showcase/09-event/thumb.webp"
+"thumb": "/showcase/09-event/thumb.webp",
+"thumbM": "/showcase/09-event/thumb-m.webp"
 },
 {
 "no": "10",
 "kind": "講師 / KOL",
 "title": "個人品牌 / 講者",
 "href": "/showcase/10-personal-brand/",
-"thumb": "/showcase/10-personal-brand/thumb.webp"
+"thumb": "/showcase/10-personal-brand/thumb.webp",
+"thumbM": "/showcase/10-personal-brand/thumb-m.webp"
 },
 {
 "no": "11",
 "kind": "建商 / 仲介",
 "title": "房地產建案展示",
 "href": "/showcase/11-real-estate/",
-"thumb": "/showcase/11-real-estate/thumb.webp"
+"thumb": "/showcase/11-real-estate/thumb.webp",
+"thumbM": "/showcase/11-real-estate/thumb-m.webp"
 },
 {
 "no": "12",
 "kind": "診所 / 醫美",
 "title": "醫療診所",
 "href": "/showcase/12-clinic/",
-"thumb": "/showcase/12-clinic/thumb.webp"
+"thumb": "/showcase/12-clinic/thumb.webp",
+"thumbM": "/showcase/12-clinic/thumb-m.webp"
 },
 {
 "no": "13",
 "kind": "健身 / 運動品牌",
 "title": "健身工作室",
 "href": "/showcase/13-fitness/",
-"thumb": "/showcase/13-fitness/thumb.webp"
+"thumb": "/showcase/13-fitness/thumb.webp",
+"thumbM": "/showcase/13-fitness/thumb-m.webp"
 },
 {
 "no": "14",
 "kind": "教育 / 線上課程",
 "title": "線上課程平台",
 "href": "/showcase/14-course/",
-"thumb": "/showcase/14-course/thumb.webp"
+"thumb": "/showcase/14-course/thumb.webp",
+"thumbM": "/showcase/14-course/thumb-m.webp"
 },
 {
 "no": "15",
 "kind": "區塊鏈 / Web3",
 "title": "Web3 / 加密產品",
 "href": "/showcase/15-web3/",
-"thumb": "/showcase/15-web3/thumb.webp"
+"thumb": "/showcase/15-web3/thumb.webp",
+"thumbM": "/showcase/15-web3/thumb-m.webp"
 },
 {
 "no": "16",
 "kind": "旅行社",
 "title": "旅遊行程",
 "href": "/showcase/16-travel/",
-"thumb": "/showcase/16-travel/thumb.webp"
+"thumb": "/showcase/16-travel/thumb.webp",
+"thumbM": "/showcase/16-travel/thumb-m.webp"
 },
 {
 "no": "17",
 "kind": "NGO / 公益",
 "title": "非營利募資",
 "href": "/showcase/17-nonprofit/",
-"thumb": "/showcase/17-nonprofit/thumb.webp"
+"thumb": "/showcase/17-nonprofit/thumb.webp",
+"thumbM": "/showcase/17-nonprofit/thumb-m.webp"
 },
 {
 "no": "18",
 "kind": "行動 App",
 "title": "App 下載著陸頁",
 "href": "/showcase/18-app-landing/",
-"thumb": "/showcase/18-app-landing/thumb.webp"
+"thumb": "/showcase/18-app-landing/thumb.webp",
+"thumbM": "/showcase/18-app-landing/thumb-m.webp"
 },
 {
 "no": "19",
 "kind": "建築事務所",
 "title": "建築 / 室內設計事務所",
 "href": "/showcase/19-architecture/",
-"thumb": "/showcase/19-architecture/thumb.webp"
+"thumb": "/showcase/19-architecture/thumb.webp",
+"thumbM": "/showcase/19-architecture/thumb-m.webp"
 },
 {
 "no": "20",
 "kind": "遊戲工作室",
 "title": "遊戲 / 娛樂",
 "href": "/showcase/20-game/",
-"thumb": "/showcase/20-game/thumb.webp"
+"thumb": "/showcase/20-game/thumb.webp",
+"thumbM": "/showcase/20-game/thumb-m.webp"
 },
 {
 "no": "21",
 "kind": "精品咖啡 / 烘焙",
 "title": "獨立咖啡烘焙",
 "href": "/showcase/coffee-roastery/",
-"thumb": "/showcase/coffee-roastery/thumb.webp"
+"thumb": "/showcase/coffee-roastery/thumb.webp",
+"thumbM": "/showcase/coffee-roastery/thumb-m.webp"
 },
 {
 "no": "22",
 "kind": "教育 / 線上學習",
 "title": "線上課程平台",
 "href": "/showcase/elearning-platform/",
-"thumb": "/showcase/elearning-platform/thumb.webp"
+"thumb": "/showcase/elearning-platform/thumb.webp",
+"thumbM": "/showcase/elearning-platform/thumb-m.webp"
 },
 {
 "no": "23",
 "kind": "健身 / 運動品牌",
 "title": "健身工作室",
 "href": "/showcase/fitness-studio/",
-"thumb": "/showcase/fitness-studio/thumb.webp"
+"thumb": "/showcase/fitness-studio/thumb.webp",
+"thumbM": "/showcase/fitness-studio/thumb-m.webp"
 },
 {
 "no": "24",
 "kind": "旅宿 / 觀光",
 "title": "旅宿品牌",
 "href": "/showcase/travel-hotel/",
-"thumb": "/showcase/travel-hotel/thumb.webp"
+"thumb": "/showcase/travel-hotel/thumb.webp",
+"thumbM": "/showcase/travel-hotel/thumb-m.webp"
 },
 {
 "no": "25",
 "kind": "法律 / 專業服務",
 "title": "法律事務所",
 "href": "/showcase/law-firm/",
-"thumb": "/showcase/law-firm/thumb.webp"
+"thumb": "/showcase/law-firm/thumb.webp",
+"thumbM": "/showcase/law-firm/thumb-m.webp"
 },
 {
 "no": "26",
 "kind": "音樂 / 娛樂",
 "title": "音樂藝人",
 "href": "/showcase/music-artist/",
-"thumb": "/showcase/music-artist/thumb.webp"
+"thumb": "/showcase/music-artist/thumb.webp",
+"thumbM": "/showcase/music-artist/thumb-m.webp"
 },
 {
 "no": "27",
 "kind": "婚禮 / 活動",
 "title": "婚禮邀請",
 "href": "/showcase/wedding-event/",
-"thumb": "/showcase/wedding-event/thumb.webp"
+"thumb": "/showcase/wedding-event/thumb.webp",
+"thumbM": "/showcase/wedding-event/thumb-m.webp"
 },
 {
 "no": "28",
 "kind": "NGO / 公益",
 "title": "非營利組織",
 "href": "/showcase/nonprofit/",
-"thumb": "/showcase/nonprofit/thumb.webp"
+"thumb": "/showcase/nonprofit/thumb.webp",
+"thumbM": "/showcase/nonprofit/thumb-m.webp"
 },
 {
 "no": "29",
 "kind": "AI 新創",
 "title": "AI 新創產品",
 "href": "/showcase/ai-startup/",
-"thumb": "/showcase/ai-startup/thumb.webp"
+"thumb": "/showcase/ai-startup/thumb.webp",
+"thumbM": "/showcase/ai-startup/thumb-m.webp"
 },
 {
 "no": "30",
 "kind": "時尚 / 精品",
 "title": "時尚服飾品牌",
 "href": "/showcase/fashion-brand/",
-"thumb": "/showcase/fashion-brand/thumb.webp"
+"thumb": "/showcase/fashion-brand/thumb.webp",
+"thumbM": "/showcase/fashion-brand/thumb-m.webp"
 },
 {
 "no": "31",
 "kind": "遊戲 / 電競",
 "title": "遊戲電競",
 "href": "/showcase/game-esports/",
-"thumb": "/showcase/game-esports/thumb.webp"
+"thumb": "/showcase/game-esports/thumb.webp",
+"thumbM": "/showcase/game-esports/thumb-m.webp"
 },
 {
 "no": "32",
 "kind": "美妝 / 保養",
 "title": "美妝保養品牌",
 "href": "/showcase/beauty-skincare/",
-"thumb": "/showcase/beauty-skincare/thumb.webp"
+"thumb": "/showcase/beauty-skincare/thumb.webp",
+"thumbM": "/showcase/beauty-skincare/thumb-m.webp"
 },
 {
 "no": "33",
 "kind": "建築事務所",
 "title": "建築室內設計",
 "href": "/showcase/architecture-studio/",
-"thumb": "/showcase/architecture-studio/thumb.webp"
+"thumb": "/showcase/architecture-studio/thumb.webp",
+"thumbM": "/showcase/architecture-studio/thumb-m.webp"
 },
 {
 "no": "34",
 "kind": "餐飲 / 外送",
 "title": "餐飲外送連鎖",
 "href": "/showcase/food-delivery/",
-"thumb": "/showcase/food-delivery/thumb.webp"
+"thumb": "/showcase/food-delivery/thumb.webp",
+"thumbM": "/showcase/food-delivery/thumb-m.webp"
 },
 {
 "no": "35",
 "kind": "媒體 / 內容品牌",
 "title": "數位雜誌",
 "href": "/showcase/magazine/",
-"thumb": "/showcase/magazine/thumb.webp"
+"thumb": "/showcase/magazine/thumb.webp",
+"thumbM": "/showcase/magazine/thumb-m.webp"
 },
 {
 "no": "36",
 "kind": "汽車 / 載具",
 "title": "汽車載具",
 "href": "/showcase/automotive/",
-"thumb": "/showcase/automotive/thumb.webp"
+"thumb": "/showcase/automotive/thumb.webp",
+"thumbM": "/showcase/automotive/thumb-m.webp"
 },
 {
 "no": "37",
 "kind": "農業 / 永續",
 "title": "農產永續品牌",
 "href": "/showcase/farm-organic/",
-"thumb": "/showcase/farm-organic/thumb.webp"
+"thumb": "/showcase/farm-organic/thumb.webp",
+"thumbM": "/showcase/farm-organic/thumb-m.webp"
 },
 {
 "no": "38",
 "kind": "攝影 / 影像",
 "title": "攝影影像工作室",
 "href": "/showcase/photographer/",
-"thumb": "/showcase/photographer/thumb.webp"
+"thumb": "/showcase/photographer/thumb.webp",
+"thumbM": "/showcase/photographer/thumb-m.webp"
 },
 {
 "no": "39",
 "kind": "寵物 / 生活",
 "title": "寵物生活服務",
 "href": "/showcase/pet-service/",
-"thumb": "/showcase/pet-service/thumb.webp"
+"thumb": "/showcase/pet-service/thumb.webp",
+"thumbM": "/showcase/pet-service/thumb-m.webp"
 },
 {
 "no": "40",
 "kind": "活動主辦",
 "title": "研討會活動",
 "href": "/showcase/conference/",
-"thumb": "/showcase/conference/thumb.webp"
+"thumb": "/showcase/conference/thumb.webp",
+"thumbM": "/showcase/conference/thumb-m.webp"
 },
 {
 "no": "41",
 "kind": "精品 / 珠寶",
 "title": "高級珠寶世家 (Art Deco)",
 "href": "/showcase/41-artdeco-jewelry/",
-"thumb": "/showcase/41-artdeco-jewelry/thumb.webp"
+"thumb": "/showcase/41-artdeco-jewelry/thumb.webp",
+"thumbM": "/showcase/41-artdeco-jewelry/thumb-m.webp"
 },
 {
 "no": "42",
 "kind": "潮流 / 電商",
 "title": "潮牌電商 (Neo-Brutalist)",
 "href": "/showcase/42-brutalist-streetwear/",
-"thumb": "/showcase/42-brutalist-streetwear/thumb.webp"
+"thumb": "/showcase/42-brutalist-streetwear/thumb.webp",
+"thumbM": "/showcase/42-brutalist-streetwear/thumb-m.webp"
 },
 {
 "no": "43",
 "kind": "餐飲 / Fine Dining",
 "title": "精緻餐飲 (Editorial)",
 "href": "/showcase/43-editorial-finedining/",
-"thumb": "/showcase/43-editorial-finedining/thumb.webp"
+"thumb": "/showcase/43-editorial-finedining/thumb.webp",
+"thumbM": "/showcase/43-editorial-finedining/thumb-m.webp"
 },
 {
 "no": "44",
 "kind": "電競 / 串流",
 "title": "電競戰隊 (Cyberpunk Glitch)",
 "href": "/showcase/44-cyberpunk-esports/",
-"thumb": "/showcase/44-cyberpunk-esports/thumb.webp"
+"thumb": "/showcase/44-cyberpunk-esports/thumb.webp",
+"thumbM": "/showcase/44-cyberpunk-esports/thumb-m.webp"
 },
 {
 "no": "45",
 "kind": "Clean Beauty / 美妝",
 "title": "植萃保養 (Organic)",
 "href": "/showcase/45-organic-skincare/",
-"thumb": "/showcase/45-organic-skincare/thumb.webp"
+"thumb": "/showcase/45-organic-skincare/thumb.webp",
+"thumbM": "/showcase/45-organic-skincare/thumb-m.webp"
 },
 {
 "no": "46",
 "kind": "AI / SaaS",
 "title": "AI 數據平台 (Modern SaaS)",
 "href": "/showcase/46-ai-saas-dashboard/",
-"thumb": "/showcase/46-ai-saas-dashboard/thumb.webp"
+"thumb": "/showcase/46-ai-saas-dashboard/thumb.webp",
+"thumbM": "/showcase/46-ai-saas-dashboard/thumb-m.webp"
 },
 {
 "no": "47",
 "kind": "建築 / 室內設計",
 "title": "建築室內事務所 (極簡)",
 "href": "/showcase/47-architecture-minimal/",
-"thumb": "/showcase/47-architecture-minimal/thumb.webp"
+"thumb": "/showcase/47-architecture-minimal/thumb.webp",
+"thumbM": "/showcase/47-architecture-minimal/thumb-m.webp"
 },
 {
 "no": "48",
 "kind": "旅宿 / 觀光",
 "title": "精品旅宿 (沉浸視差)",
 "href": "/showcase/48-boutique-hotel/",
-"thumb": "/showcase/48-boutique-hotel/thumb.webp"
+"thumb": "/showcase/48-boutique-hotel/thumb.webp",
+"thumbM": "/showcase/48-boutique-hotel/thumb-m.webp"
 },
 {
 "no": "49",
 "kind": "法律 / 專業服務",
 "title": "法律顧問事務所 (權威)",
 "href": "/showcase/49-law-firm/",
-"thumb": "/showcase/49-law-firm/thumb.webp"
+"thumb": "/showcase/49-law-firm/thumb.webp",
+"thumbM": "/showcase/49-law-firm/thumb-m.webp"
 },
 {
 "no": "50",
 "kind": "兒童 / 教育",
 "title": "親子教育品牌 (Playful)",
 "href": "/showcase/50-kids-education/",
-"thumb": "/showcase/50-kids-education/thumb.webp"
+"thumb": "/showcase/50-kids-education/thumb.webp",
+"thumbM": "/showcase/50-kids-education/thumb-m.webp"
 },
 {
 "no": "51",
 "kind": "出版 / 書店",
 "title": "獨立書店出版 (文學復古)",
 "href": "/showcase/51-indie-bookstore/",
-"thumb": "/showcase/51-indie-bookstore/thumb.webp"
+"thumb": "/showcase/51-indie-bookstore/thumb.webp",
+"thumbM": "/showcase/51-indie-bookstore/thumb-m.webp"
 },
 {
 "no": "52",
 "kind": "消費電子 / 硬體",
 "title": "科技硬體產品 (3C)",
 "href": "/showcase/52-tech-hardware/",
-"thumb": "/showcase/52-tech-hardware/thumb.webp"
+"thumb": "/showcase/52-tech-hardware/thumb.webp",
+"thumbM": "/showcase/52-tech-hardware/thumb-m.webp"
 },
 {
 "no": "53",
 "kind": "餐飲 / 連鎖",
 "title": "手搖飲連鎖 (台味活潑)",
 "href": "/showcase/53-bubble-tea/",
-"thumb": "/showcase/53-bubble-tea/thumb.webp"
+"thumb": "/showcase/53-bubble-tea/thumb.webp",
+"thumbM": "/showcase/53-bubble-tea/thumb-m.webp"
 },
 {
 "no": "54",
 "kind": "婚禮 / 活動",
 "title": "婚禮邀請 (優雅互動)",
 "href": "/showcase/54-wedding-invite/",
-"thumb": "/showcase/54-wedding-invite/thumb.webp"
+"thumb": "/showcase/54-wedding-invite/thumb.webp",
+"thumbM": "/showcase/54-wedding-invite/thumb-m.webp"
 },
 {
 "no": "55",
 "kind": "攝影 / 創意",
 "title": "攝影師作品集 (全幅留白)",
 "href": "/showcase/55-photographer-portfolio/",
-"thumb": "/showcase/55-photographer-portfolio/thumb.webp"
+"thumb": "/showcase/55-photographer-portfolio/thumb.webp",
+"thumbM": "/showcase/55-photographer-portfolio/thumb-m.webp"
 },
 {
 "no": "56",
 "kind": "房地產 / 豪宅",
 "title": "豪宅地產 (奢華大圖)",
 "href": "/showcase/56-luxury-realestate/",
-"thumb": "/showcase/56-luxury-realestate/thumb.webp"
+"thumb": "/showcase/56-luxury-realestate/thumb.webp",
+"thumbM": "/showcase/56-luxury-realestate/thumb-m.webp"
 },
 {
 "no": "57",
 "kind": "綠能 / B2B",
 "title": "永續能源科技 (信任)",
 "href": "/showcase/57-clean-energy/",
-"thumb": "/showcase/57-clean-energy/thumb.webp"
+"thumb": "/showcase/57-clean-energy/thumb.webp",
+"thumbM": "/showcase/57-clean-energy/thumb-m.webp"
 },
 {
 "no": "58",
 "kind": "內容 / 音訊",
 "title": "Podcast 節目 (聲音品牌)",
 "href": "/showcase/58-podcast-show/",
-"thumb": "/showcase/58-podcast-show/thumb.webp"
+"thumb": "/showcase/58-podcast-show/thumb.webp",
+"thumbM": "/showcase/58-podcast-show/thumb-m.webp"
 },
 {
 "no": "59",
 "kind": "寵物 / 電商",
 "title": "寵物用品電商 (溫暖)",
 "href": "/showcase/59-pet-store/",
-"thumb": "/showcase/59-pet-store/thumb.webp"
+"thumb": "/showcase/59-pet-store/thumb.webp",
+"thumbM": "/showcase/59-pet-store/thumb-m.webp"
 },
 {
 "no": "60",
 "kind": "藝文 / 展覽",
 "title": "美術館展覽 (策展編輯)",
 "href": "/showcase/60-art-exhibition/",
-"thumb": "/showcase/60-art-exhibition/thumb.webp"
+"thumb": "/showcase/60-art-exhibition/thumb.webp",
+"thumbM": "/showcase/60-art-exhibition/thumb-m.webp"
 },
 {
 "no": "61",
 "kind": "AI 研究 / 深科技",
 "title": "未來主義 AI 實驗室",
 "href": "/showcase/61-futuristic-ai-lab/",
-"thumb": "/showcase/61-futuristic-ai-lab/thumb.webp"
+"thumb": "/showcase/61-futuristic-ai-lab/thumb.webp",
+"thumbM": "/showcase/61-futuristic-ai-lab/thumb-m.webp"
 },
 {
 "no": "62",
 "kind": "精品 / 珠寶",
 "title": "奢華精品珠寶",
 "href": "/showcase/62-luxury-jewelry/",
-"thumb": "/showcase/62-luxury-jewelry/thumb.webp"
+"thumb": "/showcase/62-luxury-jewelry/thumb.webp",
+"thumbM": "/showcase/62-luxury-jewelry/thumb-m.webp"
 },
 {
 "no": "63",
 "kind": "設計 / 生活",
 "title": "日系極簡雜誌",
 "href": "/showcase/63-japanese-editorial/",
-"thumb": "/showcase/63-japanese-editorial/thumb.webp"
+"thumb": "/showcase/63-japanese-editorial/thumb.webp",
+"thumbM": "/showcase/63-japanese-editorial/thumb-m.webp"
 },
 {
 "no": "64",
 "kind": "設計工作室",
 "title": "野獸派作品集",
 "href": "/showcase/64-brutalist-portfolio/",
-"thumb": "/showcase/64-brutalist-portfolio/thumb.webp"
+"thumb": "/showcase/64-brutalist-portfolio/thumb.webp",
+"thumbM": "/showcase/64-brutalist-portfolio/thumb-m.webp"
 },
 {
 "no": "65",
 "kind": "遊戲工作室",
 "title": "復古街機遊戲",
 "href": "/showcase/65-retro-arcade/",
-"thumb": "/showcase/65-retro-arcade/thumb.webp"
+"thumb": "/showcase/65-retro-arcade/thumb.webp",
+"thumbM": "/showcase/65-retro-arcade/thumb-m.webp"
 },
 {
 "no": "66",
 "kind": "有機 / 保養",
 "title": "有機自然永續",
 "href": "/showcase/66-organic-eco/",
-"thumb": "/showcase/66-organic-eco/thumb.webp"
+"thumb": "/showcase/66-organic-eco/thumb.webp",
+"thumbM": "/showcase/66-organic-eco/thumb-m.webp"
 },
 {
 "no": "67",
 "kind": "金融科技",
 "title": "金融科技儀表板",
 "href": "/showcase/67-fintech-dashboard/",
-"thumb": "/showcase/67-fintech-dashboard/thumb.webp"
+"thumb": "/showcase/67-fintech-dashboard/thumb.webp",
+"thumbM": "/showcase/67-fintech-dashboard/thumb-m.webp"
 },
 {
 "no": "68",
 "kind": "精品咖啡",
 "title": "精品咖啡烘焙",
 "href": "/showcase/68-specialty-coffee/",
-"thumb": "/showcase/68-specialty-coffee/thumb.webp"
+"thumb": "/showcase/68-specialty-coffee/thumb.webp",
+"thumbM": "/showcase/68-specialty-coffee/thumb-m.webp"
 },
 {
 "no": "69",
 "kind": "SaaS 新創",
 "title": "新創 SaaS 募資頁",
 "href": "/showcase/69-startup-saas/",
-"thumb": "/showcase/69-startup-saas/thumb.webp"
+"thumb": "/showcase/69-startup-saas/thumb.webp",
+"thumbM": "/showcase/69-startup-saas/thumb-m.webp"
 },
 {
 "no": "70",
 "kind": "旅遊 / 體驗",
 "title": "沉浸式旅遊行程",
 "href": "/showcase/70-immersive-travel/",
-"thumb": "/showcase/70-immersive-travel/thumb.webp"
+"thumb": "/showcase/70-immersive-travel/thumb.webp",
+"thumbM": "/showcase/70-immersive-travel/thumb-m.webp"
 },
 {
 "no": "71",
 "kind": "健身 / 運動",
 "title": "健身運動高能",
 "href": "/showcase/71-fitness-energetic/",
-"thumb": "/showcase/71-fitness-energetic/thumb.webp"
+"thumb": "/showcase/71-fitness-energetic/thumb.webp",
+"thumbM": "/showcase/71-fitness-energetic/thumb-m.webp"
 },
 {
 "no": "72",
 "kind": "時尚 / 電商",
 "title": "時尚電商品牌",
 "href": "/showcase/72-fashion-ecommerce/",
-"thumb": "/showcase/72-fashion-ecommerce/thumb.webp"
+"thumb": "/showcase/72-fashion-ecommerce/thumb.webp",
+"thumbM": "/showcase/72-fashion-ecommerce/thumb-m.webp"
 },
 {
 "no": "73",
 "kind": "診所 / 醫療",
 "title": "醫療診所信賴",
 "href": "/showcase/73-medical-clinic/",
-"thumb": "/showcase/73-medical-clinic/thumb.webp"
+"thumb": "/showcase/73-medical-clinic/thumb.webp",
+"thumbM": "/showcase/73-medical-clinic/thumb-m.webp"
 },
 {
 "no": "74",
 "kind": "活動 / 音樂",
 "title": "音樂節活動",
 "href": "/showcase/74-music-festival/",
-"thumb": "/showcase/74-music-festival/thumb.webp"
+"thumb": "/showcase/74-music-festival/thumb.webp",
+"thumbM": "/showcase/74-music-festival/thumb-m.webp"
 },
 {
 "no": "75",
 "kind": "建築事務所",
 "title": "建築工作室",
 "href": "/showcase/75-architecture-studio/",
-"thumb": "/showcase/75-architecture-studio/thumb.webp"
+"thumb": "/showcase/75-architecture-studio/thumb.webp",
+"thumbM": "/showcase/75-architecture-studio/thumb-m.webp"
 },
 {
 "no": "76",
 "kind": "教育 / 線上學習",
 "title": "教育課程平台",
 "href": "/showcase/76-edtech-platform/",
-"thumb": "/showcase/76-edtech-platform/thumb.webp"
+"thumb": "/showcase/76-edtech-platform/thumb.webp",
+"thumbM": "/showcase/76-edtech-platform/thumb-m.webp"
 },
 {
 "no": "77",
 "kind": "區塊鏈 / Web3",
 "title": "Web3 賽博龐克",
 "href": "/showcase/77-web3-cyberpunk/",
-"thumb": "/showcase/77-web3-cyberpunk/thumb.webp"
+"thumb": "/showcase/77-web3-cyberpunk/thumb.webp",
+"thumbM": "/showcase/77-web3-cyberpunk/thumb-m.webp"
 },
 {
 "no": "78",
 "kind": "手作 / 工藝",
 "title": "手作工藝品牌",
 "href": "/showcase/78-artisan-craft/",
-"thumb": "/showcase/78-artisan-craft/thumb.webp"
+"thumb": "/showcase/78-artisan-craft/thumb.webp",
+"thumbM": "/showcase/78-artisan-craft/thumb-m.webp"
 },
 {
 "no": "79",
 "kind": "媒體 / 新聞",
 "title": "新聞編輯媒體",
 "href": "/showcase/79-news-editorial/",
-"thumb": "/showcase/79-news-editorial/thumb.webp"
+"thumb": "/showcase/79-news-editorial/thumb.webp",
+"thumbM": "/showcase/79-news-editorial/thumb-m.webp"
 },
 {
 "no": "80",
 "kind": "創作者 / KOL",
 "title": "個人 KOL 品牌",
 "href": "/showcase/80-personal-kol/",
-"thumb": "/showcase/80-personal-kol/thumb.webp"
+"thumb": "/showcase/80-personal-kol/thumb.webp",
+"thumbM": "/showcase/80-personal-kol/thumb-m.webp"
 }
 ]

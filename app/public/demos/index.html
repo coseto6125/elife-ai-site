@@ -277,6 +277,30 @@
   .botbar a { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink-faint); text-decoration: none; transition: color 0.25s; }
   .botbar a:hover { color: var(--gold-bright); }
 
+  /* --- portrait single-page layout (rasterized for phones): 1 column × 3 tall phone-shaped cards --- */
+  .render-page.is-portrait .wall {
+    grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr);
+    gap: clamp(14px, 3vw, 22px);
+  }
+  .render-page.is-portrait .frame-photo { flex-direction: row; align-items: stretch; border-radius: 14px; }
+  /* phone-shaped thumb sits on the left (9:16), meta fills the rest */
+  .render-page.is-portrait .frame-photo .shot {
+    flex: none; width: 38%; aspect-ratio: 9 / 16; height: auto; align-self: center;
+    border-radius: 11px; margin: 10px; box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+  }
+  .render-page.is-portrait .frame-photo .meta {
+    flex: 1; flex-direction: column; justify-content: center; gap: 8px; padding: 14px 16px 14px 4px;
+  }
+  .render-page.is-portrait .frame-photo .cap { font-size: 1.02rem; line-height: 1.3; white-space: normal; }
+  .render-page.is-portrait .frame-photo .cap .title-line { white-space: normal; }
+  .render-page.is-portrait .frame-photo .cap .kind { display: block; font-size: 0.74rem; color: var(--gold); margin-bottom: 3px; }
+  .render-page.is-portrait .frame-photo .no-stamp { font-size: 0.8rem; }
+  .render-page.is-portrait .frame-photo .go { align-self: center; font-size: 1rem; padding-right: 4px; }
+  .render-page.is-portrait .wall-head .ttl { font-size: 1.35rem; }
+  /* portrait lightbox preview shows the tall phone capture, not a wide crop */
+  .lightbox.is-portrait .lb-card { width: min(78vw, 360px); }
+  .lightbox.is-portrait .lb-img { aspect-ratio: 9 / 16; }
+
   @media (max-width: 760px) {
     .book { --bh: min(64vh, 560px); }
     .boards { inset: -12px -14px; }
@@ -525,10 +549,11 @@
       </svg>`;
     }
 
-    function framePhoto(d, i) {
-      // prefer a real screenshot (showcase thumb); fall back to the procedural SVG mock
-      const shot = d.thumb
-        ? `<img src="${esc(d.thumb)}" alt="${esc(d.name)} 範例縮圖" loading="lazy" />`
+    function framePhoto(d, i, portrait) {
+      // portrait → real phone-shaped (9:16) capture; landscape → wide desktop capture.
+      const src = portrait ? (d.thumbM || d.thumb) : d.thumb;
+      const shot = src
+        ? `<img src="${esc(src)}" alt="${esc(d.name)} 範例縮圖" loading="lazy" />`
         : svgThumb(d, i);
       return `
         <a class="frame-photo" href="${esc(d.href)}" target="_blank" rel="noopener" title="${esc(d.name)}">
@@ -542,7 +567,7 @@
     }
 
     // single flat page content for StPageFlip (one face per .page element)
-    function flatPageHTML(p, idx) {
+    function flatPageHTML(p, idx, portrait) {
       const num = `<span class="page-num">${idx}</span>`;
       switch (p.type) {
         case 'cover':
@@ -565,7 +590,7 @@
             <span class="intro-foot">翻頁瀏覽 · 點任一範例開啟 ↗</span>
           </div></div>`;
         case 'wall': {
-          const cells = p.items.map((d, k) => framePhoto(d, p.start + k)).join('');
+          const cells = p.items.map((d, k) => framePhoto(d, p.start + k, portrait)).join('');
           const fin = p.withFin ? `
             <div class="wall-fin">
               <span class="h">— Fin —</span>
@@ -597,13 +622,13 @@
     // page[1] is the cover's inner side (left of the first spread) → put intro there.
     // we pad the inner pages to an EVEN count so the back cover never lands on a blank side.
     // 6 per page (2×3) keeps each card large enough to read at the spread size.
-    const PER_PAGE = 6;
-    function buildFlatPages(demos) {
-      const pageCount = Math.ceil(demos.length / PER_PAGE);
+    // landscape spread fits 6 wide cards (2×3); a single portrait page fits 3 tall phone-shaped cards.
+    function buildFlatPages(demos, perPage) {
+      const pageCount = Math.ceil(demos.length / perPage);
       const walls = [];
       for (let pi = 0; pi < pageCount; pi++) {
-        const start = pi * PER_PAGE;
-        const items = demos.slice(start, start + PER_PAGE);
+        const start = pi * perPage;
+        const items = demos.slice(start, start + perPage);
         walls.push({
           type: 'wall', items, start,
           head: `Vol. ${String(pi + 1).padStart(2, '0')} / ${String(pageCount).padStart(2, '0')}`,
@@ -621,12 +646,16 @@
     }
 
     function render(demos) {
-      const pages = buildFlatPages(demos);
+      function isPortrait() { return window.innerWidth <= 760; }
+      // fixed at load: portrait shows 3 tall phone-cards per page, landscape 6 wide cards per spread.
+      const portrait = isPortrait();
+      const PER_PAGE = portrait ? 3 : 6;
+      const pages = buildFlatPages(demos, PER_PAGE);
 
       // build flat .page elements for StPageFlip
       const flipEl = document.getElementById('flipbook');
-      const PAGE_RATIO = 0.72; // single page width / height
-      function isPortrait() { return window.innerWidth <= 760; }
+      // a single portrait page is taller (room for 3 stacked 9:16 cards); landscape page is 0.72.
+      const PAGE_RATIO = portrait ? 0.62 : 0.72; // single page width / height
       function dims() {
         const maxH = Math.min(window.innerHeight * 0.84, 900);
         if (isPortrait()) {
@@ -665,9 +694,9 @@
 
       async function rasterize(p, idx) {
         const el = document.createElement('div');
-        el.className = 'page render-page' + (p.type === 'cover' ? ' page-cover' : '') + (p.type === 'wall' ? ' page-wall' : '');
+        el.className = 'page render-page' + (portrait ? ' is-portrait' : '') + (p.type === 'cover' ? ' page-cover' : '') + (p.type === 'wall' ? ' page-wall' : '');
         el.style.cssText = `width:${w}px;height:${h}px;position:relative;overflow:hidden;`;
-        el.innerHTML = flatPageHTML(p, idx);
+        el.innerHTML = flatPageHTML(p, idx, portrait);
         sandbox.appendChild(el);
         // wait a frame so fonts/layout settle
         await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -713,7 +742,12 @@
         let rT;
         window.addEventListener('resize', () => {
           clearTimeout(rT);
-          rT = setTimeout(() => { sizeBook(); pageFlip.update({ width: w, height: h, size: 'fixed' }); }, 200);
+          rT = setTimeout(() => {
+            // crossing the portrait/landscape breakpoint changes per-page count, ratio and thumb set
+            // → rebuild from scratch; otherwise just resize the existing canvas pages.
+            if (isPortrait() !== portrait) { pageFlip.destroy(); flipEl.innerHTML = ''; render(demos); return; }
+            sizeBook(); pageFlip.update({ width: w, height: h, size: 'fixed' });
+          }, 200);
         });
 
         function updateUI() {
@@ -753,6 +787,7 @@
         const lbKind = lb.querySelector('.lb-kind');
         const lbTitle = lb.querySelector('.lb-title');
         const lbOpen = lb.querySelector('.lb-open');
+        lb.classList.toggle('is-portrait', portrait);
         function openLightbox(hit) {
           lbImg.src = hit.thumb || '';
           lbKind.textContent = hit.kind || '';
@@ -771,6 +806,21 @@
           const hit = hitAt(e.clientX, e.clientY);
           if (hit) { hp.classList.remove('on'); openLightbox(hit); }
         });
+        // touch: detect a tap (no significant move) and open the lightbox directly —
+        // the synthesized click can be swallowed by the flip gesture handler on canvas.
+        let tStart = null;
+        flipEl.addEventListener('touchstart', (e) => {
+          const t = e.touches[0]; tStart = { x: t.clientX, y: t.clientY };
+        }, { passive: true });
+        flipEl.addEventListener('touchend', (e) => {
+          if (!tStart) return;
+          const t = e.changedTouches[0];
+          const moved = Math.abs(t.clientX - tStart.x) > 12 || Math.abs(t.clientY - tStart.y) > 12;
+          tStart = null;
+          if (moved) return; // a swipe → let the flip handle it
+          const hit = hitAt(t.clientX, t.clientY);
+          if (hit) { e.preventDefault(); hp.classList.remove('on'); openLightbox(hit); }
+        }, { passive: false });
 
         // hover → large preview near the cursor (desktop only)
         const hp = document.getElementById('hoverPreview');
@@ -798,11 +848,22 @@
         flipEl.addEventListener('mouseleave', () => { hp.classList.remove('on'); hpKey = null; });
         pageFlip.on('flip', () => { hp.classList.remove('on'); hpKey = null; });
 
-        nextBtn.addEventListener('click', () => pageFlip.flipNext());
-        prevBtn.addEventListener('click', () => pageFlip.flipPrev());
+        // Two flip controllers behave differently per orientation (both verified via the live API):
+        //   landscape = 2-page spreads → indices move by 2; flip(i±1) lands on a half-spread and
+        //               is rejected (flip(1) from 0 stays 0). flipNext()/flipPrev() are spread-aware.
+        //   portrait  = single pages → flipNext()/flipPrev() are no-ops; only
+        //               turnToNextPage()/turnToPrevPage() move (instant, no page-curl).
+        function goNext() {
+          if (portrait) pageFlip.turnToNextPage(); else pageFlip.flipNext('top');
+        }
+        function goPrev() {
+          if (portrait) pageFlip.turnToPrevPage(); else pageFlip.flipPrev('top');
+        }
+        nextBtn.addEventListener('click', goNext);
+        prevBtn.addEventListener('click', goPrev);
         window.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowRight') pageFlip.flipNext();
-          else if (e.key === 'ArrowLeft') pageFlip.flipPrev();
+          if (e.key === 'ArrowRight') goNext();
+          else if (e.key === 'ArrowLeft') goPrev();
         });
 
         // gentle entrance only — NO auto-open; the visitor opens the book themselves
@@ -825,7 +886,7 @@
       .then((r) => (r.ok ? r.json() : []))
       .then((list) => {
         const demos = (Array.isArray(list) ? list : [])
-          .map((d) => ({ no: d.no, name: d.title, kind: d.kind, href: d.href, thumb: d.thumb }))
+          .map((d) => ({ no: d.no, name: d.title, kind: d.kind, href: d.href, thumb: d.thumb, thumbM: d.thumbM }))
           .filter((d) => d.no && d.href);
         if (!demos.length) { loading.textContent = '範例陸續上線中，敬請期待。'; return; }
         render(demos);
