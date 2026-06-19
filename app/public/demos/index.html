@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>設計風格範例集 — e-life-ai.com</title>
+<meta name="description" content="e-life-ai.com 設計風格範例集：翻開這本作品集，20 種產業與美學方向的網站樣板，純前端互動模擬。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./vendor/page-flip.css" />
+<style>
+  :root {
+    /* gallery-black modern portfolio: deep neutrals + white space + one warm accent */
+    --paper: #15151a;          /* page surface (dark) */
+    --paper-2: #101015;
+    --paper-edge: #0b0b0f;
+    --paper-shadow: #060608;
+    --leather: #1c1c22;        /* book boards */
+    --leather-2: #0e0e12;
+    --gold: #c8a978;           /* restrained warm accent */
+    --gold-bright: #e7c98f;
+    --ink: #f4f5f7;            /* primary text on dark pages */
+    --ink-soft: #aeb0b8;
+    --ink-faint: #6c6e78;
+    --line: rgba(255,255,255,0.1);
+    --line-bright: rgba(255,255,255,0.22);
+    --red: #d98a5b;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --font-display: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+    --font-hand: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+    --font-body: 'Archivo', 'Noto Sans TC', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    /* gallery black: clean deep neutral, book is the only hero */
+    background: radial-gradient(130% 120% at 50% 24%, #18181c 0%, #0c0c0f 58%, #050506 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* faint cool spotlight on the book */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(58% 48% at 50% 40%, rgba(220, 226, 240, 0.06), transparent 72%);
+  }
+
+  /* hidden global SVG defs (filters reused by every thumbnail) */
+  .svg-defs { position: absolute; width: 0; height: 0; }
+
+  /* ---------- top brand bar (overlay so the book can fill the viewport) ---------- */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 6;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 14px clamp(16px, 4vw, 40px); flex-wrap: wrap;
+    pointer-events: none;
+  }
+  .topbar > * { pointer-events: auto; }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--gold-bright); letter-spacing: 0.02em; }
+  .brand-tag { font-family: var(--font-hand); font-size: 1.05rem; color: rgba(255,235,200,0.55); }
+  .topbar .hint { font-family: var(--font-hand); font-size: 1.12rem; color: rgba(255, 235, 200, 0.7); display: inline-flex; align-items: center; gap: 8px; }
+  .topbar .hint svg { width: 22px; height: 22px; opacity: 0.8; }
+
+  /* ---------- stage: gives the book a 3D viewing volume; book fills it ---------- */
+  .stage {
+    position: relative; z-index: 2; flex: 1;
+    display: grid; place-items: center;
+    padding: clamp(6px, 1.4vh, 18px) clamp(10px, 2vw, 30px);
+    min-height: 0;
+    perspective: 2600px;
+    perspective-origin: 50% 30%;
+  }
+
+  /* ---------- the book = thick leather volume wrapping a StPageFlip instance ---------- */
+  .book {
+    --bh: min(90vh, 880px);
+    --thick: 22px;            /* page-stack thickness on each fore-edge */
+    position: relative;
+    height: var(--bh);
+    transform-style: preserve-3d;
+    /* subtle forward tilt so a flat (平視) book still has volume */
+    transform: rotateX(7deg);
+    transition: transform 0.7s var(--ease);
+    will-change: transform;
+  }
+  .book.intro { pointer-events: none; }
+  /* grounded drop shadow */
+  .book::after {
+    content: '';
+    position: absolute; left: 1%; right: 1%; bottom: -34px; height: 64px; z-index: -3;
+    background: radial-gradient(58% 100% at 50% 0%, rgba(0,0,0,0.6), transparent 76%);
+    filter: blur(12px);
+  }
+
+  /* matte dark boards frame the spread, with real thickness via stacked edges */
+  .boards {
+    position: absolute; inset: -18px -24px; border-radius: 6px 12px 12px 6px; z-index: 0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.05), transparent 14%),
+      linear-gradient(100deg, var(--leather-2), var(--leather) 50%, var(--leather-2));
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      inset 0 0 40px rgba(0,0,0,0.7),
+      0 40px 80px rgba(0,0,0,0.7);
+  }
+  .boards::after { content: ''; position: absolute; inset: 13px; border: 1px solid var(--line); border-radius: 4px; pointer-events: none; }
+
+  /* ---------- page-stack thickness: stacked sheet edges down both fore-edges ---------- */
+  .edge {
+    position: absolute; top: 10px; bottom: 10px; width: var(--thick); z-index: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, var(--paper) 0 1.5px, var(--paper-edge) 1.5px 2.4px, var(--paper-shadow) 2.4px 3px);
+  }
+  .edge.l { left: calc(-1 * var(--thick) + 4px); border-radius: 3px 0 0 3px; box-shadow: inset 6px 0 8px -4px rgba(0,0,0,0.6), -2px 0 6px rgba(0,0,0,0.4); }
+  .edge.r { right: calc(-1 * var(--thick) + 4px); border-radius: 0 3px 3px 0; box-shadow: inset -6px 0 8px -4px rgba(0,0,0,0.6), 2px 0 6px rgba(0,0,0,0.4); }
+  /* bottom page-stack edge for thickness seen head-on */
+  .edge.b { left: 6px; right: 6px; top: auto; bottom: calc(-1 * var(--thick) + 4px); height: var(--thick); width: auto;
+    background: repeating-linear-gradient(90deg, var(--paper) 0 1.5px, var(--paper-edge) 1.5px 2.4px, var(--paper-shadow) 2.4px 3px);
+    border-radius: 0 0 4px 4px; box-shadow: inset 0 -6px 8px -4px rgba(0,0,0,0.6), 0 3px 8px rgba(0,0,0,0.5); }
+
+  /* StPageFlip mounts here; height drives the layout, width follows two pages */
+  .flipbook { position: relative; z-index: 1; height: 100%; }
+  .stf__parent { margin: 0 auto; overflow: visible; }
+  .stf__wrapper { height: 100%; }
+
+  /* every page = clean dark gallery surface */
+  .page { background: transparent; }
+  .page-face {
+    position: absolute; inset: 0; overflow: hidden;
+    background: linear-gradient(165deg, var(--paper), var(--paper-2) 70%, var(--paper-edge));
+  }
+  /* very subtle top sheen for depth */
+  .page-face::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), transparent 10%);
+  }
+  /* gutter shadow toward the spine */
+  .stf__item .page-face { box-shadow: inset 0 0 30px -16px rgba(0,0,0,0.8); }
+
+  .page-cover .page-face, .page .cover { border-radius: 2px; }
+
+  /* ---------- page content ---------- */
+  .pad { position: absolute; inset: 0; padding: clamp(16px, 2.4vw, 30px); display: flex; flex-direction: column; }
+
+  /* ---------- cover: dark editorial book cover ---------- */
+  .cover {
+    background:
+      radial-gradient(120% 80% at 30% 12%, rgba(200,169,120,0.10), transparent 55%),
+      linear-gradient(150deg, var(--leather), var(--leather-2));
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: clamp(30px, 5vw, 56px); color: var(--ink); border-radius: 2px;
+  }
+  .cover .frame { position: absolute; inset: 18px; border: 1px solid var(--line); border-radius: 3px; }
+  .cover .kicker { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold-bright); }
+  .cover .ctr { margin-top: auto; margin-bottom: auto; }
+  .cover h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.02em; color: #fff; }
+  .cover .rule { width: 48px; height: 2px; background: var(--gold-bright); margin: 22px 0; }
+  .cover .sub { font-family: var(--font-body); font-weight: 300; font-size: 0.95rem; color: var(--ink-soft); max-width: 30ch; line-height: 1.6; }
+  .cover .est { font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-faint); }
+
+  /* ---------- wall header: minimal index + title ---------- */
+  .wall-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: clamp(14px, 2.2vw, 26px); }
+  .wall-head .note { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); }
+  .wall-head .ttl { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 1.9vw, 1.5rem); letter-spacing: -0.01em; color: var(--ink); }
+
+  /* portfolio grid: 2 columns × 4 rows = 8 per page, generous gutters */
+  .wall { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); gap: clamp(10px, 1.4vw, 16px); }
+
+  /* clean portfolio card — fills its grid cell; thumb flexes, meta row is fixed height */
+  .frame-photo {
+    position: relative; display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+    background: var(--paper-2); min-height: 0;
+    transition: border-color 0.3s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .frame-photo:hover { border-color: var(--line-bright); transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,0.5); z-index: 20; }
+  .frame-photo .shot { display: block; width: 100%; flex: 1; min-height: 0; overflow: hidden; background: #0c0c10; position: relative; }
+  .frame-photo .shot svg, .frame-photo .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* meta row under the thumbnail (fixed, never clipped) */
+  .frame-photo .meta { flex: none; display: flex; align-items: flex-start; gap: 8px; padding: 8px 11px 10px; }
+  .frame-photo .no-stamp { font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 0.04em; padding-top: 1px; }
+  .frame-photo .cap { flex: 1; min-width: 0; font-family: var(--font-body); font-weight: 500; font-size: clamp(0.8rem, 1.05vw, 0.92rem); color: var(--ink); line-height: 1.25; overflow: hidden; }
+  .frame-photo .cap .title-line { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .frame-photo .go { margin-left: auto; font-family: var(--font-display); font-size: 0.78rem; color: var(--ink-faint); transition: color 0.3s, transform 0.3s; }
+  .frame-photo:hover .go { color: var(--gold-bright); transform: translateX(2px); }
+  /* hover overlay on the thumbnail (used by the live DOM hotspot layer) */
+  .frame-photo .ov {
+    position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 12px;
+    background: linear-gradient(180deg, transparent 40%, rgba(8,8,10,0.8));
+    opacity: 0; transition: opacity 0.3s var(--ease);
+    font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.08em; color: #fff;
+  }
+  .frame-photo:hover .ov { opacity: 1; }
+
+  .page-num { position: absolute; bottom: 12px; right: 22px; font-family: var(--font-body); font-size: 0.74rem; color: var(--ink-faint); }
+  /* on left-hand pages StPageFlip adds --left; move number to the outer (left) edge */
+  .stf__item.--left .page-num { left: 22px; right: auto; }
+
+  /* intro page (greeting / about) */
+  .intro-pad { justify-content: center; gap: 0; }
+  .intro-kicker { font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+  .intro-h { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.08; letter-spacing: -0.02em; color: var(--ink); margin: 16px 0 22px; }
+  .intro-p { font-family: var(--font-body); font-weight: 300; font-size: clamp(0.95rem, 1.3vw, 1.08rem); line-height: 1.8; color: var(--ink-soft); max-width: 38ch; margin-bottom: 14px; }
+  .intro-p strong { color: var(--gold-bright); font-weight: 600; }
+  .intro-p.muted { color: var(--ink-faint); font-size: 0.92rem; }
+  .intro-foot { margin-top: 24px; font-family: var(--font-display); font-size: 0.76rem; letter-spacing: 0.12em; color: var(--ink-faint); }
+
+  .cover.backcover { justify-content: center; align-items: center; text-align: center; }
+  .end-cta { display: inline-block; margin-top: 18px; padding: 11px 22px; border: 1px solid var(--line-bright); border-radius: 999px; font-family: var(--font-display); font-size: 0.84rem; color: var(--ink); text-decoration: none; transition: background 0.25s, border-color 0.25s; }
+  .end-cta:hover { background: var(--gold); border-color: var(--gold); color: #1a1a1a; }
+
+  /* card kind label above title */
+  .frame-photo .cap .kind { display: block; font-size: 0.66rem; color: var(--gold); letter-spacing: 0.06em; margin-bottom: 2px; font-family: var(--font-display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .end-pad { align-items: center; justify-content: center; text-align: center; gap: 4px; }
+  .end-pad .h { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+  .end-pad .t { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 2.4vw, 1.9rem); color: var(--ink); margin: 8px 0 12px; letter-spacing: -0.01em; }
+  .end-pad .p { font-family: var(--font-body); font-weight: 300; font-size: 0.95rem; color: var(--ink-soft); max-width: 30ch; line-height: 1.7; }
+  .end-pad .s { font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); margin-top: 20px; }
+
+  /* ---------- nav controls (minimal) ---------- */
+  .nav { position: fixed; bottom: 18px; z-index: 7; display: flex; align-items: center; gap: 14px; left: 50%; transform: translateX(-50%); }
+  .nav button { appearance: none; border: 1px solid var(--line-bright); background: rgba(20,20,24,0.7); color: var(--ink); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; display: grid; place-items: center; transition: background 0.25s, border-color 0.25s, transform 0.25s, opacity 0.25s; backdrop-filter: blur(8px); }
+  .nav button:hover:not(:disabled) { background: rgba(40,40,48,0.9); border-color: var(--gold); transform: translateY(-2px); }
+  .nav button:disabled { opacity: 0.28; cursor: default; }
+  .nav .counter { display: grid; place-items: center; font-family: var(--font-display); font-size: 0.82rem; letter-spacing: 0.08em; color: var(--ink-soft); min-width: 92px; }
+
+  .loading { color: var(--ink-soft); font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.1em; }
+
+  .botbar { position: fixed; bottom: 14px; left: clamp(16px, 4vw, 40px); z-index: 6; display: flex; }
+  .botbar a { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink-faint); text-decoration: none; transition: color 0.25s; }
+  .botbar a:hover { color: var(--gold-bright); }
+
+  @media (max-width: 760px) {
+    .book { --bh: min(66vh, 560px); }
+    .boards { inset: -12px -14px; }
+    .nav { transform: translate(-50%, 150%); }
+    .topbar .hint { display: none; }
+  }
+</style>
+</head>
+<body>
+  <!-- reusable SVG filters: vintage tone (sepia-ish), grain, vignette -->
+  <svg class="svg-defs" aria-hidden="true">
+    <defs>
+      <filter id="vintage" x="-5%" y="-5%" width="110%" height="110%">
+        <!-- gentle warm tone: keep most of the original colour, push toward amber -->
+        <feColorMatrix type="matrix" values="0.82 0.16 0.04 0 0.03
+                                             0.10 0.80 0.05 0 0.02
+                                             0.06 0.14 0.72 0 0.0
+                                             0    0    0    1 0" result="toned"/>
+        <!-- slight contrast lift so the layout still reads crisply -->
+        <feComponentTransfer in="toned" result="graded">
+          <feFuncR type="linear" slope="1.05" intercept="0.0"/>
+          <feFuncG type="linear" slope="1.03" intercept="0.0"/>
+          <feFuncB type="linear" slope="1.0" intercept="0.0"/>
+        </feComponentTransfer>
+        <!-- film grain on top -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="grain"/>
+        <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0" result="grainA"/>
+        <feComposite in="grainA" in2="graded" operator="over"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">Design Showcase</span>
+    </div>
+    <span class="hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13"/><path d="M14 4v15"/><path d="M18 8l3 2-3 2"/></svg>
+      拖曳頁面翻閱，點縮圖進入範例
+    </span>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="book" id="book" style="visibility:hidden">
+      <div class="boards"></div>
+      <div class="edge l"></div>
+      <div class="edge r"></div>
+      <div class="edge b"></div>
+      <div class="flipbook" id="flipbook"></div>
+      <div class="loading" id="loading" style="visibility:visible">載入作品集…</div>
+    </div>
+    <div class="nav" id="nav" style="visibility:hidden">
+      <button id="prev" aria-label="上一頁">‹</button>
+      <span class="counter" id="counter"></span>
+      <button id="next" aria-label="下一頁">›</button>
+    </div>
+  </div>
+
+  <div class="botbar"><a href="/">← 回到 e-life-ai.com</a></div>
+
+  <script src="./vendor/html2canvas.min.js"></script>
+  <script src="./vendor/page-flip.browser.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    const ACCENTS = [
+      ['#6366f1', '#312e81'], ['#10b981', '#064e3b'], ['#f59e0b', '#7c2d12'],
+      ['#ec4899', '#831843'], ['#06b6d4', '#164e63'], ['#8b5cf6', '#4c1d95'],
+      ['#ef4444', '#7f1d1d'], ['#14b8a6', '#134e4a'],
+    ];
+    const ROTS = [-2.4, 1.8, -1.4, 2.2, -2, 1.5, -2.6, 1.2, -1.7, 2.4];
+    // deterministic layout archetypes for thumbnails (varied so the wall feels diverse)
+    const LAYOUTS = ['hero', 'portfolio', 'split', 'mag', 'shop', 'land'];
+    // photo subjects rotated through the wall so thumbnails read as real captured photos
+    const SUBJECTS = ['landscape', 'portrait', 'food', 'product', 'architecture', 'fashion'];
+
+    const stage = document.getElementById('stage');
+    const book = document.getElementById('book');
+    const loading = document.getElementById('loading');
+    const nav = document.getElementById('nav');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const accentFor = (d, i) => (Array.isArray(d.accent) && d.accent.length >= 2) ? d.accent : ACCENTS[i % ACCENTS.length];
+    // light tint derived from accent for content blocks
+    function tint(hex, amt) {
+      const h = hex.replace('#', '');
+      const n = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
+      let r = (n>>16)&255, g=(n>>8)&255, b=n&255;
+      r = Math.round(r + (255-r)*amt); g = Math.round(g + (255-g)*amt); b = Math.round(b + (255-b)*amt);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // --- procedural "photo" content: a scene drawn with gradients + shapes so the
+    //     thumbnail reads as a real captured image, not a wireframe block. ---
+    //     returns inner SVG positioned inside the given rect (x,y,w,h) via a clipPath.
+    function photoScene(subject, x, y, w, h, a, idn) {
+      const cid = `clip-${idn}`, gid = `g-${idn}`;
+      const clip = `<clipPath id="${cid}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2"/></clipPath>`;
+      let scene = '';
+      switch (subject) {
+        case 'landscape': // sky gradient + sun + layered hills + foreground
+          scene = `
+            <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f4c98a"/><stop offset="0.4" stop-color="#e89e7a"/><stop offset="0.7" stop-color="#9a6a78"/><stop offset="1" stop-color="#4a3f63"/>
+            </linearGradient>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${gid})"/>
+            <circle cx="${x+w*0.68}" cy="${y+h*0.34}" r="${h*0.13}" fill="#ffe9c2" opacity="0.92"/>
+            <path d="M${x},${y+h*0.72} Q${x+w*0.3},${y+h*0.5} ${x+w*0.55},${y+h*0.68} T${x+w},${y+h*0.6} V${y+h} H${x} Z" fill="#6a5570" opacity="0.85"/>
+            <path d="M${x},${y+h*0.85} Q${x+w*0.4},${y+h*0.66} ${x+w*0.7},${y+h*0.84} T${x+w},${y+h*0.8} V${y+h} H${x} Z" fill="#3a2f4a"/>`;
+          break;
+        case 'portrait': // soft studio bg + head/shoulders silhouette + rim light
+          scene = `
+            <radialGradient id="${gid}" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="${tint(a,0.45)}"/><stop offset="1" stop-color="${tint(a,0.05)}"/></radialGradient>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${gid})"/>
+            <ellipse cx="${x+w*0.5}" cy="${y+h*0.42}" rx="${w*0.17}" ry="${h*0.2}" fill="#2c2230"/>
+            <path d="M${x+w*0.26},${y+h} Q${x+w*0.5},${y+h*0.6} ${x+w*0.74},${y+h} Z" fill="#2c2230"/>
+            <ellipse cx="${x+w*0.42}" cy="${y+h*0.38}" rx="${w*0.04}" ry="${h*0.05}" fill="#ffe9c2" opacity="0.5"/>`;
+          break;
+        case 'food': // overhead plate on warm table
+          scene = `
+            <radialGradient id="${gid}" cx="45%" cy="42%" r="70%"><stop offset="0" stop-color="#caa179"/><stop offset="1" stop-color="#7a5638"/></radialGradient>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${gid})"/>
+            <circle cx="${x+w*0.5}" cy="${y+h*0.5}" r="${Math.min(w,h)*0.36}" fill="#f3ece0"/>
+            <circle cx="${x+w*0.5}" cy="${y+h*0.5}" r="${Math.min(w,h)*0.24}" fill="#c9543e"/>
+            <circle cx="${x+w*0.45}" cy="${y+h*0.46}" r="${Math.min(w,h)*0.07}" fill="#6fa05a"/>
+            <circle cx="${x+w*0.58}" cy="${y+h*0.55}" r="${Math.min(w,h)*0.05}" fill="#e8b94a"/>`;
+          break;
+        case 'product': // pedestal product shot with glow + shadow
+          scene = `
+            <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${tint(a,0.55)}"/><stop offset="1" stop-color="${tint(a,0.12)}"/></linearGradient>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${gid})"/>
+            <ellipse cx="${x+w*0.5}" cy="${y+h*0.82}" rx="${w*0.26}" ry="${h*0.05}" fill="#000" opacity="0.18"/>
+            <rect x="${x+w*0.38}" y="${y+h*0.3}" width="${w*0.24}" height="${h*0.46}" rx="${w*0.05}" fill="${a}"/>
+            <rect x="${x+w*0.42}" y="${y+h*0.34}" width="${w*0.05}" height="${h*0.34}" rx="3" fill="#fff" opacity="0.32"/>`;
+          break;
+        case 'architecture': // building facade perspective
+          scene = `
+            <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd0e0"/><stop offset="1" stop-color="#8aa0b4"/></linearGradient>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${gid})"/>
+            <polygon points="${x},${y+h} ${x+w*0.55},${y+h*0.18} ${x+w*0.55},${y+h} " fill="${tint(a,0.2)}"/>
+            <polygon points="${x+w*0.55},${y+h*0.18} ${x+w},${y+h*0.4} ${x+w},${y+h} ${x+w*0.55},${y+h}" fill="${tint(a,0.0)}"/>
+            ${[0,1,2,3].map(r=>[0,1,2].map(c=>`<rect x="${x+w*0.08+c*w*0.14}" y="${y+h*0.34+r*h*0.15}" width="${w*0.08}" height="${h*0.08}" fill="#dff0ff" opacity="0.6"/>`).join('')).join('')}`;
+          break;
+        case 'fashion': default: // editorial figure on color field
+          scene = `
+            <linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${tint(a,0.5)}"/><stop offset="1" stop-color="${a}"/></linearGradient>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${gid})"/>
+            <rect x="${x+w*0.4}" y="${y+h*0.16}" width="${w*0.2}" height="${h*0.78}" rx="${w*0.1}" fill="#2c2230" opacity="0.9"/>
+            <circle cx="${x+w*0.5}" cy="${y+h*0.22}" r="${h*0.07}" fill="#3a2f3a"/>
+            <rect x="${x+w*0.44}" y="${y+h*0.4}" width="${w*0.12}" height="${h*0.3}" fill="${tint(a,0.3)}" opacity="0.8"/>`;
+          break;
+      }
+      return `<defs>${clip}</defs><g clip-path="url(#${cid})">${scene}</g>`;
+    }
+
+    // --- website-mockup thumbnail: real chrome + a real photo region + layered UI ---
+    function svgThumb(d, i) {
+      const [a, b] = accentFor(d, i);
+      const layout = (d.layout && LAYOUTS.includes(d.layout)) ? d.layout : LAYOUTS[i % LAYOUTS.length];
+      const subject = (d.subject && SUBJECTS.includes(d.subject)) ? d.subject : SUBJECTS[(i * 5 + 2) % SUBJECTS.length];
+      const W = 400, H = 300;
+      const bg = '#f7f4ef', dark = '#1c2230', ink = '#2a2f3a';
+      const soft = tint(a, 0.6), softer = tint(a, 0.82), line = 'rgba(20,24,34,0.1)';
+      const id = `t${i}`;
+      // shadow filter for floating cards → depth
+      const fx = `<filter id="sh-${id}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1c2230" flood-opacity="0.18"/></filter>`;
+      // button gradient → glossy CTA
+      const btn = (bx, by, bw, bh) => `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${bh/2}" fill="${a}" filter="url(#sh-${id})"/><rect x="${bx+6}" y="${by+3}" width="${bw-12}" height="3" rx="1.5" fill="#fff" opacity="0.3"/>`;
+      const txt = (tx, ty, tw, c, o) => `<rect x="${tx}" y="${ty}" width="${tw}" height="7" rx="3.5" fill="${c||ink}" opacity="${o==null?1:o}"/>`;
+      const chrome = `
+        <rect x="0" y="0" width="${W}" height="${H}" fill="${bg}"/>
+        <rect x="0" y="0" width="${W}" height="26" fill="#e9e4da"/>
+        <circle cx="14" cy="13" r="4" fill="#e0867d"/><circle cx="30" cy="13" r="4" fill="#e3c06a"/><circle cx="46" cy="13" r="4" fill="#88c08a"/>
+        <rect x="64" y="7" width="${W-78}" height="12" rx="6" fill="#fff" stroke="${line}"/>`;
+      const ph = (sx, sy, sw, sh) => photoScene(subject, sx, sy, sw, sh, a, id);
+      const body = (() => {
+        switch (layout) {
+          case 'hero': // full-bleed photo hero, nav over it, headline + CTA, feature row
+            return `${ph(0, 26, W, 180)}
+              <rect x="0" y="26" width="${W}" height="180" fill="${dark}" opacity="0.22"/>
+              ${txt(20, 44, 56, '#fff', 0.95)}
+              ${[0,1,2].map(k=>txt(W-150+k*44, 46, 30, '#fff', 0.7)).join('')}
+              ${txt(36, 104, 210, '#fff')}${txt(36, 120, 210, '#fff')}${txt(36, 142, 140, '#fff', 0.85)}
+              ${btn(36, 162, 96, 22)}
+              <rect x="0" y="206" width="${W}" height="94" fill="${bg}"/>
+              ${[0,1,2].map(k=>`<rect x="${28+k*120}" y="226" width="104" height="58" rx="8" fill="#fff" filter="url(#sh-${id})"/><circle cx="${48+k*120}" cy="246" r="9" fill="${soft}"/>${txt(40+k*120, 264, 60, ink, 0.6)}`).join('')}`;
+          case 'portfolio': // masonry of real photos
+            return `<rect x="0" y="26" width="${W}" height="40" fill="${bg}"/>${txt(20, 42, 60, ink)}${[0,1,2].map(k=>txt(W-150+k*44,44,30,ink,0.5)).join('')}
+              ${[[20,74,170,120],[202,74,178,76],[202,160,86,90],[296,160,84,90],[20,204,170,90]].map((r,k)=>`<g filter="url(#sh-${id})">${ph(r[0],r[1],r[2],r[3])}</g>`).join('')}`;
+          case 'split': // half photo / half text
+            return `${ph(0, 26, W/2, H-26)}
+              <rect x="${W/2}" y="26" width="${W/2}" height="${H-26}" fill="${bg}"/>
+              ${txt(W/2+30, 86, 150, ink)}${txt(W/2+30, 102, 130, ink)}
+              ${txt(W/2+30, 132, 150, ink, 0.45)}${txt(W/2+30, 148, 140, ink, 0.45)}${txt(W/2+30, 164, 110, ink, 0.45)}
+              ${btn(W/2+30, 188, 100, 24)}`;
+          case 'mag': // editorial: big feature photo + sidebar
+            return `<rect x="0" y="26" width="${W}" height="34" fill="${bg}"/>${txt(W/2-46, 40, 92, ink)}
+              <g filter="url(#sh-${id})">${ph(20, 72, 232, 156)}</g>
+              <rect x="20" y="72" width="232" height="156" fill="url(#mg-${id})"/>
+              <defs><linearGradient id="mg-${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0.5" stop-color="rgba(0,0,0,0)"/><stop offset="1" stop-color="rgba(0,0,0,0.55)"/></linearGradient></defs>
+              ${txt(34, 196, 150, '#fff')}${txt(34, 210, 110, '#fff', 0.8)}
+              <g filter="url(#sh-${id})">${ph(266, 72, 114, 72)}</g><g filter="url(#sh-${id})">${ph(266, 154, 114, 72)}</g>
+              ${txt(20, 244, 360, ink, 0.3)}`;
+          case 'shop': // product grid e-commerce
+            return `<rect x="0" y="26" width="${W}" height="40" fill="${dark}"/>${txt(20,42,50,'#fff',0.9)}${btn(W-92,38,62,18)}
+              ${[0,1,2].map(k=>{const cx=24+k*122; return `<rect x="${cx}" y="78" width="110" height="140" rx="8" fill="#fff" filter="url(#sh-${id})"/><g>${ph(cx+8,86,94,86)}</g>${txt(cx+12,182,70,ink,0.7)}${txt(cx+12,196,40,a,1)}`;}).join('')}
+              ${txt(24, 240, 200, ink, 0.3)}`;
+          case 'land': default: // landing: centered hero photo behind, headline, CTA, logos
+            return `<rect x="0" y="26" width="${W}" height="44" fill="${bg}"/>${txt(20,42,46,a)}${btn(W-92,38,62,20)}
+              ${ph(0, 70, W, 130)}<rect x="0" y="70" width="${W}" height="130" fill="${dark}" opacity="0.3"/>
+              ${txt(W/2-110, 104, 220, '#fff')}${txt(W/2-80, 122, 160, '#fff')}${txt(W/2-60, 144, 120, '#fff', 0.8)}
+              ${btn(W/2-52, 166, 104, 24)}
+              <rect x="0" y="200" width="${W}" height="100" fill="${bg}"/>
+              ${[0,1,2,3].map(k=>`<rect x="${30+k*90}" y="226" width="68" height="50" rx="8" fill="${softer}"/>`).join('')}`;
+        }
+      })();
+      // clean, crisp modern mock — no vintage tone
+      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>${fx}</defs>
+        <g>${chrome}${body}</g>
+      </svg>`;
+    }
+
+    function framePhoto(d, i) {
+      // prefer a real screenshot (showcase thumb); fall back to the procedural SVG mock
+      const shot = d.thumb
+        ? `<img src="${esc(d.thumb)}" alt="${esc(d.name)} 範例縮圖" loading="lazy" />`
+        : svgThumb(d, i);
+      return `
+        <a class="frame-photo" href="${esc(d.href)}" target="_blank" rel="noopener" title="${esc(d.name)}">
+          <span class="shot">${shot}<span class="ov">查看範例 ↗</span></span>
+          <span class="meta">
+            <span class="no-stamp">${esc(d.no)}</span>
+            <span class="cap"><span class="kind">${esc(d.kind || '')}</span><span class="title-line">${esc(d.name)}</span></span>
+            <span class="go">↗</span>
+          </span>
+        </a>`;
+    }
+
+    // single flat page content for StPageFlip (one face per .page element)
+    function flatPageHTML(p, idx) {
+      const num = `<span class="page-num">${idx}</span>`;
+      switch (p.type) {
+        case 'cover':
+          return `<div class="page-face cover">
+            <div class="frame"></div>
+            <span class="kicker">e-life-ai.com · Design Showcase</span>
+            <div class="ctr">
+              <h1>設計風格<br/>範例集</h1>
+              <span class="rule"></span>
+              <span class="sub">${esc(p.count || 80)} 種產業與美學方向的網站樣板，全為可互動的前端模擬。</span>
+            </div>
+            <span class="est">est. 接案工作室</span>
+          </div>`;
+        case 'intro':
+          return `<div class="page-face"><div class="pad intro-pad">
+            <span class="intro-kicker">關於這本作品集</span>
+            <h2 class="intro-h">80 種設計，<br/>一次翻閱。</h2>
+            <p class="intro-p">這些是我們做的互動式設計樣板，涵蓋 <strong>80 種</strong>產業情境與設計風格，展示我們的設計幅度與前端功力。</p>
+            <p class="intro-p muted">皆為純前端、使用模擬資料的展示範本（非真實客戶產品），點開即可實際操作。</p>
+            <span class="intro-foot">翻頁瀏覽 · 點任一範例開啟 ↗</span>
+          </div></div>`;
+        case 'wall': {
+          const cells = p.items.map((d, k) => framePhoto(d, p.start + k)).join('');
+          return `<div class="page-face"><div class="pad">
+            <div class="wall-head"><span class="note">${esc(p.head)}</span><span class="ttl">${esc(p.sub)}</span></div>
+            <div class="wall">${cells}</div>
+            ${num}
+          </div></div>`;
+        }
+        case 'end':
+          return `<div class="page-face"><div class="pad end-pad">
+            <span class="h">— Fin —</span>
+            <span class="t">想看別的風格？</span>
+            <p class="p">告訴我們你的產業與品牌調性，我們可以再客製一整套。</p>
+            <a class="end-cta" href="/#contact">聊聊你的專案 →</a>
+            <span class="s">e-life-ai.com</span>
+          </div></div>`;
+        case 'colophon':
+          return `<div class="page-face"><div class="pad end-pad">
+            <span class="h">Colophon</span>
+            <p class="p">全站 ${esc(80)} 種設計樣板，純前端互動模擬。<br/>Space Grotesk · Archivo · 手工打造。</p>
+            <span class="s">e-life-ai.com</span>
+          </div></div>`;
+        case 'backcover':
+          return `<div class="page-face cover backcover">
+            <div class="frame"></div>
+            <div class="ctr" style="text-align:center;align-items:center">
+              <span class="kicker">Thanks for reading</span>
+              <span class="rule" style="margin:18px auto"></span>
+              <span class="sub" style="text-align:center">e-life-ai · 你的軟體開發夥伴<br/>AI · 全端 · 系統開發</span>
+            </div>
+            <span class="est" style="text-align:center">e-life-ai.com</span>
+          </div>`;
+        default:
+          return `<div class="page-face blank"></div>`;
+      }
+    }
+
+    // flatten the album into single StPageFlip pages — 6 frames per page.
+    // showCover:true makes page[0] the front cover and the LAST page the back cover (both standalone).
+    // page[1] is the cover's inner side (left of the first spread) → put intro there.
+    // we pad the inner pages to an EVEN count so the back cover never lands on a blank side.
+    // 8 per page (2×4) divides 80 evenly → 10 full wall pages, no near-empty tail page.
+    const PER_PAGE = 8;
+    function buildFlatPages(demos) {
+      const pageCount = Math.ceil(demos.length / PER_PAGE);
+      const walls = [];
+      for (let pi = 0; pi < pageCount; pi++) {
+        const start = pi * PER_PAGE;
+        const items = demos.slice(start, start + PER_PAGE);
+        walls.push({
+          type: 'wall', items, start,
+          head: `Vol. ${String(pi + 1).padStart(2, '0')} / ${String(pageCount).padStart(2, '0')}`,
+          sub: `No. ${items[0].no}–${items[items.length - 1].no}`,
+        });
+      }
+      // spreads pair as [0,1],[2,3],… so the LAST page must sit at an ODD index (right side)
+      // to avoid a lone white right-half. cover(0)+intro(1)+walls fills indices; if the running
+      // length is odd before 'end', pad one colophon so 'end' lands on the right of the final spread.
+      const list = [{ type: 'cover', count: demos.length }, { type: 'intro', count: demos.length }, ...walls];
+      if (list.length % 2 === 0) list.push({ type: 'colophon' }); // make next (end) land on odd/right
+      list.push({ type: 'end' });
+      return list;
+    }
+
+    function render(demos) {
+      const pages = buildFlatPages(demos);
+
+      // build flat .page elements for StPageFlip
+      const flipEl = document.getElementById('flipbook');
+      function dims() {
+        // fill the viewport: book as large as fits, leaving only a thin margin
+        const maxH = Math.min(window.innerHeight * 0.86, 900);
+        const maxSpreadW = Math.min(window.innerWidth * 0.94, 1500);
+        let h = maxH;
+        let w = Math.round(h * 0.72);
+        if (w * 2 > maxSpreadW) { w = Math.floor(maxSpreadW / 2); h = Math.round(w / 0.72); }
+        return { w, h };
+      }
+      let { w, h } = dims();
+      const sizeBook = () => {
+        ({ w, h } = dims());
+        const portrait = window.innerWidth <= 760;
+        book.style.height = h + 'px';
+        book.style.width = (portrait ? w : w * 2) + 'px';
+        flipEl.style.height = h + 'px';
+      };
+      sizeBook();
+
+      // Map of pageIndex -> array of clickable hotspots ({x,y,w,h in page-fraction, href})
+      // collected while rendering each wall page, so the canvas pages stay clickable.
+      const hotspots = {};
+
+      // Render each page's HTML offscreen at 2x, rasterize with html2canvas → image dataURL.
+      // Canvas mode (loadFromImages) gives the rich 3D page-curl + shadows.
+      const SCALE = 2;
+      const sandbox = document.createElement('div');
+      sandbox.style.cssText = `position:fixed;left:-99999px;top:0;width:${w}px;height:${h}px;`;
+      document.body.appendChild(sandbox);
+
+      async function rasterize(p, idx) {
+        const el = document.createElement('div');
+        const isCover = p.type === 'cover' || p.type === 'backcover';
+        el.className = 'page render-page' + (isCover ? ' page-cover' : '') + (p.type === 'wall' ? ' page-wall' : '');
+        el.style.cssText = `width:${w}px;height:${h}px;position:relative;overflow:hidden;`;
+        el.innerHTML = flatPageHTML(p, idx);
+        sandbox.appendChild(el);
+        // wait a frame so fonts/layout settle
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        // collect hotspots for wall pages
+        if (p.type === 'wall') {
+          hotspots[idx] = [...el.querySelectorAll('.frame-photo')].map((a) => {
+            const r = a.getBoundingClientRect(), pr = el.getBoundingClientRect();
+            return { x: (r.left - pr.left) / w, y: (r.top - pr.top) / h, w: r.width / w, h: r.height / h, href: a.getAttribute('href') };
+          });
+        }
+        const canvas = await html2canvas(el, { backgroundColor: null, scale: SCALE, logging: false, useCORS: true });
+        sandbox.removeChild(el);
+        return canvas.toDataURL('image/png');
+      }
+
+      // rasterize all pages (sequentially to keep memory sane), then build the canvas flipbook
+      (async () => {
+        const images = [];
+        for (let i = 0; i < pages.length; i++) images.push(await rasterize(pages[i], i));
+        sandbox.remove();
+
+        loading.remove();
+        book.style.visibility = 'visible';
+        nav.style.visibility = 'visible';
+
+        const pageFlip = new St.PageFlip(flipEl, {
+          width: w, height: h, size: 'fixed',
+          drawShadow: true, flippingTime: 900,
+          usePortrait: true, startZIndex: 5, autoSize: false,
+          maxShadowOpacity: 0.6, showCover: false, // no standalone cover → no white half-page
+          mobileScrollSupport: false, swipeDistance: 18, showPageCorners: true,
+        });
+        pageFlip.loadFromImages(images);
+
+        let rT;
+        window.addEventListener('resize', () => {
+          clearTimeout(rT);
+          rT = setTimeout(() => { sizeBook(); pageFlip.update({ width: w, height: h, size: 'fixed' }); }, 200);
+        });
+
+        function updateUI() {
+          const idx = pageFlip.getCurrentPageIndex();
+          const total = pageFlip.getPageCount();
+          prevBtn.disabled = idx <= 0;
+          nextBtn.disabled = idx >= total - 1;
+          counter.textContent = idx === 0 ? '封面' : `${idx} / ${total - 1}`;
+          book.classList.toggle('is-cover', idx === 0);
+        }
+        pageFlip.on('flip', updateUI);
+        updateUI();
+
+        // click-through on the canvas: hit-test hotspots of the currently visible pages
+        flipEl.addEventListener('click', (e) => {
+          if (pageFlip.getState && pageFlip.getState() !== 'read') return; // ignore mid-flip
+          const canvases = flipEl.querySelectorAll('canvas');
+          if (!canvases.length) return;
+          const idx = pageFlip.getCurrentPageIndex();
+          // visible pages: left = idx (if even spread), right = idx+? — test both current and neighbor
+          const candidates = [idx, idx + 1, idx - 1];
+          for (const ci of candidates) {
+            const hs = hotspots[ci];
+            if (!hs) continue;
+            // figure the page's on-screen rect (each visible page occupies half the spread)
+            const rect = flipEl.getBoundingClientRect();
+            const isPortrait = window.innerWidth <= 760;
+            const pageW = isPortrait ? rect.width : rect.width / 2;
+            // determine which half this page is on (cover/odd → right, even → left). use spread parity.
+            const onLeft = !isPortrait && (ci % 2 === 1); // showCover:true → page1 is right of cover... approximate
+            const pageLeft = isPortrait ? rect.left : (onLeft ? rect.left : rect.left + rect.width / 2);
+            const px = (e.clientX - pageLeft) / pageW;
+            const py = (e.clientY - rect.top) / rect.height;
+            if (px < 0 || px > 1 || py < 0 || py > 1) continue;
+            const hit = hs.find((s) => px >= s.x && px <= s.x + s.w && py >= s.y && py <= s.y + s.h);
+            if (hit) { window.open(hit.href, '_blank', 'noopener'); return; }
+          }
+        });
+
+        nextBtn.addEventListener('click', () => pageFlip.flipNext());
+        prevBtn.addEventListener('click', () => pageFlip.flipPrev());
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') pageFlip.flipNext();
+          else if (e.key === 'ArrowLeft') pageFlip.flipPrev();
+        });
+
+        // gentle entrance only — NO auto-open; the visitor opens the book themselves
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduced) {
+          book.animate(
+            [
+              { transform: 'translateY(2%) scale(0.97)', opacity: 0 },
+              { transform: 'none', opacity: 1 },
+            ],
+            { duration: 700, easing: 'cubic-bezier(0.22,1,0.36,1)', fill: 'both' }
+          );
+        }
+      })();
+    }
+
+    // single source of truth: manifest.json mirrors the site's 80 showcases.
+    // each entry: { no, kind, title, href } — click a card → real, operable demo.
+    fetch('./manifest.json')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list) => {
+        const demos = (Array.isArray(list) ? list : [])
+          .map((d) => ({ no: d.no, name: d.title, kind: d.kind, href: d.href, thumb: d.thumb }))
+          .filter((d) => d.no && d.href);
+        if (!demos.length) { loading.textContent = '範例陸續上線中，敬請期待。'; return; }
+        render(demos);
+      })
+      .catch(() => { loading.textContent = '範例陸續上線中，敬請期待。'; });
+  })();
+  </script>
+</body>
+</html>

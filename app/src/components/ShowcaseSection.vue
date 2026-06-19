@@ -12,30 +12,46 @@ useReveal('root', { stagger: 60 })
         <span class="eyebrow">// 03 — Design Templates</span>
         <h2 class="section-title">設計範例</h2>
         <p class="section-lead">
-          這些是我們做的互動式設計樣板，涵蓋 60+ 種產業情境與設計風格，展示我們的設計幅度與前端功力。
+          這些是我們做的互動式設計樣板，涵蓋 80 種產業情境與設計風格，展示我們的設計幅度與前端功力。
           皆為純前端、使用模擬資料的展示範本（非真實客戶產品），點開即可實際操作。
         </p>
       </header>
 
-      <div class="grid">
-        <a
-          v-for="s in showcases"
-          :key="s.id"
-          class="card reveal"
-          :style="{ '--card-accent': s.accent ?? 'var(--accent)' }"
-          :href="s.href"
-          target="_blank"
-          rel="noopener"
-          data-reveal
-        >
-          <div class="card-top">
-            <span class="no">{{ s.no }}</span>
-            <span class="kind">{{ s.clientType }}</span>
-          </div>
-          <h3 class="card-title">{{ s.title }}</h3>
-          <span class="view">查看範例 <span class="arrow" aria-hidden="true">↗</span></span>
+      <!-- interactive flip-book album of all 80 showcases -->
+      <div class="album reveal" data-reveal>
+        <iframe
+          class="album-frame"
+          src="/demos/"
+          title="設計範例翻書相簿"
+          loading="lazy"
+        ></iframe>
+        <a class="album-open" href="/demos/" target="_blank" rel="noopener">
+          全螢幕開啟相簿 <span aria-hidden="true">↗</span>
         </a>
       </div>
+
+      <!-- full list kept for SEO / crawlers / no-JS; visually collapsed under the album -->
+      <details class="list-fallback">
+        <summary>瀏覽全部 {{ showcases.length }} 個範例清單</summary>
+        <div class="grid">
+          <a
+            v-for="s in showcases"
+            :key="s.id"
+            class="card"
+            :style="{ '--card-accent': s.accent ?? 'var(--accent)' }"
+            :href="s.href"
+            target="_blank"
+            rel="noopener"
+          >
+            <div class="card-top">
+              <span class="no">{{ s.no }}</span>
+              <span class="kind">{{ s.clientType }}</span>
+            </div>
+            <h3 class="card-title">{{ s.title }}</h3>
+            <span class="view">查看範例 <span class="arrow" aria-hidden="true">↗</span></span>
+          </a>
+        </div>
+      </details>
     </div>
   </section>
 </template>
@@ -44,6 +60,73 @@ useReveal('root', { stagger: 60 })
 .head {
   margin-bottom: clamp(40px, 6vw, 64px);
 }
+
+/* flip-book album */
+.album {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0c0c0f;
+  aspect-ratio: 16 / 10;
+  max-height: 78vh;
+}
+.album-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.album-open {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-1);
+  text-decoration: none;
+  background: rgba(12, 12, 16, 0.7);
+  border: 1px solid var(--line-bright);
+  border-radius: 999px;
+  padding: 7px 14px;
+  backdrop-filter: blur(6px);
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.album-open:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* SEO / no-JS fallback list — collapsed by default */
+.list-fallback {
+  margin-top: clamp(28px, 4vw, 44px);
+}
+.list-fallback > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 10px 0;
+  transition: color 0.3s var(--ease);
+}
+.list-fallback > summary::before {
+  content: '+';
+  font-size: 1.1em;
+}
+.list-fallback[open] > summary::before {
+  content: '−';
+}
+.list-fallback > summary:hover {
+  color: var(--ink-0);
+}
+.list-fallback .grid {
+  margin-top: 22px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
