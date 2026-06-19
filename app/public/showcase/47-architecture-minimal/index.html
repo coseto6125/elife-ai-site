@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>軸線 AXIS 建築事務所 — Selected Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f4f3ef;
+    --paper-2:#eceae4;
+    --ink:#111111;
+    --ink-soft:#2a2a2a;
+    --grey:#8a8a8a;
+    --grey-line:#d6d4cc;
+    --hair:rgba(17,17,17,.16);
+    --accent:#111111;
+    --sans:"Archivo","Noto Sans TC",system-ui,sans-serif;
+    --serif:"Fraunces",Georgia,serif;
+    --pad:clamp(20px,5vw,72px);
+    --maxw:1320px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--ink);color:var(--paper)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .label{
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--grey);font-weight:500;
+  }
+  .hr{height:1px;background:var(--hair);border:0;width:100%}
+
+  /* draw-in divider line */
+  .rule{position:relative;height:1px;background:transparent;overflow:hidden}
+  .rule::after{
+    content:"";position:absolute;left:0;top:0;height:1px;width:100%;
+    background:var(--hair);transform:scaleX(0);transform-origin:left;
+    transition:transform 1.1s cubic-bezier(.16,1,.3,1);
+  }
+  .rule.in::after{transform:scaleX(1)}
+
+  /* ---------- TOP BAR ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:saturate(120%) blur(8px);
+    border-bottom:1px solid var(--hair);
+  }
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .mark{display:flex;align-items:baseline;gap:.5em;font-weight:600;letter-spacing:.02em}
+  .mark .gl{font-size:17px}
+  .mark .en{font-size:11px;letter-spacing:.34em;color:var(--grey);text-transform:uppercase}
+  nav ul{display:flex;gap:clamp(18px,3vw,40px);list-style:none;align-items:center}
+  nav a{font-size:12.5px;letter-spacing:.14em;color:var(--ink-soft);position:relative}
+  nav a::after{content:"";position:absolute;left:0;bottom:-5px;height:1px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+  nav a:hover::after{transform:scaleX(1);transform-origin:left}
+  nav .idx{color:var(--grey);font-feature-settings:"tnum"}
+
+  /* ---------- HERO ---------- */
+  .hero{padding-top:clamp(48px,9vh,120px);padding-bottom:clamp(40px,7vh,90px)}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(32px,5vw,64px)}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.15fr .85fr;align-items:end}}
+  .hero-meta{display:flex;justify-content:space-between;gap:24px;margin-bottom:clamp(28px,5vh,56px);flex-wrap:wrap}
+  .hero-meta .label{line-height:1.9}
+  .statement{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(38px,7.4vw,104px);
+    line-height:.98;
+    letter-spacing:-.015em;
+    color:var(--ink);
+  }
+  .statement em{font-style:italic;color:var(--grey)}
+  .statement .ln{display:block;overflow:hidden}
+  .statement .ln span{display:block;transform:translateY(110%);transition:transform 1s cubic-bezier(.16,1,.3,1)}
+  .statement.in .ln span{transform:translateY(0)}
+  .statement.in .ln:nth-child(2) span{transition-delay:.09s}
+  .statement.in .ln:nth-child(3) span{transition-delay:.18s}
+  .hero-sub{margin-top:clamp(22px,3vh,34px);max-width:38ch;color:var(--ink-soft);font-size:15px;font-weight:300;line-height:1.7}
+
+  /* axonometric SVG block */
+  .axo{width:100%;height:auto;display:block}
+  .axo .draw{stroke:var(--ink);stroke-width:1;fill:none;vector-effect:non-scaling-stroke;
+    stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 1.6s ease}
+  .axo.in .draw{stroke-dashoffset:0}
+  .axo .fillblk{fill:var(--paper-2);opacity:0;transition:opacity .9s ease .7s}
+  .axo.in .fillblk{opacity:1}
+  .axo .grey{fill:#e3e1da;opacity:0;transition:opacity .9s ease .85s}
+  .axo.in .grey{opacity:1}
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{padding-top:clamp(56px,9vh,118px)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(30px,4vh,52px);flex-wrap:wrap}
+  .sec-head h2{font-family:var(--serif);font-weight:300;font-size:clamp(24px,3.4vw,40px);letter-spacing:-.01em}
+  .sec-head .en{font-family:var(--serif);font-style:italic;color:var(--grey);font-size:clamp(15px,2vw,20px)}
+
+  /* ---------- SELECTED WORKS ---------- */
+  .works{border-top:1px solid var(--hair)}
+  .work{
+    display:grid;grid-template-columns:38px 1fr;gap:16px;
+    align-items:center;
+    border-bottom:1px solid var(--hair);
+    padding:clamp(18px,2.6vh,26px) 0;
+    position:relative;cursor:pointer;
+    transition:background .5s ease,padding-left .5s cubic-bezier(.16,1,.3,1);
+  }
+  .work:hover{background:var(--paper-2);padding-left:14px}
+  .work .num{font-size:11px;color:var(--grey);letter-spacing:.1em;font-feature-settings:"tnum";align-self:start;padding-top:6px}
+  .work .body{display:grid;grid-template-columns:1fr;gap:6px}
+  @media(min-width:780px){
+    .work .body{grid-template-columns:minmax(0,2.4fr) 1fr 1.2fr .8fr;align-items:baseline;gap:18px}
+  }
+  .work .name{font-family:var(--serif);font-weight:400;font-size:clamp(20px,2.7vw,30px);line-height:1.05;letter-spacing:-.01em;transition:opacity .4s}
+  .work .name .en2{display:block;font-family:var(--sans);font-weight:400;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-top:7px}
+  .work .meta{font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft)}
+  .work .meta.dim{color:var(--grey)}
+  .work .arrow{justify-self:end;color:var(--grey);font-size:14px;opacity:0;transform:translateX(-6px);transition:.45s cubic-bezier(.16,1,.3,1)}
+  .work:hover .arrow{opacity:1;transform:translateX(0);color:var(--ink)}
+
+  /* reveal plan panel */
+  .work .plan{
+    grid-column:1/-1;max-height:0;overflow:hidden;
+    transition:max-height .6s cubic-bezier(.16,1,.3,1),margin .6s;
+  }
+  .work.open .plan{max-height:280px;margin-top:18px}
+  .plan-inner{display:grid;grid-template-columns:1fr;gap:18px;align-items:center;padding:6px 0 2px}
+  @media(min-width:680px){.plan-inner{grid-template-columns:200px 1fr}}
+  .plan svg{width:100%;height:148px;display:block;border:1px solid var(--hair);background:
+    linear-gradient(var(--grey-line) 1px,transparent 1px) 0 0/100% 24px,
+    linear-gradient(90deg,var(--grey-line) 1px,transparent 1px) 0 0/24px 100%,var(--paper)}
+  .plan svg .pl{stroke:var(--ink);stroke-width:1.1;fill:none;vector-effect:non-scaling-stroke}
+  .plan svg .plf{fill:#e6e4dd}
+  .plan p{font-size:13.5px;font-weight:300;line-height:1.75;color:var(--ink-soft);max-width:52ch}
+
+  /* ---------- STUDIO / PHILOSOPHY ---------- */
+  .studio-grid{display:grid;grid-template-columns:1fr;gap:clamp(30px,5vw,72px)}
+  @media(min-width:860px){.studio-grid{grid-template-columns:.9fr 1.1fr}}
+  .quote{font-family:var(--serif);font-weight:300;font-size:clamp(22px,3.4vw,38px);line-height:1.22;letter-spacing:-.01em}
+  .quote em{font-style:italic;color:var(--grey)}
+  .studio-body p{font-size:14.5px;font-weight:300;line-height:1.85;color:var(--ink-soft);margin-bottom:16px;max-width:56ch}
+  .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hair);margin-top:34px;border:1px solid var(--hair)}
+  .facts div{background:var(--paper);padding:18px 16px}
+  .facts .n{font-family:var(--serif);font-size:clamp(28px,4vw,44px);font-weight:300;line-height:1;letter-spacing:-.02em}
+  .facts .t{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-top:10px}
+
+  /* facade grid SVG band */
+  .facade{margin-top:clamp(40px,6vh,72px);border:1px solid var(--hair);background:var(--paper);overflow:hidden}
+  .facade svg{display:block;width:100%;height:clamp(120px,18vw,220px)}
+
+  /* ---------- SERVICES ---------- */
+  .svc{border-top:1px solid var(--hair)}
+  .svc-row{display:grid;grid-template-columns:auto 1fr;gap:18px;border-bottom:1px solid var(--hair);padding:clamp(16px,2.4vh,24px) 0;align-items:baseline}
+  @media(min-width:720px){.svc-row{grid-template-columns:64px 1fr 2.2fr;gap:28px}}
+  .svc-row .k{font-size:11px;color:var(--grey);letter-spacing:.1em;font-feature-settings:"tnum"}
+  .svc-row .h{font-family:var(--serif);font-size:clamp(17px,2.2vw,23px);font-weight:400;letter-spacing:-.01em}
+  .svc-row .d{font-size:13px;font-weight:300;line-height:1.7;color:var(--ink-soft);max-width:54ch}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(34px,5vw,72px)}
+  @media(min-width:860px){.contact-grid{grid-template-columns:1fr 1fr}}
+  .contact-lead{font-family:var(--serif);font-weight:300;font-size:clamp(26px,4vw,46px);line-height:1.08;letter-spacing:-.015em}
+  .contact-info{margin-top:30px;display:grid;gap:18px}
+  .contact-info .row{display:grid;grid-template-columns:80px 1fr;gap:14px;align-items:baseline;border-top:1px solid var(--hair);padding-top:12px}
+  .contact-info .row .label{padding-top:2px}
+  .contact-info .row .v{font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.6}
+
+  form{display:grid;gap:0}
+  .field{border-top:1px solid var(--hair);padding:14px 0 4px;position:relative}
+  .field:last-of-type{border-bottom:1px solid var(--hair);margin-bottom:24px}
+  .field label{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+  .field input,.field textarea,.field select{
+    width:100%;border:0;background:transparent;color:var(--ink);
+    font-family:var(--sans);font-size:15px;font-weight:300;padding:4px 0 10px;outline:none;resize:none;
+  }
+  .field input::placeholder,.field textarea::placeholder{color:#b6b4ac}
+  .field select{appearance:none;cursor:pointer}
+  .field::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:transparent;transition:background .35s}
+  .field:focus-within::after{background:var(--ink)}
+  button.send{
+    appearance:none;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+    font-family:var(--sans);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    padding:15px 28px;border-radius:0;display:inline-flex;align-items:center;gap:14px;
+    transition:.45s cubic-bezier(.16,1,.3,1);width:100%;justify-content:space-between;
+  }
+  button.send:hover{background:var(--paper);color:var(--ink)}
+  button.send .ar{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+  button.send:hover .ar{transform:translateX(6px)}
+  .sent{
+    border:1px solid var(--hair);padding:24px;margin-top:0;
+    display:none;align-items:flex-start;gap:14px;background:var(--paper-2);
+  }
+  .sent.show{display:flex;animation:fade .6s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .sent .dot{width:8px;height:8px;background:var(--ink);border-radius:50%;margin-top:6px;flex:none}
+  .sent .tx strong{font-family:var(--serif);font-weight:400;font-size:17px;display:block;margin-bottom:4px}
+  .sent .tx span{font-size:13px;color:var(--ink-soft);font-weight:300}
+
+  /* ---------- FOOTER ---------- */
+  footer{margin-top:clamp(64px,10vh,140px);border-top:1px solid var(--ink);padding:clamp(36px,6vh,64px) 0 38px}
+  .foot-top{display:grid;grid-template-columns:1fr;gap:28px;margin-bottom:48px}
+  @media(min-width:720px){.foot-top{grid-template-columns:1.4fr 1fr 1fr}}
+  .foot-top .big{font-family:var(--serif);font-weight:300;font-size:clamp(30px,5vw,56px);line-height:.96;letter-spacing:-.02em}
+  .foot-top .big .en{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.34em;color:var(--grey);text-transform:uppercase;margin-top:14px}
+  .foot-col .label{margin-bottom:14px}
+  .foot-col p,.foot-col a{display:block;font-size:13px;font-weight:300;color:var(--ink-soft);line-height:1.9}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-top:1px solid var(--hair);padding-top:22px}
+  .foot-bottom small{font-size:11.5px;letter-spacing:.06em;color:var(--grey)}
+  .credit{font-size:11.5px;letter-spacing:.12em;color:var(--grey)}
+  .credit b{color:var(--ink);font-weight:500}
+
+  /* reveal on scroll */
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s cubic-bezier(.16,1,.3,1)}
+  .rv.in{opacity:1;transform:none}
+
+  @media(max-width:560px){
+    nav .navlink{display:none}
+    .hero-meta .label:nth-child(3){display:none}
+    .work{grid-template-columns:1fr}
+    .work .num{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="#top" aria-label="軸線 AXIS">
+      <span class="gl">軸線</span><span class="en">AXIS</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#works" class="navlink">作品 <span class="idx">／01</span></a></li>
+        <li><a href="#studio" class="navlink">事務所 <span class="idx">／02</span></a></li>
+        <li><a href="#contact">聯絡 <span class="idx">／03</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap" style="padding-top:clamp(40px,7vh,96px)">
+    <div class="hero-meta">
+      <div class="label">建築 ／ 室內 ／ 都市<br/>Architecture &amp; Interiors</div>
+      <div class="label">事務所 設立<br/>EST. 2009 — 台北</div>
+      <div class="label">選輯作品<br/>Vol. 47 / Index</div>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="statement" id="stmt">
+          <span class="ln"><span>以結構盛載</span></span>
+          <span class="ln"><span><em>空無</em>，</span></span>
+          <span class="ln"><span>讓光成為材料。</span></span>
+        </h1>
+        <p class="hero-sub">軸線 AXIS 是一間以幾何秩序與物質誠實為核心的建築事務所。我們相信好的空間始於一條準確的線——從都市尺度到一道牆的厚度。</p>
+      </div>
+      <div class="axo-wrap rv">
+        <svg class="axo" id="axo" viewBox="0 0 320 300" preserveAspectRatio="xMidYMid meet" aria-label="軸測線稿建築量體">
+          <!-- ground plane -->
+          <polygon class="grey" points="40,210 160,150 280,210 160,270"/>
+          <!-- base block -->
+          <polygon class="fillblk" points="80,190 160,150 240,190 160,230"/>
+          <!-- tower faces -->
+          <polygon class="fillblk" points="120,170 160,150 160,70 120,90"/>
+          <polygon class="grey" points="160,150 200,170 200,90 160,70"/>
+          <!-- outlines -->
+          <path class="draw" style="--len:1200" d="M40,210 L160,150 L280,210 L160,270 Z"/>
+          <path class="draw" style="--len:900" d="M120,170 L160,150 L200,170 L200,90 L160,70 L120,90 Z M160,150 L160,70"/>
+          <path class="draw" style="--len:500" d="M120,90 L120,170 M200,90 L200,170"/>
+          <!-- floor lines -->
+          <path class="draw" style="--len:400" d="M120,110 L160,90 L200,110 M120,130 L160,110 L200,130 M120,150 L160,130 L200,150"/>
+          <!-- axis hairlines -->
+          <path class="draw" style="--len:520" stroke="#8a8a8a" d="M160,290 L160,40 M16,210 L304,210"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="rule" data-rule></div></div>
+
+  <!-- SELECTED WORKS -->
+  <section id="works" class="wrap">
+    <div class="sec-head rv">
+      <h2>選輯作品</h2>
+      <span class="en">Selected Works — 2016 / 2025</span>
+    </div>
+    <div class="works" id="worklist">
+      <!-- work 1 -->
+      <article class="work rv" data-work>
+        <div class="num">01</div>
+        <div class="body">
+          <div class="name">混凝土書院<span class="en2">Concrete Reading House</span></div>
+          <div class="meta">2024</div>
+          <div class="meta dim">宜蘭 ／ 文化建築</div>
+          <div class="arrow">↘</div>
+        </div>
+        <div class="plan">
+          <div class="plan-inner">
+            <svg viewBox="0 0 200 148" aria-hidden="true">
+              <rect class="plf" x="24" y="24" width="60" height="100"/>
+              <path class="pl" d="M24,24 H152 V124 H24 Z M84,24 V124 M84,74 H152 M118,74 V124"/>
+              <path class="pl" d="M152,40 H176 M152,108 H176" stroke-dasharray="3 4"/>
+            </svg>
+            <p>一座面向稻田的清水混凝土書院。三道平行牆界定出閱讀、典藏與庭院三進空間，天光自牆縫滲入，隨日影在地坪上緩慢移動。</p>
+          </div>
+        </div>
+      </article>
+      <!-- work 2 -->
+      <article class="work rv" data-work>
+        <div class="num">02</div>
+        <div class="body">
+          <div class="name">雙坡之家<span class="en2">House of Two Gables</span></div>
+          <div class="meta">2023</div>
+          <div class="meta dim">台中 ／ 私人住宅</div>
+          <div class="arrow">↘</div>
+        </div>
+        <div class="plan">
+          <div class="plan-inner">
+            <svg viewBox="0 0 200 148" aria-hidden="true">
+              <path class="pl" d="M30,118 L100,40 L170,118 Z"/>
+              <path class="plf" d="M70,118 L100,82 L130,118 Z" stroke="none"/>
+              <path class="pl" d="M30,118 H170 M70,118 V70 M130,118 V70 M70,70 H130"/>
+            </svg>
+            <p>兩道對稱坡屋頂之間置入一條通高中庭，將傳統合院的軸線轉譯為當代家庭的生活骨架，內外以一片落地玻璃輕輕分隔。</p>
+          </div>
+        </div>
+      </article>
+      <!-- work 3 -->
+      <article class="work rv" data-work>
+        <div class="num">03</div>
+        <div class="body">
+          <div class="name">堆疊美術館<span class="en2">Stacked Gallery</span></div>
+          <div class="meta">2022</div>
+          <div class="meta dim">高雄 ／ 公共／文化</div>
+          <div class="arrow">↘</div>
+        </div>
+        <div class="plan">
+          <div class="plan-inner">
+            <svg viewBox="0 0 200 148" aria-hidden="true">
+              <rect class="plf" x="40" y="30" width="120" height="22"/>
+              <path class="pl" d="M40,30 H160 V52 H40 Z M30,66 H170 V88 H30 Z M48,102 H152 V124 H48 Z"/>
+              <path class="pl" d="M100,30 V124" stroke-dasharray="3 4"/>
+            </svg>
+            <p>三個尺度漸變的展覽量體錯位堆疊，懸挑形成入口廣場的遮蔭。每層退縮處皆成為城市的觀景平台，將美術館還給街道。</p>
+          </div>
+        </div>
+      </article>
+      <!-- work 4 -->
+      <article class="work rv" data-work>
+        <div class="num">04</div>
+        <div class="body">
+          <div class="name">茶室・留白<span class="en2">Tea Room — Negative Space</span></div>
+          <div class="meta">2021</div>
+          <div class="meta dim">台北 ／ 室內設計</div>
+          <div class="arrow">↘</div>
+        </div>
+        <div class="plan">
+          <div class="plan-inner">
+            <svg viewBox="0 0 200 148" aria-hidden="true">
+              <rect class="pl" x="34" y="34" width="132" height="80" fill="none"/>
+              <circle class="plf" cx="100" cy="74" r="20"/>
+              <path class="pl" d="M100,54 V94 M80,74 H120" />
+              <path class="pl" d="M34,74 H56 M144,74 H166" stroke-dasharray="3 4"/>
+            </svg>
+            <p>於老公寓中以微水泥與檜木重塑一方茶室。家具退至牆面，中央僅留一張低几與一束光，讓使用者重新感知材質、聲音與空。</p>
+          </div>
+        </div>
+      </article>
+      <!-- work 5 -->
+      <article class="work rv" data-work>
+        <div class="num">05</div>
+        <div class="body">
+          <div class="name">線之塔<span class="en2">Tower of Lines</span></div>
+          <div class="meta">2020</div>
+          <div class="meta dim">台北 ／ 商辦複合</div>
+          <div class="arrow">↘</div>
+        </div>
+        <div class="plan">
+          <div class="plan-inner">
+            <svg viewBox="0 0 200 148" aria-hidden="true">
+              <path class="pl" d="M60,18 H140 V130 H60 Z"/>
+              <path class="pl" d="M60,40 H140 M60,62 H140 M60,84 H140 M60,106 H140"/>
+              <path class="pl" d="M100,18 V130" stroke-dasharray="3 4"/>
+            </svg>
+            <p>一棟以垂直遮陽鰭片定義立面的辦公塔。深淺不一的混凝土肋條過濾南向陽光，使整座塔在一日之中如琴弦般明暗變化。</p>
+          </div>
+        </div>
+      </article>
+      <!-- work 6 -->
+      <article class="work rv" data-work>
+        <div class="num">06</div>
+        <div class="body">
+          <div class="name">岸線會所<span class="en2">Shoreline Pavilion</span></div>
+          <div class="meta">2018</div>
+          <div class="meta dim">花蓮 ／ 接待中心</div>
+          <div class="arrow">↘</div>
+        </div>
+        <div class="plan">
+          <div class="plan-inner">
+            <svg viewBox="0 0 200 148" aria-hidden="true">
+              <path class="plf" d="M24,86 H176 V120 H24 Z" stroke="none"/>
+              <path class="pl" d="M24,86 H176 M24,120 H176 M48,86 V120 M96,86 V120 M144,86 V120"/>
+              <path class="pl" d="M24,60 Q100,40 176,60" />
+            </svg>
+            <p>一條貼著海平面延伸的水平屋頂，由間距相等的細柱托起。建築刻意壓低、退讓，將太平洋的地平線完整地框進每一個開口。</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- STUDIO / PHILOSOPHY -->
+  <section id="studio" class="wrap">
+    <div class="sec-head rv">
+      <h2>事務所</h2>
+      <span class="en">Studio &amp; Philosophy</span>
+    </div>
+    <div class="studio-grid">
+      <div class="rv">
+        <p class="quote">「我們不追求形式的<em>新</em>，<br/>而追求秩序的<em>準確</em>——<br/>當一條軸線被確立，<br/>空間自會誠實地展開。」</p>
+        <div class="facts">
+          <div><div class="n">16</div><div class="t">執業年數</div></div>
+          <div><div class="n">42</div><div class="t">完成案件</div></div>
+          <div><div class="n">09</div><div class="t">設計獎項</div></div>
+          <div><div class="n">∞</div><div class="t">留白</div></div>
+        </div>
+      </div>
+      <div class="studio-body rv">
+        <p>軸線 AXIS 創立於 2009 年，由三位建築師共同主持。我們的工作橫跨都市規劃、公共建築、私人住宅與室內設計，但始終回到同一個信念：建築是一門關於「秩序」與「物質」的學問。</p>
+        <p>每一個案子皆從一條軸線開始——它可能源於地形、光線、風向，或是一段歷史紋理。我們以模組化的網格推演空間，以最少的材料表達最多的意圖，讓混凝土、木材與光本身成為唯一的裝飾。</p>
+        <p>我們相信節制是一種尊重：對基地的尊重、對使用者的尊重，以及對時間的尊重。好的建築不喧嘩，它安靜地存在，並隨歲月愈顯沉著。</p>
+        <div class="facade rv">
+          <svg id="facade" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="wrap">
+    <div class="sec-head rv">
+      <h2>服務 ／ 流程</h2>
+      <span class="en">Services &amp; Process</span>
+    </div>
+    <div class="svc">
+      <div class="svc-row rv"><div class="k">01</div><div class="h">概念與基地研究</div><div class="d">解讀基地的尺度、光線與紋理，確立貫穿全案的那一條軸線，並提出空間的核心命題。</div></div>
+      <div class="svc-row rv"><div class="k">02</div><div class="h">建築設計</div><div class="d">從量體、平面到剖面，以模組網格推演空間，平衡機能、結構與物質的真實表現。</div></div>
+      <div class="svc-row rv"><div class="k">03</div><div class="h">室內與細部</div><div class="d">材料選樣、燈光計畫與訂製家具，將建築語彙延續至每一個可被觸碰的尺度。</div></div>
+      <div class="svc-row rv"><div class="k">04</div><div class="h">監造與落成</div><div class="d">全程駐場監造，與工班共同守護施工品質，確保圖面上的每一條線準確地成為空間。</div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap">
+    <div class="sec-head rv">
+      <h2>聯絡 ／ 委託</h2>
+      <span class="en">Enquiry</span>
+    </div>
+    <div class="contact-grid">
+      <div class="rv">
+        <p class="contact-lead">讓我們從一條<br/>軸線開始談起。</p>
+        <div class="contact-info">
+          <div class="row"><div class="label">Studio</div><div class="v">軸線 AXIS 建築事務所<br/>110 台北市信義區光復南路 47 號 7F</div></div>
+          <div class="row"><div class="label">Contact</div><div class="v">studio@axis-arch.demo<br/>+886 2 4747 0900</div></div>
+          <div class="row"><div class="label">Hours</div><div class="v">週一至週五 ／ 10:00 — 18:00（採預約制）</div></div>
+        </div>
+      </div>
+      <div class="rv">
+        <form id="enq" novalidate>
+          <div class="field">
+            <label for="f-name">姓名 ／ Name</label>
+            <input id="f-name" name="name" type="text" placeholder="您的稱呼" required />
+          </div>
+          <div class="field">
+            <label for="f-email">電子郵件 ／ Email</label>
+            <input id="f-email" name="email" type="email" placeholder="name@example.com" required />
+          </div>
+          <div class="field">
+            <label for="f-type">委託類型 ／ Type</label>
+            <select id="f-type" name="type">
+              <option>新建建築</option>
+              <option>住宅改造</option>
+              <option>室內設計</option>
+              <option>公共／文化空間</option>
+              <option>顧問諮詢</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-msg">關於您的計畫 ／ Brief</label>
+            <textarea id="f-msg" name="msg" rows="3" placeholder="基地位置、規模與期望……"></textarea>
+          </div>
+          <button class="send" type="submit"><span>送出委託需求</span><span class="ar">→</span></button>
+        </form>
+        <div class="sent" id="sent" role="status" aria-live="polite">
+          <span class="dot"></span>
+          <span class="tx">
+            <strong>已收到您的需求。</strong>
+            <span>感謝來信。軸線 AXIS 將於兩個工作日內與您聯繫，安排初次面談。（此為範例展示，未實際送出）</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="big">軸線 AXIS<span class="en">Architecture &amp; Interiors · Taipei</span></div>
+      <div class="foot-col">
+        <div class="label">導覽</div>
+        <a href="#works">選輯作品</a>
+        <a href="#studio">事務所</a>
+        <a href="#services">服務流程</a>
+        <a href="#contact">聯絡委託</a>
+      </div>
+      <div class="foot-col">
+        <div class="label">事務所</div>
+        <p>110 台北市信義區<br/>光復南路 47 號 7F</p>
+        <p>studio@axis-arch.demo</p>
+        <p>+886 2 4747 0900</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <small>© 2009 — 2025 軸線 AXIS 建築事務所 ／ AXIS ARCHITECTS. 版權所有.</small>
+      <span class="credit">範例設計 · <b>e-life-ai.com</b></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // build facade grid (modular window matrix)
+  (function(){
+    var svg=document.getElementById('facade');
+    if(!svg)return;
+    var cols=24,rows=4,cw=1200/cols,ch=220/rows,ns='http://www.w3.org/2000/svg',frag=document.createDocumentFragment();
+    for(var r=0;r<rows;r++){
+      for(var c=0;c<cols;c++){
+        var rect=document.createElementNS(ns,'rect');
+        var pad=4;
+        rect.setAttribute('x',c*cw+pad);
+        rect.setAttribute('y',r*ch+pad);
+        rect.setAttribute('width',cw-pad*2);
+        rect.setAttribute('height',ch-pad*2);
+        rect.setAttribute('fill','none');
+        rect.setAttribute('stroke','#d6d4cc');
+        rect.setAttribute('stroke-width','1');
+        // a few filled panels for rhythm
+        var lit=((c*7+r*3)%11===0)||((c+r)%9===0);
+        if(lit){rect.setAttribute('fill','#e6e4dd');rect.setAttribute('stroke','#111');}
+        frag.appendChild(rect);
+      }
+    }
+    svg.appendChild(frag);
+  })();
+
+  // scroll reveal
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.rv,.rule,.axo,.statement').forEach(function(el){io.observe(el);});
+
+  // hero statement + axo trigger immediately on load
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      var s=document.getElementById('stmt'); if(s)s.classList.add('in');
+      var a=document.getElementById('axo'); if(a)a.classList.add('in');
+    },120);
+  });
+
+  // works accordion — reveal plan on click; hover handled by CSS
+  document.querySelectorAll('[data-work]').forEach(function(w){
+    w.addEventListener('click',function(){
+      var wasOpen=w.classList.contains('open');
+      document.querySelectorAll('[data-work].open').forEach(function(o){o.classList.remove('open');});
+      if(!wasOpen)w.classList.add('open');
+    });
+  });
+
+  // form simulate
+  var form=document.getElementById('enq');
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var sent=document.getElementById('sent');
+    form.style.display='none';
+    sent.classList.add('show');
+    sent.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+</script>
+</body>
+</html>

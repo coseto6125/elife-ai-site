@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>小宇宙 LITTLE COSMOS · 親子學習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --sun:#ffd23f;
+    --coral:#ff6b6b;
+    --sky:#3aa9ff;
+    --mint:#3dd9a4;
+    --grape:#9b6bff;
+    --cream:#fff8ec;
+    --ink:#3a3340;
+    --ink-soft:#6a6172;
+    --card:#ffffff;
+    --line:#ffe6c2;
+    --shadow:0 14px 0 -6px rgba(58,51,64,.10), 0 22px 40px -18px rgba(58,51,64,.35);
+    --shadow-sm:0 8px 0 -4px rgba(58,51,64,.08), 0 14px 22px -12px rgba(58,51,64,.30);
+    --radius:30px;
+    --bounce:cubic-bezier(.34,1.56,.64,1);
+    --display:"Baloo 2", "Nunito", system-ui, sans-serif;
+    --body:"Nunito", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{font-family:var(--display);line-height:1.12;letter-spacing:.2px}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  .wrap{width:min(1140px,92vw);margin-inline:auto}
+  section{position:relative}
+
+  /* floating background blobs */
+  .bg-shapes{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .bg-shapes span{position:absolute;display:block;opacity:.5;animation:float 9s var(--bounce) infinite}
+  .bg-shapes span:nth-child(1){top:12%;left:4%;width:70px;height:70px;background:radial-gradient(circle at 35% 30%,#ffe487,var(--sun));border-radius:46% 54% 60% 40%/55% 50% 50% 45%;animation-delay:-1s}
+  .bg-shapes span:nth-child(2){top:62%;left:8%;width:48px;height:48px;background:var(--mint);border-radius:50%;animation-delay:-3s}
+  .bg-shapes span:nth-child(3){top:24%;right:6%;width:90px;height:90px;background:radial-gradient(circle at 35% 30%,#ffb0b0,var(--coral));border-radius:60% 40% 50% 50%/45% 55% 45% 55%;animation-delay:-2s}
+  .bg-shapes span:nth-child(4){top:74%;right:12%;width:38px;height:38px;background:var(--sky);border-radius:50%;animation-delay:-4.5s}
+  .bg-shapes span:nth-child(5){top:46%;left:48%;width:30px;height:30px;background:var(--grape);border-radius:50%;opacity:.35;animation-delay:-2.5s}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(12deg)}}
+
+  /* ---------- top bar ---------- */
+  header{position:sticky;top:0;z-index:50;padding:14px 0;
+    background:rgba(255,248,236,.82);backdrop-filter:blur(10px);
+    border-bottom:3px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:18px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.32rem}
+  .brand .mark{width:46px;height:46px;flex:none;animation:wiggle 4s ease-in-out infinite}
+  .brand small{display:block;font-family:var(--body);font-weight:700;font-size:.6rem;letter-spacing:3px;color:var(--sky)}
+  @keyframes wiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
+  nav.menu{margin-left:auto;display:flex;gap:6px}
+  nav.menu a{padding:9px 15px;border-radius:14px;font-weight:700;color:var(--ink-soft);transition:.25s var(--bounce)}
+  nav.menu a:hover{color:var(--ink);background:#fff;transform:translateY(-2px)}
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;
+    font-family:var(--display);font-weight:700;font-size:1rem;
+    padding:13px 24px;border-radius:18px;transition:transform .2s var(--bounce),box-shadow .2s;
+    box-shadow:0 6px 0 0 rgba(0,0,0,.12)}
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 0 rgba(0,0,0,.12)}
+  .btn-sun{background:var(--sun);color:#5a4a00}
+  .btn-coral{background:var(--coral);color:#fff}
+  .btn-sky{background:var(--sky);color:#fff}
+  .btn-ghost{background:#fff;color:var(--ink);box-shadow:0 6px 0 0 var(--line)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-mini{padding:11px 20px;font-size:.95rem}
+  .nav-cta{margin-left:6px}
+  .burger{display:none}
+
+  /* ---------- hero ---------- */
+  .hero{padding:54px 0 40px;z-index:1}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--line);
+    color:var(--coral);font-weight:800;padding:7px 16px;border-radius:30px;font-size:.85rem;
+    box-shadow:var(--shadow-sm)}
+  .pill .dot{width:10px;height:10px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(61,217,164,.25)}
+  .hero h1{font-size:clamp(2.3rem,5.4vw,3.7rem);font-weight:800;margin:18px 0 14px}
+  .hero h1 .hl{position:relative;color:var(--sky);white-space:nowrap}
+  .hero h1 .hl svg{position:absolute;left:0;bottom:-12px;width:100%;height:14px}
+  .hero p.lead{font-size:1.18rem;color:var(--ink-soft);font-weight:600;max-width:30ch;margin-bottom:26px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-stats{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
+  .hero-stats b{font-family:var(--display);font-size:1.7rem;display:block;color:var(--ink)}
+  .hero-stats span{font-size:.85rem;color:var(--ink-soft);font-weight:700}
+
+  .hero-art{position:relative;display:grid;place-items:center;min-height:360px}
+  .blob-bg{position:absolute;inset:0;margin:auto;width:92%;height:92%;
+    background:conic-gradient(from 200deg,var(--sun),var(--coral),var(--grape),var(--sky),var(--mint),var(--sun));
+    border-radius:46% 54% 48% 52%/52% 46% 54% 48%;filter:blur(2px);opacity:.92;
+    animation:morph 12s ease-in-out infinite, spin 26s linear infinite}
+  @keyframes morph{0%,100%{border-radius:46% 54% 48% 52%/52% 46% 54% 48%}50%{border-radius:58% 42% 60% 40%/44% 60% 40% 56%}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .mascot{position:relative;z-index:2;width:74%;max-width:300px;animation:bob 3.4s var(--bounce) infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+  .orbit{position:absolute;z-index:3;animation:orbitfloat 5s ease-in-out infinite}
+  .orbit.a{top:6%;left:2%;width:64px;animation-delay:-1s}
+  .orbit.b{bottom:8%;right:0%;width:74px;animation-delay:-2.4s}
+  .orbit.c{top:14%;right:6%;width:50px;animation-delay:-3.1s}
+  @keyframes orbitfloat{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+  /* ---------- generic section heading ---------- */
+  .head{text-align:center;max-width:640px;margin:0 auto 38px}
+  .head .kicker{font-weight:800;color:var(--coral);letter-spacing:2px;font-size:.85rem;text-transform:uppercase}
+  .head h2{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;margin:8px 0 10px}
+  .head p{color:var(--ink-soft);font-weight:600}
+
+  .block{padding:64px 0;z-index:1}
+
+  /* ---------- courses ---------- */
+  .courses{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .course{background:var(--card);border:3px solid var(--line);border-radius:var(--radius);
+    padding:24px 22px 26px;box-shadow:var(--shadow-sm);transition:transform .3s var(--bounce),box-shadow .3s;
+    position:relative;overflow:hidden}
+  .course:hover{transform:translateY(-8px) rotate(-1.5deg);box-shadow:var(--shadow)}
+  .course .ico{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;margin-bottom:16px;
+    box-shadow:0 8px 0 -3px rgba(0,0,0,.08)}
+  .course h3{font-size:1.25rem;font-weight:800;margin-bottom:4px}
+  .course .age{display:inline-block;font-weight:800;font-size:.78rem;padding:4px 11px;border-radius:30px;margin-bottom:11px}
+  .course p{font-size:.92rem;color:var(--ink-soft);font-weight:600;margin-bottom:18px;min-height:60px}
+  .course .more{font-family:var(--display);font-weight:700;display:inline-flex;align-items:center;gap:6px;
+    cursor:pointer;transition:gap .2s}
+  .course:hover .more{gap:11px}
+  .c1 .ico{background:#fff3cf}.c1 .age{background:#fff3cf;color:#a8780a}.c1 .more{color:#d49a09}
+  .c2 .ico{background:#ffe0e0}.c2 .age{background:#ffe0e0;color:#d23b3b}.c2 .more{color:var(--coral)}
+  .c3 .ico{background:#d9efff}.c3 .age{background:#d9efff;color:#1d7fcc}.c3 .more{color:var(--sky)}
+  .c4 .ico{background:#d6f7ea}.c4 .age{background:#d6f7ea;color:#179c70}.c4 .more{color:#12a877}
+
+  /* ---------- features ---------- */
+  .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .feat{text-align:center;padding:14px}
+  .feat .fi{width:78px;height:78px;margin:0 auto 14px;border-radius:26px;display:grid;place-items:center;
+    box-shadow:var(--shadow-sm);transition:transform .3s var(--bounce)}
+  .feat:hover .fi{transform:rotate(-8deg) scale(1.06)}
+  .feat h3{font-size:1.18rem;font-weight:800;margin-bottom:4px}
+  .feat p{font-size:.9rem;color:var(--ink-soft);font-weight:600}
+
+  /* ---------- testimonials ---------- */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .quote{background:#fff;border:3px solid var(--line);border-radius:var(--radius);padding:26px 24px;
+    box-shadow:var(--shadow-sm);position:relative;transition:transform .3s var(--bounce)}
+  .quote:hover{transform:translateY(-6px)}
+  .quote .qm{font-family:var(--display);font-size:3.2rem;line-height:.4;color:var(--sun);margin-bottom:8px;display:block}
+  .quote p{font-weight:700;color:var(--ink);margin-bottom:18px}
+  .quote .by{display:flex;align-items:center;gap:12px}
+  .quote .av{width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;
+    font-family:var(--display);font-weight:800;color:#fff;font-size:1.1rem}
+  .quote .by b{display:block;font-family:var(--display);font-size:.98rem}
+  .quote .by span{font-size:.8rem;color:var(--ink-soft);font-weight:700}
+
+  /* ---------- signup ---------- */
+  .signup-wrap{background:
+      radial-gradient(circle at 12% 18%,rgba(255,210,63,.4),transparent 42%),
+      radial-gradient(circle at 88% 80%,rgba(58,169,255,.32),transparent 46%),
+      linear-gradient(135deg,#fff4f0,#eefaff);
+    border:3px solid var(--line);border-radius:42px;padding:48px 6vw;box-shadow:var(--shadow);
+    position:relative;overflow:hidden}
+  .signup-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;position:relative;z-index:2}
+  .signup-grid h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:10px}
+  .signup-grid .lead{color:var(--ink-soft);font-weight:700;margin-bottom:18px}
+  .perks{list-style:none;display:grid;gap:10px}
+  .perks li{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ink)}
+  .perks li svg{flex:none}
+  form{background:#fff;border:3px solid var(--line);border-radius:28px;padding:26px;box-shadow:var(--shadow-sm)}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-weight:800;font-size:.9rem;margin-bottom:6px}
+  .field input{width:100%;font-family:var(--body);font-weight:600;font-size:1rem;
+    padding:13px 15px;border:3px solid var(--line);border-radius:16px;background:var(--cream);
+    color:var(--ink);transition:border-color .2s,box-shadow .2s}
+  .field input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 4px rgba(58,169,255,.18);background:#fff}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  form .btn{width:100%;justify-content:center;margin-top:6px}
+  .form-done{text-align:center;padding:18px 6px;display:none}
+  .form-done.show{display:block;animation:pop .5s var(--bounce)}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .form-done .big{width:84px;height:84px;margin:0 auto 14px;animation:bob 2.6s var(--bounce) infinite}
+  .form-done h3{font-size:1.5rem;font-weight:800;margin-bottom:6px;color:var(--mint)}
+  .form-done p{color:var(--ink-soft);font-weight:700}
+
+  /* confetti */
+  .confetti{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+  .confetti i{position:absolute;top:-14px;width:11px;height:11px;border-radius:3px;opacity:0;
+    animation:fall 1.5s ease-in forwards}
+  @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(420px) rotate(540deg)}}
+
+  /* ---------- footer ---------- */
+  footer{background:#3a3340;color:#fff;margin-top:64px;padding:48px 0 30px;position:relative;z-index:1;
+    border-radius:48px 48px 0 0}
+  .foot-grid{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+  .foot-grid .brand{color:#fff}
+  .foot-grid .brand small{color:var(--sun)}
+  .foot-links{display:flex;gap:8px;flex-wrap:wrap}
+  .foot-links a{padding:8px 14px;border-radius:13px;font-weight:700;color:#d9d3e0;transition:.2s}
+  .foot-links a:hover{background:rgba(255,255,255,.1);color:#fff}
+  .credit{margin-top:26px;padding-top:18px;border-top:2px solid rgba(255,255,255,.12);
+    text-align:center;color:#b7afc2;font-weight:700;font-size:.9rem}
+  .credit b{color:var(--sun)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(28px) scale(.97);transition:opacity .6s,transform .6s var(--bounce)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:920px){
+    .courses{grid-template-columns:repeat(2,1fr)}
+    .feats{grid-template-columns:repeat(2,1fr)}
+    .quotes{grid-template-columns:1fr}
+    .hero-grid{grid-template-columns:1fr;gap:18px}
+    .hero-art{order:-1;min-height:300px}
+    .signup-grid{grid-template-columns:1fr;gap:26px}
+  }
+  @media(max-width:680px){
+    nav.menu{display:none}
+    .nav-cta{display:none}
+    .burger{display:inline-flex}
+  }
+  @media(max-width:480px){
+    .courses{grid-template-columns:1fr}
+    .feats{grid-template-columns:1fr}
+    .row2{grid-template-columns:1fr}
+    .hero-stats{gap:18px}
+    .signup-wrap{padding:34px 22px;border-radius:30px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="bg-shapes" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="小宇宙 LITTLE COSMOS">
+      <!-- mascot mark: friendly star blob -->
+      <svg class="mark" viewBox="0 0 60 60" aria-hidden="true">
+        <path d="M30 3c2 0 6 8 9 9s11-1 12 1-5 8-5 11 5 9 4 11-9 0-12 2-6 9-9 9-6-7-9-9-11 0-12-2 5-8 5-11-5-9-4-11 9 0 12-1 7-9 9-9z" fill="#ffd23f" stroke="#3a3340" stroke-width="2.4" stroke-linejoin="round"/>
+        <circle cx="24" cy="28" r="3.4" fill="#3a3340"/>
+        <circle cx="38" cy="28" r="3.4" fill="#3a3340"/>
+        <path d="M24 37q6 6 12 0" fill="none" stroke="#3a3340" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="20" cy="33" r="2.6" fill="#ff6b6b" opacity=".7"/>
+        <circle cx="42" cy="33" r="2.6" fill="#ff6b6b" opacity=".7"/>
+      </svg>
+      <span>小宇宙<small>LITTLE COSMOS</small></span>
+    </a>
+    <nav class="menu" aria-label="主選單">
+      <a href="#courses">課程</a>
+      <a href="#why">特色</a>
+      <a href="#voices">家長評價</a>
+      <a href="#trial">免費試上</a>
+    </nav>
+    <a href="#trial" class="btn btn-coral btn-mini nav-cta">免費試上 ✦</a>
+    <button class="btn btn-sun btn-mini burger" id="burger" aria-label="開啟選單">選單</button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero wrap">
+  <div class="hero-grid">
+    <div class="hero-copy rv">
+      <span class="pill"><span class="dot"></span>2–12 歲 · 玩中學成長計畫</span>
+      <h1>讓孩子在
+        <span class="hl">玩樂中
+          <svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c30-8 86-8 116 0" fill="none" stroke="#ffd23f" stroke-width="6" stroke-linecap="round"/></svg>
+        </span><br>探索整個小宇宙 🚀</h1>
+      <p class="lead">把好奇心變成超能力。動手做、開心學，每一堂課都是一場小小冒險。</p>
+      <div class="hero-cta">
+        <a href="#trial" class="btn btn-sky" id="heroCta">預約免費試上</a>
+        <a href="#courses" class="btn btn-ghost">看看課程 →</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>12,000+</b><span>快樂小學員</span></div>
+        <div><b>98%</b><span>家長會推薦</span></div>
+        <div><b>40+</b><span>主題課程</span></div>
+      </div>
+    </div>
+
+    <div class="hero-art rv">
+      <div class="blob-bg" aria-hidden="true"></div>
+      <!-- main mascot: friendly rocket-riding blob -->
+      <svg class="mascot" viewBox="0 0 260 260" aria-label="可愛吉祥物騎著小火箭">
+        <!-- rocket body -->
+        <ellipse cx="130" cy="178" rx="58" ry="64" fill="#ff6b6b" stroke="#3a3340" stroke-width="5"/>
+        <path d="M86 196q-26 12-30 42 30-2 44-18z" fill="#ffd23f" stroke="#3a3340" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M174 196q26 12 30 42-30-2-44-18z" fill="#ffd23f" stroke="#3a3340" stroke-width="5" stroke-linejoin="round"/>
+        <circle cx="130" cy="172" r="22" fill="#d9efff" stroke="#3a3340" stroke-width="5"/>
+        <!-- flame -->
+        <path d="M114 240q16 26 32 0-8 8-16 8-8 0-16-8z" fill="#3aa9ff"/>
+        <!-- mascot head (mint blob) -->
+        <g transform="translate(0,-6)">
+          <path d="M130 38c34 0 58 22 58 54 0 30-26 50-58 50s-58-20-58-50c0-32 24-54 58-54z" fill="#3dd9a4" stroke="#3a3340" stroke-width="5"/>
+          <!-- antenna -->
+          <line x1="130" y1="38" x2="130" y2="16" stroke="#3a3340" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="130" cy="12" r="8" fill="#ffd23f" stroke="#3a3340" stroke-width="4"/>
+          <!-- cheeks -->
+          <circle cx="98" cy="98" r="9" fill="#ff9aa2" opacity=".8"/>
+          <circle cx="162" cy="98" r="9" fill="#ff9aa2" opacity=".8"/>
+          <!-- eyes -->
+          <circle cx="110" cy="82" r="9" fill="#fff" stroke="#3a3340" stroke-width="3"/>
+          <circle cx="150" cy="82" r="9" fill="#fff" stroke="#3a3340" stroke-width="3"/>
+          <circle cx="112" cy="84" r="4" fill="#3a3340"/>
+          <circle cx="152" cy="84" r="4" fill="#3a3340"/>
+          <!-- smile -->
+          <path d="M108 104q22 18 44 0" fill="none" stroke="#3a3340" stroke-width="5" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <!-- orbiting toys -->
+      <svg class="orbit a" viewBox="0 0 60 60" aria-hidden="true">
+        <rect x="8" y="8" width="44" height="44" rx="12" fill="#9b6bff" stroke="#3a3340" stroke-width="4"/>
+        <text x="30" y="40" font-size="26" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-weight="800">A</text>
+      </svg>
+      <svg class="orbit b" viewBox="0 0 60 60" aria-hidden="true">
+        <path d="M30 5l7 14 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z" fill="#ffd23f" stroke="#3a3340" stroke-width="4" stroke-linejoin="round"/>
+      </svg>
+      <svg class="orbit c" viewBox="0 0 60 60" aria-hidden="true">
+        <circle cx="30" cy="30" r="24" fill="#3aa9ff" stroke="#3a3340" stroke-width="4"/>
+        <text x="30" y="40" font-size="24" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-weight="800">1</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COURSES ============ -->
+<section class="block wrap" id="courses">
+  <div class="head rv">
+    <div class="kicker">★ 課程 Courses</div>
+    <h2>挑一個適合的探索旅程</h2>
+    <p>依年齡與興趣分齡設計，每堂課都動手玩、動腦想，老師全程陪伴。</p>
+  </div>
+  <div class="courses">
+    <article class="course c1 rv">
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="11" height="11" rx="3" fill="#ffd23f" stroke="#3a3340" stroke-width="2.4"/><rect x="18" y="3" width="11" height="11" rx="3" fill="#ff6b6b" stroke="#3a3340" stroke-width="2.4"/><rect x="3" y="18" width="11" height="11" rx="3" fill="#3aa9ff" stroke="#3a3340" stroke-width="2.4"/><rect x="18" y="18" width="11" height="11" rx="3" fill="#3dd9a4" stroke="#3a3340" stroke-width="2.4"/></svg>
+      </div>
+      <span class="age">2–4 歲</span>
+      <h3>感官積木</h3>
+      <p>用顏色、形狀與觸覺，建立第一個關於世界的小發現，培養專注與小手肌肉。</p>
+      <a class="more" href="#trial">了解更多 →</a>
+    </article>
+
+    <article class="course c2 rv">
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.6 7.5 8.4.9-6.3 5.6 1.8 8.3L16 28.5 8.5 25.3l1.8-8.3L4 11.4l8.4-.9z" fill="#ff6b6b" stroke="#3a3340" stroke-width="2.4" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="age">4–6 歲</span>
+      <h3>故事與表達</h3>
+      <p>透過繪本、戲劇與角色扮演，讓孩子愛上說故事，勇敢表達自己的想法。</p>
+      <a class="more" href="#trial">了解更多 →</a>
+    </article>
+
+    <article class="course c3 rv">
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="#3aa9ff" stroke="#3a3340" stroke-width="2.4"/><path d="M16 6v10l7 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="age">6–9 歲</span>
+      <h3>動手做科學</h3>
+      <p>從泡泡到小火箭，用安全有趣的實驗點燃好奇心，把「為什麼」變成探索。</p>
+      <a class="more" href="#trial">了解更多 →</a>
+    </article>
+
+    <article class="course c4 rv">
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l11 6v12l-11 6-11-6V10z" fill="#3dd9a4" stroke="#3a3340" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 16h8M16 12v8" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="age">9–12 歲</span>
+      <h3>程式與創客</h3>
+      <p>拖拉式程式、機關設計與小專題，培養邏輯思考與「做出來」的成就感。</p>
+      <a class="more" href="#trial">了解更多 →</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="block wrap" id="why">
+  <div class="head rv">
+    <div class="kicker">✦ 為什麼選我們</div>
+    <h2>讓家長安心，讓孩子期待上課</h2>
+  </div>
+  <div class="feats">
+    <div class="feat rv">
+      <div class="fi" style="background:#fff3cf">
+        <svg width="38" height="38" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 14c0-6 4-10 10-10s10 4 10 10c0 4-3 6-3 9H9c0-3-3-5-3-9z" fill="#ffd23f" stroke="#3a3340" stroke-width="2.4"/><path d="M11 28h10" stroke="#3a3340" stroke-width="2.4" stroke-linecap="round"/><path d="M16 9v6M13 12h6" stroke="#3a3340" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </div>
+      <h3>玩中學教學法</h3>
+      <p>遊戲化任務，孩子主動投入、忘記時間。</p>
+    </div>
+    <div class="feat rv">
+      <div class="fi" style="background:#ffe0e0">
+        <svg width="38" height="38" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="11" r="6" fill="#ff6b6b" stroke="#3a3340" stroke-width="2.4"/><path d="M5 28c0-6 5-9 11-9s11 3 11 9z" fill="#ff6b6b" stroke="#3a3340" stroke-width="2.4" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>小班專屬陪伴</h3>
+      <p>每班至多 6 人，老師看見每個孩子。</p>
+    </div>
+    <div class="feat rv">
+      <div class="fi" style="background:#d9efff">
+        <svg width="38" height="38" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 28C8 22 4 17 4 12a6 6 0 0112-2 6 6 0 0112 2c0 5-4 10-12 16z" fill="#3aa9ff" stroke="#3a3340" stroke-width="2.4" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>安全又溫暖</h3>
+      <p>無毒教具、明亮空間，玩得放心。</p>
+    </div>
+    <div class="feat rv">
+      <div class="fi" style="background:#d6f7ea">
+        <svg width="38" height="38" viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="6" width="22" height="17" rx="3" fill="#3dd9a4" stroke="#3a3340" stroke-width="2.4"/><path d="M5 12h22" stroke="#3a3340" stroke-width="2.2"/><path d="M11 27h10M16 23v4" stroke="#3a3340" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </div>
+      <h3>成長看得見</h3>
+      <p>每月成長紀錄，孩子的進步一目了然。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="block wrap" id="voices">
+  <div class="head rv">
+    <div class="kicker">♥ 家長怎麼說</div>
+    <h2>被孩子的笑容圈粉的家長們</h2>
+  </div>
+  <div class="quotes">
+    <div class="quote rv">
+      <span class="qm">“</span>
+      <p>第一次看到女兒主動說「我還想再上一堂」，現在每週最期待的就是來小宇宙！</p>
+      <div class="by">
+        <span class="av" style="background:var(--coral)">怡</span>
+        <span><b>怡君媽媽</b><span>5 歲女孩家長</span></span>
+      </div>
+    </div>
+    <div class="quote rv">
+      <span class="qm">“</span>
+      <p>老師很用心，每次都會說孩子今天的小進步。哥哥變得更敢舉手發表了。</p>
+      <div class="by">
+        <span class="av" style="background:var(--sky)">家</span>
+        <span><b>家豪爸爸</b><span>7 歲男孩家長</span></span>
+      </div>
+    </div>
+    <div class="quote rv">
+      <span class="qm">“</span>
+      <p>課程設計很有層次，從玩到動腦都顧到。最棒的是孩子覺得學習是件開心的事。</p>
+      <div class="by">
+        <span class="av" style="background:var(--grape)">宛</span>
+        <span><b>宛庭媽媽</b><span>9 歲女孩家長</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNUP ============ -->
+<section class="block wrap" id="trial">
+  <div class="signup-wrap rv">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+    <div class="signup-grid">
+      <div class="signup-left">
+        <span class="pill"><span class="dot"></span>限額體驗 · 完全免費</span>
+        <h2 style="margin-top:14px">預約一堂<br>免費試上課 🎈</h2>
+        <p class="lead">留下小資料，專員會在 24 小時內聯繫你，安排最適合的體驗時段。</p>
+        <ul class="perks">
+          <li><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3dd9a4"/><path d="M7 12l3.2 3.4L17 8.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>完整 60 分鐘真實課堂</li>
+          <li><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3dd9a4"/><path d="M7 12l3.2 3.4L17 8.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>專屬分齡程度建議</li>
+          <li><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3dd9a4"/><path d="M7 12l3.2 3.4L17 8.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>當天帶走一份小作品</li>
+        </ul>
+      </div>
+
+      <div class="signup-right">
+        <form id="trialForm" novalidate>
+          <div class="row2">
+            <div class="field">
+              <label for="kidName">孩子姓名</label>
+              <input id="kidName" name="kidName" type="text" placeholder="小宇" required />
+            </div>
+            <div class="field">
+              <label for="kidAge">孩子年齡</label>
+              <input id="kidAge" name="kidAge" type="number" min="1" max="14" placeholder="5" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="parentEmail">家長 Email</label>
+            <input id="parentEmail" name="parentEmail" type="email" placeholder="parent@example.com" required />
+          </div>
+          <button type="submit" class="btn btn-coral">送出預約，開始冒險 ✦</button>
+        </form>
+        <div class="form-done" id="formDone" role="status" aria-live="polite">
+          <svg class="big" viewBox="0 0 60 60" aria-hidden="true">
+            <circle cx="30" cy="30" r="26" fill="#3dd9a4" stroke="#3a3340" stroke-width="3"/>
+            <path d="M18 31l8 8 16-18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>預約成功！🎉</h3>
+          <p id="doneMsg">我們已收到你的資料，專員很快會與你聯繫～</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="brand" href="#top">
+        <svg class="mark" viewBox="0 0 60 60" aria-hidden="true" style="animation:none">
+          <path d="M30 3c2 0 6 8 9 9s11-1 12 1-5 8-5 11 5 9 4 11-9 0-12 2-6 9-9 9-6-7-9-9-11 0-12-2 5-8 5-11-5-9-4-11 9 0 12-1 7-9 9-9z" fill="#ffd23f" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>
+          <circle cx="24" cy="28" r="3.4" fill="#3a3340"/><circle cx="38" cy="28" r="3.4" fill="#3a3340"/>
+          <path d="M24 37q6 6 12 0" fill="none" stroke="#3a3340" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <span>小宇宙<small>LITTLE COSMOS</small></span>
+      </a>
+      <nav class="foot-links" aria-label="頁尾選單">
+        <a href="#courses">課程</a>
+        <a href="#why">特色</a>
+        <a href="#voices">家長評價</a>
+        <a href="#trial">免費試上</a>
+      </nav>
+    </div>
+    <div class="credit">範例設計 · <b>e-life-ai.com</b> — 本頁為展示用途，內容與品牌皆為虛構。</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // reveal on scroll
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+
+  // mobile menu (simple smooth-scroll fallback: jump to courses)
+  var burger = document.getElementById("burger");
+  if(burger){ burger.addEventListener("click", function(){ location.hash = "#courses"; }); }
+
+  // confetti burst
+  var palette = ["#ffd23f","#ff6b6b","#3aa9ff","#3dd9a4","#9b6bff"];
+  function burst(host, n){
+    if(!host) return;
+    var W = host.clientWidth || 600;
+    for(var i=0;i<n;i++){
+      var p = document.createElement("i");
+      p.style.left = (Math.random()*W) + "px";
+      p.style.background = palette[i % palette.length];
+      p.style.animationDelay = (Math.random()*.35) + "s";
+      p.style.borderRadius = Math.random() > .5 ? "50%" : "3px";
+      host.appendChild(p);
+      (function(node){ setTimeout(function(){ node.remove(); }, 2100); })(p);
+    }
+  }
+
+  // hero CTA mini celebrate
+  var heroCta = document.getElementById("heroCta");
+  if(heroCta){ heroCta.addEventListener("click", function(){ burst(document.getElementById("confetti"), 16); }); }
+
+  // form simulate
+  var form = document.getElementById("trialForm");
+  var done = document.getElementById("formDone");
+  var doneMsg = document.getElementById("doneMsg");
+  if(form){
+    form.addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var name = (document.getElementById("kidName").value || "").trim();
+      var age  = (document.getElementById("kidAge").value || "").trim();
+      var mail = (document.getElementById("parentEmail").value || "").trim();
+      if(!name || !age || !mail || mail.indexOf("@") < 1){
+        form.querySelectorAll("input").forEach(function(inp){
+          if(!inp.value.trim() || (inp.type==="email" && inp.value.indexOf("@")<1)){
+            inp.style.borderColor = "#ff6b6b";
+            inp.addEventListener("input", function(){ inp.style.borderColor = ""; }, {once:true});
+          }
+        });
+        return;
+      }
+      doneMsg.textContent = "我們已收到 " + name + "（" + age + " 歲）的試上預約，專員很快會聯繫你～";
+      form.style.display = "none";
+      done.classList.add("show");
+      burst(document.getElementById("confetti"), 70);
+    });
+  }
+})();
+</script>
+</body>
+</html>
