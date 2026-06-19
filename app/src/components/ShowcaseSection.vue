@@ -1,8 +1,22 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { showcases } from '../data/site'
 import { useReveal } from '../composables/useReveal'
 
 useReveal('root', { stagger: 60 })
+
+// On mobile the iframe flip-book album collapses to an unusable sliver, so we
+// hide it (CSS) and force the card-list <details> open instead.
+const listOpen = ref(false)
+const mq = typeof window !== 'undefined' ? window.matchMedia('(max-width: 760px)') : null
+const sync = () => {
+  listOpen.value = mq?.matches ?? false
+}
+onMounted(() => {
+  sync()
+  mq?.addEventListener('change', sync)
+})
+onBeforeUnmount(() => mq?.removeEventListener('change', sync))
 </script>
 
 <template>
@@ -30,8 +44,9 @@ useReveal('root', { stagger: 60 })
         </a>
       </div>
 
-      <!-- full list kept for SEO / crawlers / no-JS; visually collapsed under the album -->
-      <details class="list-fallback">
+      <!-- full list kept for SEO / crawlers / no-JS; collapsed under the album on
+           desktop, forced open on mobile where the album is hidden -->
+      <details class="list-fallback" :open="listOpen">
         <summary>瀏覽全部 {{ showcases.length }} 個範例清單</summary>
         <div class="grid">
           <a
@@ -222,6 +237,25 @@ useReveal('root', { stagger: 60 })
 @media (max-width: 560px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/*
+ * Mobile: the 16:10 iframe flip-book album collapses to a ~217px-tall sliver
+ * that renders as a black void (its A4-portrait cover can't fit). Below 760px
+ * hide the album and surface the card grid directly so the templates stay
+ * reachable. Desktop keeps the flip-book untouched. The grid is force-shown
+ * even while <details> is closed via content-visibility:visible.
+ */
+@media (max-width: 760px) {
+  .album {
+    display: none;
+  }
+  .list-fallback {
+    margin-top: 0;
+  }
+  .list-fallback > summary {
+    display: none;
   }
 }
 </style>
