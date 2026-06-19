@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>之間 THE BETWEEN — 城心之上的私人領域</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0c1512;
+    --midnight:#11201c;
+    --charcoal:#16201d;
+    --deep:#0a110e;
+    --gold:#c5a572;
+    --gold-bright:#e3cb9c;
+    --gold-soft:#a98f63;
+    --marble:#f3efe6;
+    --marble-dim:#cfc8ba;
+    --stone:#8a8378;
+    --line:rgba(197,165,114,.22);
+    --line-soft:rgba(197,165,114,.12);
+    --serif:"Cormorant Garamond","Noto Serif TC",serif;
+    --serif-cjk:"Noto Serif TC",serif;
+    --sans:"Noto Sans TC",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--deep);
+    color:var(--marble);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--gold);color:var(--deep)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:.7rem;
+    font-weight:400;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .serif{font-family:var(--serif)}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1.1s cubic-bezier(.16,.8,.3,1),transform 1.1s cubic-bezier(.16,.8,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== TOP BAR ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    transition:background .5s ease,backdrop-filter .5s ease,border-color .5s ease,padding .5s ease;
+    border-bottom:1px solid transparent;
+    padding:26px 0;
+  }
+  header.scrolled{
+    background:rgba(10,17,14,.82);
+    backdrop-filter:blur(16px) saturate(1.2);
+    border-bottom-color:var(--line-soft);
+    padding:16px 0;
+  }
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;flex-direction:column;line-height:1.1}
+  .brand .mark{font-family:var(--serif);font-size:1.5rem;font-weight:600;letter-spacing:.16em;color:var(--marble)}
+  .brand .mark em{font-style:normal;color:var(--gold)}
+  .brand .sub{font-size:.56rem;letter-spacing:.5em;color:var(--stone);text-transform:uppercase;margin-top:2px}
+  nav.main{display:flex;align-items:center;gap:38px}
+  nav.main a{
+    font-size:.82rem;letter-spacing:.18em;color:var(--marble-dim);
+    position:relative;padding:4px 0;transition:color .35s;
+  }
+  nav.main a::after{
+    content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;
+    background:var(--gold);transition:width .4s ease;
+  }
+  nav.main a:hover{color:var(--marble)}
+  nav.main a:hover::after{width:100%}
+  .cta-btn{
+    font-family:var(--sans);font-size:.78rem;letter-spacing:.22em;
+    border:1px solid var(--gold);color:var(--gold);
+    padding:11px 26px;background:transparent;cursor:pointer;
+    transition:all .45s cubic-bezier(.16,.8,.3,1);
+    text-transform:uppercase;white-space:nowrap;
+  }
+  .cta-btn:hover{background:var(--gold);color:var(--deep);letter-spacing:.26em}
+  .nav-toggle{display:none;background:none;border:0;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+  .nav-toggle span{width:24px;height:1.5px;background:var(--gold);transition:.3s}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:flex-end;
+    overflow:hidden;background:var(--ink);
+  }
+  .hero-scene{position:absolute;inset:0;z-index:0}
+  .sky{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 80% at 78% 8%, rgba(197,165,114,.20) 0%, rgba(197,165,114,0) 42%),
+      linear-gradient(165deg,#0c1813 0%,#11201c 36%,#16241e 62%,#0a110e 100%);
+  }
+  .sky::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(80% 60% at 50% 120%, rgba(0,0,0,.55), transparent 70%);
+  }
+  .haze{
+    position:absolute;left:0;right:0;bottom:0;height:46%;
+    background:linear-gradient(to top, rgba(10,17,14,.95) 4%, rgba(10,17,14,.4) 50%, transparent 100%);
+    z-index:2;pointer-events:none;
+  }
+  .skyline{position:absolute;left:0;right:0;bottom:0;width:100%;height:88%;z-index:1}
+  .hero-content{position:relative;z-index:5;width:100%;padding-bottom:8vh}
+  .loc-line{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .loc-line .dash{width:42px;height:1px;background:var(--gold)}
+  .loc-line span{font-size:.74rem;letter-spacing:.34em;color:var(--gold);text-transform:uppercase}
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(3.4rem,11vw,8.4rem);
+    line-height:.94;
+    letter-spacing:.02em;
+    color:var(--marble);
+    margin-bottom:6px;
+  }
+  .hero h1 .zh{
+    display:block;font-family:var(--serif-cjk);font-weight:400;
+    font-size:clamp(2.6rem,7.5vw,5.4rem);letter-spacing:.18em;
+    color:var(--marble);margin-bottom:.1em;
+  }
+  .hero h1 .gold{color:var(--gold-bright)}
+  .poetic{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(1.2rem,2.6vw,1.7rem);
+    color:var(--marble-dim);max-width:36ch;margin:24px 0 40px;line-height:1.5;
+  }
+  .hero-stats{
+    display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);
+    padding-top:26px;max-width:760px;
+  }
+  .hero-stats .st{flex:1;min-width:120px;padding-right:24px;border-right:1px solid var(--line-soft)}
+  .hero-stats .st:last-child{border-right:0}
+  .hero-stats .v{font-family:var(--serif);font-size:2.2rem;font-weight:500;color:var(--gold-bright);line-height:1}
+  .hero-stats .v small{font-size:.9rem;color:var(--gold-soft);font-family:var(--sans)}
+  .hero-stats .k{font-size:.66rem;letter-spacing:.26em;color:var(--stone);text-transform:uppercase;margin-top:9px}
+  .scroll-cue{
+    position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:6;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    font-size:.6rem;letter-spacing:.3em;color:var(--stone);text-transform:uppercase;
+  }
+  .scroll-cue .ln{width:1px;height:46px;background:linear-gradient(var(--gold),transparent);animation:cue 2.4s ease-in-out infinite}
+  @keyframes cue{0%,100%{opacity:.2;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+  /* ===== SECTION SHELL ===== */
+  section{position:relative}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 64px}
+  .sec-head .eyebrow{display:block;margin-bottom:18px}
+  .sec-head h2{
+    font-family:var(--serif-cjk);font-weight:400;
+    font-size:clamp(2rem,4.6vw,3.2rem);letter-spacing:.08em;color:var(--marble);
+    line-height:1.2;
+  }
+  .sec-head h2 .en{
+    display:block;font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:.42em;letter-spacing:.12em;color:var(--gold-soft);margin-top:10px;
+  }
+  .sec-head p{margin-top:18px;color:var(--stone);font-size:.96rem;line-height:1.8}
+
+  /* ===== OVERVIEW STAT BAND ===== */
+  .overview{padding:120px 0;background:linear-gradient(180deg,var(--deep),var(--midnight) 55%,var(--deep))}
+  .ov-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    border:1px solid var(--line);
+  }
+  .ov-cell{
+    padding:54px 28px;text-align:center;position:relative;
+    border-right:1px solid var(--line-soft);
+  }
+  .ov-cell:last-child{border-right:0}
+  .ov-cell .num{
+    font-family:var(--serif);font-size:clamp(3rem,6vw,4.6rem);font-weight:500;
+    color:var(--gold-bright);line-height:1;letter-spacing:.01em;
+  }
+  .ov-cell .num small{font-size:.32em;color:var(--gold-soft);font-family:var(--sans);letter-spacing:.1em;margin-left:4px}
+  .ov-cell .lbl{font-size:.74rem;letter-spacing:.26em;color:var(--marble-dim);text-transform:uppercase;margin-top:18px}
+  .ov-cell .sub{font-size:.66rem;color:var(--stone);letter-spacing:.14em;margin-top:6px}
+
+  /* ===== AMENITIES ===== */
+  .amenities{padding:120px 0;background:var(--deep)}
+  .am-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .am-card{
+    position:relative;aspect-ratio:3/4;overflow:hidden;
+    border:1px solid var(--line-soft);cursor:pointer;
+    transition:transform .6s cubic-bezier(.16,.8,.3,1),border-color .6s;
+  }
+  .am-card:hover{transform:translateY(-8px);border-color:var(--gold)}
+  .am-bg{position:absolute;inset:0;transition:transform 1s cubic-bezier(.16,.8,.3,1)}
+  .am-card:hover .am-bg{transform:scale(1.08)}
+  .am-1 .am-bg{background:linear-gradient(155deg,#1a2a23 0%,#0d1512 70%)}
+  .am-2 .am-bg{background:linear-gradient(155deg,#202a2e 0%,#0c1316 70%)}
+  .am-3 .am-bg{background:linear-gradient(155deg,#26211a 0%,#120f0a 70%)}
+  .am-4 .am-bg{background:linear-gradient(155deg,#16282b 0%,#0a1517 70%)}
+  .am-glow{position:absolute;inset:0;background:radial-gradient(70% 50% at 50% 22%, rgba(197,165,114,.16),transparent 70%);opacity:.7;transition:opacity .6s}
+  .am-card:hover .am-glow{opacity:1}
+  .am-inner{
+    position:absolute;inset:0;z-index:3;padding:28px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .am-icon{width:46px;height:46px;color:var(--gold)}
+  .am-no{font-family:var(--serif);font-size:1rem;color:var(--gold-soft);letter-spacing:.1em}
+  .am-meta .am-name{font-family:var(--serif-cjk);font-size:1.35rem;font-weight:500;color:var(--marble);letter-spacing:.1em}
+  .am-meta .am-en{font-family:var(--serif);font-style:italic;font-size:.85rem;color:var(--gold-soft);margin-top:2px}
+  .am-meta .am-desc{
+    font-size:.78rem;color:var(--marble-dim);line-height:1.7;margin-top:14px;
+    max-height:0;opacity:0;overflow:hidden;
+    transition:max-height .6s cubic-bezier(.16,.8,.3,1),opacity .5s,margin-top .5s;
+  }
+  .am-card:hover .am-meta .am-desc{max-height:120px;opacity:1}
+
+  /* ===== FLOOR PLANS ===== */
+  .plans{padding:120px 0;background:linear-gradient(180deg,var(--deep),var(--midnight))}
+  .plan-wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:64px;align-items:center;border:1px solid var(--line);padding:54px}
+  .plan-tabs{display:flex;flex-direction:column;gap:0;margin-bottom:36px}
+  .plan-tab{
+    display:flex;align-items:baseline;justify-content:space-between;gap:18px;
+    padding:20px 0;border-bottom:1px solid var(--line-soft);cursor:pointer;
+    transition:padding-left .4s;
+  }
+  .plan-tab:hover{padding-left:8px}
+  .plan-tab .tname{font-family:var(--serif);font-size:1.7rem;color:var(--marble-dim);transition:color .4s;display:flex;align-items:baseline;gap:14px}
+  .plan-tab .tname b{font-style:normal;font-weight:600;color:var(--gold-soft);font-size:1rem;letter-spacing:.18em;transition:color .4s}
+  .plan-tab .tsize{font-family:var(--serif);font-size:1.05rem;color:var(--stone);transition:color .4s}
+  .plan-tab.active .tname,.plan-tab.active .tname b{color:var(--gold-bright)}
+  .plan-tab.active .tsize{color:var(--marble-dim)}
+  .plan-tab.active{border-bottom-color:var(--gold)}
+  .plan-detail{display:flex;gap:34px;flex-wrap:wrap}
+  .plan-detail .pd{flex:1;min-width:90px}
+  .plan-detail .pd .pv{font-family:var(--serif);font-size:1.9rem;color:var(--gold-bright);line-height:1}
+  .plan-detail .pd .pv small{font-size:.5em;color:var(--gold-soft);font-family:var(--sans);margin-left:3px}
+  .plan-detail .pd .pk{font-size:.68rem;letter-spacing:.2em;color:var(--stone);text-transform:uppercase;margin-top:10px}
+  .plan-svg-box{
+    position:relative;aspect-ratio:4/3.4;border:1px solid var(--line);
+    background:
+      linear-gradient(135deg, rgba(197,165,114,.05), transparent 60%),
+      var(--ink);
+    display:flex;align-items:center;justify-content:center;padding:30px;overflow:hidden;
+  }
+  .plan-svg-box::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:34px 34px;opacity:.5;
+  }
+  .plan-svg{position:relative;width:100%;height:100%;z-index:2}
+  .plan-svg .room{transition:fill .6s,stroke .6s}
+  .plan-tag{position:absolute;top:18px;left:18px;z-index:3;font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--gold-soft);letter-spacing:.06em}
+
+  /* ===== LOCATION ===== */
+  .location{padding:120px 0;background:var(--deep)}
+  .loc-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:54px;align-items:center}
+  .map-box{
+    position:relative;aspect-ratio:5/4;border:1px solid var(--line);
+    background:linear-gradient(150deg,#10201b,#0a110e);overflow:hidden;
+  }
+  .map-box::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 50%,transparent,rgba(10,17,14,.6))}
+  .map-svg{position:absolute;inset:0;width:100%;height:100%}
+  .pin{transform-origin:center;animation:pulse 3s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+  .land-list{list-style:none}
+  .land-list li{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    padding:20px 0;border-bottom:1px solid var(--line-soft);
+  }
+  .land-list li .lname{font-family:var(--serif-cjk);font-size:1.1rem;color:var(--marble);letter-spacing:.05em}
+  .land-list li .lname em{display:block;font-family:var(--serif);font-style:italic;font-size:.78rem;color:var(--gold-soft);margin-top:2px}
+  .land-list li .ldist{font-family:var(--serif);font-size:1.3rem;color:var(--gold-bright);white-space:nowrap}
+  .land-list li .ldist small{font-size:.5em;color:var(--gold-soft);font-family:var(--sans)}
+
+  /* ===== ENQUIRY ===== */
+  .enquiry{
+    padding:130px 0;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,var(--deep),var(--midnight) 50%,var(--ink));
+  }
+  .enquiry::before{
+    content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:140%;height:60%;
+    background:radial-gradient(50% 100% at 50% 0%,rgba(197,165,114,.10),transparent 70%);
+    pointer-events:none;
+  }
+  .enq-card{
+    max-width:760px;margin:0 auto;position:relative;z-index:2;
+    border:1px solid var(--line);padding:60px;background:rgba(12,21,18,.5);backdrop-filter:blur(6px);
+  }
+  .enq-form{display:grid;grid-template-columns:1fr 1fr;gap:26px 30px;margin-top:42px}
+  .fld{display:flex;flex-direction:column;gap:9px}
+  .fld.full{grid-column:1/-1}
+  .fld label{font-size:.68rem;letter-spacing:.24em;color:var(--gold-soft);text-transform:uppercase}
+  .fld input,.fld select,.fld textarea{
+    background:transparent;border:0;border-bottom:1px solid var(--line);
+    color:var(--marble);font-family:var(--sans);font-size:.96rem;font-weight:300;
+    padding:11px 2px;transition:border-color .4s;
+  }
+  .fld input::placeholder,.fld textarea::placeholder{color:var(--stone)}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-bottom-color:var(--gold)}
+  .fld select{cursor:pointer}
+  .fld select option{background:var(--midnight);color:var(--marble)}
+  .fld textarea{resize:vertical;min-height:54px}
+  .enq-submit{
+    grid-column:1/-1;margin-top:14px;
+    font-family:var(--sans);font-size:.82rem;letter-spacing:.28em;text-transform:uppercase;
+    background:var(--gold);color:var(--deep);border:0;padding:18px;cursor:pointer;
+    transition:all .45s cubic-bezier(.16,.8,.3,1);
+  }
+  .enq-submit:hover{background:var(--gold-bright);letter-spacing:.34em}
+  .enq-note{grid-column:1/-1;font-size:.72rem;color:var(--stone);letter-spacing:.04em;text-align:center;margin-top:6px}
+  .enq-success{
+    display:none;text-align:center;padding:30px 0;
+  }
+  .enq-success.show{display:block;animation:fadeUp .9s cubic-bezier(.16,.8,.3,1)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  .enq-success .chk{
+    width:62px;height:62px;border:1px solid var(--gold);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 24px;color:var(--gold);
+  }
+  .enq-success h3{font-family:var(--serif-cjk);font-size:1.7rem;font-weight:400;color:var(--marble);letter-spacing:.08em;margin-bottom:12px}
+  .enq-success p{color:var(--marble-dim);font-size:.92rem}
+  .enq-success .ref{margin-top:18px;font-family:var(--serif);font-style:italic;color:var(--gold-soft);letter-spacing:.1em}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--ink);border-top:1px solid var(--line-soft);padding:70px 0 40px}
+  .foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;padding-bottom:48px;border-bottom:1px solid var(--line-soft)}
+  .foot-brand .mark{font-family:var(--serif);font-size:1.7rem;letter-spacing:.16em;color:var(--marble)}
+  .foot-brand .mark em{font-style:normal;color:var(--gold)}
+  .foot-brand p{margin-top:14px;color:var(--stone);font-size:.82rem;max-width:34ch;line-height:1.8}
+  .foot-cols{display:flex;gap:64px;flex-wrap:wrap}
+  .foot-col h4{font-size:.66rem;letter-spacing:.26em;color:var(--gold-soft);text-transform:uppercase;margin-bottom:18px}
+  .foot-col p{font-size:.84rem;color:var(--marble-dim);line-height:2}
+  .foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding-top:30px;font-size:.74rem;color:var(--stone);letter-spacing:.06em}
+  .foot-bottom a{color:var(--gold-soft)}
+  .foot-disc{font-size:.68rem;color:rgba(138,131,120,.6);margin-top:18px;letter-spacing:.04em}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:1024px){
+    .ov-grid{grid-template-columns:repeat(2,1fr)}
+    .ov-cell:nth-child(2){border-right:0}
+    .ov-cell:nth-child(1),.ov-cell:nth-child(2){border-bottom:1px solid var(--line-soft)}
+    .am-grid{grid-template-columns:repeat(2,1fr)}
+    .plan-wrap{grid-template-columns:1fr;gap:48px;padding:40px}
+    .loc-grid{grid-template-columns:1fr;gap:40px}
+  }
+  @media(max-width:760px){
+    .wrap{padding:0 22px}
+    nav.main{
+      position:fixed;inset:0;background:rgba(10,17,14,.97);backdrop-filter:blur(12px);
+      flex-direction:column;justify-content:center;gap:34px;
+      transform:translateX(100%);transition:transform .5s cubic-bezier(.16,.8,.3,1);
+    }
+    nav.main.open{transform:none}
+    nav.main a{font-family:var(--serif);font-size:1.5rem;letter-spacing:.1em}
+    nav.main .cta-btn{margin-top:14px}
+    .nav-toggle{display:flex;z-index:70}
+    .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .nav-toggle.open span:nth-child(2){opacity:0}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .enq-card{padding:36px 26px}
+    .enq-form{grid-template-columns:1fr}
+    .foot-cols{gap:36px}
+  }
+  @media(max-width:420px){
+    .hero-stats .st{flex:1 1 45%;min-width:auto;border-right:0;padding-right:0;margin-bottom:18px}
+    .am-grid{grid-template-columns:1fr}
+    .plan-wrap{padding:28px 22px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header id="hdr">
+  <div class="wrap bar">
+    <a href="#" class="brand">
+      <span class="mark">之間 <em>THE BETWEEN</em></span>
+      <span class="sub">Hwa-Yuan Signature Residence</span>
+    </a>
+    <nav class="main" id="nav">
+      <a href="#overview" class="nav-link">建案</a>
+      <a href="#plans" class="nav-link">規劃</a>
+      <a href="#amenities" class="nav-link">公設</a>
+      <a href="#location" class="nav-link">地段</a>
+      <a href="#enquiry" class="cta-btn nav-link">預約賞屋</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="選單"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-scene">
+    <div class="sky"></div>
+    <svg class="skyline" id="skyline" viewBox="0 0 1440 760" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="towerA" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1c2c25"/>
+          <stop offset="1" stop-color="#0a110e"/>
+        </linearGradient>
+        <linearGradient id="towerMain" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#22332b"/>
+          <stop offset=".55" stop-color="#14211b"/>
+          <stop offset="1" stop-color="#0a110e"/>
+        </linearGradient>
+        <linearGradient id="goldEdge" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e3cb9c"/>
+          <stop offset="1" stop-color="#a98f63" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- distant towers -->
+      <g opacity=".5">
+        <rect x="60" y="300" width="86" height="460" fill="url(#towerA)"/>
+        <rect x="180" y="380" width="70" height="380" fill="url(#towerA)"/>
+        <rect x="1180" y="340" width="92" height="420" fill="url(#towerA)"/>
+        <rect x="1300" y="420" width="78" height="340" fill="url(#towerA)"/>
+      </g>
+      <!-- secondary tower -->
+      <g opacity=".82">
+        <rect x="300" y="250" width="120" height="510" fill="url(#towerMain)"/>
+        <line x1="300" y1="250" x2="300" y2="760" stroke="url(#goldEdge)" stroke-width="1.4"/>
+      </g>
+      <!-- signature main tower -->
+      <g>
+        <polygon points="640,90 800,120 800,760 640,760" fill="url(#towerMain)"/>
+        <rect x="800" y="120" width="160" height="640" fill="url(#towerMain)"/>
+        <polygon points="640,90 800,120 800,150 640,118" fill="#2a3d33"/>
+        <!-- gold vertical edges -->
+        <line x1="640" y1="90" x2="640" y2="760" stroke="url(#goldEdge)" stroke-width="1.6"/>
+        <line x1="800" y1="120" x2="800" y2="760" stroke="#c5a572" stroke-width="1" opacity=".5"/>
+        <line x1="960" y1="120" x2="960" y2="760" stroke="url(#goldEdge)" stroke-width="1.4"/>
+        <!-- crown -->
+        <rect x="700" y="60" width="40" height="34" fill="#1c2c25"/>
+        <line x1="720" y1="40" x2="720" y2="60" stroke="#c5a572" stroke-width="1.2"/>
+        <!-- floor lines / lit windows on main -->
+        <g id="floorLines" stroke="#c5a572" stroke-width=".6" opacity=".22">
+        </g>
+        <g id="winGroup"></g>
+      </g>
+      <!-- foreground low block -->
+      <g opacity=".9">
+        <rect x="1000" y="470" width="170" height="290" fill="url(#towerMain)"/>
+        <line x1="1000" y1="470" x2="1170" y2="470" stroke="#c5a572" stroke-width=".8" opacity=".4"/>
+      </g>
+    </svg>
+    <div class="haze"></div>
+  </div>
+
+  <div class="hero-content wrap">
+    <div class="loc-line reveal">
+      <span class="dash"></span>
+      <span>台北 · 大直水岸特區 — A1 純住宅</span>
+    </div>
+    <h1 class="reveal" style="transition-delay:.1s">
+      <span class="zh">之 <span class="gold">間</span></span>
+      THE BETWEEN
+    </h1>
+    <p class="poetic reveal" style="transition-delay:.25s">於城市與水岸之間，於喧囂與靜謐之間 —— 為極少數人保留的，一處天空之上的領域。</p>
+    <div class="hero-stats reveal" style="transition-delay:.4s">
+      <div class="st"><div class="v" data-count="38">0</div><div class="k">地上樓層</div></div>
+      <div class="st"><div class="v" data-count="44">0</div><div class="k">總戶數</div></div>
+      <div class="st"><div class="v" data-count="68">0</div><div class="k">標準坪數 起</div></div>
+      <div class="st"><div class="v" data-count="3" data-dec="1">0</div><div class="k">層峰戶 限量</div></div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>探索</span><div class="ln"></div></div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="overview" id="overview">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Master Plan</span>
+      <h2>建築規劃<span class="en">An Architecture of Permanence</span></h2>
+      <p>由國際建築團隊操刀，以石材與玻璃幕牆構築垂直的天際線。低密度規劃、超大棟距，將私密與尺度同時放大。</p>
+    </div>
+    <div class="ov-grid reveal">
+      <div class="ov-cell"><div class="num" data-count="38">0</div><div class="lbl">地上樓層</div><div class="sub">B5 / 全棟制震</div></div>
+      <div class="ov-cell"><div class="num" data-count="44">0</div><div class="lbl">規劃總戶數</div><div class="sub">一層二至三戶</div></div>
+      <div class="ov-cell"><div class="num" data-count="68">0<small>坪 起</small></div><div class="lbl">標準層坪數</div><div class="sub">68 – 142 坪</div></div>
+      <div class="ov-cell"><div class="num" data-count="32" data-suffix="%">0</div><div class="lbl">公設比</div><div class="sub">高綠覆低密度</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AMENITIES ============ -->
+<section class="amenities" id="amenities">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Privileges</span>
+      <h2>尊榮公設<span class="en">Reserved for the Few</span></h2>
+      <p>七星級飯店式管理，由迎賓門廳到雲端會所，每一處皆為居住者的日常而設。</p>
+    </div>
+    <div class="am-grid">
+      <div class="am-card am-1 reveal">
+        <div class="am-bg"></div><div class="am-glow"></div>
+        <div class="am-inner">
+          <div>
+            <span class="am-no">01</span>
+            <svg class="am-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 42V20l18-12 18 12v22"/><path d="M6 42h36M16 42V28h16v14"/><path d="M22 28v14M26 28v14"/></svg>
+          </div>
+          <div class="am-meta">
+            <div class="am-name">迎賓門廳</div>
+            <div class="am-en">Grand Lobby</div>
+            <div class="am-desc">六米挑高石材門廳，義大利進口大理石地坪，24 小時尊榮接待與禮賓服務。</div>
+          </div>
+        </div>
+      </div>
+      <div class="am-card am-2 reveal" style="transition-delay:.08s">
+        <div class="am-bg"></div><div class="am-glow"></div>
+        <div class="am-inner">
+          <div>
+            <span class="am-no">02</span>
+            <svg class="am-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 30h40M8 30c0-10 7-16 16-16s16 6 16 16"/><path d="M14 30c0-6 4-10 10-10s10 4 10 10"/><line x1="4" y1="38" x2="44" y2="38"/></svg>
+          </div>
+          <div class="am-meta">
+            <div class="am-name">雲端會所</div>
+            <div class="am-en">Sky Lounge</div>
+            <div class="am-desc">38 樓頂層景觀會所，270 度城市與水岸全景，私人宴會與品酒之選。</div>
+          </div>
+        </div>
+      </div>
+      <div class="am-card am-3 reveal" style="transition-delay:.16s">
+        <div class="am-bg"></div><div class="am-glow"></div>
+        <div class="am-inner">
+          <div>
+            <span class="am-no">03</span>
+            <svg class="am-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="8" y="20" width="6" height="8"/><rect x="34" y="20" width="6" height="8"/><line x1="14" y1="24" x2="34" y2="24"/><line x1="4" y1="22" x2="4" y2="26"/><line x1="44" y1="22" x2="44" y2="26"/></svg>
+          </div>
+          <div class="am-meta">
+            <div class="am-name">健身中心</div>
+            <div class="am-en">Wellness Gym</div>
+            <div class="am-desc">TechnoGym 全套器械、瑜伽教室與專屬有氧空間，私人教練預約制。</div>
+          </div>
+        </div>
+      </div>
+      <div class="am-card am-4 reveal" style="transition-delay:.24s">
+        <div class="am-bg"></div><div class="am-glow"></div>
+        <div class="am-inner">
+          <div>
+            <span class="am-no">04</span>
+            <svg class="am-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 32c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3"/><path d="M4 40c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3"/><circle cx="30" cy="14" r="4"/></svg>
+          </div>
+          <div class="am-meta">
+            <div class="am-name">恆溫泳池</div>
+            <div class="am-en">Infinity Pool</div>
+            <div class="am-desc">25 米室內恆溫無邊際泳池，搭配 SPA 水療與蒸氣烤箱區。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLOOR PLANS ============ -->
+<section class="plans" id="plans">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Residences</span>
+      <h2>戶型規劃<span class="en">Select Your Floor Plan</span></h2>
+      <p>三種尺度，回應不同的生活樣態。從都會菁英到三代同堂，皆能於此找到歸屬。</p>
+    </div>
+    <div class="plan-wrap reveal">
+      <div class="plan-left">
+        <div class="plan-tabs" id="planTabs">
+          <div class="plan-tab active" data-plan="A">
+            <span class="tname"><b>A</b> 都會雅居</span><span class="tsize">68 坪</span>
+          </div>
+          <div class="plan-tab" data-plan="B">
+            <span class="tname"><b>B</b> 尊榮三房</span><span class="tsize">96 坪</span>
+          </div>
+          <div class="plan-tab" data-plan="C">
+            <span class="tname"><b>C</b> 層峰大宅</span><span class="tsize">142 坪</span>
+          </div>
+        </div>
+        <div class="plan-detail" id="planDetail">
+          <div class="pd"><div class="pv" id="pdSize">68<small>坪</small></div><div class="pk">權狀坪數</div></div>
+          <div class="pd"><div class="pv" id="pdRoom">2+1</div><div class="pk">房 / 廳 / 衛</div></div>
+          <div class="pd"><div class="pv" id="pdView">水岸</div><div class="pk">主景觀面</div></div>
+        </div>
+      </div>
+      <div class="plan-svg-box">
+        <span class="plan-tag" id="planTag">PLAN — A</span>
+        <svg class="plan-svg" id="planSvg" viewBox="0 0 320 280" fill="none" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOCATION ============ -->
+<section class="location" id="location">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Address</span>
+      <h2>稀有地段<span class="en">An Address of Distinction</span></h2>
+      <p>坐落大直水岸第一排，緊鄰捷運與快速道路，城市核心的便捷與自然水岸的靜謐，皆在步行之間。</p>
+    </div>
+    <div class="loc-grid reveal">
+      <div class="map-box">
+        <svg class="map-svg" viewBox="0 0 500 400" aria-hidden="true">
+          <defs>
+            <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#c5a572" stop-opacity=".25"/>
+              <stop offset="1" stop-color="#c5a572" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- river -->
+          <path d="M-20 90 C 120 130, 200 60, 320 110 S 480 200, 540 170 L 540 230 C 460 250, 360 180, 280 200 S 120 200, -20 150 Z" fill="#15302a" opacity=".7"/>
+          <path d="M-20 100 C 120 140, 200 70, 320 120 S 480 210, 540 180" stroke="#3a6b5c" stroke-width="1" fill="none" opacity=".5"/>
+          <!-- roads -->
+          <g stroke="#2a3a33" stroke-width="2" opacity=".7">
+            <line x1="0" y1="280" x2="500" y2="240"/>
+            <line x1="120" y1="0" x2="180" y2="400"/>
+            <line x1="340" y1="0" x2="300" y2="400"/>
+            <line x1="0" y1="340" x2="500" y2="320"/>
+          </g>
+          <g stroke="#1f2c26" stroke-width="1" opacity=".6">
+            <line x1="0" y1="200" x2="500" y2="180"/>
+            <line x1="240" y1="0" x2="260" y2="400"/>
+          </g>
+          <!-- blocks -->
+          <g fill="#14211b" opacity=".7">
+            <rect x="200" y="250" width="46" height="34"/><rect x="260" y="255" width="40" height="30"/>
+            <rect x="350" y="270" width="50" height="38"/><rect x="150" y="290" width="36" height="28"/>
+          </g>
+          <!-- site marker -->
+          <circle cx="250" cy="210" r="58" fill="url(#mapGlow)"/>
+          <g class="pin">
+            <circle cx="250" cy="210" r="9" fill="none" stroke="#e3cb9c" stroke-width="1.4"/>
+            <circle cx="250" cy="210" r="3.4" fill="#e3cb9c"/>
+            <path d="M250 219 L250 236" stroke="#e3cb9c" stroke-width="1.2"/>
+          </g>
+          <text x="250" y="252" text-anchor="middle" fill="#c5a572" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" letter-spacing="1">THE BETWEEN</text>
+        </svg>
+      </div>
+      <ul class="land-list">
+        <li><span class="lname">捷運大直站<em>MRT Station</em></span><span class="ldist">320<small>m</small></span></li>
+        <li><span class="lname">美麗華百樂園<em>Miramar Plaza</em></span><span class="ldist">600<small>m</small></span></li>
+        <li><span class="lname">大直水岸河濱<em>Riverside Park</em></span><span class="ldist">150<small>m</small></span></li>
+        <li><span class="lname">明水路國際學區<em>School District</em></span><span class="ldist">450<small>m</small></span></li>
+        <li><span class="lname">內湖科技園區<em>Neihu Tech Park</em></span><span class="ldist">8<small>min</small></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENQUIRY ============ -->
+<section class="enquiry" id="enquiry">
+  <div class="wrap">
+    <div class="enq-card reveal">
+      <div class="sec-head" style="margin-bottom:0;max-width:none">
+        <span class="eyebrow">Private Viewing</span>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.6rem)">預約賞屋<span class="en">By Appointment Only</span></h2>
+      </div>
+      <form class="enq-form" id="enqForm" novalidate>
+        <div class="fld">
+          <label for="f-name">尊姓大名</label>
+          <input id="f-name" type="text" placeholder="您的稱呼" required />
+        </div>
+        <div class="fld">
+          <label for="f-phone">聯絡電話</label>
+          <input id="f-phone" type="tel" placeholder="09xx-xxx-xxx" required />
+        </div>
+        <div class="fld">
+          <label for="f-plan">意向戶型</label>
+          <select id="f-plan">
+            <option value="A">A 都會雅居 · 68 坪</option>
+            <option value="B">B 尊榮三房 · 96 坪</option>
+            <option value="C">C 層峰大宅 · 142 坪</option>
+            <option value="0">尚未決定，請專人推薦</option>
+          </select>
+        </div>
+        <div class="fld">
+          <label for="f-time">期望時段</label>
+          <select id="f-time">
+            <option>平日上午</option>
+            <option>平日下午</option>
+            <option>假日上午</option>
+            <option>假日下午</option>
+          </select>
+        </div>
+        <div class="fld full">
+          <label for="f-msg">需求備註</label>
+          <textarea id="f-msg" placeholder="如有特定樓層、座向或其他需求，歡迎於此說明。"></textarea>
+        </div>
+        <button type="submit" class="enq-submit">送出預約 · Request Viewing</button>
+        <p class="enq-note">此為範例展示頁，送出後不會傳送任何資料。</p>
+      </form>
+      <div class="enq-success" id="enqSuccess">
+        <div class="chk">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h3>預約已收到</h3>
+        <p>感謝您對「之間 THE BETWEEN」的青睞，專屬接待人員將於 24 小時內與您聯繫，安排私人賞屋行程。</p>
+        <div class="ref" id="enqRef"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="mark">之間 <em>THE BETWEEN</em></div>
+        <p>城心之上，水岸之間。為極少數人保留的天空領域 —— 一次珍藏，一世傳承。</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>接待會館</h4>
+          <p>台北市中山區明水路 168 號<br/>每日 10:00 – 19:00<br/>採預約制</p>
+        </div>
+        <div class="foot-col">
+          <h4>銷售專線</h4>
+          <p>0800-168-168<br/>between@example.com</p>
+        </div>
+        <div class="foot-col">
+          <h4>投資興建</h4>
+          <p>皇苑建設機構<br/>之間開發股份有限公司</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>範例設計 · e-life-ai.com</span>
+      <span>© 2026 之間 THE BETWEEN · All Rights Reserved</span>
+    </div>
+    <p class="foot-disc">本頁面為虛構建案之設計範例，所有名稱、坪數、價格與地段資訊均為示意，不構成任何要約或廣告。圖面與數據僅供版面展示之用。</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- header scroll ---- */
+  var hdr=document.getElementById('hdr');
+  function onScroll(){ hdr.classList.toggle('scrolled', window.scrollY>40); }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* ---- mobile nav ---- */
+  var nav=document.getElementById('nav'), tog=document.getElementById('navToggle');
+  tog.addEventListener('click',function(){ nav.classList.toggle('open'); tog.classList.toggle('open'); });
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-link'),function(a){
+    a.addEventListener('click',function(){ nav.classList.remove('open'); tog.classList.remove('open'); });
+  });
+
+  /* ---- build skyline windows + floor lines ---- */
+  (function(){
+    var fl=document.getElementById('floorLines'), wg=document.getElementById('winGroup');
+    if(!fl||!wg) return;
+    var flStr='', winStr='';
+    for(var y=150;y<760;y+=22){ flStr+='<line x1="640" y1="'+y+'" x2="960" y2="'+y+'"/>'; }
+    fl.innerHTML=flStr;
+    for(var i=0;i<170;i++){
+      var col=Math.random(); if(col>0.42) continue;
+      var x=646+Math.floor(Math.random()*44)*7;
+      var ry=160+Math.floor(Math.random()*27)*22;
+      var op=(0.25+Math.random()*0.6).toFixed(2);
+      winStr+='<rect x="'+x+'" y="'+ry+'" width="4" height="9" fill="#e3cb9c" opacity="'+op+'"/>';
+    }
+    wg.innerHTML=winStr;
+  })();
+
+  /* ---- reveal on scroll ---- */
+  var io=new IntersectionObserver(function(ents){
+    ents.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.16});
+  Array.prototype.forEach.call(document.querySelectorAll('.reveal'),function(el){ io.observe(el); });
+
+  /* ---- hero reveal on load ---- */
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      Array.prototype.forEach.call(document.querySelectorAll('.hero .reveal'),function(el){ el.classList.add('in'); });
+    },120);
+  });
+
+  /* ---- count-up ---- */
+  function countUp(el){
+    var target=parseFloat(el.getAttribute('data-count'));
+    var dec=parseInt(el.getAttribute('data-dec')||'0',10);
+    var suffix=el.getAttribute('data-suffix')||'';
+    var start=null, dur=1700;
+    function step(ts){
+      if(!start) start=ts;
+      var p=Math.min((ts-start)/dur,1);
+      var eased=1-Math.pow(1-p,3);
+      var val=(target*eased).toFixed(dec);
+      el.firstChild ? el.childNodes[0].nodeValue=val : el.textContent=val;
+      el.childNodes[0].nodeValue=val+suffix;
+      if(p<1) requestAnimationFrame(step);
+      else el.childNodes[0].nodeValue=target.toFixed(dec)+suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var countIO=new IntersectionObserver(function(ents){
+    ents.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); countIO.unobserve(e.target); } });
+  },{threshold:0.5});
+  Array.prototype.forEach.call(document.querySelectorAll('[data-count]'),function(el){ countIO.observe(el); });
+
+  /* ---- floor plans ---- */
+  var PLANS={
+    A:{ size:'68', room:'2+1', bath:'2', view:'水岸', tag:'PLAN — A',
+        svg:'<rect x="20" y="20" width="280" height="240" stroke="#c5a572" stroke-width="1.4" opacity=".5"/>'+
+            '<rect class="room" x="32" y="32" width="150" height="135" fill="rgba(197,165,114,.10)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="190" y="32" width="98" height="80" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="190" y="120" width="98" height="47" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="32" y="175" width="256" height="73" fill="rgba(197,165,114,.07)" stroke="#a98f63" stroke-width="1"/>'+
+            '<text x="107" y="104" fill="#cfc8ba" font-size="11" text-anchor="middle" font-family="Noto Serif TC">客廳</text>'+
+            '<text x="239" y="76" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">主臥</text>'+
+            '<text x="239" y="148" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">次臥</text>'+
+            '<text x="160" y="216" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">餐廚 · 多功能</text>' },
+    B:{ size:'96', room:'3+1', bath:'3', view:'雙面景', tag:'PLAN — B',
+        svg:'<rect x="20" y="20" width="280" height="240" stroke="#c5a572" stroke-width="1.4" opacity=".5"/>'+
+            '<rect class="room" x="32" y="32" width="160" height="120" fill="rgba(197,165,114,.10)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="200" y="32" width="88" height="60" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="200" y="100" width="88" height="52" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="32" y="160" width="120" height="88" fill="rgba(197,165,114,.07)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="160" y="160" width="128" height="88" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<text x="112" y="96" fill="#cfc8ba" font-size="11" text-anchor="middle" font-family="Noto Serif TC">起居廳</text>'+
+            '<text x="244" y="66" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">主臥</text>'+
+            '<text x="244" y="130" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">次臥</text>'+
+            '<text x="92" y="208" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">餐廚</text>'+
+            '<text x="224" y="208" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">書房 · 客房</text>' },
+    C:{ size:'142', room:'4+2', bath:'4', view:'三面采光', tag:'PLAN — C',
+        svg:'<rect x="20" y="20" width="280" height="240" stroke="#c5a572" stroke-width="1.4" opacity=".5"/>'+
+            '<rect class="room" x="32" y="32" width="180" height="118" fill="rgba(197,165,114,.12)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="220" y="32" width="68" height="118" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="32" y="158" width="92" height="90" fill="rgba(197,165,114,.07)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="132" y="158" width="76" height="90" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<rect class="room" x="216" y="158" width="72" height="90" fill="rgba(197,165,114,.05)" stroke="#a98f63" stroke-width="1"/>'+
+            '<text x="122" y="94" fill="#e3cb9c" font-size="12" text-anchor="middle" font-family="Noto Serif TC">大廳 · 景觀廳</text>'+
+            '<text x="254" y="94" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">主臥套房</text>'+
+            '<text x="78" y="206" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">餐廚</text>'+
+            '<text x="170" y="206" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">次臥</text>'+
+            '<text x="252" y="206" fill="#8a8378" font-size="9" text-anchor="middle" font-family="Noto Serif TC">書房</text>' }
+  };
+  var tabs=document.querySelectorAll('.plan-tab'),
+      planSvg=document.getElementById('planSvg'),
+      pdSize=document.getElementById('pdSize'),
+      pdRoom=document.getElementById('pdRoom'),
+      pdView=document.getElementById('pdView'),
+      planTag=document.getElementById('planTag');
+  function setPlan(key){
+    var p=PLANS[key]; if(!p) return;
+    planSvg.innerHTML=p.svg;
+    pdSize.innerHTML=p.size+'<small>坪</small>';
+    pdRoom.textContent=p.room;
+    pdView.textContent=p.view;
+    planTag.textContent=p.tag;
+  }
+  Array.prototype.forEach.call(tabs,function(t){
+    t.addEventListener('click',function(){
+      Array.prototype.forEach.call(tabs,function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      setPlan(t.getAttribute('data-plan'));
+    });
+  });
+  setPlan('A');
+
+  /* ---- sync enquiry plan select with active tab choice (one-way convenience) ---- */
+  var planSel=document.getElementById('f-plan');
+  Array.prototype.forEach.call(tabs,function(t){
+    t.addEventListener('click',function(){
+      var k=t.getAttribute('data-plan');
+      if(planSel) planSel.value=k;
+    });
+  });
+
+  /* ---- enquiry form (simulated) ---- */
+  var form=document.getElementById('enqForm'), succ=document.getElementById('enqSuccess'), ref=document.getElementById('enqRef');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=document.getElementById('f-name').value.trim();
+    var phone=document.getElementById('f-phone').value.trim();
+    if(!name || !phone){
+      var miss = !name ? document.getElementById('f-name') : document.getElementById('f-phone');
+      miss.style.borderBottomColor='#c08a72';
+      miss.focus();
+      return;
+    }
+    var code='TB-'+(Date.now().toString(36).toUpperCase().slice(-6));
+    ref.textContent='預約編號 '+code;
+    form.style.display='none';
+    succ.classList.add('show');
+    succ.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+
+  /* ---- subtle hero parallax ---- */
+  var skyline=document.getElementById('skyline');
+  var heroSec=document.getElementById('top');
+  var ticking=false;
+  function parallax(){
+    var y=window.scrollY;
+    if(y<window.innerHeight && skyline){
+      skyline.style.transform='translateY('+(y*0.18)+'px) scale(1.02)';
+    }
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){
+    if(!ticking){ requestAnimationFrame(parallax); ticking=true; }
+  },{passive:true});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>毛日子 FURDAYS · 寵物用品鮮食</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#fdf6ec;
+    --cream-2:#f7ead8;
+    --sage:#8fb08a;
+    --sage-soft:#cfe0cb;
+    --peach:#e9a178;
+    --peach-soft:#f6d4bd;
+    --accent:#e9866a;
+    --ink:#473a33;
+    --ink-soft:#7a6a5e;
+    --white:#fffdf9;
+    --shadow:18px 18px 48px rgba(120,90,60,.14);
+    --shadow-sm:0 10px 28px rgba(120,90,60,.12);
+    --r:26px;
+    --r-lg:38px;
+    --font-display:"Baloo 2",system-ui,sans-serif;
+    --font-body:"Nunito",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.dsp{font-family:var(--font-display);line-height:1.2;font-weight:700}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  .wrap{width:min(1140px,92vw);margin:0 auto}
+  .accent-txt{color:var(--accent)}
+  button{font-family:var(--font-body);cursor:pointer;border:none}
+
+  /* decorative blobs */
+  .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.6;z-index:0;pointer-events:none}
+
+  /* ---------- top bar ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(253,246,236,.82);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(143,176,138,.2);
+  }
+  .nav{display:flex;align-items:center;gap:1.4rem;padding:.85rem 0}
+  .brand{display:flex;align-items:center;gap:.55rem;font-family:var(--font-display);font-weight:800;font-size:1.45rem;color:var(--ink)}
+  .brand .paw{width:38px;height:38px;flex:none;animation:wiggle 3.4s ease-in-out infinite}
+  .brand small{display:block;font-size:.62rem;letter-spacing:.32em;color:var(--peach);font-weight:700;font-family:var(--font-body);margin-top:-2px}
+  nav.links{display:flex;gap:1.5rem;margin-left:auto;font-weight:700}
+  nav.links a{position:relative;color:var(--ink-soft);transition:color .2s}
+  nav.links a:hover{color:var(--accent)}
+  nav.links a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:3px;border-radius:3px;background:var(--peach);transition:width .25s}
+  nav.links a:hover::after{width:100%}
+  .cart-pill{
+    display:flex;align-items:center;gap:.45rem;
+    background:var(--ink);color:var(--white);
+    padding:.5rem .95rem;border-radius:999px;font-weight:800;font-size:.92rem;
+    box-shadow:var(--shadow-sm);transition:transform .2s;
+  }
+  .cart-pill:hover{transform:translateY(-2px)}
+  .cart-pill svg{width:20px;height:20px}
+  #cartCount{
+    background:var(--peach);color:#fff;min-width:22px;height:22px;border-radius:999px;
+    display:grid;place-items:center;font-size:.78rem;padding:0 5px;
+  }
+  .cart-pill.bump{animation:bump .4s ease}
+  @keyframes bump{0%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(.94)}100%{transform:scale(1)}}
+  .burger{display:none;margin-left:auto;background:var(--white);border-radius:14px;padding:.5rem;box-shadow:var(--shadow-sm)}
+  .burger svg{width:22px;height:22px;display:block}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:3.4rem 0 4.2rem;overflow:hidden}
+  .hero .b1{width:420px;height:420px;background:var(--peach-soft);top:-120px;right:-80px}
+  .hero .b2{width:340px;height:340px;background:var(--sage-soft);bottom:-140px;left:-100px}
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:2rem;align-items:center}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:.5rem;
+    background:var(--white);color:var(--sage);font-weight:800;
+    padding:.42rem .9rem;border-radius:999px;font-size:.86rem;
+    box-shadow:var(--shadow-sm);margin-bottom:1.2rem;
+  }
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 4px rgba(143,176,138,.25)}
+  .hero h1{font-size:clamp(2.3rem,5.4vw,3.5rem);font-weight:800;letter-spacing:-.5px}
+  .hero h1 .em{color:var(--accent);position:relative;white-space:nowrap}
+  .hero p.sub{margin:1.1rem 0 1.7rem;font-size:1.12rem;color:var(--ink-soft);max-width:30rem}
+  .cta-row{display:flex;gap:.85rem;flex-wrap:wrap;align-items:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.92rem 1.6rem;border-radius:999px;font-weight:800;font-size:1rem;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 12px 26px rgba(233,134,106,.38)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 32px rgba(233,134,106,.46)}
+  .btn-ghost{background:var(--white);color:var(--ink);box-shadow:var(--shadow-sm)}
+  .btn-ghost:hover{transform:translateY(-3px)}
+  .trust-mini{display:flex;gap:1.3rem;margin-top:1.8rem;flex-wrap:wrap}
+  .trust-mini span{display:flex;align-items:center;gap:.4rem;font-weight:700;font-size:.9rem;color:var(--ink-soft)}
+  .trust-mini svg{width:18px;height:18px;color:var(--sage)}
+
+  /* hero mascot */
+  .mascot-card{
+    position:relative;background:linear-gradient(160deg,var(--white),var(--cream-2));
+    border-radius:var(--r-lg);padding:1.5rem;box-shadow:var(--shadow);
+    display:grid;place-items:center;aspect-ratio:1/.92;
+  }
+  .mascot-svg{width:84%;max-width:360px;animation:float 5s ease-in-out infinite}
+  .mascot-card .tag{
+    position:absolute;background:var(--white);border-radius:18px;padding:.55rem .8rem;
+    box-shadow:var(--shadow-sm);font-weight:800;font-size:.82rem;display:flex;align-items:center;gap:.4rem;
+  }
+  .mascot-card .tag.t1{top:14%;left:-6%;color:var(--peach)}
+  .mascot-card .tag.t2{bottom:14%;right:-5%;color:var(--sage)}
+  .mascot-card .tag svg{width:18px;height:18px}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes wiggle{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(9deg)}}
+  .ear-wag{transform-origin:center;animation:earwag 1.8s ease-in-out infinite}
+  @keyframes earwag{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
+  .tail-wag{transform-origin:left center;animation:tailwag 1s ease-in-out infinite}
+  @keyframes tailwag{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(14deg)}}
+
+  /* ---------- section heads ---------- */
+  section{position:relative}
+  .sec-pad{padding:3.6rem 0}
+  .sec-head{text-align:center;max-width:38rem;margin:0 auto 2.4rem}
+  .sec-head .kicker{color:var(--peach);font-weight:800;letter-spacing:.14em;font-size:.86rem;text-transform:uppercase}
+  .sec-head h2{font-size:clamp(1.8rem,4vw,2.5rem);margin:.4rem 0 .6rem;font-weight:800}
+  .sec-head p{color:var(--ink-soft)}
+
+  /* ---------- products ---------- */
+  .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+  .card{
+    position:relative;background:var(--white);border-radius:var(--r);padding:1.1rem;
+    box-shadow:var(--shadow-sm);transition:transform .25s,box-shadow .25s;overflow:hidden;
+  }
+  .card:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+  .card .thumb{
+    border-radius:20px;aspect-ratio:1/.82;display:grid;place-items:center;margin-bottom:.9rem;position:relative;overflow:hidden;
+  }
+  .card .thumb svg{width:62%;height:auto;position:relative;z-index:1;transition:transform .3s}
+  .card:hover .thumb svg{transform:scale(1.06) rotate(-2deg)}
+  .badge{
+    position:absolute;top:.7rem;left:.7rem;z-index:2;background:var(--accent);color:#fff;
+    font-weight:800;font-size:.72rem;padding:.25rem .6rem;border-radius:999px;
+  }
+  .badge.sage{background:var(--sage)}
+  .card h3{font-size:1.12rem;font-weight:700}
+  .card .desc{color:var(--ink-soft);font-size:.86rem;margin:.15rem 0 .5rem}
+  .stars{display:flex;align-items:center;gap:.15rem;color:#f0a92e;font-size:.85rem;margin-bottom:.6rem}
+  .stars span{color:var(--ink-soft);margin-left:.3rem;font-weight:700}
+  .price-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+  .price{font-family:var(--font-display);font-weight:800;font-size:1.3rem;color:var(--ink)}
+  .price s{font-size:.85rem;color:var(--ink-soft);font-weight:600;margin-left:.35rem;font-family:var(--font-body)}
+  .add{
+    background:var(--cream-2);color:var(--ink);border-radius:14px;padding:.55rem .85rem;
+    font-weight:800;font-size:.86rem;display:inline-flex;align-items:center;gap:.35rem;transition:.2s;
+  }
+  .add svg{width:17px;height:17px}
+  .add:hover{background:var(--accent);color:#fff;transform:translateY(-2px)}
+  /* paw burst micro-interaction */
+  .paw-burst{position:absolute;width:26px;height:26px;pointer-events:none;z-index:5;opacity:0}
+  .paw-burst.go{animation:pawpop .6s ease forwards}
+  @keyframes pawpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,-150%) scale(1.1) rotate(18deg)}}
+
+  /* ---------- subscription band ---------- */
+  .sub-band{
+    background:linear-gradient(135deg,var(--sage) 0%,#7a9c76 100%);
+    border-radius:var(--r-lg);color:#fff;padding:2.6rem;position:relative;overflow:hidden;
+    display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center;
+    box-shadow:var(--shadow);
+  }
+  .sub-band .sb{width:300px;height:300px;background:rgba(255,255,255,.12);top:-90px;right:-40px;filter:blur(0)}
+  .sub-band h2{font-size:clamp(1.7rem,3.6vw,2.3rem);position:relative;z-index:2}
+  .sub-band p{opacity:.92;position:relative;z-index:2;margin:.6rem 0 1.2rem;max-width:26rem}
+  .sub-benefits{list-style:none;display:grid;gap:.6rem;position:relative;z-index:2}
+  .sub-benefits li{display:flex;align-items:center;gap:.6rem;font-weight:700}
+  .sub-benefits svg{width:22px;height:22px;flex:none;background:rgba(255,255,255,.2);border-radius:50%;padding:3px}
+  .plan-card{
+    background:var(--white);color:var(--ink);border-radius:28px;padding:1.6rem;position:relative;z-index:2;
+    box-shadow:0 20px 40px rgba(60,80,50,.28);text-align:center;
+  }
+  .plan-card .ribbon{display:inline-block;background:var(--peach-soft);color:var(--peach);font-weight:800;padding:.3rem .8rem;border-radius:999px;font-size:.8rem}
+  .plan-card .big{font-family:var(--font-display);font-weight:800;font-size:2.6rem;margin:.5rem 0 0;color:var(--ink)}
+  .plan-card .big small{font-size:1rem;color:var(--ink-soft);font-weight:700}
+  .plan-card .note{color:var(--ink-soft);font-size:.86rem;margin-bottom:1rem}
+  .plan-card .btn-primary{width:100%;justify-content:center}
+
+  /* ---------- trust row ---------- */
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+  .trust-item{background:var(--white);border-radius:var(--r);padding:1.5rem 1.2rem;text-align:center;box-shadow:var(--shadow-sm);transition:transform .25s}
+  .trust-item:hover{transform:translateY(-6px)}
+  .trust-ico{width:60px;height:60px;border-radius:20px;display:grid;place-items:center;margin:0 auto .8rem;background:var(--cream-2)}
+  .trust-ico svg{width:30px;height:30px}
+  .trust-item h3{font-size:1.08rem;font-weight:700}
+  .trust-item p{color:var(--ink-soft);font-size:.84rem;margin-top:.2rem}
+
+  /* ---------- testimonials ---------- */
+  .testi-wrap{background:var(--cream-2)}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+  .testi{background:var(--white);border-radius:var(--r);padding:1.5rem;box-shadow:var(--shadow-sm);position:relative}
+  .testi .quote{font-size:2.4rem;font-family:var(--font-display);color:var(--peach-soft);line-height:1;position:absolute;top:.8rem;right:1.1rem}
+  .testi p{color:var(--ink);font-weight:600;position:relative;z-index:1}
+  .testi .who{display:flex;align-items:center;gap:.7rem;margin-top:1.1rem}
+  .avatar{width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;overflow:hidden}
+  .avatar svg{width:74%}
+  .who b{display:block;font-weight:800;font-size:.95rem}
+  .who span{font-size:.8rem;color:var(--ink-soft)}
+
+  /* ---------- newsletter ---------- */
+  .news{
+    background:linear-gradient(160deg,var(--peach) 0%,var(--accent) 100%);
+    border-radius:var(--r-lg);color:#fff;padding:2.8rem 2.2rem;text-align:center;position:relative;overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .news .nb{width:260px;height:260px;background:rgba(255,255,255,.14);bottom:-110px;left:-60px}
+  .news h2{font-size:clamp(1.6rem,3.6vw,2.2rem);position:relative;z-index:2}
+  .news p{opacity:.95;margin:.5rem auto 1.4rem;max-width:30rem;position:relative;z-index:2}
+  .news form{display:flex;gap:.6rem;max-width:30rem;margin:0 auto;position:relative;z-index:2;flex-wrap:wrap;justify-content:center}
+  .news input{
+    flex:1;min-width:180px;border:none;border-radius:999px;padding:.92rem 1.3rem;font-size:1rem;font-family:var(--font-body);
+    background:rgba(255,255,255,.95);color:var(--ink);outline:none;
+  }
+  .news input::placeholder{color:#b59c8c}
+  .news button{background:var(--ink);color:#fff;border-radius:999px;padding:.92rem 1.6rem;font-weight:800;transition:transform .2s}
+  .news button:hover{transform:translateY(-2px)}
+  .news .ok{margin-top:1rem;font-weight:800;position:relative;z-index:2;opacity:0;transform:translateY(8px);transition:.4s}
+  .news .ok.show{opacity:1;transform:none}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--ink);color:#e8dccf;padding:3rem 0 1.6rem;margin-top:.5rem}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:1.6rem}
+  .foot-brand .brand{color:#fff}
+  .foot-brand p{color:#bba996;font-size:.88rem;margin-top:.7rem;max-width:18rem}
+  .foot-col h4{font-family:var(--font-display);font-weight:700;color:#fff;margin-bottom:.7rem;font-size:1rem}
+  .foot-col a{display:block;color:#bba996;font-size:.9rem;padding:.2rem 0;transition:color .2s}
+  .foot-col a:hover{color:var(--peach)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:2rem;padding-top:1.2rem;text-align:center;color:#a08c79;font-size:.84rem}
+  .foot-bottom b{color:var(--peach)}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- toast ---------- */
+  #toast{
+    position:fixed;left:50%;bottom:26px;
+    background:var(--ink);color:#fff;padding:.8rem 1.3rem;border-radius:999px;font-weight:800;
+    box-shadow:var(--shadow);z-index:99;opacity:0;transform:translateX(-50%) translateY(50px);transition:.35s;display:flex;align-items:center;gap:.5rem;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #toast svg{width:20px;height:20px}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:920px){
+    .hero-grid{grid-template-columns:1fr;gap:1.6rem}
+    .mascot-card{order:-1;max-width:420px;margin:0 auto}
+    .sub-band{grid-template-columns:1fr;gap:1.6rem}
+    .prod-grid,.testi-grid{grid-template-columns:repeat(2,1fr)}
+    .trust-grid{grid-template-columns:repeat(2,1fr)}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    nav.links,.cart-pill .lbl{display:none}
+    .burger{display:block}
+    nav.links.open{display:flex;position:absolute;top:100%;right:4vw;flex-direction:column;background:var(--white);padding:1rem 1.4rem;border-radius:20px;box-shadow:var(--shadow);gap:.9rem;margin:0}
+    .prod-grid,.testi-grid,.trust-grid,.foot-grid{grid-template-columns:1fr}
+    .sub-band,.news{padding:1.8rem}
+    .sec-pad{padding:2.6rem 0}
+    .cart-pill{margin-left:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#">
+      <svg class="paw" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <ellipse cx="24" cy="32" rx="11" ry="9" fill="#e9866a"/>
+        <ellipse cx="13" cy="20" rx="4.4" ry="5.6" fill="#e9a178"/>
+        <ellipse cx="35" cy="20" rx="4.4" ry="5.6" fill="#e9a178"/>
+        <ellipse cx="19" cy="13" rx="4" ry="5.2" fill="#8fb08a"/>
+        <ellipse cx="29" cy="13" rx="4" ry="5.2" fill="#8fb08a"/>
+      </svg>
+      <span>毛日子<small>FURDAYS</small></span>
+    </a>
+    <nav class="links" id="navLinks">
+      <a href="#products">商品</a>
+      <a href="#subscription">鮮食</a>
+      <a href="#about">關於</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#473a33" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="cart-pill" href="#" id="cartBtn" aria-label="購物車">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h2.2l2.4 12.4a1.5 1.5 0 0 0 1.5 1.2h8.9a1.5 1.5 0 0 0 1.5-1.2L21.5 7H6"/></svg>
+      <span class="lbl">購物車</span>
+      <span id="cartCount">0</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <span class="eyebrow"><span class="dot"></span>嚴選天然鮮食 · 全台冷鏈宅配</span>
+      <h1>給毛孩每一天<br><span class="em">最暖的好日子</span></h1>
+      <p class="sub">從產地到碗裡，無添加的人食等級鮮食與療癒小物。讓挑嘴的牠，也吃得安心、玩得開心。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#products">逛逛商品
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#subscription">了解鮮食訂閱</a>
+      </div>
+      <div class="trust-mini">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>無穀無添加</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>獸醫團隊把關</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>滿 $899 免運</span>
+      </div>
+    </div>
+
+    <!-- mascot card -->
+    <div class="mascot-card reveal">
+      <div class="tag t1">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.6-9.3-9C1 8.5 2.8 5 6.2 5 8.4 5 9.7 6.3 12 9c2.3-2.7 3.6-4 5.8-4 3.4 0 5.2 3.5 3.5 7-2.3 4.4-9.3 9-9.3 9z"/></svg>
+        99% 回購率
+      </div>
+      <div class="tag t2">
+        <svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16" rx="5" ry="4"/><ellipse cx="6" cy="9" rx="2" ry="2.6"/><ellipse cx="18" cy="9" rx="2" ry="2.6"/><ellipse cx="9" cy="5.5" rx="1.9" ry="2.4"/><ellipse cx="15" cy="5.5" rx="1.9" ry="2.4"/></svg>
+        天然食材
+      </div>
+      <!-- happy dog mascot -->
+      <svg class="mascot-svg" viewBox="0 0 320 300" fill="none" aria-hidden="true">
+        <ellipse cx="160" cy="262" rx="98" ry="20" fill="#e6d3bc"/>
+        <!-- tail -->
+        <g class="tail-wag" style="transform-origin:232px 196px">
+          <path d="M228 196c26-6 40-26 44-44-22 6-40 16-48 30z" fill="#caa074"/>
+        </g>
+        <!-- body -->
+        <ellipse cx="158" cy="208" rx="74" ry="56" fill="#e0b483"/>
+        <ellipse cx="158" cy="222" rx="46" ry="34" fill="#f5e2c6"/>
+        <!-- head -->
+        <ellipse cx="158" cy="118" rx="78" ry="70" fill="#e9c08c"/>
+        <!-- ears -->
+        <path class="ear-wag" style="transform-origin:96px 70px" d="M96 56c-30 4-44 36-30 70 16-6 30-30 34-58z" fill="#c99a64"/>
+        <path class="ear-wag" style="transform-origin:224px 70px;animation-delay:.4s" d="M224 56c30 4 44 36 30 70-16-6-30-30-34-58z" fill="#c99a64"/>
+        <!-- face patch -->
+        <ellipse cx="158" cy="138" rx="52" ry="48" fill="#fbeed4"/>
+        <!-- eyes -->
+        <circle cx="134" cy="118" r="10" fill="#473a33"/>
+        <circle cx="182" cy="118" r="10" fill="#473a33"/>
+        <circle cx="137" cy="115" r="3.4" fill="#fff"/>
+        <circle cx="185" cy="115" r="3.4" fill="#fff"/>
+        <!-- cheeks -->
+        <circle cx="118" cy="138" r="9" fill="#f3b39a" opacity=".7"/>
+        <circle cx="198" cy="138" r="9" fill="#f3b39a" opacity=".7"/>
+        <!-- nose + smile -->
+        <ellipse cx="158" cy="142" rx="11" ry="8" fill="#473a33"/>
+        <path d="M158 150c0 12-14 16-22 8M158 150c0 12 14 16 22 8" stroke="#473a33" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <!-- paws -->
+        <ellipse cx="122" cy="256" rx="20" ry="15" fill="#f5e2c6"/>
+        <ellipse cx="194" cy="256" rx="20" ry="15" fill="#f5e2c6"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCTS ===== -->
+<section class="sec-pad" id="products">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Best Sellers</div>
+      <h2>熱銷商品</h2>
+      <p>毛孩們票選最愛，從鮮食到玩樂一次備齊。</p>
+    </div>
+    <div class="prod-grid" id="prodGrid"><!-- JS render --></div>
+  </div>
+</section>
+
+<!-- ===== SUBSCRIPTION ===== -->
+<section class="sec-pad" id="subscription">
+  <div class="wrap reveal">
+    <div class="sub-band">
+      <div class="blob sb"></div>
+      <div>
+        <h2>鮮食訂閱 · 每週新鮮直送</h2>
+        <p>填寫毛孩的體重與口味偏好，我們依牠的需求客製分裝，冷鏈宅配到府。隨時可暫停或調整，零綁約。</p>
+        <ul class="sub-benefits">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>客製份量，吃多少訂多少</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>每週現做，冷鏈鎖鮮</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>免運到府，零綁約可暫停</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <span class="ribbon">最受歡迎</span>
+        <div class="big">$199<small> / 餐起</small></div>
+        <div class="note">依毛孩體重客製，每週宅配</div>
+        <button class="btn btn-primary" id="subBtn">開始訂閱
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST ROW ===== -->
+<section class="sec-pad" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Why Furdays</div>
+      <h2>為什麼選我們</h2>
+      <p>把毛孩當家人，每個環節都不馬虎。</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item reveal">
+        <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#8fb08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 6 9 6 13a6 6 0 0 0 12 0c0-4-2-7-6-11z"/><path d="M12 22v-6"/></svg></div>
+        <h3>天然食材</h3>
+        <p>人食等級在地溯源，無穀、無防腐劑。</p>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#e9866a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>獸醫把關</h3>
+        <p>專業營養團隊配方，均衡又安心。</p>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#e9a178" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9" rx="1.5"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></div>
+        <h3>滿額免運</h3>
+        <p>滿 $899 全台免運，冷鏈快速到府。</p>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#8fb08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></div>
+        <h3>七天退換</h3>
+        <p>不滿意可退換，毛孩開心才安心。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="sec-pad testi-wrap">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Happy Tails</div>
+      <h2>毛孩心聲</h2>
+      <p>來自全台爸媽與毛孩的真實回饋。</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="quote">”</div>
+        <p>換了毛日子鮮食後，原本挑嘴的柴柴每餐都舔得碗超乾淨，毛色也亮了！</p>
+        <div class="who">
+          <div class="avatar" style="background:#f6d4bd">
+            <svg viewBox="0 0 40 40"><ellipse cx="20" cy="22" rx="12" ry="11" fill="#e0b483"/><circle cx="15" cy="20" r="2" fill="#473a33"/><circle cx="25" cy="20" r="2" fill="#473a33"/><ellipse cx="20" cy="24" rx="3" ry="2" fill="#473a33"/></svg>
+          </div>
+          <div><b>柴柴 麻麻 · 怡君</b><span>飼主 / 台北</span></div>
+        </div>
+      </div>
+      <div class="testi reveal">
+        <div class="quote">”</div>
+        <p>訂閱制超方便，不用扛大包飼料，每週新鮮到府，貓主子吃得開心我也省心。</p>
+        <div class="who">
+          <div class="avatar" style="background:#cfe0cb">
+            <svg viewBox="0 0 40 40"><ellipse cx="20" cy="23" rx="11" ry="10" fill="#b9b2aa"/><path d="M11 16l3-6 4 4M29 16l-3-6-4 4" fill="#b9b2aa"/><circle cx="16" cy="22" r="1.8" fill="#473a33"/><circle cx="24" cy="22" r="1.8" fill="#473a33"/><path d="M20 25v2" stroke="#473a33" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div><b>橘貓 拔拔 · 柏宇</b><span>飼主 / 台中</span></div>
+        </div>
+      </div>
+      <div class="testi reveal">
+        <div class="quote">”</div>
+        <p>客服很用心，還會關心毛孩狀況。退換流程也很順，真的把我們當家人。</p>
+        <div class="who">
+          <div class="avatar" style="background:#f6d4bd">
+            <svg viewBox="0 0 40 40"><ellipse cx="20" cy="22" rx="12" ry="11" fill="#f0e0c8"/><path d="M8 18C6 12 12 8 12 12M32 18c2-6-4-10-4-6" fill="#caa074"/><circle cx="15" cy="20" r="2" fill="#473a33"/><circle cx="25" cy="20" r="2" fill="#473a33"/><ellipse cx="20" cy="25" rx="2.4" ry="1.8" fill="#473a33"/></svg>
+          </div>
+          <div><b>米克斯 麻麻 · 雅婷</b><span>飼主 / 高雄</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="sec-pad">
+  <div class="wrap reveal">
+    <div class="news">
+      <div class="blob nb"></div>
+      <h2>訂閱電子報，毛孩好康不錯過</h2>
+      <p>新品上市、毛孩飼養知識與專屬優惠，每月暖心送到你的信箱。</p>
+      <form id="newsForm">
+        <input type="email" id="newsEmail" placeholder="輸入你的 Email" required />
+        <button type="submit">免費訂閱</button>
+      </form>
+      <div class="ok" id="newsOk">已訂閱成功，請查收歡迎信！</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="#">
+        <svg class="paw" viewBox="0 0 48 48" fill="none" style="animation:none">
+          <ellipse cx="24" cy="32" rx="11" ry="9" fill="#e9866a"/>
+          <ellipse cx="13" cy="20" rx="4.4" ry="5.6" fill="#e9a178"/>
+          <ellipse cx="35" cy="20" rx="4.4" ry="5.6" fill="#e9a178"/>
+          <ellipse cx="19" cy="13" rx="4" ry="5.2" fill="#8fb08a"/>
+          <ellipse cx="29" cy="13" rx="4" ry="5.2" fill="#8fb08a"/>
+        </svg>
+        <span style="color:#fff">毛日子<small style="color:var(--peach)">FURDAYS</small></span>
+      </a>
+      <p>給毛孩每一天最暖的好日子。嚴選天然鮮食與療癒小物，全台冷鏈宅配。</p>
+    </div>
+    <div class="foot-col">
+      <h4>選購</h4>
+      <a href="#products">全部商品</a>
+      <a href="#subscription">鮮食訂閱</a>
+      <a href="#products">玩具用品</a>
+      <a href="#products">保健品</a>
+    </div>
+    <div class="foot-col">
+      <h4>關於</h4>
+      <a href="#about">品牌故事</a>
+      <a href="#about">食材來源</a>
+      <a href="#">獸醫團隊</a>
+      <a href="#">最新消息</a>
+    </div>
+    <div class="foot-col">
+      <h4>客服</h4>
+      <a href="#">配送與運費</a>
+      <a href="#">退換貨政策</a>
+      <a href="#">常見問題</a>
+      <a href="#">聯絡我們</a>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    範例設計 · <b>e-life-ai.com</b> · © 2026 毛日子 FURDAYS（此為示意網站）
+  </div>
+</footer>
+
+<div id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#8fb08a" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">已加入購物車</span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- product data ---- */
+  var THUMB_GRAD = [
+    "linear-gradient(150deg,#f6d4bd,#f3b89a)",
+    "linear-gradient(150deg,#cfe0cb,#a9c8a4)",
+    "linear-gradient(150deg,#fbe6c4,#f3d18f)",
+    "linear-gradient(150deg,#dfe9f0,#c5d6e2)",
+    "linear-gradient(150deg,#f6d4bd,#eac1d4)",
+    "linear-gradient(150deg,#d6ecd2,#bfe0c6)"
+  ];
+  // simple inline product illustrations
+  var ART = {
+    bag: '<svg viewBox="0 0 120 120" fill="none"><path d="M30 38h60l-5 66a6 6 0 0 1-6 6H41a6 6 0 0 1-6-6z" fill="#fff"/><path d="M30 38h60l-2 22H32z" fill="#e9866a"/><path d="M44 38c0-12 6-18 16-18s16 6 16 18" stroke="#caa074" stroke-width="5" fill="none"/><ellipse cx="60" cy="78" rx="14" ry="11" fill="#caa074"/><ellipse cx="52" cy="68" rx="3.4" ry="4.4" fill="#caa074"/><ellipse cx="68" cy="68" rx="3.4" ry="4.4" fill="#caa074"/><ellipse cx="56" cy="62" rx="3" ry="4" fill="#caa074"/><ellipse cx="64" cy="62" rx="3" ry="4" fill="#caa074"/></svg>',
+    bowl: '<svg viewBox="0 0 120 120" fill="none"><ellipse cx="60" cy="84" rx="42" ry="16" fill="#8fb08a"/><path d="M20 78a40 14 0 0 0 80 0v6a40 16 0 0 1-80 0z" fill="#6f9069"/><ellipse cx="60" cy="74" rx="34" ry="11" fill="#f5e2c6"/><circle cx="48" cy="72" r="6" fill="#e0b483"/><circle cx="64" cy="70" r="7" fill="#caa074"/><circle cx="72" cy="76" r="5" fill="#e0b483"/></svg>',
+    treat: '<svg viewBox="0 0 120 120" fill="none"><rect x="30" y="40" width="60" height="40" rx="10" fill="#fff"/><path d="M30 56h60v8H30z" fill="#f3d18f"/><circle cx="46" cy="60" r="4" fill="#e9866a"/><circle cx="60" cy="60" r="4" fill="#e9866a"/><circle cx="74" cy="60" r="4" fill="#e9866a"/><path d="M40 40c0-8 8-8 8 0M72 40c0-8 8-8 8 0" stroke="#caa074" stroke-width="4" fill="none"/></svg>',
+    toy: '<svg viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="30" fill="#fff"/><path d="M60 30a30 30 0 0 1 0 60" fill="#e9866a"/><circle cx="60" cy="60" r="30" stroke="#caa074" stroke-width="4" fill="none"/><path d="M40 60h40M60 40v40" stroke="#caa074" stroke-width="4"/></svg>',
+    bed: '<svg viewBox="0 0 120 120" fill="none"><ellipse cx="60" cy="80" rx="44" ry="20" fill="#cfe0cb"/><ellipse cx="60" cy="74" rx="36" ry="15" fill="#a9c8a4"/><ellipse cx="60" cy="72" rx="26" ry="10" fill="#f5e2c6"/><ellipse cx="58" cy="70" rx="11" ry="8" fill="#e0b483"/><circle cx="53" cy="68" r="1.6" fill="#473a33"/><circle cx="63" cy="68" r="1.6" fill="#473a33"/></svg>',
+    care: '<svg viewBox="0 0 120 120" fill="none"><rect x="42" y="36" width="36" height="50" rx="10" fill="#fff"/><rect x="42" y="50" width="36" height="22" fill="#dfe9f0"/><rect x="50" y="28" width="20" height="12" rx="4" fill="#8fb08a"/><path d="M54 58h12M60 52v12" stroke="#8fb08a" stroke-width="4" stroke-linecap="round"/></svg>'
+  };
+
+  var PRODUCTS = [
+    {name:"無穀鮮雞鮮食餐包", desc:"人食等級雞胸 · 主食罐", price:199, was:240, rate:4.9, sold:"2.1k", art:"bag",  badge:"熱銷", badgeC:""},
+    {name:"溫體牛鮮食碗", desc:"低敏配方 · 補鐵好吸收",   price:229, was:0,   rate:4.8, sold:"1.4k", art:"bowl", badge:"新品", badgeC:"sage"},
+    {name:"凍乾雞肉零食",   desc:"訓練獎勵 · 純肉無添加",   price:159, was:189, rate:5.0, sold:"3.6k", art:"treat",badge:"特價", badgeC:""},
+    {name:"啾啾互動潔牙球", desc:"耐咬橡膠 · 潔牙紓壓",     price:289, was:0,   rate:4.7, sold:"980",  art:"toy",  badge:"",     badgeC:""},
+    {name:"雲朵柔軟寵物窩", desc:"可拆洗 · 親膚保暖",       price:899, was:1080,rate:4.9, sold:"760",  art:"bed",  badge:"免運", badgeC:"sage"},
+    {name:"關節保健軟膠囊", desc:"葡萄糖胺 · 獸醫推薦",     price:520, was:0,   rate:4.8, sold:"1.2k", art:"care", badge:"",     badgeC:""}
+  ];
+
+  function starRow(rate){
+    var full = Math.round(rate);
+    var s = "";
+    for(var i=0;i<5;i++){ s += i<full ? "★" : "☆"; }
+    return s;
+  }
+
+  var grid = document.getElementById("prodGrid");
+  PRODUCTS.forEach(function(p,i){
+    var card = document.createElement("div");
+    card.className = "card reveal";
+    var wasHtml = p.was ? '<s>$'+p.was+'</s>' : '';
+    var badgeHtml = p.badge ? '<span class="badge '+p.badgeC+'">'+p.badge+'</span>' : '';
+    card.innerHTML =
+      badgeHtml +
+      '<div class="thumb" style="background:'+THUMB_GRAD[i]+'">'+ART[p.art]+'</div>'+
+      '<h3>'+p.name+'</h3>'+
+      '<div class="desc">'+p.desc+'</div>'+
+      '<div class="stars">'+starRow(p.rate)+'<span>'+p.rate.toFixed(1)+'（'+p.sold+'）</span></div>'+
+      '<div class="price-row">'+
+        '<div class="price">$'+p.price+wasHtml+'</div>'+
+        '<button class="add" data-name="'+p.name+'">'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>加入'+
+        '</button>'+
+      '</div>';
+    grid.appendChild(card);
+  });
+
+  /* ---- cart logic ---- */
+  var count = 0;
+  var cartCount = document.getElementById("cartCount");
+  var cartBtn = document.getElementById("cartBtn");
+  var toast = document.getElementById("toast");
+  var toastMsg = document.getElementById("toastMsg");
+  var toastTimer = null;
+
+  function showToast(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 1900);
+  }
+
+  function pawBurst(x,y){
+    var burst = document.createElement("div");
+    burst.className = "paw-burst";
+    burst.style.left = x+"px";
+    burst.style.top = y+"px";
+    burst.innerHTML = '<svg viewBox="0 0 24 24" fill="#e9866a"><ellipse cx="12" cy="16" rx="5" ry="4"/><ellipse cx="6" cy="9" rx="2" ry="2.6"/><ellipse cx="18" cy="9" rx="2" ry="2.6"/><ellipse cx="9" cy="5.5" rx="1.9" ry="2.4"/><ellipse cx="15" cy="5.5" rx="1.9" ry="2.4"/></svg>';
+    document.body.appendChild(burst);
+    requestAnimationFrame(function(){ burst.classList.add("go"); });
+    setTimeout(function(){ burst.remove(); }, 650);
+  }
+
+  grid.addEventListener("click", function(e){
+    var btn = e.target.closest(".add");
+    if(!btn) return;
+    count++;
+    cartCount.textContent = count;
+    cartBtn.classList.remove("bump");
+    void cartBtn.offsetWidth;
+    cartBtn.classList.add("bump");
+    pawBurst(e.clientX, e.clientY);
+    showToast("已加入「"+btn.getAttribute("data-name")+"」");
+  });
+
+  document.getElementById("subBtn").addEventListener("click", function(){
+    showToast("已為毛孩開始客製訂閱 🐾");
+  });
+  cartBtn.addEventListener("click", function(e){
+    e.preventDefault();
+    showToast(count ? ("購物車有 "+count+" 件商品") : "購物車是空的，去逛逛吧！");
+  });
+
+  /* ---- newsletter ---- */
+  document.getElementById("newsForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var ok = document.getElementById("newsOk");
+    ok.classList.add("show");
+    document.getElementById("newsEmail").value = "";
+    showToast("訂閱成功，謝謝你 ♥");
+  });
+
+  /* ---- mobile nav ---- */
+  var burger = document.getElementById("burger");
+  var navLinks = document.getElementById("navLinks");
+  burger.addEventListener("click", function(){ navLinks.classList.toggle("open"); });
+  navLinks.addEventListener("click", function(e){
+    if(e.target.tagName === "A") navLinks.classList.remove("open");
+  });
+
+  /* ---- scroll reveal ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, {threshold:.12, rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
