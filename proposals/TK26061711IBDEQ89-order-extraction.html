@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Word／Excel 訂單自動結構化提取｜報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<!-- ============ 封面 ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="../logo/logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">Word／Excel 訂單<br />自動結構化提取</h1>
+    <p class="lead">每日 100 張訂單，由「人工讀取、手動謄打」轉為「自動抽取、AI 自動驗證、僅可疑項目需人工複核」的長期工具。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26061711IBDEQ89</b></span>
+      <span class="chip">類型 <b>資料自動化／Python</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">預算 <b>$20,000</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 內容區 ============ -->
+<div class="paper">
+<div class="wrap">
+
+  <!-- 1 需求理解 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們對這個需求的理解</h2>
+    <p class="lead">貴公司每日須處理約 <b>100 張</b>客戶訂單（Word 或 Excel），目前係以人工將其中之指定文字／數字欄位（訂單號、客戶、品名、規格、數量、單價、交期等）逐筆讀取，再謄入一張 <b>Excel 控制表</b>長期累積。痛點雖單純，卻每日發生：</p>
+    <ul class="plain">
+      <li><b>量大且重複：</b>每日 100 張、長期累積，人工謄打耗費數小時，工時越長越易誤判。</li>
+      <li><b>錯誤難以即時察覺：</b>誤植一個數字、錯置一欄，往往要到事後對帳才會浮現。</li>
+      <li><b>須能長期穩定運作：</b>並非一次性轉檔，而是須成為每日可用、且能自我檢出異常的工具。</li>
+    </ul>
+    <p>因此本案的核心是：<b>打造一套可長期使用的訂單抽取工具，將「讀取訂單 → 填入控制表」這段人工作業，轉為自動執行、自動驗證、並於異常時主動標記。</b>對於需求中提到的「<b>自動 debug</b>」與提升正確率，我們以 <b>AI 自動驗證</b>達成：抽取出的數值由 AI 再次校驗，僅極少數可疑項目需人工複核，避免「抽錯卻無人察覺」的黑箱風險。對貴公司而言，本工具是<b>節省每日謄打 100 張的人力，而非增添校正人力。</b></p>
+  </section>
+
+  <!-- 2 運作流程圖 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>這支工具怎麼運作</h2>
+    <pre class="diagram">  訂單檔進來         Word / Excel 置入指定資料夾（或拖拉）
+   (.docx/.xlsx)
+       │
+       ▼
+  ┌─ A 制式規範 ─── regex 固定規則：欄位位置／格式固定者，
+  │                  以正規表示式直接抽取，精準且零成本
+  │
+  ├─ B 偏差格式 ─── 特例程式碼：已知特例（某客戶欄位錯位、
+  │  (落入規則外)    合併儲存格、單位寫法不同）以針對性程式碼
+  │                  將偏差校正回標準格式
+  │
+  └─ C 多種類型 ─── 導入部分 AI：格式發散、無法窮舉規則時，
+     (規則外的長尾)  以本地小模型／OCR 輔助辨識，補規則未及之處
+       │
+       ▼
+  AI 自動驗證       AI 對每個抽取值再次校驗（非重新抽取）：
+   (強化資料正確)    ✓ 欄位合理性  ✓ 交叉一致性
+                     ✓ 必填/完整性  ✓ 可疑值標記
+       │
+       ▼
+  自動寫入控制表     驗證通過者（絕大多數）→ 直接追加進 Excel 控制表
+       │            （不覆蓋、保留歷史）；全程無需人工介入
+       ▼
+  ⚠ 僅可疑項浮出     AI 判定可疑的「極少數」才標記出來
+       │
+       ▼
+  人工複核           日常無需介入；僅就標記項確認後存檔即可
+   (末端把關,非日常)  確認一次系統即記錄，同型訂單後續自動通過
+       │
+       ▼
+  自動日誌(debug)    每批次產出處理報告：成功 N 張、可疑 M 張、
+                     失敗哪幾張及原因，一覽即明無需翻查日誌</pre>
+    <div class="price-note"><b>核心原則為分級處理、優先採用最穩定精準的方法：</b>可由 A（regex 固定規則，最穩定精準）處理者即用 A、A 未能涵蓋的偏差交由 B（特例程式碼）、格式真正發散的長尾才導入 C（AI 輔助抽取）；而 <b>AI 的主要角色為「資料驗證強化」</b>，將抽取出的數值自動再次校驗、篩出異常項目。如此<b>絕大多數訂單即可全程自動執行、自動驗證、自動寫入控制表，無需人工介入</b>，僅極少數可疑項目需浮出供人工複核。<b>本工具旨在取代每日謄打 100 張的人力，而非要求貴公司增設校正人員</b>，人工僅為末端的把關機制，且隨使用日趨精簡。</div>
+  </section>
+
+  <!-- 3 AI 驗證 / debug / 不增加人力 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>AI 自動驗證、自動 debug、與「不增加人力」的設計</h2>
+    <p>需求中的「自動 debug」與資料校正，加上以 AI 強化資料正確性，是本工具能否「長期省人、持續可用」的關鍵。我們的做法如下：</p>
+    <table>
+      <thead><tr><th>您的需求</th><th>我們的具體做法</th></tr></thead>
+      <tbody>
+        <tr><td><b>AI 強化資料驗證</b></td><td>AI 的主要職責並非抽取，而是將 A／B 抽取出的每個數值<b>自動再次校驗</b>，篩出異常項目（四項驗證見下），使「抽得到」進一步達到「抽得正確」。</td></tr>
+        <tr><td><b>自動 debug</b></td><td>每次執行後自動產出<b>處理報告</b>：總張數、成功筆數、可疑筆數、失敗筆數及原因（檔案損毀、欄位缺漏、格式不符等）。異常<b>不中斷整批作業</b>，問題集中列示，一覽即明。</td></tr>
+        <tr><td><b>不增加人力（關鍵）</b></td><td>絕大多數訂單<b>全程自動執行並完成驗證、自動寫入控制表，無需人工經手</b>；僅 AI 未能通過驗證的<b>極少數</b>項目需浮出。人工並非新增的日常工序，而是<b>末端的把關機制</b>；且確認一次系統即記錄，<b>隨使用日趨精簡。</b></td></tr>
+      </tbody>
+    </table>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">AI 驗證項目（資料驗證強化）</p>
+    <p>AI 疊加於抽取結果之上，對每筆資料自動執行四項檢查：</p>
+    <ol class="confirm">
+      <li><b>欄位合理性</b><p>數量／單價／金額是否合理（單價×數量≈金額、負數、異常極值、日期格式與範圍）。</p></li>
+      <li><b>交叉一致性</b><p>同一張訂單內欄位相互對照（總額 vs 明細加總、品名 vs 料號對應）。</p></li>
+      <li><b>必填／完整性</b><p>應有欄位是否缺漏、抽取結果是否為空值或亂碼。</p></li>
+      <li><b>可疑值標記</b><p>即便無明確規則可循，AI 判定數值異常者即予標記，送末端複核。</p></li>
+    </ol>
+    <div class="price-note">簡言之，本工具並非「抽取後即了事」，而是<b>抽取 → AI 自動驗證 → 僅可疑項目需人工複核</b>的完整閉環。對貴公司而言，是<b>節省每日謄打 100 張的人力</b>，而非另聘校正人員。</div>
+  </section>
+
+  <!-- 4 A/B/C 抽取策略 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>抽取策略：A／B／C 三種方法（可選用、可混用）</h2>
+    <p>此為本案的核心方法論。抽取並非單一手法，而是一套<b>可自由選用、混合運用的工具組合</b>：三種方法<b>並非互斥，亦非「先試 A 不成才換 B」的降級階梯</b>，而是依各欄位／各格式的特性，<b>擇優採用、亦可同時並用</b>。三者差異主要在<b>準確度與穩定度：</b></p>
+    <table>
+      <thead><tr><th>方法</th><th>適用情境</th><th>做法</th><th>準確度／穩定度</th></tr></thead>
+      <tbody>
+        <tr><td><b>A. 制式規範</b></td><td>欄位位置／格式固定的部分</td><td>以 <b>regex 固定規則</b>直接抽取（訂單號、日期、金額、數量等具穩定樣式者）</td><td>最高，規則明確、結果可重現</td></tr>
+        <tr><td><b>B. 偏差格式</b></td><td>已知特例：欄位錯位、合併儲存格、單位寫法不一、掃描影像</td><td>以<b>針對性程式碼</b>將偏差校正回標準格式；掃描件輔以<b>本地 OCR</b></td><td>高，特例一經處理即穩定</td></tr>
+        <tr><td><b>C. 多種類型</b></td><td>格式發散、無法窮舉規則的長尾</td><td><b>導入部分 AI</b>：以本地小模型判讀各欄位語意，補規則未及之處</td><td>具彈性但需驗證，故必經 AI 驗證層把關</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>AI 的核心價值在於「驗證」而非「抽取」：</b>無論數值由 A、B 或 C 抽取，AI 皆會再行疊加，對每個數值自動校驗（第三節四項）。因此即便貴公司訂單格式固定、未用到 C 的 AI 抽取，AI 驗證層仍持續為資料正確性把關。</div>
+    <div class="price-note"><b>搭配方式：</b>同一套工具中三種方法可<b>並存混用</b>，固定欄位採 A、特定客戶的異常格式採 B、其餘發散者採 C，彼此互不衝突；亦可僅擇其一二。訂單多為固定模板 → 以 A 為主（輔以少量 B），可能完全無需 C 的 AI 抽取；僅少數客戶格式特殊 → A 與 B 混用即可涵蓋；訂單類型繁多、發散至難以窮舉規則 → A／B／C 三者並用，由 AI 補足長尾。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">關於 C 的本地 AI（可於輕量 CPU 電腦運行，無需獨立顯卡）</p>
+    <p>如需用到 C，整套方案皆<b>可配合一般／輕量 CPU 的電腦運行、無需獨立顯卡</b>，選型原則為「效能足用、可在地運行、資料不外傳」：</p>
+    <ul class="plain">
+      <li><b>本地 OCR</b>：成熟的輕量繁中辨識引擎，一般 CPU 即可運行，訂單資料<b>完全留存本機、不對外傳輸。</b></li>
+      <li><b>本地小模型</b>：可於一般 CPU 運行的輕量語言模型，補足規則未及的欄位。</li>
+    </ul>
+    <div class="callout"><b>將 AI 定位於「驗證」而非「全程抽取」的考量：</b>於一般電腦上將每張訂單皆交由大型模型抽取，效能與穩定度均難掌控、結果亦不易重現。以最穩定的 A／B 抽取絕大多數、AI 抽取僅補真正發散的長尾、再由 AI 統一驗證把關，準確度與穩定度最佳，且可運行於輕量設備。實際採用之方法與本地引擎選型，將於評估訂單樣本後確定。</div>
+  </section>
+
+  <!-- 5 交付範圍 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>本案交付範圍</h2>
+    <table>
+      <thead><tr><th class="num">#</th><th>交付物</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>訂單抽取程式</b></td><td>Python 工具：讀取 Word／Excel 訂單 → 抽取指定欄位 → 寫入 Excel 控制表（追加、保留歷史）</td></tr>
+        <tr><td class="num">2</td><td><b>A／B／C 抽取引擎</b></td><td>regex 固定規則 + 特例程式碼 + 本地 AI／OCR，三者可混用，依訂單實況搭配</td></tr>
+        <tr><td class="num">3</td><td><b>AI 資料驗證層</b></td><td>對每筆抽取值自動執行欄位合理性／交叉一致性／必填完整性／可疑值標記，篩出異常項目</td></tr>
+        <tr><td class="num">4</td><td><b>自動處理報告（debug）</b></td><td>每批次成功／可疑／失敗清單與原因，問題集中呈現</td></tr>
+        <tr><td class="num">5</td><td><b>操作說明 + 一次線上教學</b></td><td>檔案匯入、可疑項複核、報告判讀，使同仁得以直接上手</td></tr>
+        <tr><td class="num">6</td><td><b>原始碼交付</b></td><td>完整原始碼與註解，日後可自行維護或續約升級</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6 確認事項 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>報價前需確認的事項</h2>
+    <p>以下事項直接影響工作量與抽取準確率，懇請先行確認，此亦為本類案件成敗之關鍵：</p>
+    <ol class="confirm">
+      <li><b>能否提供部分去識別化的真實訂單範例？</b><p>此為最關鍵之素材。經評估實際檔案，方能判斷格式固定程度、是否需 OCR、規則可涵蓋之範圍。範例越多、越能涵蓋各客戶寫法，上線正確率越高。</p></li>
+      <li><b>訂單格式之一致性如何？</b><p>為少數客戶之固定模板，抑或上百家各自之格式？格式越固定，A（regex）命中率越高、成本越低；格式越雜，越需 B／C 補足。</p></li>
+      <li><b>Word 訂單為純文字／表格，抑或掃描影像？</b><p>純文字可直接讀取；若為掃描或拍照置入 Word，則需 OCR，工作量有所不同。</p></li>
+      <li><b>需抽取哪些欄位？控制表之格式為何？</b><p>懇請提供現行 Excel 控制表（欄位順序與格式）。一張訂單對應一列，抑或含多筆品項明細需展開為多列？</p></li>
+      <li><b>每日 100 張之來源為何？</b><p>統一收於單一資料夾、自附件下載，抑或其他來源？此將決定是否需建置自動收檔機制。</p></li>
+      <li><b>運行於何種設備？</b><p>單機桌上型電腦即可，抑或需排程每日自動執行？設備之 CPU／記憶體規格（影響本地 AI 之可運行規模）。</p></li>
+    </ol>
+  </section>
+
+  <!-- 7 報價分期 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>報價與分期</h2>
+    <p>以下為依需求說明之初步報價區間，<b>正式報價於上述事項確認、評估訂單範例後出具。</b></p>
+    <table>
+      <thead><tr><th>階段</th><th>交付內容</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期：樣本分析與抽取核心</b></td><td>評估訂單範例、定義欄位、完成 A／B 抽取與控制表寫入之可用版本</td><td class="pct">40%</td></tr>
+        <tr><td><b>第二期：AI 驗證 + 長尾補強</b></td><td>AI 資料驗證層（四項檢查）、以 C 之 AI／OCR 補足發散格式、處理報告</td><td class="pct">40%</td></tr>
+        <tr><td><b>第三期：交付與教學</b></td><td>操作文件、一次線上教學、原始碼交付</td><td class="pct">20%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">於「Word／Excel 文字與表格抽取 + A／B／C 抽取 + AI 資料驗證 + 自動報告」之範圍內，可於 <b>$20,000</b> 預算內完成。實際範圍取決於格式一致性及所採用之方法：多為固定模板、純文字則以 A（輔以少量 B）即可，預算尚屬充裕；多為掃描件、格式繁雜則須動用 C 之 OCR／AI 並進行較多調校，將於評估範例後說明何者落於預算內、何者建議分期辦理。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確排除（如需，另行報價）</p>
+    <ul class="plain exclude">
+      <li>訂單來源系統之對接（如自動由 email／ERP 收單），可後續加做</li>
+      <li>控制表以外之報表、儀表板、BI 分析</li>
+      <li>上線後長期維運與大幅格式變更之持續調校（可另議維運合約）</li>
+    </ul>
+    <div class="callout"><b>關鍵相依：</b>提供去識別化訂單範例與現行控制表格式，為出具正式報價之前提；經評估實際檔案方能確定所需採用之方法（A／B／C）與格式涵蓋範圍。</div>
+  </section>
+
+  <!-- 8 時程 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">8</span>時程</h2>
+    <p><b>確認規格與流程後，付訂後 3～5 日內完工</b>（視周邊處理而定；若僅需單純格式轉換，則 3 日內完成）。針對貴公司提供之範本，先將固定格式（A）與已知特例（B）建置完成、交付可用工具，其後依實際使用狀況微調，並依格式複雜度及是否需 regex／OCR 而定。</p>
+    <div class="callout"><b>範本越多、正確率越高。</b>抽取準確率直接取決於所評估之真實格式種類；貴公司初期提供之訂單樣本越多、越能涵蓋各客戶寫法，工具上線首日即可達致越高之準確率，需人工複核之可疑項目亦越少。故懇請盡量提供範例，此為提升正確率最直接之方式。</div>
+  </section>
+
+  <!-- 9 為什麼選擇我們 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">9</span>為什麼選擇我們</h2>
+    <div class="why-grid">
+      <div class="card"><b>此為我們專精之領域</b><p>資料抽取、regex／OCR、本地／雲端 AI 判讀、Python 自動化，皆為我們曾產出之商業成品，而非試做樣品。</p></div>
+      <div class="card"><b>A／B／C 搭配的務實取向</b><p>不為導入 AI 而導入；可由 regex 固定規則精準處理且零成本者即採用，特例以程式碼處理，僅真正發散的長尾才導入 AI；而 AI 的主力置於資料驗證把關。如何於輕量設備上達致最佳成本效益，我們具實務經驗。</p></div>
+      <div class="card"><b>將「自動 debug」確實落實</b><p>坊間多數交付之腳本抽取後即了事，出錯而無人察覺。我們交付的工具能主動標記異常、僅需人工確認即通過，且隨使用日趨精簡，方能支撐「長期使用」之需求。</p></div>
+      <div class="card"><b>全端一站式、原始碼交付</b><p>不轉包，附完整原始碼與文件，貴公司日後可自行維護或續約升級，不致交付後即失聯。</p></div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ footer ============ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="../logo/logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+</body>
+</html>
