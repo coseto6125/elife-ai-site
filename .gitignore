@@ -2,7 +2,11 @@ node_modules
 dist
 *.log
 .DS_Store
-.claude/
+.claude/*
+# 但提案 skill 要跟著 repo 進版控（團隊共用發提案流程）
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/proposal/
 
 # secrets — never commit
 .env
