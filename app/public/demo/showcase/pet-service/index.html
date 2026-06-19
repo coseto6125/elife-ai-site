@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毛日子 · 到府寵物保母與日照訂閱｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="毛日子｜台灣到府寵物保母與毛孩日照訂閱服務。三步驟線上預約：選服務、選毛孩、選時段，價格即時試算，讓每一天都是好毛日子。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FFF7EC;
+  --cream-2:#FFEFD9;
+  --peach:#FFB677;
+  --peach-deep:#FF9A52;
+  --berry:#FF6B6B;
+  --leaf:#5FB585;
+  --leaf-deep:#3F9A6A;
+  --sky:#8BC6EC;
+  --ink:#3A2E2A;
+  --ink-soft:#7A6A60;
+  --card:#FFFFFF;
+  --shadow:0 14px 34px -16px rgba(122,80,40,.42);
+  --shadow-sm:0 6px 16px -8px rgba(122,80,40,.40);
+  --radius:26px;
+  --radius-sm:16px;
+  --ring:0 0 0 4px rgba(255,154,82,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans TC",system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.disp{font-family:"Baloo 2","Noto Sans TC",cursive;line-height:1.18;letter-spacing:.2px}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+:focus-visible{outline:none;box-shadow:var(--ring);border-radius:14px}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.5em;justify-content:center;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.02rem;
+  padding:.82em 1.5em;border-radius:999px;border:none;cursor:pointer;
+  background:var(--berry);color:#fff;transition:transform .18s,box-shadow .18s,background .2s;
+  box-shadow:0 10px 22px -10px rgba(255,107,107,.85);
+}
+.btn:hover{transform:translateY(-2px) rotate(-.6deg);box-shadow:0 16px 28px -12px rgba(255,107,107,.9)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn--ghost{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm);border:2px solid var(--cream-2)}
+.btn--leaf{background:var(--leaf);box-shadow:0 10px 22px -10px rgba(63,154,106,.8)}
+
+/* ---------- nav ---------- */
+header.nav{position:sticky;top:0;z-index:50;background:rgba(255,247,236,.86);backdrop-filter:blur(10px);border-bottom:2px solid rgba(255,182,119,.3)}
+.nav__in{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Baloo 2";font-weight:800;font-size:1.42rem}
+.brand .logo{width:42px;height:42px;flex:none;filter:drop-shadow(0 4px 6px rgba(255,154,82,.4))}
+.brand small{font-family:"Noto Sans TC";font-weight:500;font-size:.62rem;color:var(--ink-soft);display:block;margin-top:-4px;letter-spacing:2px}
+.nav__links{display:flex;align-items:center;gap:26px;font-weight:500}
+.nav__links a.lk{position:relative;font-size:.97rem}
+.nav__links a.lk::after{content:"";position:absolute;left:0;bottom:-5px;height:3px;width:0;background:var(--peach);border-radius:3px;transition:width .25s}
+.nav__links a.lk:hover::after{width:100%}
+.nav__toggle{display:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:46px 0 30px;overflow:hidden}
+.hero__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center}
+.tagline-pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--cream-2);padding:7px 15px;border-radius:999px;font-weight:700;font-size:.84rem;color:var(--peach-deep);box-shadow:var(--shadow-sm)}
+.tagline-pill .dot{width:9px;height:9px;border-radius:50%;background:var(--leaf);box-shadow:0 0 0 4px rgba(95,181,133,.25)}
+.hero h1{font-size:clamp(2.5rem,6vw,4rem);font-weight:800;margin:18px 0 14px}
+.hero h1 .hl{color:var(--berry);position:relative;white-space:nowrap}
+.hero h1 .hl::after{content:"";position:absolute;left:-2%;right:-2%;bottom:6px;height:14px;background:rgba(255,182,119,.55);z-index:-1;border-radius:8px;transform:rotate(-1.4deg)}
+.hero p.lead{font-size:1.12rem;color:var(--ink-soft);max-width:30em;margin-bottom:24px}
+.hero__cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.hero__trust{display:flex;gap:24px;margin-top:30px;flex-wrap:wrap}
+.hero__trust .t{display:flex;flex-direction:column}
+.hero__trust .t b{font-family:"Baloo 2";font-size:1.7rem;color:var(--ink);line-height:1}
+.hero__trust .t span{font-size:.8rem;color:var(--ink-soft);margin-top:3px}
+
+/* mascot stage */
+.stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:380px}
+.stage__blob{position:absolute;inset:6% 4%;background:radial-gradient(circle at 38% 30%,var(--peach) 0%,var(--peach-deep) 60%,#ff8a3d 100%);border-radius:48% 52% 56% 44%/52% 46% 54% 48%;box-shadow:var(--shadow);animation:blobMorph 9s ease-in-out infinite}
+@keyframes blobMorph{0%,100%{border-radius:48% 52% 56% 44%/52% 46% 54% 48%}50%{border-radius:54% 46% 44% 56%/46% 56% 44% 54%}}
+.mascot{position:relative;width:min(320px,78%);z-index:2;transform-origin:bottom center}
+.float-tag{position:absolute;z-index:3;background:#fff;border-radius:16px;padding:8px 13px;box-shadow:var(--shadow);font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:7px;animation:floaty 4s ease-in-out infinite}
+.float-tag .em{font-size:1.1rem}
+.float-tag.t1{top:6%;left:-2%;animation-delay:.2s}
+.float-tag.t2{bottom:14%;right:-4%;animation-delay:1.4s;color:var(--leaf-deep)}
+.float-tag.t3{top:42%;right:2%;animation-delay:2.6s;color:var(--berry)}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+/* tail wag driven by JS via --wag */
+#tail{transform-box:fill-box;transform-origin:left center;animation:wag var(--wag,1.6s) ease-in-out infinite}
+@keyframes wag{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(20deg)}}
+
+/* ---------- section base ---------- */
+section{padding:64px 0}
+.eyebrow{display:inline-block;font-family:"Baloo 2";font-weight:700;color:var(--peach-deep);font-size:.9rem;letter-spacing:1px;margin-bottom:8px}
+.sec-h{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:800;margin-bottom:10px}
+.sec-sub{color:var(--ink-soft);max-width:34em;margin-bottom:34px}
+.center{text-align:center}
+.center .sec-sub{margin-left:auto;margin-right:auto}
+
+/* ---------- services ---------- */
+.svc-tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:30px}
+.svc-tab{font-family:"Baloo 2";font-weight:700;font-size:.96rem;padding:.6em 1.25em;border-radius:999px;border:2px solid var(--cream-2);background:#fff;cursor:pointer;color:var(--ink-soft);transition:.2s}
+.svc-tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-1px)}
+.svc-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.svc-panel[hidden]{display:none}
+.svc-card{background:var(--card);border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow-sm);border:2px solid #fff;transition:transform .22s,box-shadow .22s;position:relative;overflow:hidden}
+.svc-card:hover{transform:translateY(-6px) rotate(-.5deg);box-shadow:var(--shadow)}
+.svc-card .ico{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:1.8rem;background:var(--cream-2);margin-bottom:14px}
+.svc-card h3{font-size:1.25rem;font-weight:700;margin-bottom:6px}
+.svc-card p{font-size:.92rem;color:var(--ink-soft);margin-bottom:14px;min-height:2.6em}
+.svc-card .price{font-family:"Baloo 2";font-weight:800;font-size:1.35rem;color:var(--berry)}
+.svc-card .price small{font-size:.72rem;color:var(--ink-soft);font-weight:500}
+.svc-card .badge{position:absolute;top:16px;right:-30px;background:var(--leaf);color:#fff;font-family:"Baloo 2";font-weight:700;font-size:.72rem;padding:4px 36px;transform:rotate(34deg)}
+
+/* ---------- booking signature ---------- */
+.booking{background:linear-gradient(180deg,var(--cream-2),var(--cream));border-radius:42px;margin:0 auto;max-width:1180px}
+.book-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:28px;align-items:start}
+.steps-rail{display:flex;gap:8px;margin-bottom:26px}
+.step-dot{flex:1;display:flex;align-items:center;gap:10px;font-weight:700;font-family:"Baloo 2";color:var(--ink-soft);font-size:.92rem}
+.step-dot .n{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;background:#fff;border:2px solid var(--cream-2);font-size:.9rem;transition:.25s}
+.step-dot.active .n{background:var(--peach);border-color:var(--peach);color:#fff;transform:scale(1.12)}
+.step-dot.done .n{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.step-dot .bar{flex:1;height:3px;background:var(--cream-2);border-radius:3px;overflow:hidden}
+.step-dot .bar i{display:block;height:100%;width:0;background:var(--leaf);transition:width .4s}
+.step-dot.done .bar i,.step-dot.active .bar i{width:100%}
+.book-card{background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);border:2px solid #fff}
+.book-step{display:none;animation:fadeUp .35s ease}
+.book-step.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.book-step h3{font-size:1.3rem;margin-bottom:4px}
+.book-step .hint{color:var(--ink-soft);font-size:.9rem;margin-bottom:18px}
+.opt-grid{display:grid;gap:12px}
+.opt-grid.cols2{grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:13px;padding:14px 16px;border:2px solid var(--cream-2);border-radius:var(--radius-sm);cursor:pointer;background:#fff;transition:.18s;text-align:left;font:inherit;width:100%}
+.opt:hover{border-color:var(--peach);background:#FFFBF5}
+.opt[aria-pressed="true"]{border-color:var(--peach);background:#FFF3E2;box-shadow:0 0 0 3px rgba(255,182,119,.35)}
+.opt .em{font-size:1.7rem;flex:none}
+.opt .txt{flex:1}
+.opt .txt b{display:block;font-family:"Baloo 2";font-weight:700;font-size:1.02rem}
+.opt .txt span{font-size:.8rem;color:var(--ink-soft)}
+.opt .tag{font-family:"Baloo 2";font-weight:700;font-size:.85rem;color:var(--peach-deep);flex:none}
+.field{margin-bottom:14px}
+.field label{display:block;font-weight:700;font-size:.86rem;margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 14px;border:2px solid var(--cream-2);border-radius:14px;font:inherit;background:#fff;color:var(--ink)}
+.field input:focus,.field select:focus{border-color:var(--peach);outline:none}
+.slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.slot{padding:10px 6px;border:2px solid var(--cream-2);border-radius:13px;background:#fff;cursor:pointer;font-family:"Baloo 2";font-weight:700;font-size:.92rem;transition:.16s}
+.slot:hover{border-color:var(--sky)}
+.slot[aria-pressed="true"]{background:var(--sky);border-color:var(--sky);color:#fff}
+.book-nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+
+/* summary card */
+.summary{background:var(--ink);color:#fff;border-radius:var(--radius);padding:26px;position:sticky;top:88px;box-shadow:var(--shadow)}
+.summary h4{font-family:"Baloo 2";font-weight:700;font-size:1.15rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.summary .sub{color:rgba(255,255,255,.55);font-size:.82rem;margin-bottom:18px}
+.sum-row{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed rgba(255,255,255,.16);font-size:.92rem}
+.sum-row span:first-child{color:rgba(255,255,255,.6)}
+.sum-row b{font-weight:700}
+.sum-empty{color:rgba(255,255,255,.45)}
+.sum-total{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 4px}
+.sum-total span{color:rgba(255,255,255,.6);font-size:.9rem}
+.sum-total b{font-family:"Baloo 2";font-weight:800;font-size:2rem;color:var(--peach)}
+.summary .mini-mascot{position:absolute;top:-26px;right:18px;width:60px;animation:floaty 3.5s ease-in-out infinite}
+
+/* ---------- happy notes ---------- */
+.notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.note{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:2px solid #fff;position:relative}
+.note::before{content:"";position:absolute;top:18px;left:24px;font-size:3rem;color:var(--cream-2);font-family:"Baloo 2"}
+.note .who{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.note .av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;background:var(--cream-2);flex:none}
+.note .who b{font-family:"Baloo 2";font-weight:700;font-size:1rem;display:block}
+.note .who span{font-size:.78rem;color:var(--ink-soft)}
+.note .stars{color:var(--peach-deep);letter-spacing:2px;margin-bottom:8px}
+.note p{font-size:.93rem;color:var(--ink)}
+
+/* ---------- final cta ---------- */
+.bigcta{background:radial-gradient(circle at 20% 20%,var(--peach) 0%,var(--peach-deep) 55%,#ff8838 100%);border-radius:42px;padding:54px 30px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.bigcta h2{font-size:clamp(1.9rem,5vw,3rem);font-weight:800;margin-bottom:12px}
+.bigcta p{max-width:26em;margin:0 auto 26px;font-size:1.05rem;color:rgba(255,255,255,.9)}
+.bigcta .paws{position:absolute;font-size:2.2rem;opacity:.22}
+.bigcta .p1{top:14px;left:8%}.bigcta .p2{bottom:18px;left:18%}.bigcta .p3{top:30px;right:12%}.bigcta .p4{bottom:30px;right:6%}
+
+/* ---------- footer ---------- */
+footer{padding:46px 0 36px;text-align:center;color:var(--ink-soft)}
+footer .brand{justify-content:center;margin-bottom:14px}
+.foot-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;font-size:.92rem}
+.foot-stamp{font-family:"Baloo 2";font-weight:700;font-size:.9rem;color:var(--ink)}
+.foot-stamp a{color:var(--berry)}
+.foot-fine{font-size:.78rem;margin-top:8px}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);background:#fff;border:2px solid var(--leaf);border-radius:18px;padding:14px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:13px;z-index:200;max-width:90vw;transition:transform .45s cubic-bezier(.18,.9,.3,1.2)}
+.toast.show{transform:translate(-50%,0)}
+.toast .em{font-size:1.8rem;animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(.3)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.toast b{font-family:"Baloo 2";font-weight:700;display:block}
+.toast span{font-size:.85rem;color:var(--ink-soft)}
+
+/* ---------- responsive ---------- */
+@media(max-width:880px){
+  .hero__grid{grid-template-columns:1fr;text-align:center}
+  .hero p.lead{margin-left:auto;margin-right:auto}
+  .hero__cta,.hero__trust{justify-content:center}
+  .stage{order:-1;min-height:300px}
+  .book-grid{grid-template-columns:1fr}
+  .summary{position:static}
+  .summary .mini-mascot{display:none}
+  .nav__links{display:none}
+  .nav__toggle{display:inline-flex}
+}
+@media(max-width:640px){
+  .svc-panel,.notes-grid{grid-template-columns:1fr}
+  .opt-grid.cols2{grid-template-columns:1fr}
+  .booking{border-radius:28px}
+  section{padding:48px 0}
+  .step-dot span.lbl{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.05ms!important;scroll-behavior:auto}
+  .btn:hover,.svc-card:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- mascot SVG (Shiba 阿柴) reused via <use> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="shiba" viewBox="0 0 240 240">
+    <!-- tail -->
+    <path id="tail" d="M188 150 q42 -10 30 -46 q-4 22 -26 24 q14 8 -4 22 z" fill="#F4A24A"/>
+    <!-- body -->
+    <ellipse cx="120" cy="168" rx="68" ry="52" fill="#F8B85C"/>
+    <ellipse cx="120" cy="182" rx="40" ry="30" fill="#FFF3DF"/>
+    <!-- legs -->
+    <rect x="86" y="196" width="20" height="26" rx="10" fill="#F4A24A"/>
+    <rect x="134" y="196" width="20" height="26" rx="10" fill="#F4A24A"/>
+    <!-- head -->
+    <ellipse cx="120" cy="98" rx="60" ry="54" fill="#F8B85C"/>
+    <!-- ears -->
+    <path d="M70 60 L58 18 L98 50 Z" fill="#F4A24A"/>
+    <path d="M170 60 L182 18 L142 50 Z" fill="#F4A24A"/>
+    <path d="M74 56 L67 32 L90 50 Z" fill="#FFD9A0"/>
+    <path d="M166 56 L173 32 L150 50 Z" fill="#FFD9A0"/>
+    <!-- cheeks/snout -->
+    <path d="M120 78 q-44 4 -44 36 q0 28 44 30 q44 -2 44 -30 q0 -32 -44 -36 z" fill="#FFF3DF"/>
+    <!-- eyes -->
+    <circle cx="98" cy="98" r="7.5" fill="#3A2E2A"/>
+    <circle cx="142" cy="98" r="7.5" fill="#3A2E2A"/>
+    <circle cx="100" cy="95" r="2.4" fill="#fff"/>
+    <circle cx="144" cy="95" r="2.4" fill="#fff"/>
+    <!-- blush -->
+    <ellipse cx="84" cy="116" rx="9" ry="6" fill="#FFC2B0" opacity=".75"/>
+    <ellipse cx="156" cy="116" rx="9" ry="6" fill="#FFC2B0" opacity=".75"/>
+    <!-- nose + smile -->
+    <ellipse cx="120" cy="118" rx="7" ry="5" fill="#3A2E2A"/>
+    <path d="M120 123 q-12 14 -24 4 M120 123 q12 14 24 4" stroke="#3A2E2A" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="brand" href="#" aria-label="毛日子首頁">
+      <svg class="logo" viewBox="0 0 240 240" aria-hidden="true"><use href="#shiba"/></svg>
+      <span>毛日子<small>FURRY DAYS · 寵物保母</small></span>
+    </a>
+    <nav class="nav__links" aria-label="主選單">
+      <a class="lk" href="#services">服務</a>
+      <a class="lk" href="#booking">線上預約</a>
+      <a class="lk" href="#notes">毛家長心得</a>
+      <a class="btn" href="#booking">立即預約 🐾</a>
+    </nav>
+    <a class="btn nav__toggle" href="#booking">預約 🐾</a>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <span class="tagline-pill"><span class="dot"></span> 雙北到府 · 持證保母 · 即時回報</span>
+      <h1>讓每一天<br>都是<span class="hl">好毛日子</span></h1>
+      <p class="lead">你上班、出差、出國，毛孩在家也有人陪。到府餵食、散步、陪玩、日照接送，全程拍照即時回報，安心交給懂毛孩的我們。</p>
+      <div class="hero__cta">
+        <a class="btn" href="#booking">三步驟預約 →</a>
+        <a class="btn btn--ghost" href="#services">看看服務</a>
+      </div>
+      <div class="hero__trust">
+        <div class="t"><b>1,800+</b><span>陪伴過的毛孩</span></div>
+        <div class="t"><b>4.9★</b><span>毛家長評分</span></div>
+        <div class="t"><b>30分</b><span>內接單回覆</span></div>
+      </div>
+    </div>
+    <div class="stage" aria-hidden="true">
+      <div class="stage__blob"></div>
+      <svg class="mascot" id="heroMascot" viewBox="0 0 240 240"><use href="#shiba"/></svg>
+      <span class="float-tag t1"><span class="em">📸</span> 即時相片回報</span>
+      <span class="float-tag t2"><span class="em">🦴</span> 持證寵物保母</span>
+      <span class="float-tag t3"><span class="em">💛</span> 一對一陪玩</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap center">
+    <span class="eyebrow">SERVICES</span>
+    <h2 class="sec-h">挑一個適合毛孩的方案</h2>
+    <p class="sec-sub">不論單次到府或長期訂閱，都由同一位專屬保母服務，熟悉毛孩才更安心。</p>
+    <div class="svc-tabs" role="tablist" aria-label="服務分類">
+      <button class="svc-tab" role="tab" aria-selected="true" data-tab="home">到府保母</button>
+      <button class="svc-tab" role="tab" aria-selected="false" data-tab="day">狗狗日照</button>
+      <button class="svc-tab" role="tab" aria-selected="false" data-tab="sub">訂閱方案</button>
+    </div>
+
+    <div class="svc-panel" data-panel="home" role="tabpanel">
+      <div class="svc-card">
+        <div class="ico">🍚</div><h3>到府餵食陪伴</h3>
+        <p>30 分鐘到府餵食、清潔便盆、陪玩，附 5 張以上實況相片。</p>
+        <div class="price">NT$420 <small>/ 次</small></div>
+      </div>
+      <div class="svc-card">
+        <div class="ico">🦮</div><h3>散步遛遛</h3>
+        <p>45 分鐘戶外散步，依毛孩體型調整路線與強度。</p>
+        <div class="price">NT$520 <small>/ 次</small></div>
+      </div>
+      <div class="svc-card">
+        <span class="badge">熱門</span>
+        <div class="ico">🌙</div><h3>過夜陪伴</h3>
+        <p>保母到府過夜，給怕孤單的毛孩整晚的安全感。</p>
+        <div class="price">NT$1,280 <small>/ 晚</small></div>
+      </div>
+    </div>
+
+    <div class="svc-panel" data-panel="day" role="tabpanel" hidden>
+      <div class="svc-card">
+        <div class="ico">🚐</div><h3>到府接送</h3>
+        <p>專車雙向接送，毛孩不用塞在你的後座焦慮一路。</p>
+        <div class="price">NT$200 <small>/ 趟</small></div>
+      </div>
+      <div class="svc-card">
+        <span class="badge">熱門</span>
+        <div class="ico">🎾</div><h3>全日日照</h3>
+        <p>8 小時室內外混合活動、社交課與午休，下班接回好好睡。</p>
+        <div class="price">NT$880 <small>/ 日</small></div>
+      </div>
+      <div class="svc-card">
+        <div class="ico">🛁</div><h3>日照＋洗澡</h3>
+        <p>日照結束順手洗香香，回到家就是乾淨蓬鬆的毛孩。</p>
+        <div class="price">NT$1,180 <small>/ 日</small></div>
+      </div>
+    </div>
+
+    <div class="svc-panel" data-panel="sub" role="tabpanel" hidden>
+      <div class="svc-card">
+        <div class="ico">📦</div><h3>毛日子盒・月訂</h3>
+        <p>每月一盒當季零食、玩具與保健，依毛孩體型客製。</p>
+        <div class="price">NT$699 <small>/ 月</small></div>
+      </div>
+      <div class="svc-card">
+        <span class="badge">最划算</span>
+        <div class="ico">💳</div><h3>陪伴月票・8 次</h3>
+        <p>每月 8 次到府陪伴，比單次省下近兩成，固定保母。</p>
+        <div class="price">NT$2,990 <small>/ 月</small></div>
+      </div>
+      <div class="svc-card">
+        <div class="ico">🩺</div><h3>安心健康訂閱</h3>
+        <p>季度到府健康觀察＋線上獸醫諮詢，毛孩小變化提早發現。</p>
+        <div class="price">NT$1,290 <small>/ 季</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING (signature) -->
+<section id="booking">
+  <div class="booking" style="padding:44px 30px;">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:18px">
+      <span class="eyebrow">BOOK IN 3 STEPS</span>
+      <h2 class="sec-h">三步驟，幫毛孩約好時間</h2>
+      <p class="sec-sub">選服務 → 選毛孩 → 選時段，右邊會即時算好價格。阿柴的尾巴搖得越快，代表你越接近完成囉！</p>
+    </div>
+
+    <div class="steps-rail" id="rail">
+      <div class="step-dot active" data-s="1"><span class="n">1</span><span class="lbl">選服務</span><span class="bar"><i></i></span></div>
+      <div class="step-dot" data-s="2"><span class="n">2</span><span class="lbl">選毛孩</span><span class="bar"><i></i></span></div>
+      <div class="step-dot" data-s="3"><span class="n">3</span><span class="lbl">選時段</span></div>
+    </div>
+
+    <div class="book-grid">
+      <div class="book-card">
+        <!-- step 1 -->
+        <div class="book-step on" data-step="1">
+          <h3>想預約哪種陪伴？</h3>
+          <p class="hint">選一項主要服務，價格會依毛孩體型自動調整。</p>
+          <div class="opt-grid">
+            <button class="opt" data-svc="餵食陪伴" data-base="420" aria-pressed="false"><span class="em">🍚</span><span class="txt"><b>到府餵食陪伴</b><span>30 分鐘 · 含實況相片</span></span><span class="tag">NT$420 起</span></button>
+            <button class="opt" data-svc="散步遛遛" data-base="520" aria-pressed="false"><span class="em">🦮</span><span class="txt"><b>散步遛遛</b><span>45 分鐘 · 戶外活動</span></span><span class="tag">NT$520 起</span></button>
+            <button class="opt" data-svc="全日日照" data-base="880" aria-pressed="false"><span class="em">🎾</span><span class="txt"><b>全日日照</b><span>8 小時 · 含社交課</span></span><span class="tag">NT$880 起</span></button>
+            <button class="opt" data-svc="過夜陪伴" data-base="1280" aria-pressed="false"><span class="em">🌙</span><span class="txt"><b>過夜陪伴</b><span>到府過夜 · 整晚陪</span></span><span class="tag">NT$1,280 起</span></button>
+          </div>
+        </div>
+        <!-- step 2 -->
+        <div class="book-step" data-step="2">
+          <h3>你家是哪種毛孩？</h3>
+          <p class="hint">選種類與體型，價格會依照顧難度自動加成。</p>
+          <div class="opt-grid cols2" style="margin-bottom:14px">
+            <button class="opt" data-type="狗狗" aria-pressed="false"><span class="em">🐶</span><span class="txt"><b>狗狗</b></span></button>
+            <button class="opt" data-type="貓咪" aria-pressed="false"><span class="em">🐱</span><span class="txt"><b>貓咪</b></span></button>
+            <button class="opt" data-type="兔兔/小動物" aria-pressed="false"><span class="em">🐰</span><span class="txt"><b>兔兔・小動物</b></span></button>
+            <button class="opt" data-type="多隻同住" aria-pressed="false"><span class="em">🐾</span><span class="txt"><b>多隻同住</b></span></button>
+          </div>
+          <div class="opt-grid">
+            <button class="opt" data-size="小型" data-mult="1" aria-pressed="false"><span class="em">🐾</span><span class="txt"><b>小型</b><span>10 公斤以下</span></span><span class="tag">原價</span></button>
+            <button class="opt" data-size="中型" data-mult="1.2" aria-pressed="false"><span class="em">🐕</span><span class="txt"><b>中型</b><span>10–25 公斤</span></span><span class="tag">+20%</span></button>
+            <button class="opt" data-size="大型" data-mult="1.45" aria-pressed="false"><span class="em">🐕‍🦺</span><span class="txt"><b>大型</b><span>25 公斤以上</span></span><span class="tag">+45%</span></button>
+          </div>
+        </div>
+        <!-- step 3 -->
+        <div class="book-step" data-step="3">
+          <h3>挑個方便的時段</h3>
+          <p class="hint">填好聯絡方式，我們 30 分鐘內回覆確認。</p>
+          <div class="field"><label for="bk-name">毛家長稱呼</label><input id="bk-name" type="text" placeholder="例如：小柴的媽"></div>
+          <div class="field"><label for="bk-date">服務日期</label><input id="bk-date" type="date"></div>
+          <label style="display:block;font-weight:700;font-size:.86rem;margin-bottom:8px">時段</label>
+          <div class="slot-grid" id="slots">
+            <button class="slot" data-slot="08:00–11:00" aria-pressed="false">08:00–11:00</button>
+            <button class="slot" data-slot="11:00–14:00" aria-pressed="false">11:00–14:00</button>
+            <button class="slot" data-slot="14:00–17:00" aria-pressed="false">14:00–17:00</button>
+            <button class="slot" data-slot="17:00–20:00" aria-pressed="false">17:00–20:00</button>
+            <button class="slot" data-slot="20:00–22:00" aria-pressed="false">20:00–22:00</button>
+            <button class="slot" data-slot="整日彈性" aria-pressed="false">整日彈性</button>
+          </div>
+        </div>
+
+        <div class="book-nav">
+          <button class="btn btn--ghost" id="prevBtn" style="visibility:hidden">← 上一步</button>
+          <button class="btn" id="nextBtn">下一步 →</button>
+        </div>
+      </div>
+
+      <!-- summary -->
+      <aside class="summary" aria-live="polite">
+        <svg class="mini-mascot" id="sumMascot" viewBox="0 0 240 240" aria-hidden="true"><use href="#shiba"/></svg>
+        <h4>🧾 預約小結</h4>
+        <p class="sub">阿柴正在幫你記下來…</p>
+        <div class="sum-row"><span>服務</span><b id="sumSvc" class="sum-empty">尚未選擇</b></div>
+        <div class="sum-row"><span>毛孩</span><b id="sumPet" class="sum-empty">尚未選擇</b></div>
+        <div class="sum-row"><span>體型加成</span><b id="sumSize" class="sum-empty">—</b></div>
+        <div class="sum-row"><span>時段</span><b id="sumSlot" class="sum-empty">尚未選擇</b></div>
+        <div class="sum-total"><span>預估費用</span><b id="sumTotal">NT$0</b></div>
+        <p class="sub" style="margin-top:6px">實際費用以保母確認為準，現在預約不收費。</p>
+      </aside>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- HAPPY NOTES -->
+<section id="notes">
+  <div class="wrap center">
+    <span class="eyebrow">HAPPY PARENTS</span>
+    <h2 class="sec-h">毛家長們這樣說</h2>
+    <p class="sec-sub">真實的安心，來自每一次的拍照回報與細心。</p>
+  </div>
+  <div class="wrap notes-grid">
+    <div class="note">
+      <div class="who"><span class="av">👩</span><div><b>Yuki</b><span>柴犬・麻糬的媽</span></div></div>
+      <div class="stars">★★★★★</div>
+      <p>出差三天最怕麻糬亂大便，保母每天傳散步影片，連牠挑食都記下來，回家像沒離開過。</p>
+    </div>
+    <div class="note">
+      <div class="who"><span class="av">🧑</span><div><b>阿哲</b><span>橘貓・布丁的拔</span></div></div>
+      <div class="stars">★★★★★</div>
+      <p>布丁很怕生，原本擔心，沒想到保母超有耐心，第二次就主動討摸了，照片裡笑得超開。</p>
+    </div>
+    <div class="note">
+      <div class="who"><span class="av">👵</span><div><b>陳阿姨</b><span>貴賓・妞妞的奶奶</span></div></div>
+      <div class="stars">★★★★★</div>
+      <p>我不太會用 App，客服一步步教我預約，妞妞日照回來累到秒睡，這錢花得超值。</p>
+    </div>
+  </div>
+</section>
+
+<!-- BIG CTA -->
+<section>
+  <div class="wrap">
+    <div class="bigcta">
+      <span class="paws p1">🐾</span><span class="paws p2">🦴</span><span class="paws p3">🐾</span><span class="paws p4">🐾</span>
+      <h2>毛孩的好日子，今天開始</h2>
+      <p>30 秒填好預約，30 分鐘內專屬保母回覆你。第一次體驗，到府餵食現折 NT$100。</p>
+      <a class="btn btn--leaf" href="#booking" style="font-size:1.1rem;padding:1em 1.8em">立即預約陪伴 🐾</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#"><svg class="logo" viewBox="0 0 240 240" aria-hidden="true"><use href="#shiba"/></svg><span>毛日子</span></a>
+    <div class="foot-links">
+      <a href="#services">服務</a><a href="#booking">線上預約</a><a href="#notes">毛家長心得</a><a href="#">常見問題</a>
+    </div>
+    <p class="foot-stamp">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></p>
+    <p class="foot-fine">本頁為前端設計樣板展示，內容與品牌「毛日子」皆為示意，非真實營業服務。</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="assertive">
+  <span class="em">🐶</span>
+  <div><b id="toastTitle">預約已送出！</b><span id="toastMsg">阿柴會在 30 分鐘內回覆你～</span></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+
+  /* ---- service tabs ---- */
+  $$(".svc-tab").forEach(function(tab){
+    tab.addEventListener("click",function(){
+      $$(".svc-tab").forEach(function(t){t.setAttribute("aria-selected","false");});
+      tab.setAttribute("aria-selected","true");
+      $$(".svc-panel").forEach(function(p){p.hidden = p.dataset.panel!==tab.dataset.tab;});
+    });
+  });
+
+  /* ---- booking state ---- */
+  var state={svc:null,base:0,type:null,size:null,mult:0,slot:null};
+  var step=1, MAX=3;
+
+  function fmt(n){return "NT$"+Math.round(n).toLocaleString("en-US");}
+
+  function setText(el,val,empty){
+    el.textContent = val || empty;
+    el.classList.toggle("sum-empty", !val);
+  }
+
+  function total(){
+    if(!state.base) return 0;
+    var m = state.mult || 1; // size not chosen yet => base only
+    return state.base * m;
+  }
+
+  function updateSummary(){
+    setText($("#sumSvc"), state.svc, "尚未選擇");
+    setText($("#sumPet"), state.type, "尚未選擇");
+    setText($("#sumSize"), state.size ? state.size+"（×"+state.mult+"）" : null, "—");
+    setText($("#sumSlot"), state.slot, "尚未選擇");
+    $("#sumTotal").textContent = fmt(total());
+    wag();
+  }
+
+  /* tail wags faster as more is filled (signature feedback) */
+  function wag(){
+    var done=0;
+    if(state.svc)done++; if(state.type&&state.size)done++; if(state.slot)done++;
+    var speeds=["1.6s","1.1s","0.7s","0.4s"];
+    document.documentElement.style.setProperty("--wag", speeds[done]);
+  }
+
+  function toggleGroup(btns,clicked,assign){
+    btns.forEach(function(b){b.setAttribute("aria-pressed", b===clicked?"true":"false");});
+    assign(clicked);
+    updateSummary();
+  }
+
+  // step 1 service
+  var svcBtns=$$('[data-svc]');
+  svcBtns.forEach(function(b){
+    b.addEventListener("click",function(){
+      toggleGroup(svcBtns,b,function(c){state.svc=c.dataset.svc;state.base=+c.dataset.base;});
+    });
+  });
+  // step 2 type
+  var typeBtns=$$('[data-type]');
+  typeBtns.forEach(function(b){
+    b.addEventListener("click",function(){
+      toggleGroup(typeBtns,b,function(c){state.type=c.dataset.type;});
+    });
+  });
+  // step 2 size
+  var sizeBtns=$$('[data-size]');
+  sizeBtns.forEach(function(b){
+    b.addEventListener("click",function(){
+      toggleGroup(sizeBtns,b,function(c){state.size=c.dataset.size;state.mult=+c.dataset.mult;});
+    });
+  });
+  // step 3 slot
+  var slotBtns=$$('#slots .slot');
+  slotBtns.forEach(function(b){
+    b.addEventListener("click",function(){
+      toggleGroup(slotBtns,b,function(c){state.slot=c.dataset.slot;});
+    });
+  });
+
+  /* ---- step navigation ---- */
+  function showStep(n){
+    step=n;
+    $$(".book-step").forEach(function(s){s.classList.toggle("on", +s.dataset.step===n);});
+    $$("#rail .step-dot").forEach(function(d){
+      var s=+d.dataset.s;
+      d.classList.toggle("active", s===n);
+      d.classList.toggle("done", s<n);
+    });
+    $("#prevBtn").style.visibility = n>1 ? "visible":"hidden";
+    $("#nextBtn").textContent = n===MAX ? "送出預約 🐾" : "下一步 →";
+  }
+
+  function canAdvance(){
+    if(step===1 && !state.svc){ nudge("先幫毛孩選一項服務吧 🍚"); return false; }
+    if(step===2 && (!state.type||!state.size)){ nudge("選好毛孩種類和體型喔 🐕"); return false; }
+    return true;
+  }
+
+  $("#nextBtn").addEventListener("click",function(){
+    if(step<MAX){
+      if(!canAdvance()) return;
+      showStep(step+1);
+    } else {
+      if(!state.slot){ nudge("再挑一個方便的時段就好啦 🕒"); return; }
+      submit();
+    }
+  });
+  $("#prevBtn").addEventListener("click",function(){ if(step>1) showStep(step-1); });
+
+  /* clicking a rail dot jumps if allowed */
+  $$("#rail .step-dot").forEach(function(d){
+    d.addEventListener("click",function(){
+      var target=+d.dataset.s;
+      if(target<=step){ showStep(target); }
+      else if(canAdvance()){ showStep(step+1); }
+    });
+  });
+
+  /* ---- toast ---- */
+  var toast=$("#toast"), tTimer;
+  function nudge(msg){
+    $("#toast .em").textContent="🐾";
+    $("#toastTitle").textContent="再一步就好～";
+    $("#toastMsg").textContent=msg;
+    flashToast();
+  }
+  function flashToast(){
+    toast.classList.add("show");
+    clearTimeout(tTimer);
+    tTimer=setTimeout(function(){toast.classList.remove("show");},3200);
+  }
+  function submit(){
+    var name=$("#bk-name").value.trim()||"毛家長";
+    $("#toast .em").textContent="🎉";
+    $("#toastTitle").textContent="預約已送出，"+name+"！";
+    $("#toastMsg").textContent=state.svc+" · "+state.type+" · "+state.slot+" · 預估 "+fmt(total());
+    flashToast();
+    document.documentElement.style.setProperty("--wag","0.35s");
+  }
+
+  updateSummary();
+})();
+</script>
+</body>
+</html>
