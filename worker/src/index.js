@@ -120,6 +120,19 @@ export default {
     if (request.method === 'GET' && url.pathname === '/track/all') {
       return json({ items: await listAll(env) }, 200, origin)
     }
+    // 發布時登記提案：建立 hash+label、count 從 0 起算（已存在則保留原 count）。
+    // 讓尚未被開啟的提案也出現在總覽。
+    if (request.method === 'GET' && url.pathname === '/track/register') {
+      const hash = url.searchParams.get('p') || ''
+      const label = clean(url.searchParams.get('label'), 80)
+      if (!isHash(hash)) return json({ error: 'bad hash' }, 400, origin)
+      const existing = await env.VIEWS.get(`count:${hash}`)
+      const writes = []
+      if (existing === null) writes.push(env.VIEWS.put(`count:${hash}`, '0'))
+      if (label) writes.push(env.VIEWS.put(`label:${hash}`, label))
+      if (writes.length) await Promise.all(writes)
+      return json({ ok: true, hash, label, count: parseInt(existing, 10) || 0 }, 200, origin)
+    }
     if (request.method === 'GET' && url.pathname === '/track/stats') {
       const hash = url.searchParams.get('p') || ''
       if (!isHash(hash)) return json({ error: 'bad hash' }, 400, origin)
