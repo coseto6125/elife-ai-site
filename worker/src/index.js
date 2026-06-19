@@ -44,9 +44,62 @@ function json(body, status, origin) {
 const clean = (s, max) => String(s ?? '').replace(/[\r\n]+/g, ' ').trim().slice(0, max)
 const isEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
 
+// 提案瀏覽追蹤：只記「開了幾次 + 時間」，不存任何個資。
+// 資料放 Workers KV (binding VIEWS)：
+//   count:<hash>  → 累計次數
+//   ts:<hash>     → 最近 50 筆 ISO 時間戳的 JSON 陣列
+// hash 僅接受 demo 路徑用的 12 位 hex，過濾任意 key 寫入。
+const isHash = (s) => /^[0-9a-f]{12}$/.test(s)
+
+async function recordView(hash, env) {
+  const [rawCount, rawTs] = await Promise.all([
+    env.VIEWS.get(`count:${hash}`),
+    env.VIEWS.get(`ts:${hash}`),
+  ])
+  const count = (parseInt(rawCount, 10) || 0) + 1
+  const ts = rawTs ? JSON.parse(rawTs) : []
+  ts.unshift(new Date().toISOString())
+  await Promise.all([
+    env.VIEWS.put(`count:${hash}`, String(count)),
+    env.VIEWS.put(`ts:${hash}`, JSON.stringify(ts.slice(0, 50))),
+  ])
+}
+
+// 1×1 透明 GIF，作為 /track 的回應 body（即使 JS 被擋，<img> fallback 也能記）
+const PIXEL = Uint8Array.from(
+  atob('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'),
+  (c) => c.charCodeAt(0),
+)
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || ''
+    const url = new URL(request.url)
+
+    // --- 提案瀏覽追蹤（GET，與寄信獨立）---
+    if (request.method === 'GET' && url.pathname === '/track') {
+      const hash = url.searchParams.get('p') || ''
+      if (isHash(hash)) await recordView(hash, env)
+      return new Response(PIXEL, {
+        headers: {
+          'Content-Type': 'image/gif',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      })
+    }
+    if (request.method === 'GET' && url.pathname === '/track/stats') {
+      const hash = url.searchParams.get('p') || ''
+      if (!isHash(hash)) return json({ error: 'bad hash' }, 400, origin)
+      const [rawCount, rawTs] = await Promise.all([
+        env.VIEWS.get(`count:${hash}`),
+        env.VIEWS.get(`ts:${hash}`),
+      ])
+      return json(
+        { hash, count: parseInt(rawCount, 10) || 0, recent: rawTs ? JSON.parse(rawTs) : [] },
+        200,
+        origin,
+      )
+    }
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(origin) })

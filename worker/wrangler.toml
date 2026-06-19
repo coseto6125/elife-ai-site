@@ -8,3 +8,10 @@ compatibility_flags = ["nodejs_compat"]
 [[send_email]]
 name = "SEND_EMAIL"
 destination_address = "digital.oasis.tw@gmail.com"
+
+# 提案瀏覽追蹤用 KV。建立：
+#   cd worker && npx wrangler kv namespace create VIEWS
+# 把回傳的 id 填入下方，再 ./deploy.sh
+[[kv_namespaces]]
+binding = "VIEWS"
+id = "20aa173efce248988431146d0dc666aa"
