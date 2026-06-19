@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>脈 Pulse — AI 數據分析平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg-1: #0e1117;
+    --bg-2: #12161f;
+    --panel: #11151d;
+    --panel-glass: rgba(20, 25, 35, 0.55);
+    --line: rgba(255, 255, 255, 0.07);
+    --line-strong: rgba(255, 255, 255, 0.12);
+    --txt: #e8ecf3;
+    --txt-2: #9aa4b5;
+    --txt-3: #626c7e;
+    --accent: #4f8cff;
+    --accent-2: #6fa8ff;
+    --accent-soft: rgba(79, 140, 255, 0.14);
+    --tint: #34d399;
+    --tint-soft: rgba(52, 211, 153, 0.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --maxw: 1180px;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: "Sora", system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .mono { font-family: "JetBrains Mono", monospace; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  section { position: relative; }
+
+  /* ===== background mesh ===== */
+  .mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 70% 0%, rgba(79, 140, 255, 0.10), transparent 70%),
+      radial-gradient(50% 50% at 10% 20%, rgba(52, 211, 153, 0.06), transparent 70%);
+  }
+  .mesh::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+    opacity: 0.5;
+  }
+  main { position: relative; z-index: 1; }
+
+  /* ===== nav ===== */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(10, 12, 16, 0.7);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; gap: 28px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+  .logo .mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    display: grid; place-items: center; font-size: 15px; color: #fff;
+    box-shadow: 0 4px 16px rgba(79, 140, 255, 0.4);
+  }
+  .nav-links { display: flex; gap: 26px; margin-left: 14px; }
+  .nav-links a { color: var(--txt-2); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--txt); }
+  .nav-cta { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .btn {
+    font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    border-radius: 9px; border: 1px solid transparent; padding: 9px 18px;
+    transition: all 0.2s var(--ease); white-space: nowrap;
+  }
+  .btn-ghost { background: transparent; color: var(--txt-2); border-color: transparent; padding: 9px 6px; }
+  .btn-ghost:hover { color: var(--txt); }
+  .btn-line { background: var(--bg-2); color: var(--txt); border-color: var(--line-strong); }
+  .btn-line:hover { border-color: var(--accent); color: #fff; }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 6px 20px rgba(79, 140, 255, 0.32);
+  }
+  .btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); box-shadow: 0 8px 26px rgba(79, 140, 255, 0.45); }
+  .btn-lg { padding: 13px 26px; font-size: 15px; }
+  .nav-toggle { display: none; }
+
+  /* ===== hero ===== */
+  .hero { padding: 86px 0 64px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 500; color: var(--txt-2);
+    background: var(--panel); border: 1px solid var(--line);
+    padding: 6px 13px; border-radius: 100px; margin-bottom: 22px;
+  }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tint); box-shadow: 0 0 8px var(--tint); }
+  h1 {
+    font-size: clamp(38px, 5vw, 56px); line-height: 1.04;
+    font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px;
+  }
+  h1 .grad {
+    background: linear-gradient(120deg, #fff 20%, var(--accent-2) 55%, var(--tint));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p.sub { font-size: 17px; color: var(--txt-2); max-width: 460px; margin-bottom: 30px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 30px; }
+  .hero-meta .m { font-size: 13px; color: var(--txt-3); }
+  .hero-meta .m b { display: block; font-size: 21px; color: var(--txt); font-weight: 700; }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ===== dashboard preview card ===== */
+  .preview {
+    position: relative; border-radius: 20px;
+    background: linear-gradient(160deg, rgba(22, 28, 40, 0.9), rgba(14, 17, 23, 0.92));
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    backdrop-filter: blur(20px);
+    padding: 18px; overflow: hidden;
+    animation: float 7s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .preview::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(79,140,255,0.6), transparent);
+  }
+  .pv-head { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 2px 4px; }
+  .pv-dots { display: flex; gap: 6px; }
+  .pv-dots i { width: 9px; height: 9px; border-radius: 50%; background: #2a3140; display: inline-block; }
+  .pv-title { font-size: 12px; color: var(--txt-3); margin-left: 6px; }
+  .pv-live { margin-left: auto; font-size: 11px; color: var(--tint); display: flex; align-items: center; gap: 6px; }
+  .pv-live .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tint); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .kpi {
+    background: rgba(255,255,255,0.025); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 12px 13px;
+  }
+  .kpi .lbl { font-size: 10.5px; color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.06em; }
+  .kpi .val { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-top: 4px; }
+  .kpi .chg { font-size: 11px; margin-top: 2px; font-weight: 600; }
+  .chg.up { color: var(--tint); }
+  .chg.down { color: #f87171; }
+
+  .pv-chart {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 14px; margin-bottom: 12px;
+  }
+  .pv-chart .ch-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .pv-chart .ch-head h4 { font-size: 13px; font-weight: 600; }
+  .pv-chart .ch-head span { font-size: 11px; color: var(--txt-3); }
+  .area-path { stroke: var(--accent); stroke-width: 2.5; fill: none;
+    stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+  .preview.in .area-path { animation: draw 1.8s var(--ease) 0.3s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .area-fill { fill: url(#areaGrad); opacity: 0; }
+  .preview.in .area-fill { animation: fadeFill 1.2s ease 1.1s forwards; }
+  @keyframes fadeFill { to { opacity: 1; } }
+
+  .pv-bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; align-items: end; height: 56px; }
+  .pv-bars .bar { background: linear-gradient(180deg, var(--accent), rgba(79,140,255,0.25)); border-radius: 4px 4px 0 0;
+    transform: scaleY(0); transform-origin: bottom; }
+  .preview.in .pv-bars .bar { animation: grow 0.7s var(--ease) forwards; }
+  @keyframes grow { to { transform: scaleY(1); } }
+
+  /* ===== trust strip ===== */
+  .trust { padding: 30px 0 10px; text-align: center; }
+  .trust p { font-size: 12px; color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 18px; }
+  .wordmarks { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 42px; align-items: center; }
+  .wordmarks span { font-size: 18px; font-weight: 700; color: var(--txt-3); letter-spacing: -0.01em; opacity: 0.75;
+    transition: color 0.2s, opacity 0.2s; }
+  .wordmarks span:hover { color: var(--txt); opacity: 1; }
+
+  /* ===== generic section heading ===== */
+  .sec { padding: 84px 0; }
+  .sec-head { max-width: 600px; margin-bottom: 46px; }
+  .sec-head .eyebrow { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 0.04em; margin-bottom: 12px; }
+  .sec-head h2 { font-size: clamp(28px, 3.5vw, 38px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.12; margin-bottom: 14px; }
+  .sec-head p { font-size: 16px; color: var(--txt-2); }
+  .sec-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+
+  /* ===== features ===== */
+  .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .feat {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 24px 22px;
+    transition: transform 0.3s var(--ease), border-color 0.3s, background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .feat:hover { transform: translateY(-5px); border-color: var(--line-strong); background: var(--bg-2); }
+  .feat::after {
+    content: ""; position: absolute; inset: 0; opacity: 0;
+    background: radial-gradient(120px 80px at 80% 0%, var(--accent-soft), transparent 70%);
+    transition: opacity 0.3s;
+  }
+  .feat:hover::after { opacity: 1; }
+  .feat .glyph {
+    width: 42px; height: 42px; border-radius: 11px; margin-bottom: 18px;
+    display: grid; place-items: center; background: var(--accent-soft); border: 1px solid rgba(79,140,255,0.25);
+  }
+  .feat h3 { font-size: 16.5px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .feat p { font-size: 13.5px; color: var(--txt-2); line-height: 1.6; }
+
+  /* ===== tabs ===== */
+  .tabs-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .tabs-bar { display: flex; gap: 4px; padding: 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .tab-btn {
+    font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    background: transparent; color: var(--txt-2); border: none; padding: 9px 16px; border-radius: 9px;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--txt); }
+  .tab-btn.active { background: var(--accent-soft); color: var(--accent-2); }
+  .tab-body { padding: 32px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 36px; align-items: center; min-height: 280px; }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: contents; }
+  .tab-copy h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .tab-copy p { font-size: 15px; color: var(--txt-2); margin-bottom: 18px; }
+  .tab-copy ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .tab-copy li { font-size: 14px; color: var(--txt-2); display: flex; gap: 10px; align-items: flex-start; }
+  .tab-copy li .ck { color: var(--tint); flex-shrink: 0; margin-top: 2px; }
+  .tab-visual {
+    background: var(--bg-1); border: 1px solid var(--line); border-radius: 14px; padding: 20px; min-height: 220px;
+  }
+
+  /* ===== metrics band ===== */
+  .metrics { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-1); }
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 56px 0; text-align: center; }
+  .metric .num { font-size: clamp(34px, 4.5vw, 48px); font-weight: 800; letter-spacing: -0.03em;
+    background: linear-gradient(120deg, #fff, var(--accent-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .metric .num .suffix { -webkit-text-fill-color: var(--accent-2); }
+  .metric .lbl { font-size: 14px; color: var(--txt-2); margin-top: 6px; }
+
+  /* ===== pricing ===== */
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+  .tier {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 26px; display: flex; flex-direction: column;
+  }
+  .tier.hot { border-color: var(--accent); background: linear-gradient(180deg, var(--accent-soft), transparent 40%), var(--panel);
+    box-shadow: 0 20px 50px -20px rgba(79,140,255,0.4); position: relative; }
+  .tier.hot .pop { position: absolute; top: -11px; left: 26px; font-size: 11px; font-weight: 600; color: #fff;
+    background: var(--accent); padding: 4px 11px; border-radius: 100px; }
+  .tier .tname { font-size: 15px; font-weight: 600; color: var(--txt-2); }
+  .tier .pr { font-size: 38px; font-weight: 800; letter-spacing: -0.03em; margin: 8px 0 2px; }
+  .tier .pr small { font-size: 14px; font-weight: 500; color: var(--txt-3); }
+  .tier .tdesc { font-size: 13px; color: var(--txt-3); margin-bottom: 20px; }
+  .tier ul { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 24px; flex: 1; }
+  .tier li { font-size: 13.5px; color: var(--txt-2); display: flex; gap: 9px; }
+  .tier li .ck { color: var(--accent-2); }
+  .tier.hot li .ck { color: var(--tint); }
+  .tier .btn { width: 100%; text-align: center; }
+
+  /* ===== final cta ===== */
+  .cta-band { padding: 96px 0; text-align: center; }
+  .cta-inner {
+    background: linear-gradient(160deg, rgba(79,140,255,0.12), rgba(52,211,153,0.06)), var(--panel);
+    border: 1px solid var(--line-strong); border-radius: 24px; padding: 60px 32px; position: relative; overflow: hidden;
+  }
+  .cta-inner::before { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(50% 80% at 50% 0%, rgba(79,140,255,0.18), transparent 70%); }
+  .cta-inner > * { position: relative; }
+  .cta-inner h2 { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; }
+  .cta-inner p { font-size: 17px; color: var(--txt-2); margin-bottom: 28px; }
+  .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* ===== footer ===== */
+  footer { border-top: 1px solid var(--line); padding: 48px 0 36px; }
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+  .foot-brand p { font-size: 13.5px; color: var(--txt-3); max-width: 280px; margin-top: 14px; }
+  .foot-col h5 { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 14px; }
+  .foot-col a { display: block; font-size: 13.5px; color: var(--txt-3); margin-bottom: 10px; transition: color 0.2s; }
+  .foot-col a:hover { color: var(--txt); }
+  .foot-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    padding-top: 24px; border-top: 1px solid var(--line); }
+  .foot-bottom p { font-size: 12.5px; color: var(--txt-3); }
+  .foot-bottom .credit { color: var(--txt-2); font-weight: 500; }
+
+  /* ===== responsive ===== */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .feat-grid { grid-template-columns: repeat(2, 1fr); }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 36px 20px; }
+    .price-grid { grid-template-columns: 1fr; }
+    .tab-body { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .nav-toggle { display: grid; place-items: center; width: 38px; height: 38px; margin-left: auto;
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 9px; cursor: pointer; }
+    .nav-cta .btn-ghost { display: none; }
+  }
+  @media (max-width: 540px) {
+    .wrap { padding: 0 18px; }
+    .hero { padding: 56px 0 40px; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: 1fr; }
+    .hero-meta { gap: 18px; flex-wrap: wrap; }
+    .sec { padding: 60px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#" class="logo"><span class="mark">脈</span> Pulse</a>
+    <div class="nav-links">
+      <a href="#features">產品</a>
+      <a href="#capabilities">能力</a>
+      <a href="#pricing">定價</a>
+      <a href="#metrics">客戶</a>
+      <a href="#">文件</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost" data-fake>登入</a>
+      <a href="#" class="btn btn-primary" data-fake>免費試用</a>
+      <button class="nav-toggle" id="navToggle" aria-label="選單">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5h14M2 9h14M2 13h14"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="badge reveal"><span class="dot"></span> AI 異常偵測 · 即時上線</span>
+        <h1 class="reveal">讓每一筆數據<br /><span class="grad">主動告訴你發生了什麼</span></h1>
+        <p class="sub reveal">脈 Pulse 把分散的產品事件、營收與用戶行為，整合成一座即時儀表板。AI 自動找出趨勢與異常，讓團隊在問題擴大前就先一步行動。</p>
+        <div class="hero-actions reveal">
+          <a href="#" class="btn btn-primary btn-lg" data-fake>免費開始 14 天</a>
+          <a href="#capabilities" class="btn btn-line btn-lg">觀看產品導覽</a>
+        </div>
+        <div class="hero-meta reveal">
+          <div class="m"><b>99.98%</b> 服務可用率</div>
+          <div class="m"><b>&lt;120ms</b> 查詢延遲</div>
+          <div class="m"><b>SOC 2</b> 安全合規</div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="preview reveal" id="preview">
+          <div class="pv-head">
+            <div class="pv-dots"><i></i><i></i><i></i></div>
+            <span class="pv-title mono">pulse · overview</span>
+            <span class="pv-live"><span class="dot"></span> LIVE</span>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi">
+              <div class="lbl">月經常性營收</div>
+              <div class="val mono">$<span class="cu" data-to="284" data-dec="0">0</span>K</div>
+              <div class="chg up">▲ 12.4%</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">活躍用戶</div>
+              <div class="val mono"><span class="cu" data-to="48.6" data-dec="1">0</span>K</div>
+              <div class="chg up">▲ 8.1%</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">流失率</div>
+              <div class="val mono"><span class="cu" data-to="2.3" data-dec="1">0</span>%</div>
+              <div class="chg down">▼ 0.4%</div>
+            </div>
+          </div>
+          <div class="pv-chart">
+            <div class="ch-head"><h4>營收趨勢</h4><span class="mono">近 30 天</span></div>
+            <svg viewBox="0 0 340 110" width="100%" height="110" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(79,140,255,0.35)" />
+                  <stop offset="100%" stop-color="rgba(79,140,255,0)" />
+                </linearGradient>
+              </defs>
+              <line x1="0" y1="28" x2="340" y2="28" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+              <line x1="0" y1="56" x2="340" y2="56" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+              <line x1="0" y1="84" x2="340" y2="84" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+              <path class="area-fill" d="M0,80 L20,72 L48,76 L78,58 L110,64 L142,44 L176,50 L210,34 L244,40 L278,24 L312,30 L340,18 L340,110 L0,110 Z" />
+              <path class="area-path" d="M0,80 L20,72 L48,76 L78,58 L110,64 L142,44 L176,50 L210,34 L244,40 L278,24 L312,30 L340,18" />
+            </svg>
+          </div>
+          <div class="pv-bars" aria-hidden="true">
+            <span class="bar" style="height:40%;animation-delay:0.9s"></span>
+            <span class="bar" style="height:62%;animation-delay:1.0s"></span>
+            <span class="bar" style="height:48%;animation-delay:1.1s"></span>
+            <span class="bar" style="height:78%;animation-delay:1.2s"></span>
+            <span class="bar" style="height:66%;animation-delay:1.3s"></span>
+            <span class="bar" style="height:90%;animation-delay:1.4s"></span>
+            <span class="bar" style="height:72%;animation-delay:1.5s"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust">
+    <div class="wrap">
+      <p class="reveal">受信任於成長中的產品團隊</p>
+      <div class="wordmarks reveal">
+        <span>Nimbus</span><span>Vela</span><span>Quark</span><span>Loomi</span>
+        <span>Aether</span><span>Spindle</span><span>Northwind</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="sec" id="features">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">為什麼選 Pulse</div>
+        <h2>從原始事件到可行動的洞察</h2>
+        <p>不需要拼湊十種工具。Pulse 把資料收集、視覺化與 AI 警示放在同一個平台。</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat reveal">
+          <div class="glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-5 4 4 7-8"/><path d="M21 8v5"/></svg>
+          </div>
+          <h3>即時資料管線</h3>
+          <p>事件進來毫秒級寫入。串流式聚合讓你的儀表板永遠是現在式，而不是昨天的快照。</p>
+        </div>
+        <div class="feat reveal">
+          <div class="glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          </div>
+          <h3>AI 異常偵測</h3>
+          <p>模型自動學習每個指標的正常範圍。一旦偏離，你會在 Slack 收到帶上下文的可解釋警示。</p>
+        </div>
+        <div class="feat reveal">
+          <div class="glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          </div>
+          <h3>無程式碼儀表板</h3>
+          <p>拖放即可組出董事會等級的報表。每張圖都能下鑽、分群、加註解，給每位夥伴看的視角。</p>
+        </div>
+        <div class="feat reveal">
+          <div class="glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>企業級安全</h3>
+          <p>SOC 2 Type II、SSO/SAML、資料駐留選項與細緻權限。資安團隊一次就會點頭。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES TABS -->
+  <section class="sec" id="capabilities">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <div class="eyebrow">產品能力</div>
+        <h2>一個平台，覆蓋整條數據旅程</h2>
+        <p>從接資料、做分析，到讓 AI 替你盯著儀表板。</p>
+      </div>
+      <div class="tabs-wrap reveal">
+        <div class="tabs-bar" role="tablist">
+          <button class="tab-btn active" data-tab="t1" role="tab">即時儀表板</button>
+          <button class="tab-btn" data-tab="t2" role="tab">分群分析</button>
+          <button class="tab-btn" data-tab="t3" role="tab">AI 警示</button>
+          <button class="tab-btn" data-tab="t4" role="tab">API 與整合</button>
+        </div>
+        <div class="tab-body">
+          <!-- pane 1 -->
+          <div class="tab-pane active" id="t1">
+            <div class="tab-copy">
+              <h3>會呼吸的儀表板</h3>
+              <p>指標每秒更新，團隊看的永遠是真實現況。支援自訂版面、暗色主題與大螢幕模式。</p>
+              <ul>
+                <li><span class="ck">✓</span> 串流式即時更新，無需手動重整</li>
+                <li><span class="ck">✓</span> 自訂 KPI 與目標達成追蹤</li>
+                <li><span class="ck">✓</span> 一鍵分享與排程匯出</li>
+              </ul>
+            </div>
+            <div class="tab-visual">
+              <svg viewBox="0 0 320 180" width="100%" height="180" aria-hidden="true">
+                <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(79,140,255,0.4)"/><stop offset="100%" stop-color="rgba(79,140,255,0)"/></linearGradient></defs>
+                <path d="M0,140 C40,120 60,90 100,100 S160,60 200,70 260,30 320,40 L320,180 L0,180 Z" fill="url(#g1)"/>
+                <path d="M0,140 C40,120 60,90 100,100 S160,60 200,70 260,30 320,40" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+                <circle cx="200" cy="70" r="4" fill="#fff" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="320" cy="40" r="4" fill="var(--accent)"/>
+              </svg>
+            </div>
+          </div>
+          <!-- pane 2 -->
+          <div class="tab-pane" id="t2">
+            <div class="tab-copy">
+              <h3>按群組看清差異</h3>
+              <p>依地區、方案或行為切分用戶，找出哪一群在成長、哪一群在流失。</p>
+              <ul>
+                <li><span class="ck">✓</span> 留存熱圖與群組漏斗</li>
+                <li><span class="ck">✓</span> 無限維度的即時切片</li>
+                <li><span class="ck">✓</span> 自動標記異常群組</li>
+              </ul>
+            </div>
+            <div class="tab-visual">
+              <svg viewBox="0 0 320 180" width="100%" height="180" aria-hidden="true">
+                <g>
+                  <rect x="20" y="120" width="34" height="50" rx="4" fill="var(--accent)" opacity="0.5"/>
+                  <rect x="64" y="90" width="34" height="80" rx="4" fill="var(--accent)" opacity="0.65"/>
+                  <rect x="108" y="60" width="34" height="110" rx="4" fill="var(--accent)" opacity="0.8"/>
+                  <rect x="152" y="100" width="34" height="70" rx="4" fill="var(--tint)" opacity="0.6"/>
+                  <rect x="196" y="40" width="34" height="130" rx="4" fill="var(--accent)"/>
+                  <rect x="240" y="76" width="34" height="94" rx="4" fill="var(--accent)" opacity="0.7"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <!-- pane 3 -->
+          <div class="tab-pane" id="t3">
+            <div class="tab-copy">
+              <h3>AI 替你盯盤</h3>
+              <p>模型學習每個指標的節律，異常時主動通知，並附上可能原因與相關事件。</p>
+              <ul>
+                <li><span class="ck">✓</span> 可解釋的根因提示</li>
+                <li><span class="ck">✓</span> Slack / Email / Webhook 通知</li>
+                <li><span class="ck">✓</span> 季節性與趨勢自動校正</li>
+              </ul>
+            </div>
+            <div class="tab-visual">
+              <svg viewBox="0 0 320 180" width="100%" height="180" aria-hidden="true">
+                <line x1="0" y1="100" x2="320" y2="100" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+                <polyline points="0,110 40,104 80,112 120,96 160,108 200,40 240,98 280,104 320,100" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+                <circle cx="200" cy="40" r="7" fill="none" stroke="#f87171" stroke-width="2"/>
+                <circle cx="200" cy="40" r="3.5" fill="#f87171"/>
+                <text x="200" y="26" fill="#f87171" font-size="11" text-anchor="middle" font-family="JetBrains Mono">異常 ▲</text>
+              </svg>
+            </div>
+          </div>
+          <!-- pane 4 -->
+          <div class="tab-pane" id="t4">
+            <div class="tab-copy">
+              <h3>接得進你的技術棧</h3>
+              <p>原生 SDK、REST 與串流 API，加上 40+ 預建整合，幾分鐘就能把資料送進來。</p>
+              <ul>
+                <li><span class="ck">✓</span> Python / JS / Go SDK</li>
+                <li><span class="ck">✓</span> Postgres、Segment、Stripe 整合</li>
+                <li><span class="ck">✓</span> 雙向 Webhook 與反向 ETL</li>
+              </ul>
+            </div>
+            <div class="tab-visual">
+              <pre class="mono" style="font-size:12.5px;color:var(--txt-2);line-height:1.7;margin:0;overflow:auto;"><span style="color:var(--txt-3)">// 送出一個事件</span>
+<span style="color:#8b5cf6">import</span> { Pulse } <span style="color:#8b5cf6">from</span> <span style="color:var(--tint)">'@pulse/sdk'</span>
+
+<span style="color:#8b5cf6">const</span> pulse = <span style="color:#8b5cf6">new</span> <span style="color:var(--accent-2)">Pulse</span>(env.KEY)
+
+<span style="color:#8b5cf6">await</span> pulse.<span style="color:var(--accent-2)">track</span>({
+  event: <span style="color:var(--tint)">'checkout.completed'</span>,
+  value: <span style="color:#f59e0b">128.00</span>,
+  userId: <span style="color:var(--tint)">'u_9f3a'</span>
+})</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="metrics" id="metrics">
+    <div class="wrap">
+      <div class="metrics-grid">
+        <div class="metric reveal">
+          <div class="num"><span class="cu" data-to="3200" data-dec="0">0</span><span class="suffix">+</span></div>
+          <div class="lbl">使用中的團隊</div>
+        </div>
+        <div class="metric reveal">
+          <div class="num"><span class="cu" data-to="14.2" data-dec="1">0</span><span class="suffix">B</span></div>
+          <div class="lbl">每日處理事件</div>
+        </div>
+        <div class="metric reveal">
+          <div class="num"><span class="cu" data-to="99.98" data-dec="2">0</span><span class="suffix">%</span></div>
+          <div class="lbl">平台可用率</div>
+        </div>
+        <div class="metric reveal">
+          <div class="num"><span class="cu" data-to="41" data-dec="0">0</span><span class="suffix">%</span></div>
+          <div class="lbl">平均縮短反應時間</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="sec" id="pricing">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <div class="eyebrow">定價</div>
+        <h2>從第一筆事件就開始，隨成長擴展</h2>
+        <p>所有方案都含即時儀表板與 14 天免費試用，不需信用卡。</p>
+      </div>
+      <div class="price-grid">
+        <div class="tier reveal">
+          <div class="tname">Starter</div>
+          <div class="pr">$0<small>/月</small></div>
+          <div class="tdesc">適合剛起步的小團隊驗證想法。</div>
+          <ul>
+            <li><span class="ck">✓</span> 每月 100 萬事件</li>
+            <li><span class="ck">✓</span> 3 個儀表板</li>
+            <li><span class="ck">✓</span> 7 天資料保留</li>
+            <li><span class="ck">✓</span> 社群支援</li>
+          </ul>
+          <a href="#" class="btn btn-line" data-fake>選擇方案</a>
+        </div>
+        <div class="tier hot reveal">
+          <span class="pop">最受歡迎</span>
+          <div class="tname">Pro</div>
+          <div class="pr">$79<small>/月</small></div>
+          <div class="tdesc">成長期產品團隊的最佳選擇。</div>
+          <ul>
+            <li><span class="ck">✓</span> 每月 5,000 萬事件</li>
+            <li><span class="ck">✓</span> 無限儀表板</li>
+            <li><span class="ck">✓</span> AI 異常偵測與警示</li>
+            <li><span class="ck">✓</span> 12 個月資料保留</li>
+            <li><span class="ck">✓</span> 優先客服</li>
+          </ul>
+          <a href="#" class="btn btn-primary" data-fake>選擇方案</a>
+        </div>
+        <div class="tier reveal">
+          <div class="tname">Enterprise</div>
+          <div class="pr">客製<small></small></div>
+          <div class="tdesc">需要合規、SSO 與專屬支援的組織。</div>
+          <ul>
+            <li><span class="ck">✓</span> 無限事件量</li>
+            <li><span class="ck">✓</span> SSO / SAML 與稽核日誌</li>
+            <li><span class="ck">✓</span> 資料駐留與私有雲</li>
+            <li><span class="ck">✓</span> 專屬客戶成功經理</li>
+          </ul>
+          <a href="#" class="btn btn-line" data-fake>聯絡業務</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-band">
+    <div class="wrap">
+      <div class="cta-inner reveal">
+        <h2>準備好讓數據主動說話了嗎？</h2>
+        <p>14 天免費試用，五分鐘接好資料，立刻看見即時儀表板。</p>
+        <div class="cta-actions">
+          <a href="#" class="btn btn-primary btn-lg" data-fake>免費開始使用</a>
+          <a href="#" class="btn btn-line btn-lg" data-fake>預約產品 Demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="#" class="logo"><span class="mark">脈</span> Pulse</a>
+          <p>把分散的數據變成即時、可行動的洞察，讓每個團隊都能更快做對決定。</p>
+        </div>
+        <div class="foot-col">
+          <h5>產品</h5>
+          <a href="#features" data-fake>功能總覽</a>
+          <a href="#pricing" data-fake>定價方案</a>
+          <a href="#" data-fake>更新日誌</a>
+          <a href="#" data-fake>系統狀態</a>
+        </div>
+        <div class="foot-col">
+          <h5>資源</h5>
+          <a href="#" data-fake>開發文件</a>
+          <a href="#" data-fake>API 參考</a>
+          <a href="#" data-fake>部落格</a>
+          <a href="#" data-fake>客戶案例</a>
+        </div>
+        <div class="foot-col">
+          <h5>公司</h5>
+          <a href="#" data-fake>關於我們</a>
+          <a href="#" data-fake>聯絡我們</a>
+          <a href="#" data-fake>隱私政策</a>
+          <a href="#" data-fake>服務條款</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>© 2026 脈 Pulse Analytics. 版權所有。</p>
+        <p class="credit">範例設計 · e-life-ai.com</p>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // ===== scroll reveal =====
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (Math.min(i, 6) * 0.06) + 's';
+    io.observe(el);
+  });
+
+  // ===== count-up =====
+  function countUp(el) {
+    const to = parseFloat(el.dataset.to);
+    const dec = parseInt(el.dataset.dec || '0', 10);
+    const dur = 1400;
+    const start = performance.now();
+    function frame(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const v = to * eased;
+      el.textContent = v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = to.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    }
+    requestAnimationFrame(frame);
+  }
+  const cuIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { countUp(e.target); cuIO.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.cu').forEach((el) => cuIO.observe(el));
+
+  // ===== tabs =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panes = document.querySelectorAll('.tab-pane');
+  tabBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach((b) => b.classList.remove('active'));
+      panes.forEach((p) => p.classList.remove('active'));
+      btn.classList.add('active');
+      const pane = document.getElementById(btn.dataset.tab);
+      if (pane) pane.classList.add('active');
+    });
+  });
+
+  // ===== live ticker on hero MRR kpi (starts after count-up settles) =====
+  const mrrEl = document.querySelector('.kpi .cu[data-to="284"]');
+  if (mrrEl) {
+    let base = 284;
+    setTimeout(() => {
+      setInterval(() => {
+        base += (Math.random() * 0.6 - 0.2);
+        mrrEl.textContent = Math.round(base);
+      }, 2600);
+    }, 2200);
+  }
+
+  // ===== fake interactions =====
+  document.querySelectorAll('[data-fake]').forEach((el) => {
+    el.addEventListener('click', (ev) => {
+      if (el.getAttribute('href') && el.getAttribute('href').startsWith('#') && el.getAttribute('href').length > 1) return;
+      ev.preventDefault();
+    });
+  });
+
+  // ===== mobile nav toggle (simulated) =====
+  const navToggle = document.getElementById('navToggle');
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      alert('範例設計：行動版選單為模擬展示。');
+    });
+  }
+</script>
+</body>
+</html>
