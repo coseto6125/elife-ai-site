@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>像素方舟工作室 PIXEL ARK｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070310;
+    --bg2:#0d0520;
+    --pink:#ff2e88;
+    --cyan:#19e6ff;
+    --yellow:#ffe23d;
+    --green:#39ff85;
+    --purple:#9d4edd;
+    --ink:#f3e9ff;
+    --dim:#8b7bb0;
+    --panel:#140a28;
+    --pixel:'Press Start 2P', monospace;
+    --body:'VT323', monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:21px;
+    line-height:1.45;
+    overflow-x:hidden;
+    image-rendering:pixelated;
+    -webkit-font-smoothing:none;
+  }
+  h1,h2,h3,.pf{font-family:var(--pixel);line-height:1.6;letter-spacing:.5px}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--pink);color:#000}
+
+  /* ===== CRT overlay ===== */
+  .crt-scan{
+    position:fixed;inset:0;z-index:9000;pointer-events:none;
+    background:repeating-linear-gradient(0deg,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,.22) 3px,
+      rgba(0,0,0,.22) 4px);
+    mix-blend-mode:multiply;
+  }
+  .crt-glow{
+    position:fixed;inset:0;z-index:9001;pointer-events:none;
+    background:radial-gradient(ellipse 120% 100% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%);
+    box-shadow:inset 0 0 140px rgba(20,5,40,.9), inset 0 0 40px rgba(25,230,255,.05);
+  }
+  .crt-flicker{
+    position:fixed;inset:0;z-index:9002;pointer-events:none;
+    background:rgba(25,230,255,.015);
+    animation:flick 7s steps(2) infinite;
+  }
+  @keyframes flick{0%,96%{opacity:0}97%{opacity:1}98%{opacity:0}99%{opacity:.6}100%{opacity:0}}
+
+  /* ===== Boot screen ===== */
+  #boot{
+    position:fixed;inset:0;z-index:9500;background:#000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:26px;padding:24px;text-align:center;
+    transition:opacity .5s ease;
+  }
+  #boot .logo{font-family:var(--pixel);font-size:clamp(18px,5vw,34px);color:var(--cyan);
+    text-shadow:0 0 12px var(--cyan);}
+  #boot .sub{font-family:var(--pixel);font-size:11px;color:var(--dim);max-width:460px}
+  #boot .bar{width:min(78vw,340px);height:22px;border:3px solid var(--pink);box-shadow:0 0 12px var(--pink);position:relative;background:#160}
+  #boot .bar i{position:absolute;inset:0;width:0;background:var(--green);box-shadow:0 0 10px var(--green);animation:load 1.9s steps(20) forwards}
+  #boot .bar i::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 8px)}
+  @keyframes load{to{width:100%}}
+  #boot .press{font-family:var(--pixel);font-size:13px;color:var(--yellow);text-shadow:0 0 10px var(--yellow);
+    opacity:0;cursor:pointer;animation:blink 1s steps(2) infinite;animation-delay:2s;animation-fill-mode:both}
+  @keyframes blink{50%{opacity:.15}}
+  #boot.power{animation:poweron 1s ease both}
+  @keyframes poweron{
+    0%{transform:scaleY(.002) scaleX(1);filter:brightness(6)}
+    16%{transform:scaleY(.005) scaleX(1.2);filter:brightness(4)}
+    40%{transform:scaleY(1) scaleX(1);filter:brightness(1.4)}
+    100%{transform:scaleY(1) scaleX(1);filter:brightness(1)}
+  }
+  body.booted{overflow-x:hidden}
+  body.booted #boot{opacity:0;pointer-events:none}
+
+  /* ===== layout ===== */
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:18px}
+  section{padding-block:clamp(48px,7vw,90px)}
+  .neon-pink{color:var(--pink);text-shadow:0 0 8px var(--pink)}
+  .neon-cyan{color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+  .neon-yellow{color:var(--yellow);text-shadow:0 0 8px var(--yellow)}
+  .neon-green{color:var(--green);text-shadow:0 0 8px var(--green)}
+
+  .pixbox{
+    border:4px solid var(--cyan);
+    background:var(--panel);
+    box-shadow:0 0 0 2px #000, 0 0 18px rgba(25,230,255,.4), inset 0 0 28px rgba(157,78,221,.12);
+    position:relative;
+  }
+  .pixbox.pink{border-color:var(--pink);box-shadow:0 0 0 2px #000,0 0 18px rgba(255,46,136,.4),inset 0 0 28px rgba(255,46,136,.08)}
+  .pixbox.yellow{border-color:var(--yellow);box-shadow:0 0 0 2px #000,0 0 18px rgba(255,226,61,.35)}
+
+  /* ===== header ===== */
+  header.top{
+    position:sticky;top:0;z-index:200;
+    background:rgba(7,3,16,.92);
+    border-bottom:4px solid var(--pink);
+    box-shadow:0 4px 0 #000,0 6px 20px rgba(255,46,136,.25);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+  .brand{font-family:var(--pixel);font-size:14px;display:flex;align-items:center;gap:10px}
+  .brand .chip{width:26px;height:26px;background:var(--yellow);border:3px solid #000;
+    box-shadow:2px 2px 0 var(--pink);display:grid;place-items:center;color:#000;font-size:13px}
+  .nav nav{display:flex;gap:16px;font-family:var(--pixel);font-size:10px;flex-wrap:wrap}
+  .nav nav a{color:var(--dim);transition:color .15s}
+  .nav nav a:hover{color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+  .coin{font-family:var(--pixel);font-size:10px;color:var(--yellow);animation:blink 1.1s steps(2) infinite}
+  @media(max-width:760px){.nav nav{display:none}}
+
+  /* ===== hero ===== */
+  .hero{position:relative;overflow:hidden;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,46,136,.18), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(25,230,255,.16), transparent 42%),
+      linear-gradient(180deg,var(--bg2),var(--bg));
+  }
+  .hero::before{content:'';position:absolute;inset:0;z-index:0;opacity:.5;
+    background-image:linear-gradient(var(--purple) 1px,transparent 1px),linear-gradient(90deg,var(--purple) 1px,transparent 1px);
+    background-size:42px 42px;
+    transform:perspective(340px) rotateX(62deg) translateY(40%);
+    transform-origin:bottom;mask-image:linear-gradient(180deg,transparent,#000)}
+  .hero .wrap{position:relative;z-index:1}
+  .hero h1{font-size:clamp(22px,6vw,52px);color:var(--pink);
+    text-shadow:3px 3px 0 var(--cyan),6px 6px 0 rgba(0,0,0,.7);margin-bottom:18px}
+  .hero .tag{font-size:clamp(10px,2.4vw,15px);font-family:var(--pixel);color:var(--cyan);margin-bottom:14px}
+  .hero p.lead{font-size:clamp(18px,2.6vw,26px);color:var(--ink);max-width:640px;margin-bottom:28px}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{font-family:var(--pixel);font-size:11px;padding:14px 18px;border:3px solid #000;cursor:pointer;
+    background:var(--pink);color:#000;box-shadow:4px 4px 0 #000;transition:transform .08s,box-shadow .08s}
+  .btn:active{transform:translate(4px,4px);box-shadow:0 0 0 #000}
+  .btn.cy{background:var(--cyan)}
+  .btn.yl{background:var(--yellow)}
+  .ticker{margin-top:30px;border-top:3px dashed var(--purple);border-bottom:3px dashed var(--purple);
+    overflow:hidden;white-space:nowrap;font-family:var(--pixel);font-size:11px;color:var(--yellow);padding-block:10px}
+  .ticker span{display:inline-block;animation:scrollx 16s linear infinite}
+  @keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ===== section title ===== */
+  .stitle{font-size:clamp(15px,4vw,26px);margin-bottom:8px}
+  .ssub{font-family:var(--pixel);font-size:10px;color:var(--dim);margin-bottom:30px}
+
+  /* ===== GAME ===== */
+  .game-stage{display:grid;gap:22px;grid-template-columns:1fr;align-items:start}
+  @media(min-width:880px){.game-stage{grid-template-columns:1fr 300px}}
+  .cab{padding:16px;position:relative}
+  .cab .screen{width:100%;aspect-ratio:4/3;background:#04020a;border:3px solid #000;display:block;
+    box-shadow:inset 0 0 40px rgba(157,78,221,.3)}
+  .hud{display:flex;justify-content:space-between;font-family:var(--pixel);font-size:11px;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+  .game-side h3{font-size:13px;margin-bottom:14px}
+  .ctrl-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .dpad{display:flex;gap:10px}
+  .pbtn{font-family:var(--pixel);font-size:13px;width:54px;height:54px;border:3px solid #000;
+    background:var(--cyan);color:#000;box-shadow:3px 3px 0 #000;cursor:pointer;user-select:none}
+  .pbtn:active{transform:translate(3px,3px);box-shadow:0 0 0 #000}
+  .pbtn.go{background:var(--green);width:auto;padding-inline:14px}
+  .hint{font-family:var(--pixel);font-size:9px;color:var(--dim);margin-top:14px;line-height:1.9}
+
+  /* ===== high score table ===== */
+  .scoretab{width:100%;border-collapse:collapse;font-family:var(--pixel);font-size:10px}
+  .scoretab th,.scoretab td{padding:10px 8px;border-bottom:2px solid #2a1a44;text-align:left}
+  .scoretab th{color:var(--cyan);font-size:9px}
+  .scoretab td.sc{color:var(--yellow);text-align:right}
+  .scoretab td.nm{color:var(--pink)}
+  .scoretab tr.you td{color:var(--green) !important;text-shadow:0 0 6px var(--green)}
+
+  /* ===== games grid ===== */
+  .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+  .card{padding:16px;cursor:pointer;transition:transform .1s}
+  .card:hover{transform:translateY(-4px)}
+  .card .art{width:100%;aspect-ratio:1/1;border:3px solid #000;display:block;margin-bottom:12px}
+  .card h3{font-size:12px;margin-bottom:8px}
+  .card p{color:var(--dim);font-size:18px}
+  .card .badge{font-family:var(--pixel);font-size:8px;color:#000;background:var(--yellow);padding:3px 6px;display:inline-block;margin-top:10px}
+
+  /* ===== services ===== */
+  .svc{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .svc .pixbox{padding:20px}
+  .svc h3{font-size:12px;margin-bottom:12px}
+  .svc .ico{width:42px;height:42px;margin-bottom:14px;display:block}
+  .svc p{color:var(--dim);font-size:18px}
+
+  /* ===== character select ===== */
+  .chars{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+  .char{width:120px;padding:12px;cursor:pointer;text-align:center;border:3px solid #2a1a44;background:var(--panel);transition:all .12s}
+  .char.sel{border-color:var(--yellow);box-shadow:0 0 16px var(--yellow)}
+  .char svg{width:64px;height:64px;display:block;margin:0 auto 8px}
+  .char .cn{font-family:var(--pixel);font-size:9px;color:var(--cyan)}
+  .char-stat{font-family:var(--pixel);font-size:10px;text-align:center;color:var(--ink);line-height:2}
+  .char-stat b{color:var(--yellow)}
+
+  /* ===== footer ===== */
+  footer{border-top:4px solid var(--cyan);background:var(--bg2);padding-block:40px;text-align:center}
+  footer .big{font-family:var(--pixel);font-size:clamp(14px,4vw,24px);color:var(--pink);text-shadow:2px 2px 0 var(--cyan);margin-bottom:18px}
+  footer .links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-family:var(--pixel);font-size:10px;color:var(--dim);margin-bottom:18px}
+  footer .links a:hover{color:var(--cyan)}
+  footer .cr{font-family:var(--pixel);font-size:9px;color:var(--dim)}
+
+  /* ===== sound toggle ===== */
+  .sndbtn{font-family:var(--pixel);font-size:10px;border:3px solid #000;background:var(--purple);color:#fff;
+    padding:8px 10px;cursor:pointer;box-shadow:3px 3px 0 #000}
+  .sndbtn:active{transform:translate(3px,3px);box-shadow:0 0 0 #000}
+  .sndbtn.on{background:var(--green);color:#000}
+
+  /* ===== badge ===== */
+  .elife-badge{position:fixed;right:12px;bottom:12px;z-index:9100;
+    font-family:var(--pixel);font-size:9px;color:#000;background:var(--yellow);
+    border:3px solid #000;box-shadow:3px 3px 0 var(--pink),0 0 14px rgba(255,226,61,.6);
+    padding:7px 9px;display:flex;align-items:center;gap:6px;transition:transform .1s}
+  .elife-badge:hover{transform:translateY(-2px)}
+  .elife-badge .dot{width:9px;height:9px;background:var(--pink);border:2px solid #000;animation:blink .9s steps(2) infinite}
+
+  @media(max-width:430px){
+    body{font-size:19px}
+    .pbtn{width:48px;height:48px;font-size:12px}
+    .nav{padding-block:10px}
+    .brand{font-size:11px}
+  }
+</style>
+</head>
+<body>
+
+<!-- CRT overlays -->
+<div class="crt-scan"></div>
+<div class="crt-glow"></div>
+<div class="crt-flicker"></div>
+
+<!-- BOOT -->
+<div id="boot">
+  <div class="logo">PIXEL ARK</div>
+  <div class="sub">像素方舟工作室 v8.16<br>SYSTEM CHECK ... OK<br>LOADING NEON CORE ...</div>
+  <div class="bar"><i></i></div>
+  <div class="press" id="pressStart">▶ PRESS START ◀</div>
+</div>
+
+<!-- HEADER -->
+<header class="top">
+  <div class="wrap nav">
+    <div class="brand">
+      <span class="chip">▲</span>
+      <span class="neon-pink">PIXEL&nbsp;ARK</span>
+    </div>
+    <nav>
+      <a href="#play">玩一下</a>
+      <a href="#games">作品</a>
+      <a href="#svc">服務</a>
+      <a href="#hero">角色</a>
+      <a href="#contact">投幣</a>
+    </nav>
+    <span class="coin">CREDIT 02</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="tag">▌ INSERT COIN — 由 e-life-ai 打造 ▐</div>
+    <h1>像素方舟<br>PIXEL ARK</h1>
+    <p class="lead">我們是一間虛構的獨立像素遊戲工作室，專做 8-bit 美學的小遊戲與互動網頁。投一枚幣，世界就會 8 位元地復活。</p>
+    <div class="cta">
+      <a class="btn" href="#play">▶ 開始遊玩</a>
+      <a class="btn cy" href="#games">作品集</a>
+      <a class="btn yl" href="#contact">合作投幣</a>
+    </div>
+
+    <div class="ticker"><span>★ NEW HIGH SCORE 999990 ★ 像素方舟最新作《霓虹方舟》上架中 ★ 接案開放：互動網頁 / 小遊戲 / 品牌彩蛋 ★ INSERT COIN TO CONTINUE ★ NEW HIGH SCORE 999990 ★ 像素方舟最新作《霓虹方舟》上架中 ★ 接案開放：互動網頁 / 小遊戲 / 品牌彩蛋 ★ INSERT COIN TO CONTINUE ★ </span></div>
+  </div>
+</section>
+
+<!-- PLAYABLE GAME -->
+<section id="play">
+  <div class="wrap">
+    <h2 class="stitle neon-cyan">▍迷你街機・霓虹接球</h2>
+    <p class="ssub">NEON CATCH — 真‧可玩 / 鍵盤 ← → 或拖曳・觸控左右</p>
+
+    <div class="game-stage">
+      <div class="pixbox cab">
+        <div class="hud">
+          <span class="neon-yellow" id="hudScore">SCORE 0</span>
+          <span class="neon-pink" id="hudLives">LIVES ♥♥♥</span>
+          <span class="neon-green" id="hudBest">HI 0</span>
+        </div>
+        <canvas class="screen" id="game" width="480" height="360"></canvas>
+        <div class="ctrl-row">
+          <div class="dpad">
+            <button class="pbtn" id="leftBtn" aria-label="左">◀</button>
+            <button class="pbtn" id="rightBtn" aria-label="右">▶</button>
+          </div>
+          <button class="pbtn go" id="startBtn">START</button>
+          <button class="sndbtn" id="sndBtn">🔇 SOUND OFF</button>
+        </div>
+        <p class="hint">接住掉落的霓虹方塊得分・漏掉扣一命・命歸零即 GAME OVER<br>桌機：← → 移動 / SPACE 開始 ・ 手機：點左右鍵或滑動</p>
+      </div>
+
+      <div class="game-side">
+        <div class="pixbox yellow" style="padding:16px">
+          <h3 class="neon-yellow">★ HIGH SCORES ★</h3>
+          <table class="scoretab" id="scoreTable">
+            <thead><tr><th>#</th><th>名稱</th><th style="text-align:right">分數</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTER SELECT -->
+<section style="background:linear-gradient(180deg,var(--bg),var(--bg2))">
+  <div class="wrap">
+    <h2 class="stitle neon-pink" style="text-align:center">▍SELECT YOUR PLAYER</h2>
+    <p class="ssub" style="text-align:center">選一位像素夥伴・看看牠的數值（互動模擬）</p>
+
+    <div class="chars" id="chars"></div>
+    <div class="char-stat pixbox" id="charStat" style="padding:18px;max-width:520px;margin:0 auto"></div>
+  </div>
+</section>
+
+<!-- GAMES / PORTFOLIO -->
+<section id="games">
+  <div class="wrap">
+    <h2 class="stitle neon-cyan">▍作品方舟 — OUR GAMES</h2>
+    <p class="ssub">虛構作品集・點卡片看一句介紹</p>
+    <div class="grid" id="gameGrid"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="svc" style="background:linear-gradient(180deg,var(--bg2),var(--bg))">
+  <div class="wrap">
+    <h2 class="stitle neon-yellow">▍服務選單 — SERVICES</h2>
+    <p class="ssub">我們能為你做什麼</p>
+    <div class="svc" id="svcGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap" style="text-align:center">
+    <h2 class="stitle neon-pink">▍READY PLAYER ONE?</h2>
+    <p class="ssub">投一枚幣，開始一段合作</p>
+    <div class="pixbox pink" style="max-width:560px;margin:0 auto;padding:28px">
+      <p style="font-size:22px;margin-bottom:20px">想做一款好玩到讓人忘記時間的互動體驗？<br>跟像素方舟說一聲。</p>
+      <button class="btn yl" id="coinBtn" style="font-size:13px">⊙ INSERT COIN ⊙</button>
+      <p id="coinMsg" class="pf" style="font-size:10px;color:var(--green);margin-top:18px;min-height:14px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="big">PIXEL ARK ▲ 像素方舟</div>
+    <div class="links">
+      <a href="#play">玩一下</a><a href="#games">作品</a><a href="#svc">服務</a><a href="#contact">合作</a>
+    </div>
+    <p class="cr">© 1989–2026 像素方舟工作室（虛構作品集）・ 由 <span class="neon-cyan">e-life-ai</span> 設計製作 ・ GAME OVER? INSERT COIN</p>
+  </div>
+</footer>
+
+<a class="elife-badge" href="https://elife-ai.com" target="_blank" rel="noopener">
+  <span class="dot"></span>elife-ai.com
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===== BOOT ===== */
+  const boot=document.getElementById('boot');
+  const press=document.getElementById('pressStart');
+  function startSystem(){
+    if(document.body.classList.contains('booted'))return;
+    boot.classList.add('power');
+    setTimeout(()=>{document.body.classList.add('booted');beep(660,.08);},200);
+    setTimeout(()=>{boot.style.display='none';},1400);
+  }
+  press.addEventListener('click',startSystem);
+  document.addEventListener('keydown',e=>{
+    if(!document.body.classList.contains('booted')&&(e.code==='Space'||e.code==='Enter')){e.preventDefault();startSystem();}
+  });
+  // auto-boot fallback so page isn't stuck if user ignores
+  setTimeout(()=>{ if(!document.body.classList.contains('booted')) startSystem(); },6000);
+
+  /* ===== SOUND (Web Audio, default OFF) ===== */
+  let soundOn=false, actx=null;
+  const sndBtn=document.getElementById('sndBtn');
+  sndBtn.addEventListener('click',()=>{
+    soundOn=!soundOn;
+    sndBtn.classList.toggle('on',soundOn);
+    sndBtn.textContent=soundOn?'🔊 SOUND ON':'🔇 SOUND OFF';
+    if(soundOn){ try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();}catch(e){} beep(880,.07); }
+  });
+  function beep(freq,dur){
+    if(!soundOn||!actx)return;
+    try{
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.type='square';o.frequency.value=freq;
+      o.connect(g);g.connect(actx.destination);
+      g.gain.setValueAtTime(.06,actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+dur);
+      o.start();o.stop(actx.currentTime+dur);
+    }catch(e){}
+  }
+
+  /* ===== HIGH SCORE TABLE ===== */
+  const baseScores=[
+    {n:'AAA',s:99990},{n:'NEO',s:84200},{n:'ZAP',s:71500},
+    {n:'8IT',s:60300},{n:'CRT',s:48800},{n:'JMP',s:33100},
+    {n:'PIX',s:21000},{n:'ARK',s:12400}
+  ];
+  function renderScores(youScore){
+    const all=[...baseScores];
+    let youRow=null;
+    if(youScore!=null){ youRow={n:'YOU',s:youScore,you:true}; all.push(youRow); }
+    all.sort((a,b)=>b.s-a.s);
+    const top=all.slice(0,8);
+    const tb=document.querySelector('#scoreTable tbody');
+    tb.innerHTML=top.map((r,i)=>
+      `<tr class="${r.you?'you':''}"><td>${String(i+1).padStart(2,'0')}</td><td class="nm">${r.n}</td><td class="sc">${String(r.s).padStart(6,'0')}</td></tr>`
+    ).join('');
+  }
+  renderScores();
+
+  /* ===== CANVAS MINI-GAME: Neon Catch ===== */
+  const cv=document.getElementById('game'), ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  let paddle, blocks, score, lives, best=0, running=false, raf=null, dropTimer=0, dropEvery=70, frame=0;
+  let moveL=false, moveR=false;
+  const COLORS=['#ff2e88','#19e6ff','#ffe23d','#39ff85','#9d4edd'];
+
+  function resetGame(){
+    paddle={x:W/2-36,y:H-26,w:72,h:12,sp:6.5};
+    blocks=[]; score=0; lives=3; frame=0; dropTimer=0; dropEvery=70;
+    updateHud();
+  }
+  function updateHud(){
+    document.getElementById('hudScore').textContent='SCORE '+score;
+    document.getElementById('hudLives').textContent='LIVES '+('♥'.repeat(Math.max(0,lives))||'-');
+    document.getElementById('hudBest').textContent='HI '+best;
+  }
+  function spawnBlock(){
+    const sz=18+Math.random()*10;
+    blocks.push({x:Math.random()*(W-sz),y:-sz,sz,vy:2+Math.random()*1.6+score*0.0015,c:COLORS[(Math.random()*COLORS.length)|0]});
+  }
+  function px(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x|0,y|0,w|0,h|0); }
+
+  function draw(){
+    // bg
+    ctx.fillStyle='#04020a'; ctx.fillRect(0,0,W,H);
+    // faint grid
+    ctx.strokeStyle='rgba(157,78,221,.16)'; ctx.lineWidth=1;
+    for(let gx=0;gx<W;gx+=24){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();}
+    for(let gy=0;gy<H;gy+=24){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+    // blocks
+    ctx.shadowBlur=12;
+    blocks.forEach(b=>{ctx.shadowColor=b.c; px(b.x,b.y,b.sz,b.sz,b.c); px(b.x+3,b.y+3,b.sz-6,b.sz-6,'rgba(255,255,255,.18)');});
+    // paddle
+    ctx.shadowColor='#19e6ff';
+    px(paddle.x,paddle.y,paddle.w,paddle.h,'#19e6ff');
+    px(paddle.x+4,paddle.y+3,paddle.w-8,3,'#ffffff');
+    ctx.shadowBlur=0;
+  }
+
+  function gameOver(){
+    running=false; cancelAnimationFrame(raf);
+    if(score>best)best=score;
+    updateHud();
+    renderScores(score);
+    // overlay
+    ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#ff2e88';ctx.textAlign='center';ctx.font='28px "Press Start 2P",monospace';
+    ctx.shadowColor='#ff2e88';ctx.shadowBlur=14;
+    ctx.fillText('GAME OVER',W/2,H/2-10);
+    ctx.shadowBlur=0;ctx.fillStyle='#ffe23d';ctx.font='12px "Press Start 2P",monospace';
+    ctx.fillText('SCORE '+score,W/2,H/2+24);
+    ctx.fillStyle='#19e6ff';
+    ctx.fillText('PRESS START',W/2,H/2+50);
+    beep(180,.3);
+  }
+
+  function loop(){
+    frame++;
+    if(moveL)paddle.x-=paddle.sp;
+    if(moveR)paddle.x+=paddle.sp;
+    paddle.x=Math.max(0,Math.min(W-paddle.w,paddle.x));
+    dropTimer++;
+    if(dropTimer>=dropEvery){dropTimer=0;spawnBlock();if(dropEvery>26)dropEvery-=0.6;}
+    for(let i=blocks.length-1;i>=0;i--){
+      const b=blocks[i]; b.y+=b.vy;
+      // catch
+      if(b.y+b.sz>=paddle.y && b.y<=paddle.y+paddle.h && b.x+b.sz>=paddle.x && b.x<=paddle.x+paddle.w){
+        blocks.splice(i,1); score+=10; beep(740+Math.random()*200,.05); updateHud(); continue;
+      }
+      if(b.y>H){ blocks.splice(i,1); lives--; beep(160,.12); updateHud(); if(lives<=0){draw();gameOver();return;} }
+    }
+    draw();
+    if(running)raf=requestAnimationFrame(loop);
+  }
+
+  function startGame(){
+    if(actx&&actx.state==='suspended')actx.resume();
+    resetGame(); running=true; cancelAnimationFrame(raf); raf=requestAnimationFrame(loop);
+    beep(520,.08);
+  }
+
+  // idle attract screen
+  function attract(){
+    ctx.fillStyle='#04020a';ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(157,78,221,.16)';
+    for(let gy=0;gy<H;gy+=24){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+    ctx.textAlign='center';
+    ctx.fillStyle='#19e6ff';ctx.font='22px "Press Start 2P",monospace';
+    ctx.shadowColor='#19e6ff';ctx.shadowBlur=12;
+    ctx.fillText('NEON CATCH',W/2,H/2-18);
+    ctx.shadowBlur=0;ctx.fillStyle='#ffe23d';ctx.font='11px "Press Start 2P",monospace';
+    ctx.fillText('PRESS  START',W/2,H/2+18);
+    ctx.fillStyle='#ff2e88';ctx.font='9px "Press Start 2P",monospace';
+    ctx.fillText('CATCH THE NEON BLOCKS',W/2,H/2+44);
+  }
+  // wait for font then paint attract
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(attract);}
+  setTimeout(attract,400);
+
+  // controls
+  document.getElementById('startBtn').addEventListener('click',startGame);
+  const lBtn=document.getElementById('leftBtn'),rBtn=document.getElementById('rightBtn');
+  function hold(btn,fn){
+    const on=e=>{e.preventDefault();fn(true);};const off=e=>{e.preventDefault();fn(false);};
+    btn.addEventListener('mousedown',on);btn.addEventListener('mouseup',off);btn.addEventListener('mouseleave',off);
+    btn.addEventListener('touchstart',on,{passive:false});btn.addEventListener('touchend',off);
+  }
+  hold(lBtn,v=>moveL=v); hold(rBtn,v=>moveR=v);
+
+  document.addEventListener('keydown',e=>{
+    if(!document.body.classList.contains('booted'))return;
+    if(e.code==='ArrowLeft'){moveL=true;}
+    if(e.code==='ArrowRight'){moveR=true;}
+    if(e.code==='Space'){ // only hijack space when game area focused-ish (always ok for demo)
+      if(!running){e.preventDefault();startGame();}
+    }
+  });
+  document.addEventListener('keyup',e=>{
+    if(e.code==='ArrowLeft')moveL=false;
+    if(e.code==='ArrowRight')moveR=false;
+  });
+  // touch drag on canvas
+  function dragMove(clientX){
+    const r=cv.getBoundingClientRect();
+    const x=(clientX-r.left)/r.width*W;
+    paddle.x=Math.max(0,Math.min(W-paddle.w,x-paddle.w/2));
+  }
+  cv.addEventListener('touchmove',e=>{if(running&&e.touches[0]){e.preventDefault();dragMove(e.touches[0].clientX);}},{passive:false});
+  cv.addEventListener('mousemove',e=>{if(running&&e.buttons===1)dragMove(e.clientX);});
+
+  /* ===== CHARACTER SELECT ===== */
+  const sprite=(c1,c2)=>`<svg viewBox="0 0 16 16" shape-rendering="crispEdges">
+    <rect x="5" y="2" width="6" height="2" fill="${c1}"/>
+    <rect x="4" y="4" width="8" height="6" fill="${c1}"/>
+    <rect x="5" y="6" width="2" height="2" fill="#000"/>
+    <rect x="9" y="6" width="2" height="2" fill="#000"/>
+    <rect x="6" y="9" width="4" height="1" fill="${c2}"/>
+    <rect x="3" y="10" width="10" height="3" fill="${c2}"/>
+    <rect x="4" y="13" width="3" height="2" fill="${c1}"/>
+    <rect x="9" y="13" width="3" height="2" fill="${c1}"/>
+  </svg>`;
+  const chars=[
+    {id:'pixie',n:'PIXIE',c1:'#ff2e88',c2:'#9d4edd',spd:9,jmp:6,luk:8,desc:'霓虹精靈・速度型，最愛收集掉落的方塊。'},
+    {id:'byte',n:'BYTE',c1:'#19e6ff',c2:'#1d6fa5',spd:6,jmp:9,luk:6,desc:'藍色機甲・跳躍王，CRT 世界的工程師。'},
+    {id:'coin',n:'COIN',c1:'#ffe23d',c2:'#c79b00',spd:7,jmp:5,luk:10,desc:'幸運金幣怪・運氣爆棚，常觸發隱藏關。'},
+    {id:'slime',n:'SLIME',c1:'#39ff85',c2:'#1f7a45',spd:5,jmp:7,luk:9,desc:'果凍史萊姆・全能均衡，新手最愛。'}
+  ];
+  const charsEl=document.getElementById('chars'), statEl=document.getElementById('charStat');
+  function bar(v){return '█'.repeat(v)+'░'.repeat(10-v);}
+  function selChar(i){
+    [...charsEl.children].forEach((el,j)=>el.classList.toggle('sel',j===i));
+    const c=chars[i];
+    statEl.innerHTML=`<div class="neon-yellow" style="font-size:12px;margin-bottom:12px">${c.n}</div>
+      <div style="text-align:left;display:inline-block">
+      SPD <b>${bar(c.spd)}</b><br>JMP <b>${bar(c.jmp)}</b><br>LUK <b>${bar(c.luk)}</b></div>
+      <div style="font-family:var(--body);font-size:18px;color:var(--dim);margin-top:14px">${c.desc}</div>`;
+    beep(560+i*80,.05);
+  }
+  chars.forEach((c,i)=>{
+    const d=document.createElement('div');d.className='char';
+    d.innerHTML=sprite(c.c1,c.c2)+`<div class="cn">${c.n}</div>`;
+    d.addEventListener('click',()=>selChar(i));
+    charsEl.appendChild(d);
+  });
+  selChar(0);
+
+  /* ===== GAMES GRID ===== */
+  const artGrad=(a,b)=>{ // pixel-art canvas-less svg tile
+    return `<svg class="art" viewBox="0 0 64 64" preserveAspectRatio="none" shape-rendering="crispEdges">
+      <rect width="64" height="64" fill="#0a0418"/>
+      ${Array.from({length:48}).map(()=>{
+        const x=(Math.random()*8|0)*8,y=(Math.random()*8|0)*8;
+        const col=Math.random()<.5?a:b;
+        return `<rect x="${x}" y="${y}" width="8" height="8" fill="${col}" opacity="${(0.3+Math.random()*0.7).toFixed(2)}"/>`;
+      }).join('')}
+      <rect x="24" y="24" width="16" height="16" fill="${a}"/>
+      <rect x="28" y="28" width="8" height="8" fill="${b}"/>
+    </svg>`;
+  };
+  const games=[
+    {t:'霓虹方舟',e:'NEON ARK',c1:'#ff2e88',c2:'#19e6ff',d:'橫向卷軸射擊・在崩塌的霓虹城市駕駛方舟逃生。',bg:'NEW'},
+    {t:'像素農場',e:'PIXEL FARM',c1:'#39ff85',c2:'#ffe23d',d:'療癒經營・種出 8-bit 蔬菜，餵飽整座小鎮。',bg:'HIT'},
+    {t:'幣幣冒險',e:'COIN QUEST',c1:'#ffe23d',c2:'#ff2e88',d:'平台跳躍・蒐集金幣解開復古地城的封印。',bg:'TOP'},
+    {t:'魔王塔防',e:'BOSS TOWER',c1:'#9d4edd',c2:'#19e6ff',d:'像素塔防・每十波就有一隻巨大像素魔王。',bg:'WIP'},
+    {t:'CRT 跑酷',e:'CRT RUNNER',c1:'#19e6ff',c2:'#39ff85',d:'無限跑酷・在掃描線之間閃避，越跑越快。',bg:'NEW'},
+    {t:'方塊節奏',e:'BLOK BEAT',c1:'#ff2e88',c2:'#9d4edd',d:'音遊・隨著芯片音樂敲擊掉落的方塊。',bg:'HOT'}
+  ];
+  const gg=document.getElementById('gameGrid');
+  games.forEach(g=>{
+    const d=document.createElement('div');d.className='pixbox card';
+    d.innerHTML=artGrad(g.c1,g.c2)+
+      `<h3 style="color:${g.c1};text-shadow:0 0 6px ${g.c1}">${g.t}</h3>
+       <p style="font-family:var(--pixel);font-size:8px;color:var(--dim)">${g.e}</p>
+       <p style="margin-top:8px">${g.d}</p>
+       <span class="badge" style="background:${g.c2}">${g.bg}</span>`;
+    d.addEventListener('click',()=>beep(700,.05));
+    gg.appendChild(d);
+  });
+
+  /* ===== SERVICES ===== */
+  const svcIcon=c=>`<svg class="ico" viewBox="0 0 16 16" shape-rendering="crispEdges">
+    <rect x="2" y="2" width="12" height="12" fill="none" stroke="${c}" stroke-width="2"/>
+    <rect x="5" y="5" width="2" height="2" fill="${c}"/>
+    <rect x="9" y="5" width="2" height="2" fill="${c}"/>
+    <rect x="5" y="9" width="6" height="2" fill="${c}"/>
+  </svg>`;
+  const svcs=[
+    {t:'互動網頁',c:'#19e6ff',d:'Canvas / WebGL 小遊戲、彩蛋、會動的品牌官網。'},
+    {t:'像素美術',c:'#ff2e88',d:'8-bit 角色、場景、UI 與動畫精靈圖一條龍。'},
+    {t:'小遊戲開發',c:'#ffe23d',d:'活動小遊戲、抽獎機台、行銷互動體驗。'},
+    {t:'復古音效',c:'#39ff85',d:'芯片風 chiptune 配樂與 Web Audio 音效設計。'}
+  ];
+  const sg=document.getElementById('svcGrid');
+  svcs.forEach(s=>{
+    const d=document.createElement('div');d.className='pixbox';d.style.borderColor=s.c;
+    d.innerHTML=svcIcon(s.c)+`<h3 style="color:${s.c};text-shadow:0 0 6px ${s.c}">${s.t}</h3><p>${s.d}</p>`;
+    sg.appendChild(d);
+  });
+
+  /* ===== CONTACT coin ===== */
+  const msgs=['☑ COIN ACCEPTED — 我們會盡快回覆你！','★ +1 CREDIT — 感謝投幣！','▲ READY — 一起做點好玩的吧！','♥ THANK YOU — 期待與你合作！'];
+  let ci=0;
+  document.getElementById('coinBtn').addEventListener('click',()=>{
+    document.getElementById('coinMsg').textContent=msgs[ci++%msgs.length];
+    beep(880,.08);setTimeout(()=>beep(1180,.1),90);
+  });
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOLT 烈火健身工坊 ｜ 把極限變成日常｜e-life-ai</title>
+<meta name="description" content="VOLT 烈火健身工坊 — 高能量訓練、專業教練、彈性課表。重訓、有氧、瑜伽、拳擊，找回你的爆發力。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0c;
+    --ink2:#131318;
+    --ink3:#1c1c24;
+    --volt:#c8ff00;
+    --volt-dim:#9bc400;
+    --fire:#ff4d1c;
+    --fire2:#ff7a2e;
+    --paper:#f4f4ef;
+    --grey:#8b8b94;
+    --line:rgba(255,255,255,.08);
+    --display:'Anton',sans-serif;
+    --num:'Teko',sans-serif;
+    --body:'Noto Sans TC',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--body);
+    line-height:1.6;
+    overflow-x:clip;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--volt);color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block;max-width:100%}
+
+  .wrap{width:min(1240px,100%);margin-inline:auto;padding-inline:clamp(18px,4vw,48px)}
+
+  /* ============ NAV ============ */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,10,12,.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding-block:14px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);letter-spacing:.04em}
+  .brand .mark{
+    width:34px;height:34px;flex:none;
+    background:var(--volt);color:var(--ink);
+    display:grid;place-items:center;
+    transform:skewX(-9deg);
+    box-shadow:0 0 22px rgba(200,255,0,.35);
+  }
+  .brand .mark svg{width:20px;height:20px}
+  .brand b{font-size:23px;line-height:1}
+  .brand span{font-family:var(--body);font-weight:700;font-size:11px;color:var(--grey);letter-spacing:.18em}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{font-weight:700;font-size:13.5px;letter-spacing:.06em;color:#cfcfd4;transition:color .2s}
+  .nav-links a:hover{color:var(--volt)}
+  .nav-cta{
+    font-family:var(--display);letter-spacing:.06em;font-size:15px;
+    background:var(--fire);color:#fff;padding:9px 20px;
+    transform:skewX(-9deg);box-shadow:0 8px 24px rgba(255,77,28,.35);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .nav-cta:hover{transform:skewX(-9deg) translateY(-2px);box-shadow:0 12px 30px rgba(255,77,28,.5)}
+  .nav-cta span{display:inline-block;transform:skewX(9deg)}
+  @media(max-width:820px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;overflow:hidden;padding-block:clamp(46px,7vw,96px) clamp(60px,9vw,120px)}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(900px 500px at 85% -10%,rgba(255,77,28,.18),transparent 60%),
+      radial-gradient(700px 600px at 5% 110%,rgba(200,255,0,.12),transparent 60%);
+    pointer-events:none;
+  }
+  .speed-lines{position:absolute;inset:0;z-index:0;opacity:.5;pointer-events:none}
+  .speed-lines i{
+    position:absolute;height:2px;left:-20%;width:50%;
+    background:linear-gradient(90deg,transparent,var(--volt),transparent);
+    transform:skewX(-22deg);opacity:.0;
+    animation:dash 3.4s linear infinite;
+  }
+  @keyframes dash{
+    0%{left:-60%;opacity:0}
+    12%{opacity:.55}
+    60%{opacity:.55}
+    100%{left:120%;opacity:0}
+  }
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,56px);align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;
+    font-weight:700;font-size:12px;letter-spacing:.22em;color:var(--volt);
+    border:1px solid rgba(200,255,0,.35);padding:6px 14px;border-radius:40px;
+    margin-bottom:22px;
+  }
+  .eyebrow b{width:7px;height:7px;background:var(--volt);border-radius:50%;box-shadow:0 0 10px var(--volt)}
+  h1.title{
+    font-family:var(--display);
+    font-size:clamp(54px,12vw,138px);
+    line-height:.86;letter-spacing:.005em;
+    text-transform:uppercase;
+  }
+  h1.title .row{display:block;overflow:hidden}
+  h1.title .row span{display:inline-block;transform:translateY(110%);animation:rise .8s cubic-bezier(.2,.8,.2,1) forwards}
+  h1.title .r2 span{animation-delay:.12s}
+  h1.title .r3 span{animation-delay:.24s}
+  h1.title .stroke{
+    color:transparent;-webkit-text-stroke:2px var(--volt);
+  }
+  h1.title .fill{color:var(--fire)}
+  @keyframes rise{to{transform:translateY(0)}}
+  .hero-cn{font-family:var(--display);font-size:clamp(28px,6vw,54px);letter-spacing:.06em;margin-top:6px;color:#fff}
+  .hero-sub{margin-top:22px;max-width:42ch;color:#c4c4cb;font-size:clamp(15px,1.6vw,17.5px)}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+  .btn{
+    font-family:var(--display);letter-spacing:.05em;font-size:18px;
+    padding:13px 28px;transform:skewX(-9deg);cursor:pointer;border:0;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn span{display:inline-block;transform:skewX(9deg)}
+  .btn-volt{background:var(--volt);color:var(--ink);box-shadow:0 10px 30px rgba(200,255,0,.3)}
+  .btn-volt:hover{transform:skewX(-9deg) translateY(-3px);box-shadow:0 16px 40px rgba(200,255,0,.45)}
+  .btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.25)}
+  .btn-ghost:hover{border-color:var(--volt);color:var(--volt)}
+
+  .hero-card{
+    position:relative;background:linear-gradient(155deg,var(--ink3),var(--ink2));
+    border:1px solid var(--line);padding:26px;
+    clip-path:polygon(0 0,100% 0,100% 88%,92% 100%,0 100%);
+  }
+  .hero-card h3{font-family:var(--display);font-size:22px;letter-spacing:.05em;margin-bottom:4px}
+  .hero-card p{font-size:13px;color:var(--grey);margin-bottom:18px}
+  .ring{position:relative;width:160px;height:160px;margin:0 auto 8px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .val{
+    position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+    font-family:var(--num);
+  }
+  .ring .val b{font-size:48px;line-height:.8;color:var(--volt)}
+  .ring .val em{font-style:normal;font-size:12px;letter-spacing:.18em;color:var(--grey);display:block;font-family:var(--body);font-weight:700;margin-top:6px}
+  .hero-card .mini{display:flex;justify-content:space-between;gap:8px;margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+  .hero-card .mini div{text-align:center;flex:1}
+  .hero-card .mini b{font-family:var(--num);font-size:26px;color:#fff;line-height:1}
+  .hero-card .mini em{font-style:normal;font-size:10.5px;color:var(--grey);letter-spacing:.1em}
+
+  /* ============ MARQUEE ============ */
+  .marquee-clip{overflow:hidden;margin-block:clamp(40px,7vw,80px)}
+  .marquee{
+    background:var(--volt);color:var(--ink);overflow:hidden;
+    border-block:3px solid var(--ink);transform:rotate(-1.4deg) scale(1.04);
+  }
+  .marquee .track{display:flex;gap:48px;white-space:nowrap;animation:scroll 22s linear infinite;padding-block:12px;width:max-content}
+  .marquee b{font-family:var(--display);font-size:clamp(22px,3vw,34px);letter-spacing:.04em;display:inline-flex;align-items:center;gap:48px}
+  .marquee b::after{content:"";width:14px;height:14px;background:var(--fire);transform:rotate(45deg);display:inline-block}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ============ STATS ============ */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,26px)}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{
+    background:var(--ink2);border:1px solid var(--line);padding:26px 22px;position:relative;overflow:hidden;
+    border-left:4px solid var(--volt);
+  }
+  .stat:nth-child(2){border-left-color:var(--fire)}
+  .stat:nth-child(4){border-left-color:var(--fire)}
+  .stat .n{font-family:var(--num);font-size:clamp(48px,6vw,70px);line-height:.85;color:#fff}
+  .stat .suf{color:var(--volt);font-family:var(--num);font-size:clamp(30px,4vw,44px)}
+  .stat:nth-child(even) .suf{color:var(--fire)}
+  .stat .lab{font-weight:700;font-size:13px;letter-spacing:.08em;color:var(--grey);margin-top:6px}
+
+  /* ============ SECTION HEAD ============ */
+  .sec{padding-block:clamp(50px,8vw,100px)}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:34px;flex-wrap:wrap}
+  .sec-head .tag{font-weight:700;font-size:12px;letter-spacing:.24em;color:var(--volt)}
+  .sec-head h2{font-family:var(--display);font-size:clamp(36px,6.5vw,82px);line-height:.9;text-transform:uppercase;letter-spacing:.01em}
+  .sec-head h2 em{font-style:normal;color:transparent;-webkit-text-stroke:1.6px var(--fire)}
+  .sec-head p{max-width:34ch;color:var(--grey);font-size:14.5px}
+
+  /* ============ SCHEDULE ============ */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+  .filters button{
+    font-family:var(--body);font-weight:700;font-size:13px;letter-spacing:.06em;
+    background:var(--ink2);color:#cfcfd4;border:1px solid var(--line);
+    padding:9px 18px;cursor:pointer;transition:all .18s;transform:skewX(-8deg);
+  }
+  .filters button span{display:inline-block;transform:skewX(8deg)}
+  .filters button:hover{border-color:var(--volt);color:#fff}
+  .filters button.on{background:var(--volt);color:var(--ink);border-color:var(--volt)}
+  .filters button.on.fire{background:var(--fire);border-color:var(--fire);color:#fff}
+
+  .sched-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+  .sched{min-width:760px;display:grid;grid-template-columns:74px repeat(5,1fr);gap:8px}
+  .sched .h{font-family:var(--display);font-size:17px;letter-spacing:.05em;text-align:center;padding:8px 0;color:#fff}
+  .sched .h.t{color:var(--grey);font-size:13px;font-family:var(--num)}
+  .sched .time{font-family:var(--num);font-size:20px;color:var(--grey);display:grid;place-items:center}
+  .slot{
+    background:var(--ink2);border:1px solid var(--line);border-radius:6px;padding:9px 9px;
+    cursor:pointer;transition:all .16s;position:relative;min-height:64px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .slot:hover{transform:translateY(-2px);border-color:var(--volt)}
+  .slot.empty{background:transparent;border-style:dashed;cursor:default;opacity:.4}
+  .slot.empty:hover{transform:none;border-color:var(--line)}
+  .slot .nm{font-weight:700;font-size:13px;line-height:1.2}
+  .slot .meta{font-size:10.5px;color:var(--grey);display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+  .slot .dot{width:7px;height:7px;border-radius:50%;flex:none}
+  .slot[data-type="重訓"]{border-left:3px solid var(--volt)}
+  .slot[data-type="有氧"]{border-left:3px solid var(--fire)}
+  .slot[data-type="瑜伽"]{border-left:3px solid #6ad0ff}
+  .slot[data-type="拳擊"]{border-left:3px solid #ff5fa2}
+  .slot[data-type="重訓"] .dot{background:var(--volt)}
+  .slot[data-type="有氧"] .dot{background:var(--fire)}
+  .slot[data-type="瑜伽"] .dot{background:#6ad0ff}
+  .slot[data-type="拳擊"] .dot{background:#ff5fa2}
+  .slot.dim{opacity:.16;filter:grayscale(.6)}
+  .slot.booked{background:var(--volt);color:var(--ink);border-color:var(--volt)}
+  .slot.booked .meta{color:rgba(10,10,12,.7)}
+  .slot.full{opacity:.5;cursor:not-allowed}
+  .slot .badge{
+    position:absolute;top:6px;right:6px;font-size:9px;font-weight:700;letter-spacing:.08em;
+    background:var(--fire);color:#fff;padding:1px 6px;border-radius:3px;
+  }
+  .slot.booked .badge{background:var(--ink);color:var(--volt)}
+  .sched-note{margin-top:14px;font-size:12.5px;color:var(--grey)}
+  .sched-note b{color:var(--volt)}
+
+  /* ============ BUILDER ============ */
+  .builder{background:linear-gradient(160deg,var(--ink2),var(--ink));border:1px solid var(--line);padding:clamp(22px,3vw,40px);position:relative;overflow:hidden}
+  .builder::after{content:"";position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,77,28,.22),transparent 70%)}
+  .builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3vw,42px);position:relative;z-index:2}
+  @media(max-width:840px){.builder-grid{grid-template-columns:1fr}}
+  .field{margin-bottom:22px}
+  .field>label{display:block;font-weight:700;font-size:12px;letter-spacing:.16em;color:var(--volt);margin-bottom:11px}
+  .opts{display:flex;flex-wrap:wrap;gap:9px}
+  .opt{
+    background:var(--ink3);border:1px solid var(--line);color:#dcdce0;
+    padding:9px 16px;font-weight:700;font-size:13.5px;cursor:pointer;transition:all .16s;
+  }
+  .opt:hover{border-color:var(--volt)}
+  .opt.on{background:var(--volt);color:var(--ink);border-color:var(--volt)}
+  .days-row{display:flex;align-items:center;gap:14px}
+  .days-row input[type=range]{flex:1;accent-color:var(--volt);height:6px}
+  .days-row b{font-family:var(--num);font-size:42px;color:var(--volt);width:48px;text-align:center;line-height:.8}
+  .gen-btn{width:100%;justify-content:center}
+  .plan-out{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:20px;min-height:280px}
+  .plan-out h4{font-family:var(--display);font-size:24px;letter-spacing:.04em;margin-bottom:4px}
+  .plan-out .ph{color:var(--grey);font-size:13.5px;text-align:center;padding-top:64px}
+  .plan-day{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:center;opacity:0;transform:translateX(14px);animation:slideIn .5s forwards}
+  .plan-day:last-child{border-bottom:0}
+  .plan-day .d{font-family:var(--num);font-size:30px;color:var(--fire);width:46px;flex:none;line-height:.8}
+  .plan-day .info b{font-size:15px;display:block}
+  .plan-day .info span{font-size:12px;color:var(--grey)}
+  .plan-day .kcal{margin-left:auto;font-family:var(--num);font-size:22px;color:var(--volt)}
+  @keyframes slideIn{to{opacity:1;transform:translateX(0)}}
+
+  /* ============ COACHES ============ */
+  .coach-wrap{position:relative}
+  .coach-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:14px;scroll-behavior:smooth}
+  .coach-track::-webkit-scrollbar{height:6px}
+  .coach-track::-webkit-scrollbar-thumb{background:var(--ink3);border-radius:10px}
+  .coach{
+    flex:0 0 clamp(240px,80vw,290px);scroll-snap-align:start;
+    background:var(--ink2);border:1px solid var(--line);overflow:hidden;
+    clip-path:polygon(0 0,100% 0,100% 92%,90% 100%,0 100%);
+  }
+  .coach .pic{height:200px;position:relative;display:grid;place-items:center;background:linear-gradient(150deg,var(--ink3),var(--ink))}
+  .coach .pic svg{width:120px;height:120px;opacity:.9}
+  .coach:nth-child(2n) .pic{background:linear-gradient(150deg,#2a160d,var(--ink))}
+  .coach .tagline{position:absolute;top:12px;left:12px;font-weight:700;font-size:10.5px;letter-spacing:.12em;background:var(--volt);color:var(--ink);padding:3px 9px}
+  .coach:nth-child(2n) .tagline{background:var(--fire);color:#fff}
+  .coach .body{padding:18px}
+  .coach .body h4{font-family:var(--display);font-size:24px;letter-spacing:.04em}
+  .coach .body .role{color:var(--volt);font-weight:700;font-size:12px;letter-spacing:.1em;margin-bottom:10px}
+  .coach:nth-child(2n) .body .role{color:var(--fire2)}
+  .coach .body p{font-size:13px;color:var(--grey);min-height:54px}
+  .coach .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .coach .tags span{font-size:10.5px;font-weight:700;border:1px solid var(--line);padding:3px 9px;border-radius:20px;color:#cfcfd4}
+  .carousel-nav{display:flex;gap:10px;margin-top:16px}
+  .carousel-nav button{
+    width:46px;height:46px;background:var(--ink2);border:1px solid var(--line);color:#fff;
+    cursor:pointer;transition:all .18s;display:grid;place-items:center;
+  }
+  .carousel-nav button:hover{background:var(--volt);color:var(--ink);border-color:var(--volt)}
+
+  /* ============ PRICING ============ */
+  .price-toggle{display:inline-flex;background:var(--ink2);border:1px solid var(--line);border-radius:50px;padding:5px;margin-bottom:30px;gap:4px}
+  .price-toggle button{
+    font-weight:700;font-size:13.5px;padding:9px 22px;border-radius:50px;border:0;cursor:pointer;
+    background:transparent;color:#cfcfd4;transition:all .2s;
+  }
+  .price-toggle button.on{background:var(--volt);color:var(--ink)}
+  .price-toggle .save{font-size:10.5px;color:var(--fire);margin-left:6px}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:840px){.plans{grid-template-columns:1fr}}
+  .plan{background:var(--ink2);border:1px solid var(--line);padding:30px 26px;position:relative;overflow:hidden}
+  .plan.feat{border:2px solid var(--volt);transform:scale(1.02)}
+  @media(max-width:840px){.plan.feat{transform:none}}
+  .plan.feat::before{content:"最熱門";position:absolute;top:16px;right:-34px;background:var(--fire);color:#fff;font-weight:700;font-size:11px;letter-spacing:.1em;padding:4px 40px;transform:rotate(40deg)}
+  .plan .name{font-family:var(--display);font-size:28px;letter-spacing:.04em}
+  .plan .desc{color:var(--grey);font-size:13px;margin-bottom:18px;min-height:38px}
+  .plan .price{font-family:var(--num);line-height:.8;margin-bottom:4px}
+  .plan .price .cur{font-size:22px;color:var(--grey);vertical-align:top}
+  .plan .price .amt{font-size:64px;color:#fff}
+  .plan.feat .price .amt{color:var(--volt)}
+  .plan .price .per{font-size:15px;color:var(--grey);font-family:var(--body);font-weight:700}
+  .plan ul{list-style:none;margin:20px 0;display:flex;flex-direction:column;gap:11px}
+  .plan li{font-size:13.5px;display:flex;gap:9px;align-items:flex-start;color:#dcdce0}
+  .plan li svg{width:16px;height:16px;flex:none;margin-top:3px;color:var(--volt)}
+  .plan .pbtn{width:100%;justify-content:center;font-size:16px}
+  .plan:not(.feat) .pbtn{background:transparent;border:2px solid rgba(255,255,255,.22);color:#fff}
+  .plan:not(.feat) .pbtn:hover{border-color:var(--volt);color:var(--volt)}
+
+  /* ============ CALC ============ */
+  .calc{background:linear-gradient(150deg,var(--ink2),var(--ink));border:1px solid var(--line);padding:clamp(22px,3vw,40px)}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,40px);align-items:center}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr}}
+  .calc-form .inp{margin-bottom:18px}
+  .calc-form label{display:block;font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--volt);margin-bottom:8px}
+  .calc-form input,.calc-form select{
+    width:100%;background:var(--ink);border:1px solid var(--line);color:#fff;
+    padding:13px 14px;font-size:15px;font-family:var(--body);border-radius:7px;
+  }
+  .calc-form input:focus,.calc-form select:focus{outline:none;border-color:var(--volt)}
+  .calc-form .err{color:var(--fire);font-size:12px;margin-top:6px;display:none}
+  .calc-form .err.show{display:block}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .calc-res{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:30px;text-align:center}
+  .calc-res .big{font-family:var(--num);font-size:84px;line-height:.8;color:var(--volt);transition:color .3s}
+  .calc-res .cat{font-weight:700;letter-spacing:.1em;font-size:14px;margin:8px 0 18px}
+  .calc-res .row{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:13px 0;font-size:14px}
+  .calc-res .row b{font-family:var(--num);font-size:24px;color:#fff}
+  .calc-res .ph{color:var(--grey);font-size:13.5px;padding:40px 0}
+
+  /* ============ CTA BANNER ============ */
+  .cta-clip{overflow:hidden;margin-top:clamp(50px,8vw,90px)}
+  .cta-band{
+    background:var(--volt);color:var(--ink);
+    transform:rotate(-1.2deg) scale(1.03);padding-block:clamp(40px,6vw,70px);overflow:hidden;
+  }
+  .cta-band .in{transform:rotate(1.2deg);text-align:center}
+  .cta-band h2{font-family:var(--display);font-size:clamp(38px,8vw,96px);line-height:.86;text-transform:uppercase}
+  .cta-band p{font-weight:700;margin:14px 0 26px;font-size:clamp(15px,2vw,18px)}
+  .cta-band .btn-fire{background:var(--ink);color:var(--volt)}
+  .cta-band .btn-fire:hover{background:var(--fire);color:#fff;transform:skewX(-9deg) translateY(-3px)}
+
+  /* ============ FOOTER ============ */
+  footer{padding-block:clamp(44px,6vw,72px) 110px;border-top:1px solid var(--line);margin-top:clamp(50px,8vw,90px)}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  @media(max-width:700px){.foot-grid{grid-template-columns:1fr 1fr}}
+  .foot-brand b{font-family:var(--display);font-size:30px;letter-spacing:.04em}
+  .foot-brand p{color:var(--grey);font-size:13.5px;margin-top:10px;max-width:34ch}
+  .foot-col h5{font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--volt);margin-bottom:14px}
+  .foot-col a{display:block;color:#cfcfd4;font-size:13.5px;margin-bottom:9px;transition:color .18s}
+  .foot-col a:hover{color:#fff}
+  .foot-bot{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--grey)}
+  .foot-bot b{color:var(--volt)}
+
+  /* ============ BADGE ============ */
+  .elife-badge{
+    position:fixed;right:16px;bottom:16px;z-index:90;
+    display:flex;align-items:center;gap:8px;
+    background:var(--ink);border:1px solid var(--volt);
+    color:var(--volt);font-family:var(--display);letter-spacing:.05em;font-size:14px;
+    padding:9px 15px;box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 1px rgba(200,255,0,.15);
+    transform:skewX(-8deg);transition:transform .2s,box-shadow .2s;
+  }
+  .elife-badge:hover{transform:skewX(-8deg) translateY(-3px);box-shadow:0 14px 36px rgba(200,255,0,.3)}
+  .elife-badge>*{transform:skewX(8deg)}
+  .elife-badge .b-dot{width:8px;height:8px;background:var(--volt);border-radius:50%;box-shadow:0 0 8px var(--volt);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:520px){
+    .hero-card{clip-path:none}
+    .marquee,.cta-band{transform:rotate(-1deg)}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9h3l2-4 4 14 3-8h3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><b>VOLT</b><br><span>烈火健身工坊</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#schedule">課表</a>
+      <a href="#builder">訓練計畫</a>
+      <a href="#coaches">教練</a>
+      <a href="#pricing">方案</a>
+      <a href="#calc">健康試算</a>
+      <a class="nav-cta" href="#pricing"><span>免費體驗</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="speed-lines" id="speed"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><b></b>能量無上限 · 全台 7 館</span>
+      <h1 class="title">
+        <span class="row r1"><span>PUSH YOUR</span></span>
+        <span class="row r2"><span class="stroke">LIMITS</span></span>
+        <span class="row r3"><span class="fill">EVERY DAY.</span></span>
+      </h1>
+      <div class="hero-cn">把極限，變成日常</div>
+      <p class="hero-sub">VOLT 烈火健身工坊 — 重訓、有氧、瑜伽、拳擊一站到位。專業教練、彈性課表、爆發式社群能量，讓每一次訓練都點燃你。</p>
+      <div class="hero-actions">
+        <button class="btn btn-volt" onclick="document.getElementById('schedule').scrollIntoView()"><span>查看本週課表</span></button>
+        <button class="btn btn-ghost" onclick="document.getElementById('builder').scrollIntoView()"><span>打造我的計畫</span></button>
+      </div>
+    </div>
+    <div class="hero-card reveal">
+      <h3>本週能量指數</h3>
+      <p>VOLT 社群本週累積燃燒</p>
+      <div class="ring">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="68" fill="none" stroke="#23232b" stroke-width="12"/>
+          <circle id="ringArc" cx="80" cy="80" r="68" fill="none" stroke="var(--volt)" stroke-width="12" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427"/>
+        </svg>
+        <div class="val"><b id="ringNum">0</b><em>達成率 %</em></div>
+      </div>
+      <div class="mini">
+        <div><b class="count" data-to="3280">0</b><em>本週課數</em></div>
+        <div><b class="count" data-to="9.4" data-dec="1">0</b><em>滿意度</em></div>
+        <div><b class="count" data-to="184">0</b><em>今日報到</em></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee-clip">
+  <div class="marquee">
+    <div class="track" id="mqTrack">
+      <b>NO EXCUSES&nbsp;&nbsp;突破自我&nbsp;&nbsp;STRONGER EVERY REP&nbsp;&nbsp;燃燒吧&nbsp;&nbsp;TRAIN HARD&nbsp;&nbsp;烈火能量&nbsp;&nbsp;</b>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat reveal"><div class="n"><span class="count" data-to="12800">0</span><span class="suf">+</span></div><div class="lab">活躍會員</div></div>
+      <div class="stat reveal"><div class="n"><span class="count" data-to="240">0</span><span class="suf">+</span></div><div class="lab">每週課程</div></div>
+      <div class="stat reveal"><div class="n"><span class="count" data-to="58">0</span><span class="suf">位</span></div><div class="lab">專業教練</div></div>
+      <div class="stat reveal"><div class="n"><span class="count" data-to="7">0</span><span class="suf">館</span></div><div class="lab">全台據點</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="sec" id="schedule">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="tag">WEEKLY SCHEDULE</div>
+        <h2>本週<em>課表</em></h2>
+      </div>
+      <p>點選課程即可「預約」，再點一次取消。用上方分類篩選你想練的項目。</p>
+    </div>
+    <div class="filters reveal" id="filters">
+      <button class="on" data-f="all"><span>全部課程</span></button>
+      <button data-f="重訓"><span>重訓</span></button>
+      <button data-f="有氧"><span>有氧</span></button>
+      <button data-f="瑜伽"><span>瑜伽</span></button>
+      <button data-f="拳擊"><span>拳擊</span></button>
+    </div>
+    <div class="sched-scroll reveal">
+      <div class="sched" id="sched"></div>
+    </div>
+    <div class="sched-note">已預約 <b id="bookCount">0</b> 堂課 · 紅色「滿」表示額滿無法預約。所有資料為展示用模擬，不會送出任何請求。</div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section class="sec" id="builder">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="tag">WORKOUT BUILDER</div>
+        <h2>打造你的<em>計畫</em></h2>
+      </div>
+      <p>選一個目標、設定每週訓練天數，VOLT 為你即時生成專屬課表。</p>
+    </div>
+    <div class="builder reveal">
+      <div class="builder-grid">
+        <div>
+          <div class="field">
+            <label>你的目標</label>
+            <div class="opts" id="goalOpts">
+              <button class="opt on" data-goal="增肌">增肌爆發</button>
+              <button class="opt" data-goal="減脂">減脂燃燒</button>
+              <button class="opt" data-goal="體能">心肺體能</button>
+              <button class="opt" data-goal="放鬆">舒緩放鬆</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>每週訓練天數</label>
+            <div class="days-row">
+              <input type="range" id="daysRange" min="2" max="6" value="4">
+              <b id="daysVal">4</b>
+            </div>
+          </div>
+          <div class="field">
+            <label>訓練強度</label>
+            <div class="opts" id="intOpts">
+              <button class="opt" data-int="輕鬆">輕鬆入門</button>
+              <button class="opt on" data-int="標準">標準進階</button>
+              <button class="opt" data-int="爆燃">爆燃挑戰</button>
+            </div>
+          </div>
+          <button class="btn btn-volt gen-btn" id="genBtn"><span>生成我的計畫 →</span></button>
+        </div>
+        <div class="plan-out" id="planOut">
+          <div class="ph">← 選好條件，按下「生成計畫」<br>看看 VOLT 為你安排的一週</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COACHES -->
+<section class="sec" id="coaches">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="tag">OUR COACHES</div>
+        <h2>烈火<em>教練</em>團</h2>
+      </div>
+      <p>每一位都是國際認證、實戰派的訓練夥伴，陪你燃燒每一滴汗水。</p>
+    </div>
+    <div class="coach-wrap reveal">
+      <div class="coach-track" id="coachTrack"></div>
+      <div class="carousel-nav">
+        <button id="cPrev" aria-label="上一位"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button id="cNext" aria-label="下一位"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="tag">MEMBERSHIP</div>
+        <h2>選你的<em>方案</em></h2>
+      </div>
+      <p>無綁約、可暫停。年繳現省 2 個月，能量加倍奉還。</p>
+    </div>
+    <div class="reveal">
+      <div class="price-toggle" id="priceToggle">
+        <button class="on" data-cycle="month">月繳</button>
+        <button data-cycle="year">年繳<span class="save">省 17%</span></button>
+      </div>
+    </div>
+    <div class="plans reveal" id="plans"></div>
+  </div>
+</section>
+
+<!-- CALC -->
+<section class="sec" id="calc">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="tag">BODY CHECK</div>
+        <h2>BMI &amp; <em>燃脂</em>試算</h2>
+      </div>
+      <p>輸入基本資料，立即算出你的 BMI 與每日基礎消耗，數字會即時動畫跳動。</p>
+    </div>
+    <div class="calc reveal">
+      <div class="calc-grid">
+        <form class="calc-form" id="calcForm" novalidate>
+          <div class="two">
+            <div class="inp">
+              <label>身高 (cm)</label>
+              <input type="number" id="hgt" placeholder="170" inputmode="numeric">
+            </div>
+            <div class="inp">
+              <label>體重 (kg)</label>
+              <input type="number" id="wgt" placeholder="65" inputmode="numeric">
+            </div>
+          </div>
+          <div class="two">
+            <div class="inp">
+              <label>年齡</label>
+              <input type="number" id="age" placeholder="28" inputmode="numeric">
+            </div>
+            <div class="inp">
+              <label>性別</label>
+              <select id="sex"><option value="m">男</option><option value="f">女</option></select>
+            </div>
+          </div>
+          <div class="err" id="calcErr">請輸入合理的身高 (100–250)、體重 (30–250)、年齡 (10–100)。</div>
+          <button class="btn btn-volt" type="submit" style="width:100%;justify-content:center"><span>計算我的數字</span></button>
+        </form>
+        <div class="calc-res" id="calcRes">
+          <div class="ph">填好左邊資料<br>就能看到你的 BMI 與每日消耗</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-clip">
+  <div class="cta-band">
+    <div class="wrap in">
+      <h2>準備好<br>燃燒了嗎？</h2>
+      <p>首次到館，免費體驗 7 天全課程 + 一對一體態評估。</p>
+      <button class="btn btn-fire" onclick="document.getElementById('pricing').scrollIntoView()"><span>立即免費體驗 →</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <b>VOLT 烈火健身工坊</b>
+        <p>能量無上限。我們，一起把極限變成日常。本頁為 e-life-ai 製作之展示用作品集樣板，品牌與資料皆為虛構。</p>
+      </div>
+      <div class="foot-col">
+        <h5>探索</h5>
+        <a href="#schedule">本週課表</a>
+        <a href="#builder">訓練計畫</a>
+        <a href="#coaches">教練團</a>
+        <a href="#pricing">會員方案</a>
+      </div>
+      <div class="foot-col">
+        <h5>聯絡</h5>
+        <a href="#">台北旗艦館</a>
+        <a href="#">0800-VOLT-99</a>
+        <a href="#">hello@volt-gym.example</a>
+        <a href="#calc">健康試算</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div>© 2026 VOLT 烈火健身工坊（虛構品牌）· 展示作品由 <b>e-life-ai</b> 設計開發</div>
+      <div>Designed &amp; built by e-life-ai</div>
+    </div>
+  </div>
+</footer>
+
+<!-- BADGE -->
+<a class="elife-badge" href="https://elife-ai.com" target="_blank" rel="noopener">
+  <span class="b-dot"></span><span>elife-ai.com</span>
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- speed lines ---- */
+  const speed=document.getElementById('speed');
+  for(let i=0;i<7;i++){
+    const el=document.createElement('i');
+    el.style.top=(8+i*13)+'%';
+    el.style.animationDelay=(i*0.5)+'s';
+    el.style.width=(35+Math.random()*30)+'%';
+    speed.appendChild(el);
+  }
+
+  /* ---- marquee duplicate for seamless loop ---- */
+  const mq=document.getElementById('mqTrack');
+  mq.innerHTML+=mq.innerHTML;
+
+  /* ---- count up ---- */
+  function animateCount(el){
+    const to=parseFloat(el.dataset.to);
+    const dec=parseInt(el.dataset.dec||"0",10);
+    const dur=1400;const t0=performance.now();
+    function tick(now){
+      const p=Math.min(1,(now-t0)/dur);
+      const e=1-Math.pow(1-p,3);
+      const v=to*e;
+      el.textContent=dec? v.toFixed(dec) : Math.round(v).toLocaleString();
+      if(p<1)requestAnimationFrame(tick);
+      else el.textContent=dec? to.toFixed(dec): to.toLocaleString();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ---- ring ---- */
+  function animateRing(){
+    const arc=document.getElementById('ringArc');
+    const num=document.getElementById('ringNum');
+    const pct=86;const full=427;const off=full-(full*pct/100);
+    arc.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)';
+    requestAnimationFrame(()=>{arc.style.strokeDashoffset=off;});
+    const t0=performance.now();
+    (function tick(now){
+      const p=Math.min(1,(now-t0)/1600);
+      num.textContent=Math.round(pct*(1-Math.pow(1-p,3)));
+      if(p<1)requestAnimationFrame(tick);else num.textContent=pct;
+    })(performance.now());
+  }
+
+  /* ---- reveal observer ---- */
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        e.target.querySelectorAll&&e.target.querySelectorAll('.count').forEach(animateCount);
+        if(e.target.querySelector&&e.target.querySelector('#ringArc'))animateRing();
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.2});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.08)+'s';io.observe(el);});
+
+  /* ============ SCHEDULE ============ */
+  const days=['週一','週二','週三','週四','週五'];
+  const times=['07:00','10:00','12:30','18:00','19:30','20:30'];
+  const types=['重訓','有氧','瑜伽','拳擊'];
+  const names={重訓:['槓鈴爆發','硬舉專項','機能肌力','核心鋼鐵'],有氧:['節奏飛輪','HIIT 燃脂','戰繩衝刺','階梯爬升'],瑜伽:['流動瑜伽','深層伸展','陰瑜伽','呼吸冥想'],拳擊:['拳擊有氧','泰拳實戰','沙袋衝擊','格鬥體能']};
+  const coachesShort=['Leo','Mia','Kai','Zoe','Ray','Nina','Max','Joy'];
+  // deterministic pseudo schedule
+  function makeSched(){
+    const cells=[];let seed=7;
+    const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;};
+    for(let r=0;r<times.length;r++){
+      for(let c=0;c<days.length;c++){
+        if(rnd()<0.18){cells.push(null);continue;}
+        const ty=types[Math.floor(rnd()*types.length)];
+        const nm=names[ty][Math.floor(rnd()*names[ty].length)];
+        const co=coachesShort[Math.floor(rnd()*coachesShort.length)];
+        const full=rnd()<0.16;
+        cells.push({ty,nm,co,full});
+      }
+    }
+    return cells;
+  }
+  const schedData=makeSched();
+  const schedEl=document.getElementById('sched');
+  let bookCount=0;
+  function renderSched(){
+    let html='<div class="h"></div>';
+    days.forEach(d=>html+=`<div class="h">${d}</div>`);
+    for(let r=0;r<times.length;r++){
+      html+=`<div class="time">${times[r]}</div>`;
+      for(let c=0;c<days.length;c++){
+        const cell=schedData[r*days.length+c];
+        if(!cell){html+=`<div class="slot empty"></div>`;continue;}
+        html+=`<div class="slot${cell.full?' full':''}" data-type="${cell.ty}" data-i="${r*days.length+c}">
+          ${cell.full?'<span class="badge">滿</span>':''}
+          <div class="nm">${cell.nm}</div>
+          <div class="meta"><span><span class="dot"></span> ${cell.ty}</span><span>${cell.co}</span></div>
+        </div>`;
+      }
+    }
+    schedEl.innerHTML=html;
+  }
+  renderSched();
+  schedEl.addEventListener('click',e=>{
+    const slot=e.target.closest('.slot');
+    if(!slot||slot.classList.contains('empty')||slot.classList.contains('full'))return;
+    slot.classList.toggle('booked');
+    const badge=slot.querySelector('.book-badge');
+    if(slot.classList.contains('booked')){
+      bookCount++;
+      const b=document.createElement('span');b.className='badge book-badge';b.textContent='已約';slot.appendChild(b);
+    }else{
+      bookCount--;
+      if(badge)badge.remove();
+    }
+    document.getElementById('bookCount').textContent=bookCount;
+  });
+  // filters
+  const filters=document.getElementById('filters');
+  filters.addEventListener('click',e=>{
+    const btn=e.target.closest('button');if(!btn)return;
+    [...filters.children].forEach(b=>b.classList.remove('on','fire'));
+    btn.classList.add('on');
+    const f=btn.dataset.f;
+    if(f!=='all'&&(f==='有氧'||f==='拳擊'))btn.classList.add('fire');
+    schedEl.querySelectorAll('.slot:not(.empty)').forEach(s=>{
+      s.classList.toggle('dim', f!=='all'&&s.dataset.type!==f);
+    });
+  });
+
+  /* ============ BUILDER ============ */
+  let goal='增肌',intensity='標準',ndays=4;
+  document.getElementById('goalOpts').addEventListener('click',e=>{
+    const b=e.target.closest('.opt');if(!b)return;
+    [...e.currentTarget.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');goal=b.dataset.goal;
+  });
+  document.getElementById('intOpts').addEventListener('click',e=>{
+    const b=e.target.closest('.opt');if(!b)return;
+    [...e.currentTarget.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');intensity=b.dataset.int;
+  });
+  const daysRange=document.getElementById('daysRange');
+  daysRange.addEventListener('input',()=>{ndays=+daysRange.value;document.getElementById('daysVal').textContent=ndays;});
+
+  const planLib={
+    增肌:[['推日','胸 / 三頭 / 肩前束',520],['拉日','背 / 二頭 / 後三角',540],['腿日','深蹲 / 硬舉 / 小腿',680],['上肢','複合推拉超級組',500],['核心爆發','負重核心 + 增肌補強',420],['全身','大重量複合動作',600]],
+    減脂:[['HIIT 燃脂','30 分間歇 + 戰繩',610],['全身循環','器械循環 12 站',540],['飛輪衝刺','節奏有氧 45 分',560],['核心雕塑','腹肌 + 臀腿線條',430],['階梯爬升','穩態有氧 40 分',480],['拳擊燃脂','出拳組合 + 跳繩',590]],
+    體能:[['心肺基礎','跑步機 + 划船機',470],['敏捷訓練','梯繩 + 變向衝刺',520],['循環體能','功能性循環',550],['爆發力','跳箱 + 藥球',500],['耐力跑','長距離穩態',600],['恢復慢跑','輕量有氧 30 分',300]],
+    放鬆:[['流動瑜伽','Vinyasa 串連',280],['深層伸展','筋膜放鬆 60 分',220],['呼吸冥想','正念呼吸練習',150],['陰瑜伽','長時間靜態伸展',200],['活動度','關節活動度訓練',260],['恢復日','按摩槍 + 拉伸',180]]
+  };
+  document.getElementById('genBtn').addEventListener('click',()=>{
+    const lib=planLib[goal];
+    const sel=lib.slice(0,ndays);
+    const mult=intensity==='輕鬆'?0.8:intensity==='爆燃'?1.25:1;
+    const out=document.getElementById('planOut');
+    let total=0;
+    let html=`<h4>${goal} · ${intensity}</h4><p style="color:var(--grey);font-size:13px;margin-bottom:14px">每週 ${ndays} 天 · 為你客製</p>`;
+    sel.forEach((d,i)=>{
+      const kcal=Math.round(d[2]*mult);total+=kcal;
+      html+=`<div class="plan-day" style="animation-delay:${i*0.08}s"><div class="d">D${i+1}</div><div class="info"><b>${d[0]}</b><span>${d[1]}</span></div><div class="kcal">${kcal}<span style="font-size:11px;color:var(--grey)"> kcal</span></div></div>`;
+    });
+    html+=`<div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:700;letter-spacing:.06em;color:var(--volt)">每週預估燃燒</span><b style="font-family:var(--num);font-size:34px;color:var(--fire)">${total.toLocaleString()}<span style="font-size:14px;color:var(--grey)"> kcal</span></b></div>`;
+    out.innerHTML=html;
+  });
+
+  /* ============ COACHES ============ */
+  const coachData=[
+    {nm:'Leo Chang',role:'肌力與爆發力',tl:'王牌教練',bio:'前舉重國手，專攻大重量複合訓練，帶你安全突破個人紀錄。',tags:['NSCA-CSCS','奧林匹克舉重','12 年資歷'],icon:'lift'},
+    {nm:'Mia Lin',role:'燃脂與體態雕塑',tl:'人氣女王',bio:'HIIT 與循環訓練專家，課程節奏緊湊、能量爆棚，最受歡迎。',tags:['ACE 認證','HIIT 專項','營養諮詢'],icon:'run'},
+    {nm:'Kai Wu',role:'拳擊與格鬥體能',tl:'實戰派',bio:'前職業泰拳選手，把實戰技巧化為全身燃脂的高能課程。',tags:['泰拳','MMA 體能','反應訓練'],icon:'box'},
+    {nm:'Zoe Hsu',role:'瑜伽與恢復',tl:'療癒系',bio:'結合流動瑜伽與筋膜放鬆，幫高強度訓練者找回身體平衡。',tags:['RYT-500','筋膜放鬆','呼吸法'],icon:'yoga'},
+    {nm:'Ray Chen',role:'功能性訓練',tl:'動作大師',bio:'專注動作品質與運動表現，讓你練得強壯也練得長久。',tags:['FMS','運動防護','敏捷訓練'],icon:'lift'},
+    {nm:'Nina Kao',role:'心肺與耐力',tl:'飛輪女神',bio:'飛輪與耐力訓練教練，用音樂與節奏點燃整間教室的能量。',tags:['Spinning','耐力規劃','心率管理'],icon:'run'}
+  ];
+  const icons={
+    lift:'<svg viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.6"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10" stroke-linecap="round"/></svg>',
+    run:'<svg viewBox="0 0 24 24" fill="none" stroke="#ff7a2e" stroke-width="1.6"><circle cx="15" cy="5" r="2"/><path d="M11 8l3 2 2-1M11 8l-2 5 3 2 1 4M9 13l-3 1M14 12l2 4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    box:'<svg viewBox="0 0 24 24" fill="none" stroke="#ff5fa2" stroke-width="1.6"><path d="M7 4h7l2 5v4a3 3 0 0 1-3 3H9a2 2 0 0 1-2-2V4z" stroke-linejoin="round"/><path d="M14 6h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1"/></svg>',
+    yoga:'<svg viewBox="0 0 24 24" fill="none" stroke="#6ad0ff" stroke-width="1.6"><circle cx="12" cy="4" r="2"/><path d="M12 7v6M5 19l7-6 7 6M8 11h8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  };
+  const track=document.getElementById('coachTrack');
+  track.innerHTML=coachData.map(c=>`
+    <div class="coach">
+      <div class="pic"><span class="tagline">${c.tl}</span>${icons[c.icon]}</div>
+      <div class="body">
+        <h4>${c.nm}</h4>
+        <div class="role">${c.role}</div>
+        <p>${c.bio}</p>
+        <div class="tags">${c.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+  function scrollCoach(dir){
+    const card=track.querySelector('.coach');
+    const step=card?card.offsetWidth+18:300;
+    track.scrollBy({left:dir*step,behavior:'smooth'});
+  }
+  document.getElementById('cNext').addEventListener('click',()=>scrollCoach(1));
+  document.getElementById('cPrev').addEventListener('click',()=>scrollCoach(-1));
+
+  /* ============ PRICING ============ */
+  const plansData=[
+    {nm:'FLEX',desc:'彈性入門，想練就來',m:990,feat:false,items:['單館自由進出','基礎器材全開放','每月 4 堂團體課','APP 自助預約']},
+    {nm:'VOLT',desc:'最受歡迎的全方位方案',m:1680,feat:true,items:['全台 7 館通用','無限團體課程','季度體態評估','一對一諮詢 1 次/月','貴賓置物櫃']},
+    {nm:'ELITE',desc:'菁英級，私人教練同行',m:3200,feat:false,items:['VOLT 全部權益','私人教練 8 堂/月','客製化營養計畫','優先預約熱門課','運動恢復室']}
+  ];
+  const plansEl=document.getElementById('plans');
+  let cycle='month';
+  const check='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function renderPlans(){
+    plansEl.innerHTML=plansData.map(p=>{
+      const price=cycle==='month'?p.m:Math.round(p.m*10);
+      const per=cycle==='month'?'/ 月':'/ 年';
+      return `<div class="plan${p.feat?' feat':''}">
+        <div class="name">${p.nm}</div>
+        <div class="desc">${p.desc}</div>
+        <div class="price"><span class="cur">NT$</span><span class="amt" data-base="${price}">${price.toLocaleString()}</span> <span class="per">${per}</span></div>
+        <ul>${p.items.map(i=>`<li>${check}<span>${i}</span></li>`).join('')}</ul>
+        <button class="btn ${p.feat?'btn-volt':''} pbtn"><span>選擇 ${p.nm}</span></button>
+      </div>`;
+    }).join('');
+  }
+  renderPlans();
+  document.getElementById('priceToggle').addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    [...e.currentTarget.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    cycle=b.dataset.cycle;renderPlans();
+  });
+
+  /* ============ CALC ============ */
+  document.getElementById('calcForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const h=parseFloat(document.getElementById('hgt').value);
+    const w=parseFloat(document.getElementById('wgt').value);
+    const a=parseFloat(document.getElementById('age').value);
+    const sex=document.getElementById('sex').value;
+    const err=document.getElementById('calcErr');
+    const valid=h>=100&&h<=250&&w>=30&&w<=250&&a>=10&&a<=100;
+    if(!valid){err.classList.add('show');return;}
+    err.classList.remove('show');
+    const bmi=w/Math.pow(h/100,2);
+    // Mifflin-St Jeor BMR
+    const bmr= sex==='m'? 10*w+6.25*h-5*a+5 : 10*w+6.25*h-5*a-161;
+    const tdee=bmr*1.55; // moderately active
+    let cat,color;
+    if(bmi<18.5){cat='體重過輕';color='#6ad0ff';}
+    else if(bmi<24){cat='標準健康';color='#c8ff00';}
+    else if(bmi<27){cat='體重過重';color='#ff7a2e';}
+    else{cat='肥胖';color='#ff4d1c';}
+    const res=document.getElementById('calcRes');
+    res.innerHTML=`
+      <div class="big" id="bmiBig" style="color:${color}">0</div>
+      <div class="cat" style="color:${color}">BMI · ${cat}</div>
+      <div class="row"><span>基礎代謝 BMR</span><b><span class="count" data-to="${Math.round(bmr)}">0</span> kcal</b></div>
+      <div class="row"><span>每日總消耗 TDEE</span><b><span class="count" data-to="${Math.round(tdee)}">0</span> kcal</b></div>
+      <div class="row"><span>建議增肌攝取</span><b><span class="count" data-to="${Math.round(tdee+300)}">0</span> kcal</b></div>`;
+    // animate bmi
+    const big=document.getElementById('bmiBig');const t0=performance.now();
+    (function tick(now){const p=Math.min(1,(now-t0)/1100);big.textContent=(bmi*(1-Math.pow(1-p,3))).toFixed(1);if(p<1)requestAnimationFrame(tick);else big.textContent=bmi.toFixed(1);})(performance.now());
+    res.querySelectorAll('.count').forEach(animateCount);
+  });
+
+})();
+</script>
+</body>
+</html>

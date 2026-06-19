@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>序光烘焙所 — 單一產地手沖與烘焙｜e-life-ai 設計樣板</title>
+<meta name="description" content="序光烘焙所：台中自家烘焙的單一產地咖啡與當日手作烘焙。用一支烘焙度旋鈕，找到屬於你的那杯。線上選豆、預約取貨。">
+<meta name="author" content="e-life-ai.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Archivo:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1714;        /* deep roasted espresso — primary bg */
+    --ink-2:#241D19;      /* raised panels */
+    --paper:#EFE6D6;      /* warm kraft surface */
+    --ember:#E8743B;      /* roast-flame amber — bold accent */
+    --crema:#D9B27C;      /* crema tan */
+    --moss:#7E8C63;       /* raw green bean / herbal note */
+    --ash:#9C918A;        /* muted text on dark */
+    --ink-soft:#3A302A;   /* hairline / borders on dark */
+    --shadow:rgba(0,0,0,.45);
+
+    --f-display:"Fraunces",Georgia,serif;
+    --f-body:"Archivo",system-ui,sans-serif;
+    --f-mono:"Space Mono",ui-monospace,monospace;
+
+    --maxw:1180px;
+    --r:14px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--f-body);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit}
+  img{max-width:100%}
+  h1,h2,h3{margin:0;font-family:var(--f-display);font-weight:500;line-height:1.04;letter-spacing:-.01em}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  .mono{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase}
+  .eyebrow{color:var(--ember);font-family:var(--f-mono);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.6em}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--ember);display:inline-block}
+
+  /* ---------- focus ---------- */
+  a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+    outline:2px solid var(--ember);outline-offset:3px;border-radius:4px;
+  }
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);
+    background:linear-gradient(180deg,rgba(28,23,20,.92),rgba(28,23,20,.7));
+    border-bottom:1px solid var(--ink-soft);}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--f-display);font-size:1.18rem;font-weight:600;letter-spacing:-.01em}
+  .mark{width:30px;height:30px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,var(--ember),#9b3f17 75%);box-shadow:0 0 0 1px rgba(232,116,59,.35),0 6px 14px rgba(232,116,59,.25)}
+  .mark svg{width:17px;height:17px}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{text-decoration:none;font-size:.92rem;color:var(--ash);transition:color .2s}
+  .nav-links a:hover{color:var(--paper)}
+  .nav-cta{font-family:var(--f-body);font-weight:600;font-size:.86rem;color:var(--ink)!important;background:var(--crema);
+    padding:9px 17px;border-radius:999px;transition:transform .2s,background .2s}
+  .nav-cta:hover{background:var(--paper);transform:translateY(-1px)}
+  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:84px 0 64px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+
+  .hero h1{font-size:clamp(2.9rem,7vw,5.3rem);font-weight:500}
+  .hero h1 .it{font-style:italic;font-weight:400;color:var(--crema)}
+  .hero h1 .em{color:var(--ember)}
+  .hero p.lede{max-width:42ch;color:var(--ash);font-size:1.08rem;margin:24px 0 32px}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn{font-family:var(--f-body);font-weight:600;border:none;cursor:pointer;font-size:.95rem;
+    padding:14px 26px;border-radius:999px;transition:transform .2s,box-shadow .2s,background .2s}
+  .btn-primary{background:var(--ember);color:#2a130a;box-shadow:0 10px 26px rgba(232,116,59,.32)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(232,116,59,.42)}
+  .btn-ghost{background:transparent;color:var(--paper);border:1px solid var(--ink-soft)}
+  .btn-ghost:hover{border-color:var(--crema);color:var(--crema)}
+
+  .hero-meta{display:flex;gap:34px;margin-top:42px;flex-wrap:wrap}
+  .hero-meta .m{display:flex;flex-direction:column;gap:3px}
+  .hero-meta .m b{font-family:var(--f-display);font-size:1.55rem;font-weight:600;color:var(--paper)}
+  .hero-meta .m span{color:var(--ash);font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase}
+
+  /* ---------- signature roast dial ---------- */
+  .dial-card{position:relative;background:
+      radial-gradient(120% 90% at 80% 0%,rgba(232,116,59,.12),transparent 55%),
+      var(--ink-2);
+    border:1px solid var(--ink-soft);border-radius:var(--r);padding:30px 28px 26px;
+    box-shadow:0 30px 60px var(--shadow)}
+  .dial-card .tag{position:absolute;top:18px;right:20px;color:var(--moss)}
+  .dial-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .dial-head h3{font-size:1.32rem}
+  #roastName{color:var(--ember);font-style:italic}
+  .dial-sub{color:var(--ash);font-size:.86rem;margin-bottom:22px}
+
+  /* the bean visual */
+  .bean-stage{display:flex;align-items:center;justify-content:center;height:118px;margin-bottom:8px}
+  .bean{width:96px;height:130px;position:relative;transition:transform .4s ease}
+  .bean svg{width:100%;height:100%;filter:drop-shadow(0 12px 18px rgba(0,0,0,.45))}
+  .steam{position:absolute;top:-30px;left:50%;transform:translateX(-50%);display:flex;gap:8px;opacity:0;transition:opacity .5s}
+  .steam.on{opacity:.7}
+  .steam i{width:5px;height:26px;border-radius:3px;background:linear-gradient(var(--crema),transparent);
+    animation:rise 2.6s ease-in-out infinite}
+  .steam i:nth-child(2){animation-delay:.5s;height:34px}
+  .steam i:nth-child(3){animation-delay:1s}
+  @keyframes rise{0%{transform:translateY(6px) scaleY(.7);opacity:0}30%{opacity:.8}100%{transform:translateY(-22px) scaleY(1.2);opacity:0}}
+  @media (prefers-reduced-motion:reduce){.steam i{animation:none}}
+
+  /* slider */
+  .roast-track{margin:10px 0 4px}
+  .roast-labels{display:flex;justify-content:space-between;color:var(--ash);font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  input[type=range].roast{
+    -webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;outline-offset:6px;
+    background:linear-gradient(90deg,#9ab06f,#cda96f 35%,#a9622f 68%,#3a201a);cursor:pointer}
+  input[type=range].roast::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+    background:var(--paper);border:4px solid var(--ember);box-shadow:0 4px 10px rgba(0,0,0,.4);cursor:grab;transition:transform .15s}
+  input[type=range].roast::-webkit-slider-thumb:active{transform:scale(1.12);cursor:grabbing}
+  input[type=range].roast::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--paper);border:4px solid var(--ember);cursor:grab}
+
+  /* readout meters */
+  .meters{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px;margin-top:22px}
+  .meter .mlabel{display:flex;justify-content:space-between;color:var(--ash);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+  .meter .mlabel b{color:var(--paper)}
+  .bar{height:6px;border-radius:99px;background:var(--ink-soft);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--crema),var(--ember));transition:width .45s cubic-bezier(.2,.7,.2,1)}
+  .dial-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:24px;
+    padding-top:18px;border-top:1px solid var(--ink-soft);flex-wrap:wrap}
+  .brew-rec{font-size:.9rem;color:var(--ash)}
+  .brew-rec b{color:var(--crema);font-family:var(--f-display);font-style:italic;font-weight:500}
+  .dial-foot .btn{padding:11px 20px;font-size:.86rem}
+
+  /* notes chips */
+  .notes{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;min-height:30px}
+  .note-chip{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:5px 11px;border-radius:99px;border:1px solid var(--ink-soft);color:var(--crema);background:rgba(217,178,124,.06);
+    animation:popin .3s ease}
+  @keyframes popin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.note-chip{animation:none}}
+
+  /* ---------- generic section ---------- */
+  section{padding:90px 0}
+  .sec-head{max-width:620px;margin-bottom:46px}
+  .sec-head h2{font-size:clamp(2rem,4.4vw,3.1rem);margin-top:14px}
+  .sec-head p{color:var(--ash);margin-top:16px}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* ---------- menu board ---------- */
+  .menu{background:var(--ink-2);border-top:1px solid var(--ink-soft);border-bottom:1px solid var(--ink-soft)}
+  .menu .board-top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+  .today{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--moss)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tab{font-family:var(--f-body);font-weight:600;font-size:.84rem;cursor:pointer;color:var(--ash);
+    background:transparent;border:1px solid var(--ink-soft);padding:9px 16px;border-radius:999px;transition:all .2s}
+  .tab:hover{color:var(--paper);border-color:var(--crema)}
+  .tab[aria-selected=true]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+
+  .card{background:var(--ink);border:1px solid var(--ink-soft);border-radius:var(--r);padding:22px;
+    display:flex;flex-direction:column;gap:8px;transition:transform .25s,border-color .25s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(217,178,124,.5)}
+  .card .ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .card .origin{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--moss)}
+  .card h3{font-size:1.22rem;margin-top:2px}
+  .card .desc{color:var(--ash);font-size:.88rem;flex:1}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:14px;border-top:1px solid var(--ink-soft)}
+  .price{font-family:var(--f-display);font-size:1.3rem;font-weight:600}
+  .price small{font-family:var(--f-mono);font-size:.6rem;color:var(--ash);letter-spacing:.1em;margin-left:3px}
+  .roast-pip{display:inline-flex;gap:4px;align-items:center;color:var(--ash);font-family:var(--f-mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase}
+  .roast-pip .dots{display:inline-flex;gap:3px}
+  .roast-pip .dots b{width:7px;height:7px;border-radius:50%;background:var(--ink-soft)}
+  .roast-pip .dots b.f{background:var(--ember)}
+  .add{font-family:var(--f-body);font-weight:600;font-size:.8rem;cursor:pointer;color:var(--ink);background:var(--crema);
+    border:none;padding:9px 15px;border-radius:999px;transition:background .2s,transform .15s}
+  .add:hover{background:var(--ember);transform:translateY(-1px)}
+
+  /* ---------- origin strip ---------- */
+  .origin-sec .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:780px){.origin-sec .grid3{grid-template-columns:1fr}}
+  .ostep{border-top:2px solid var(--ember);padding-top:18px}
+  .ostep .no{font-family:var(--f-mono);color:var(--ember);font-size:.72rem;letter-spacing:.2em}
+  .ostep h3{font-size:1.35rem;margin:10px 0 8px}
+  .ostep p{color:var(--ash);font-size:.92rem;margin:0}
+
+  /* ---------- cta band ---------- */
+  .band{background:
+      radial-gradient(90% 140% at 15% 0%,rgba(232,116,59,.16),transparent 50%),var(--ink-2);
+    border:1px solid var(--ink-soft);border-radius:20px;padding:54px 44px;text-align:center}
+  .band h2{font-size:clamp(2rem,4.6vw,3rem)}
+  .band p{color:var(--ash);max-width:46ch;margin:16px auto 28px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--ink-soft);padding:54px 0 40px;margin-top:10px}
+  .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .foot-grid .col h4{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin:0 0 12px}
+  .foot-grid .col a,.foot-grid .col p{display:block;color:var(--paper);text-decoration:none;font-size:.92rem;margin:0 0 8px;opacity:.86}
+  .foot-grid .col a:hover{color:var(--ember);opacity:1}
+  .foot-bot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    margin-top:42px;padding-top:22px;border-top:1px solid var(--ink-soft);color:var(--ash);font-size:.8rem}
+  .credit{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em}
+  .credit a{color:var(--ember);text-decoration:none}
+  .credit a:hover{text-decoration:underline}
+
+  /* ---------- toast ---------- */
+  .toast-wrap{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+  .toast{background:var(--paper);color:var(--ink);font-weight:600;font-size:.88rem;padding:12px 18px;border-radius:999px;
+    box-shadow:0 14px 30px var(--shadow);display:flex;align-items:center;gap:10px;
+    transform:translateY(18px);opacity:0;transition:transform .3s,opacity .3s}
+  .toast.show{transform:none;opacity:1}
+  .toast .dot{width:9px;height:9px;border-radius:50%;background:var(--ember)}
+  @media (prefers-reduced-motion:reduce){.toast{transition:opacity .2s}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand" aria-label="序光烘焙所 首頁">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c3 2 3 5 1.4 7C12 12 12 14 13 16" stroke="#2a130a" stroke-width="2" stroke-linecap="round"/><ellipse cx="12" cy="12" rx="6" ry="9" stroke="#2a130a" stroke-width="2"/></svg>
+      </span>
+      序光烘焙所
+    </a>
+    <nav class="nav-links" aria-label="主選單">
+      <a href="#roast">烘焙度</a>
+      <a href="#menu">當日豆單</a>
+      <a href="#origin">產地溯源</a>
+      <a href="#visit" class="nav-cta">預約取貨</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">台中 · 自家烘焙 · 2018 起</span>
+      <h1 style="margin-top:22px">把每一爐的<br><span class="em">序光</span>，<span class="it">慢慢</span>烘成<br>你的那杯。</h1>
+      <p class="lede">序光指清晨第一道光。我們在那個時刻起鍋下豆，記錄每一爐的曲線與風味。轉動下面的旋鈕，從淺到深，找到屬於你口味的烘焙度。</p>
+      <div class="hero-cta">
+        <a href="#menu" class="btn btn-primary">看今天的豆單</a>
+        <a href="#roast" class="btn btn-ghost">先調我的烘焙度</a>
+      </div>
+      <div class="hero-meta">
+        <div class="m"><b>14</b><span>支單一產地</span></div>
+        <div class="m"><b>72hr</b><span>烘好內出貨</span></div>
+        <div class="m"><b>5°</b><span>烘焙度可調</span></div>
+      </div>
+    </div>
+
+    <!-- SIGNATURE: roast dial -->
+    <div id="roast" class="dial-card reveal" aria-label="互動烘焙度調整器">
+      <span class="tag mono">ROAST LOG</span>
+      <div class="dial-head">
+        <h3>我的烘焙度</h3>
+      </div>
+      <p class="dial-sub">目前選擇：<span id="roastName">中淺焙</span></p>
+
+      <div class="bean-stage">
+        <div class="bean" id="bean">
+          <div class="steam" id="steam" aria-hidden="true"><i></i><i></i><i></i></div>
+          <svg viewBox="0 0 100 130" aria-hidden="true">
+            <defs>
+              <radialGradient id="bg" cx="38%" cy="32%" r="80%">
+                <stop offset="0%" stop-color="#e6c79a" id="bstop1"/>
+                <stop offset="100%" stop-color="#c79a64" id="bstop2"/>
+              </radialGradient>
+            </defs>
+            <path d="M50 6C72 6 86 34 86 65s-14 59-36 59S14 96 14 65 28 6 50 6Z" fill="url(#bg)"/>
+            <path d="M50 12C50 40 50 90 50 118" stroke="#2a1a10" stroke-opacity=".55" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M50 22C40 40 40 60 50 78 60 96 60 104 50 112" stroke="#2a1a10" stroke-opacity=".28" stroke-width="3" fill="none"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="roast-track">
+        <div class="roast-labels"><span>淺焙</span><span>中焙</span><span>深焙</span></div>
+        <input id="roastRange" class="roast" type="range" min="0" max="4" step="1" value="1"
+          aria-label="烘焙度" aria-valuetext="中淺焙">
+      </div>
+
+      <div class="notes" id="notes" aria-live="polite"></div>
+
+      <div class="meters" aria-hidden="false">
+        <div class="meter">
+          <div class="mlabel"><span>酸值 Acidity</span><b id="acVal">高</b></div>
+          <div class="bar"><i id="acBar" style="width:80%"></i></div>
+        </div>
+        <div class="meter">
+          <div class="mlabel"><span>醇厚 Body</span><b id="boVal">輕</b></div>
+          <div class="bar"><i id="boBar" style="width:35%"></i></div>
+        </div>
+      </div>
+
+      <div class="dial-foot">
+        <p class="brew-rec">建議沖煮：<b id="brew">手沖 V60</b></p>
+        <button class="btn btn-primary" id="addRoast" type="button">加入這支豆</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU BOARD -->
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="board-top">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="eyebrow">每日更新</span>
+        <h2>當日豆單</h2>
+      </div>
+      <span class="today" id="todayStamp"></span>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="豆單分類">
+      <button class="tab" role="tab" aria-selected="true" data-filter="all">全部</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="light">淺焙水果調</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="balance">均衡耐喝</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="dark">深焙濃郁</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="bake">手作烘焙</button>
+    </div>
+
+    <div class="grid" id="menuGrid" style="margin-top:26px"></div>
+  </div>
+</section>
+
+<!-- ORIGIN / CRAFT -->
+<section class="origin-sec" id="origin">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">從產地到杯中</span>
+      <h2>每一爐都看得見來歷</h2>
+      <p>我們只跟認識的莊園與合作社買生豆，知道海拔、處理法，也知道種它的人是誰。烘好的每包豆，袋上都印著這支的烘焙日期與曲線編號。</p>
+    </div>
+    <div class="grid3">
+      <div class="ostep reveal"><div class="no">產地 01</div><h3>挑生豆</h3><p>每季杯測上百支樣品，只留下風味乾淨、瑕疵率低於 0.5% 的批次進倉。</p></div>
+      <div class="ostep reveal"><div class="no">烘焙 02</div><h3>記曲線</h3><p>每爐記錄入豆溫、轉黃點、一爆與下豆時間，同一支豆每次都還原得回來。</p></div>
+      <div class="ostep reveal"><div class="no">出貨 03</div><h3>養風味</h3><p>下豆後靜置養氣，72 小時內裝袋出貨，附上這支豆的最佳賞味窗口。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND / VISIT -->
+<section id="visit">
+  <div class="wrap">
+    <div class="band reveal">
+      <span class="eyebrow" style="justify-content:center">門市與取貨</span>
+      <h2 style="margin-top:14px">來坐一下，或讓豆子去找你</h2>
+      <p>台中市西區美村路一段 88 巷 6 號 · 週二至週日 10:00–18:00（週一公休）。線上選好豆，預約時段到店免等，或宅配到府。</p>
+      <div class="hero-cta" style="justify-content:center">
+        <button class="btn btn-primary" id="bookBtn" type="button">預約取貨時段</button>
+        <a href="#menu" class="btn btn-ghost">回豆單繼續逛</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="col" style="max-width:280px">
+        <div class="brand" style="font-size:1.25rem;margin-bottom:12px">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c3 2 3 5 1.4 7C12 12 12 14 13 16" stroke="#2a130a" stroke-width="2" stroke-linecap="round"/><ellipse cx="12" cy="12" rx="6" ry="9" stroke="#2a130a" stroke-width="2"/></svg></span>
+          序光烘焙所
+        </div>
+        <p style="color:var(--ash);font-size:.9rem;opacity:1">清晨第一道光起鍋，把每一爐慢慢烘成你的那杯。</p>
+      </div>
+      <div class="col">
+        <h4>逛逛</h4>
+        <a href="#roast">調烘焙度</a>
+        <a href="#menu">當日豆單</a>
+        <a href="#origin">產地溯源</a>
+        <a href="#visit">預約取貨</a>
+      </div>
+      <div class="col">
+        <h4>門市</h4>
+        <p>台中市西區美村路一段 88 巷 6 號</p>
+        <p>週二–週日 10:00–18:00</p>
+        <a href="#visit">預約取貨時段</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 序光烘焙所 · 本頁為展示用樣板，非真實營業據點</span>
+      <span class="credit">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- signature roast dial ---------- */
+  var ROASTS = [
+    {name:"極淺焙", light:"#ecd4ab", dark:"#d3ab73", acidity:["極高",92], body:["清透",22],
+      brew:"手沖 V60", notes:["柑橘","茉莉","蜂蜜"]},
+    {name:"中淺焙", light:"#e6c79a", dark:"#c79a64", acidity:["高",78], body:["輕",38],
+      brew:"手沖 V60", notes:["莓果","紅茶","焦糖"]},
+    {name:"中焙",   light:"#cda575", dark:"#a87a47", acidity:["中",55], body:["中",58],
+      brew:"愛樂壓", notes:["堅果","可可","柑橘皮"]},
+    {name:"中深焙", light:"#9c6e42", dark:"#6f4626", acidity:["低",34], body:["飽滿",78],
+      brew:"摩卡壺", notes:["黑巧克力","烤杏仁","蔗糖"]},
+    {name:"深焙",   light:"#6b4326", dark:"#3a2316", acidity:["極低",18], body:["濃厚",92],
+      brew:"義式濃縮", notes:["可可脂","煙燻","糖蜜"]}
+  ];
+
+  var range = document.getElementById("roastRange");
+  var bean  = document.getElementById("bean");
+  var stop1 = document.getElementById("bstop1");
+  var stop2 = document.getElementById("bstop2");
+  var steam = document.getElementById("steam");
+  var nameEl= document.getElementById("roastName");
+  var notesEl = document.getElementById("notes");
+  var acVal = document.getElementById("acVal"), acBar = document.getElementById("acBar");
+  var boVal = document.getElementById("boVal"), boBar = document.getElementById("boBar");
+  var brewEl= document.getElementById("brew");
+
+  function applyRoast(i){
+    var r = ROASTS[i];
+    stop1.setAttribute("stop-color", r.light);
+    stop2.setAttribute("stop-color", r.dark);
+    nameEl.textContent = r.name;
+    range.setAttribute("aria-valuetext", r.name);
+    acVal.textContent = r.acidity[0]; acBar.style.width = r.acidity[1] + "%";
+    boVal.textContent = r.body[0];    boBar.style.width = r.body[1] + "%";
+    brewEl.textContent = r.brew;
+    // steam intensity grows with roast depth
+    steam.classList.toggle("on", i >= 2);
+    // re-render notes with pop animation
+    notesEl.innerHTML = "";
+    r.notes.forEach(function(n){
+      var s = document.createElement("span");
+      s.className = "note-chip"; s.textContent = n;
+      notesEl.appendChild(s);
+    });
+  }
+  range.addEventListener("input", function(){ applyRoast(+range.value); });
+  applyRoast(+range.value);
+
+  document.getElementById("addRoast").addEventListener("click", function(){
+    toast("已加入「" + ROASTS[+range.value].name + "」單一產地 ¼ 磅");
+  });
+
+  /* ---------- menu board ---------- */
+  var MENU = [
+    {cat:"light", origin:"衣索比亞 · 耶加雪菲", name:"水洗 G1 科契爾", desc:"明亮的檸檬與佛手柑，尾韻像冰糖紅茶，淺焙時最跳。", price:480, roast:1, unit:"半磅"},
+    {cat:"light", origin:"巴拿馬 · 翡翠莊園", name:"日曬藝伎 微批次", desc:"熱帶花香炸開，水蜜桃與荔枝，本店最華麗的一支。", price:980, roast:1, unit:"四分之一磅"},
+    {cat:"balance",origin:"哥倫比亞 · 薇拉", name:"水洗 卡杜拉", desc:"焦糖與紅蘋果的均衡感，黑咖啡或加奶都耐喝。", price:420, roast:2, unit:"半磅"},
+    {cat:"balance",origin:"瓜地馬拉 · 安提瓜", name:"水洗 火山豆", desc:"可可、烤堅果與淡淡香料，最適合日常常備。", price:440, roast:3, unit:"半磅"},
+    {cat:"dark",  origin:"印尼 · 蘇門答臘", name:"濕剝 曼特寧", desc:"厚實的木質與黑糖,低酸高醇,煮成義式很有份量。", price:460, roast:4, unit:"半磅"},
+    {cat:"dark",  origin:"本店配方", name:"序光義式配方", desc:"三支拼配，可可脂與糖蜜尾韻，拿鐵的最佳基底。", price:520, roast:4, unit:"半磅"},
+    {cat:"bake",  origin:"當日現烤", name:"鹽可頌 · 海鹽奶油", desc:"層層酥脆、奶香明顯，配淺焙手沖剛剛好。", price:75, roast:0, unit:"單個"},
+    {cat:"bake",  origin:"當日現烤", name:"焙茶磅蛋糕", desc:"焙茶香氣濃郁、濕潤不甜膩，配中深焙最對味。", price:95, roast:3, unit:"一片"},
+    {cat:"bake",  origin:"當日限量", name:"可可碎司康", desc:"外酥內鬆、苦甜可可碎，搭一杯曼特寧最剛好。", price:85, roast:4, unit:"單個"}
+  ];
+
+  var grid = document.getElementById("menuGrid");
+  function roastDots(level){
+    var s = '<span class="dots">';
+    for(var d=0; d<5; d++){ s += '<b class="' + (d<=level ? 'f' : '') + '"></b>'; }
+    return s + '</span>';
+  }
+  function render(filter){
+    grid.innerHTML = "";
+    MENU.filter(function(m){ return filter==="all" || m.cat===filter; })
+      .forEach(function(m){
+        var c = document.createElement("article");
+        c.className = "card";
+        c.innerHTML =
+          '<div class="ctop"><div><div class="origin">'+m.origin+'</div><h3>'+m.name+'</h3></div></div>'+
+          '<p class="desc">'+m.desc+'</p>'+
+          '<div class="roast-pip">烘焙 '+roastDots(m.roast)+'</div>'+
+          '<div class="crow"><span class="price">$'+m.price+'<small>/'+m.unit+'</small></span>'+
+          '<button class="add" type="button">加入購物車</button></div>';
+        c.querySelector(".add").addEventListener("click", function(){
+          toast("已加入「"+m.name+"」"+m.unit+" $"+m.price);
+        });
+        grid.appendChild(c);
+      });
+    if(!grid.children.length){
+      grid.innerHTML = '<p style="color:var(--ash)">這個分類今天暫時沒有上架，先看看別的吧。</p>';
+    }
+  }
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      tabs.forEach(function(x){ x.setAttribute("aria-selected","false"); });
+      t.setAttribute("aria-selected","true");
+      render(t.getAttribute("data-filter"));
+    });
+  });
+  render("all");
+
+  /* today stamp on the board */
+  var d = new Date();
+  var wd = ["日","一","二","三","四","五","六"][d.getDay()];
+  document.getElementById("todayStamp").textContent =
+    d.getFullYear()+"／"+(d.getMonth()+1)+"／"+d.getDate()+"（週"+wd+"） 今日現烘";
+
+  /* ---------- visit booking ---------- */
+  document.getElementById("bookBtn").addEventListener("click", function(){
+    toast("已收到預約需求，將以簡訊回覆可取貨時段");
+  });
+
+  /* ---------- toast ---------- */
+  var wrap = document.getElementById("toastWrap");
+  function toast(msg){
+    var t = document.createElement("div");
+    t.className = "toast";
+    t.innerHTML = '<span class="dot"></span>' + msg;
+    wrap.appendChild(t);
+    requestAnimationFrame(function(){ t.classList.add("show"); });
+    setTimeout(function(){
+      t.classList.remove("show");
+      setTimeout(function(){ t.remove(); }, 320);
+    }, 2600);
+  }
+
+  /* ---------- scroll reveal ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:.16});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

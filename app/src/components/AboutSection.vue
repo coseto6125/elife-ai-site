@@ -35,7 +35,7 @@ const principles = [
   <section id="about" ref="root" class="section">
     <div class="wrap about-grid">
       <div class="left reveal" data-reveal>
-        <span class="eyebrow">// 03 — About</span>
+        <span class="eyebrow">// 04 — About</span>
         <h2 class="section-title">好溝通，也能下到底層</h2>
         <p class="lead">
           <strong>e-life-ai</strong> 是你務實的軟體開發夥伴，後端用 Rust、Python、Go，

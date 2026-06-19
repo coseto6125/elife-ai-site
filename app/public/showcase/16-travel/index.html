@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>遠行誌 Yonder — 為嚮往而生的旅程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2a1f17;
+  --paper:#f4ead9;
+  --paper-2:#ece0cb;
+  --sand:#e8d4b0;
+  --terra:#c0593a;
+  --clay:#a8421f;
+  --teal:#15564f;
+  --teal-2:#0e3b37;
+  --ocean:#2c7a7b;
+  --gold:#e0a13a;
+  --sky:#e7d2a8;
+  --cream:#fbf5ea;
+  --shadow:rgba(42,31,23,.18);
+  --serif:"Instrument Serif", "LXGW WenKai TC", serif;
+  --cjk:"LXGW WenKai TC", "Instrument Serif", serif;
+  --sans:"Hanken Grotesk", "LXGW WenKai TC", system-ui, sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.cjk{font-family:var(--cjk)}
+h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;line-height:1.05}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.eyebrow{font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;font-weight:700;color:var(--clay)}
+
+/* paper grain overlay */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ============ NAV ============ */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 36px;transition:.4s;
+}
+header.nav.scrolled{background:rgba(244,234,217,.86);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(42,31,23,.08);padding:12px 36px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-size:1.5rem;letter-spacing:.01em;color:var(--cream);transition:.4s}
+header.nav.scrolled .brand{color:var(--ink)}
+.brand .compass{width:30px;height:30px;flex:0 0 auto}
+.navlinks{display:flex;gap:30px;align-items:center}
+.navlinks a{font-size:.86rem;font-weight:600;letter-spacing:.04em;color:var(--cream);opacity:.9;transition:.3s}
+header.nav.scrolled .navlinks a{color:var(--ink)}
+.navlinks a:hover{opacity:1;color:var(--gold)}
+.nav-cta{padding:9px 20px;border-radius:40px;background:var(--terra);color:#fff!important;font-weight:700;opacity:1!important}
+.nav-cta:hover{background:var(--clay);color:#fff!important}
+.burger{display:none;flex-direction:column;gap:5px}
+.burger span{width:26px;height:2px;background:var(--cream)}
+header.nav.scrolled .burger span{background:var(--ink)}
+
+/* ============ HERO ============ */
+.hero{position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:flex-end}
+.hero svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,59,55,.35) 0%,rgba(14,59,55,0) 30%,rgba(42,31,23,.1) 60%,rgba(42,31,23,.72) 100%);z-index:2}
+.hero-inner{position:relative;z-index:3;width:100%;padding-bottom:7vh}
+.hero-inner .eyebrow{color:var(--gold)}
+.hero h1{color:var(--cream);font-size:clamp(3.4rem,9vw,8rem);margin:.18em 0 .1em;letter-spacing:-.01em;text-shadow:0 2px 30px rgba(0,0,0,.3)}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p.lede{color:#f0e6d6;font-size:clamp(1rem,1.5vw,1.22rem);max-width:520px;margin-bottom:30px;font-family:var(--cjk)}
+.hero-stats{display:flex;gap:40px;color:#eaddc7}
+.hero-stats div span{display:block;font-family:var(--serif);font-size:2rem;color:var(--gold);line-height:1}
+.hero-stats div small{font-size:.78rem;letter-spacing:.08em;opacity:.85}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:4;color:#eaddc7;font-size:.72rem;letter-spacing:.3em;text-align:center}
+.scroll-hint::before{content:"";display:block;width:1px;height:34px;background:#eaddc7;margin:0 auto 8px;animation:drop 1.8s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* parallax birds */
+.bird{position:absolute;z-index:2;opacity:.55}
+
+/* ============ SEARCH BAR ============ */
+.searchbar{position:relative;z-index:20;margin:-56px auto 0;max-width:1080px}
+.searchbar-card{background:var(--cream);border-radius:20px;box-shadow:0 24px 60px -22px var(--shadow);padding:14px;display:grid;grid-template-columns:1.4fr 1.3fr 1fr auto;gap:6px;align-items:stretch;border:1px solid rgba(42,31,23,.06)}
+.sfield{padding:12px 16px;border-radius:14px;display:flex;flex-direction:column;gap:3px;transition:.25s}
+.sfield:hover{background:var(--paper-2)}
+.sfield label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--clay)}
+.sfield select,.sfield input{border:none;background:transparent;font-family:var(--sans);font-size:.98rem;font-weight:600;color:var(--ink);outline:none;width:100%}
+.sfield input[type=date]{font-weight:600;color:var(--ink)}
+.stepper{display:flex;align-items:center;gap:14px;margin-top:2px}
+.stepper button{width:26px;height:26px;border-radius:50%;background:var(--paper-2);font-weight:700;font-size:1rem;color:var(--ink);display:grid;place-items:center;line-height:1}
+.stepper button:hover{background:var(--sand)}
+.stepper span{font-weight:700;min-width:18px;text-align:center}
+.search-go{background:var(--terra);color:#fff;border-radius:14px;font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 26px;transition:.25s;letter-spacing:.04em}
+.search-go:hover{background:var(--clay)}
+.search-go svg{width:18px;height:18px}
+
+/* ============ SECTION HEAD ============ */
+.shead{text-align:center;max-width:680px;margin:0 auto 44px}
+.shead h2{font-size:clamp(2.2rem,4.6vw,3.6rem);margin:.18em 0 .25em}
+.shead h2 em{font-style:italic;color:var(--terra)}
+.shead p{font-family:var(--cjk);color:#6b5641;font-size:1.04rem}
+
+section{padding:92px 0}
+.destinations{padding-top:74px}
+
+/* ============ FILTERS ============ */
+.filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:42px}
+.filter{padding:9px 20px;border-radius:40px;border:1.5px solid rgba(42,31,23,.16);font-weight:600;font-size:.9rem;color:var(--ink);background:transparent;transition:.25s}
+.filter:hover{border-color:var(--terra)}
+.filter.active{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+
+/* ============ CARDS ============ */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{background:var(--cream);border-radius:20px;overflow:hidden;box-shadow:0 14px 40px -26px var(--shadow);border:1px solid rgba(42,31,23,.06);transition:.45s cubic-bezier(.2,.7,.3,1);display:flex;flex-direction:column;cursor:pointer}
+.card:hover{transform:translateY(-8px);box-shadow:0 30px 60px -30px var(--shadow)}
+.card-img{position:relative;height:230px;overflow:hidden}
+.card-img svg{width:100%;height:100%;display:block;transition:1.2s cubic-bezier(.2,.7,.3,1)}
+.card:hover .card-img svg{transform:scale(1.07)}
+.card-tag{position:absolute;top:14px;left:14px;background:rgba(251,245,234,.92);backdrop-filter:blur(4px);padding:5px 13px;border-radius:30px;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--teal)}
+.card-fav{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(251,245,234,.85);display:grid;place-items:center;font-size:1rem;transition:.2s}
+.card-fav:hover{transform:scale(1.15)}
+.card-fav.on{color:var(--terra)}
+.card-body{padding:20px 22px 24px;flex:1;display:flex;flex-direction:column}
+.card-loc{font-size:.78rem;letter-spacing:.08em;color:var(--clay);font-weight:700;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.card h3{font-size:1.7rem;margin:6px 0 4px}
+.card-desc{font-family:var(--cjk);font-size:.92rem;color:#6b5641;flex:1;margin-bottom:14px}
+.card-meta{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(42,31,23,.1)}
+.card-meta .price{font-family:var(--serif);font-size:1.5rem;color:var(--ink)}
+.card-meta .price small{font-family:var(--sans);font-size:.74rem;color:#8a7560;font-weight:600}
+.card-meta .dur{font-size:.82rem;color:#8a7560;font-weight:600}
+.card-meta .rate{font-size:.82rem;font-weight:700;color:var(--gold)}
+.no-results{grid-column:1/-1;text-align:center;padding:60px;color:#8a7560;font-family:var(--cjk);font-size:1.1rem}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:.9s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ FEATURE STRIP / PARALLAX ============ */
+.feature{position:relative;height:80vh;min-height:520px;display:flex;align-items:center;overflow:hidden;color:var(--cream)}
+.feature svg.scene{position:absolute;inset:0;width:100%;height:120%;top:-10%}
+.feature-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,59,55,.78) 0%,rgba(14,59,55,.3) 55%,transparent 100%);z-index:2}
+.feature-inner{position:relative;z-index:3;max-width:560px}
+.feature h2{font-size:clamp(2.4rem,5vw,4.4rem);color:var(--cream)}
+.feature h2 em{color:var(--gold);font-style:italic}
+.feature p{font-family:var(--cjk);margin:18px 0 26px;font-size:1.08rem;color:#f0e6d6}
+.btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border-radius:40px;border:1.6px solid var(--gold);color:var(--gold);font-weight:700;transition:.3s}
+.btn-ghost:hover{background:var(--gold);color:var(--teal-2)}
+
+/* ============ GALLERY / LIGHTBOX ============ */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:170px;gap:14px}
+.gitem{border-radius:16px;overflow:hidden;cursor:pointer;position:relative;box-shadow:0 10px 30px -20px var(--shadow)}
+.gitem svg{width:100%;height:100%;transition:.6s}
+.gitem:hover svg{transform:scale(1.08)}
+.gitem::after{content:"⤢";position:absolute;inset:0;display:grid;place-items:center;background:rgba(14,59,55,.32);color:#fff;font-size:1.6rem;opacity:0;transition:.3s}
+.gitem:hover::after{opacity:1}
+.gitem.tall{grid-row:span 2}
+.gitem.wide{grid-column:span 2}
+.lightbox{position:fixed;inset:0;z-index:3000;background:rgba(20,14,9,.93);display:none;align-items:center;justify-content:center;flex-direction:column;padding:30px}
+.lightbox.open{display:flex}
+.lightbox .lb-stage{width:min(900px,92vw);height:min(70vh,560px);border-radius:18px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.5)}
+.lightbox .lb-stage svg{width:100%;height:100%}
+.lb-cap{color:#eaddc7;margin-top:18px;font-family:var(--cjk);font-size:1.05rem;letter-spacing:.05em}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:rgba(251,245,234,.14);color:#fff;font-size:1.5rem;display:grid;place-items:center;transition:.25s}
+.lb-nav:hover{background:rgba(251,245,234,.28)}
+.lb-prev{left:24px}.lb-next{right:24px}
+.lb-close{position:absolute;top:24px;right:28px;color:#fff;font-size:1.8rem;width:44px;height:44px}
+
+/* ============ MODAL (tour detail) ============ */
+.modal{position:fixed;inset:0;z-index:2500;background:rgba(20,14,9,.55);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.modal.open{display:flex}
+.modal-card{background:var(--cream);width:min(880px,100%);border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.4);animation:pop .4s cubic-bezier(.2,.8,.3,1)}
+@keyframes pop{from{opacity:0;transform:translateY(30px) scale(.98)}to{opacity:1;transform:none}}
+.modal-hero{height:260px;position:relative}
+.modal-hero svg{width:100%;height:100%}
+.modal-hero .mh-grad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(14,59,55,.7));display:flex;align-items:flex-end;padding:26px}
+.modal-hero h3{color:var(--cream);font-size:2.6rem}
+.modal-hero .mh-loc{color:var(--gold);font-weight:700;letter-spacing:.1em;font-size:.8rem;text-transform:uppercase}
+.modal-close{position:absolute;top:16px;right:18px;z-index:3;width:40px;height:40px;border-radius:50%;background:rgba(251,245,234,.9);font-size:1.3rem;display:grid;place-items:center}
+.modal-body{padding:28px 32px 34px}
+.mb-top{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding-bottom:22px;border-bottom:1px solid rgba(42,31,23,.12)}
+.mb-stats{display:flex;gap:26px}
+.mb-stats div small{display:block;font-size:.72rem;color:#8a7560;letter-spacing:.08em;font-weight:600}
+.mb-stats div b{font-family:var(--serif);font-size:1.3rem;font-weight:400}
+.mb-price{text-align:right}
+.mb-price .p{font-family:var(--serif);font-size:2.2rem;color:var(--terra)}
+.mb-price small{color:#8a7560;font-size:.78rem;font-weight:600}
+.mb-sec-title{font-family:var(--serif);font-size:1.5rem;margin:26px 0 14px;display:flex;align-items:center;gap:10px}
+.mb-sec-title::before{content:"";width:22px;height:2px;background:var(--terra)}
+/* accordion */
+.acc-item{border:1px solid rgba(42,31,23,.12);border-radius:14px;margin-bottom:10px;overflow:hidden;background:var(--paper)}
+.acc-head{width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;text-align:left;transition:.25s}
+.acc-head:hover{background:var(--paper-2)}
+.acc-day{flex:0 0 auto;width:48px;height:48px;border-radius:12px;background:var(--teal);color:var(--cream);display:grid;place-items:center;font-family:var(--serif);font-size:1.05rem;line-height:1;text-align:center}
+.acc-day small{display:block;font-size:.55rem;letter-spacing:.1em;font-family:var(--sans);font-weight:700}
+.acc-title{flex:1;font-weight:700;font-size:1.02rem}
+.acc-arrow{transition:.3s;color:var(--clay);font-size:1.1rem}
+.acc-item.open .acc-arrow{transform:rotate(180deg)}
+.acc-panel{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.acc-panel-inner{padding:2px 18px 18px 80px;font-family:var(--cjk);color:#6b5641;font-size:.95rem}
+.incl{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;font-family:var(--cjk)}
+.incl div{display:flex;align-items:flex-start;gap:8px;font-size:.94rem;color:#5b4a38}
+.incl div::before{content:"✓";color:var(--ocean);font-weight:800}
+.modal-book{position:sticky;bottom:0;background:var(--cream);border-top:1px solid rgba(42,31,23,.12);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.modal-book .mbk-price{font-family:var(--serif);font-size:1.7rem}
+.modal-book .mbk-price small{font-family:var(--sans);font-size:.72rem;color:#8a7560;font-weight:600}
+.btn-book{background:var(--terra);color:#fff;padding:14px 34px;border-radius:40px;font-weight:800;font-size:1.02rem;transition:.25s;letter-spacing:.05em}
+.btn-book:hover{background:var(--clay)}
+
+/* ============ TIMELINE (journey) ============ */
+.timeline{position:relative;max-width:780px;margin:0 auto;padding-left:8px}
+.timeline::before{content:"";position:absolute;left:21px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--gold),var(--terra),var(--teal))}
+.tl-item{position:relative;padding:0 0 36px 64px}
+.tl-dot{position:absolute;left:11px;top:2px;width:22px;height:22px;border-radius:50%;background:var(--cream);border:3px solid var(--terra);z-index:2}
+.tl-item h4{font-family:var(--serif);font-size:1.45rem;font-weight:400}
+.tl-item .tl-when{font-size:.76rem;letter-spacing:.1em;color:var(--clay);font-weight:700;text-transform:uppercase}
+.tl-item p{font-family:var(--cjk);color:#6b5641;margin-top:4px}
+
+/* ============ ENQUIRY FORM ============ */
+.enquiry{background:var(--teal-2);color:var(--cream);position:relative;overflow:hidden}
+.enquiry svg.deco{position:absolute;right:-60px;bottom:-40px;width:420px;opacity:.16}
+.enq-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:54px;align-items:center;position:relative;z-index:2}
+.enq-left .eyebrow{color:var(--gold)}
+.enq-left h2{color:var(--cream);font-size:clamp(2.2rem,4vw,3.4rem);margin:.2em 0}
+.enq-left h2 em{color:var(--gold);font-style:italic}
+.enq-left p{font-family:var(--cjk);color:#d8e6df;font-size:1.05rem}
+.enq-trust{display:flex;gap:26px;margin-top:28px}
+.enq-trust div span{display:block;font-family:var(--serif);font-size:2rem;color:var(--gold);line-height:1}
+.enq-trust div small{font-size:.78rem;color:#bcd2ca}
+.form-card{background:var(--cream);border-radius:22px;padding:30px;color:var(--ink);box-shadow:0 30px 70px rgba(0,0,0,.3)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{margin-bottom:15px}
+.fg label{display:block;font-size:.78rem;font-weight:700;letter-spacing:.06em;margin-bottom:5px;color:#5b4a38}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid rgba(42,31,23,.16);border-radius:11px;font-family:var(--sans);font-size:.95rem;background:var(--paper);color:var(--ink);outline:none;transition:.2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--terra);background:#fff}
+.fg.err input,.fg.err select{border-color:#c0392b;background:#fdeceb}
+.fg .msg{font-size:.74rem;color:#c0392b;margin-top:4px;display:none}
+.fg.err .msg{display:block}
+.btn-submit{width:100%;background:var(--terra);color:#fff;padding:15px;border-radius:12px;font-weight:800;font-size:1.05rem;transition:.25s;letter-spacing:.05em}
+.btn-submit:hover{background:var(--clay)}
+.confirm{display:none;text-align:center;padding:20px 10px}
+.confirm.show{display:block;animation:pop .5s}
+.confirm .tick{width:72px;height:72px;border-radius:50%;background:var(--ocean);color:#fff;display:grid;place-items:center;font-size:2.2rem;margin:0 auto 18px}
+.confirm h3{font-size:2rem;margin-bottom:8px}
+.confirm p{font-family:var(--cjk);color:#6b5641}
+.confirm-summary{background:var(--paper);border-radius:14px;padding:18px 22px;margin:22px 0;text-align:left}
+.confirm-summary .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed rgba(42,31,23,.16);font-size:.95rem}
+.confirm-summary .row:last-child{border:none}
+.confirm-summary .row span:first-child{color:#8a7560;font-weight:600}
+.confirm-summary .row span:last-child{font-weight:700;font-family:var(--cjk)}
+.confirm .resetbtn{margin-top:8px;color:var(--terra);font-weight:700;text-decoration:underline}
+
+/* ============ FOOTER ============ */
+footer.site{background:var(--ink);color:#e6d8c4;padding:64px 0 30px}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:46px}
+.foot-brand .brand{color:var(--cream);margin-bottom:14px}
+.foot-brand p{font-family:var(--cjk);color:#b6a489;max-width:300px;font-size:.94rem}
+.foot-col h5{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:700}
+.foot-col a{display:block;color:#cbb99e;font-size:.92rem;margin-bottom:9px;transition:.2s}
+.foot-col a:hover{color:var(--cream);padding-left:4px}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:.82rem;color:#9d8b70}
+.foot-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:30px;background:rgba(224,161,58,.14);color:var(--gold);font-weight:700;font-size:.8rem}
+.foot-badge a{color:var(--gold);text-decoration:underline}
+
+/* toast */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);z-index:4000;background:var(--teal);color:var(--cream);padding:14px 26px;border-radius:40px;font-weight:700;box-shadow:0 14px 40px rgba(0,0,0,.3);transition:.4s cubic-bezier(.2,.8,.3,1);font-family:var(--cjk)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:920px){
+  .navlinks{display:none}
+  .burger{display:flex}
+  .searchbar-card{grid-template-columns:1fr 1fr}
+  .search-go{grid-column:1/-1;padding:14px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .enq-grid{grid-template-columns:1fr;gap:34px}
+}
+@media(max-width:560px){
+  .wrap{padding:0 18px}
+  header.nav{padding:14px 18px}
+  .hero-stats{gap:24px}
+  .searchbar{margin-top:-40px}
+  .searchbar-card{grid-template-columns:1fr;padding:10px}
+  .grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:130px}
+  .form-row{grid-template-columns:1fr}
+  .mb-stats{gap:16px;flex-wrap:wrap}
+  .modal-body,.modal-book{padding-left:18px;padding-right:18px}
+  .acc-panel-inner{padding-left:18px}
+  .foot-top{grid-template-columns:1fr 1fr}
+  .feature-grad{background:linear-gradient(180deg,rgba(14,59,55,.4),rgba(14,59,55,.85))}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a href="#top" class="brand">
+    <svg class="compass" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><path d="M20 8 L24 20 L20 32 L16 20 Z" fill="var(--gold)"/><circle cx="20" cy="20" r="2.5" fill="currentColor"/></svg>
+    遠行誌
+  </a>
+  <nav class="navlinks">
+    <a href="#destinations">探索行程</a>
+    <a href="#feature">招牌旅程</a>
+    <a href="#gallery">影像</a>
+    <a href="#journey">旅程節奏</a>
+    <a href="#enquiry" class="nav-cta">預約諮詢</a>
+  </nav>
+  <button class="burger" aria-label="menu" onclick="document.querySelector('.navlinks').style.display='flex'"><span></span><span></span><span></span></button>
+</header>
+
+<div id="top"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <svg class="scene" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f6c98f"/><stop offset="35%" stop-color="#eaa75f"/><stop offset="70%" stop-color="#c66a4a"/><stop offset="100%" stop-color="#7d3b3f"/>
+      </linearGradient>
+      <radialGradient id="hsun" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#fff3d6"/><stop offset="55%" stop-color="#ffd98a"/><stop offset="100%" stop-color="#ffd98a" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="hsea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#caa0a6"/><stop offset="100%" stop-color="#6e3f54"/>
+      </linearGradient>
+    </defs>
+    <rect width="1440" height="900" fill="url(#hsky)"/>
+    <circle cx="720" cy="360" r="220" fill="url(#hsun)"/>
+    <circle cx="720" cy="360" r="110" fill="#fff0cc" opacity=".9"/>
+    <!-- distant range -->
+    <path d="M0 470 L180 380 L340 450 L520 360 L700 440 L880 350 L1080 440 L1260 370 L1440 450 L1440 600 L0 600 Z" fill="#a35a55" opacity=".55"/>
+    <path d="M0 540 L220 440 L430 520 L640 430 L860 520 L1080 430 L1300 520 L1440 460 L1440 640 L0 640 Z" fill="#8a4a4f" opacity=".7"/>
+    <!-- sea -->
+    <rect y="600" width="1440" height="300" fill="url(#hsea)"/>
+    <path d="M0 600 Q360 588 720 600 T1440 600 L1440 640 L0 640 Z" fill="#d8a98f" opacity=".5"/>
+    <!-- sun reflection -->
+    <ellipse cx="720" cy="650" rx="70" ry="40" fill="#ffe6b0" opacity=".5"/>
+    <ellipse cx="720" cy="730" rx="110" ry="22" fill="#ffe6b0" opacity=".3"/>
+    <!-- foreground island -->
+    <path d="M0 720 Q180 660 420 700 Q520 716 600 760 L600 900 L0 900 Z" fill="#3d2230"/>
+    <path d="M980 770 Q1160 700 1440 740 L1440 900 L900 900 Z" fill="#33202c"/>
+    <!-- palm silhouettes -->
+    <g fill="#241019">
+      <rect x="200" y="600" width="6" height="130"/>
+      <path d="M203 600 q-50 -30 -90 -12 q44 -2 90 18 z"/>
+      <path d="M203 600 q50 -30 90 -12 q-44 -2 -90 18 z"/>
+      <path d="M203 600 q-30 -48 -70 -56 q34 18 70 60 z"/>
+      <path d="M203 600 q30 -48 70 -56 q-34 18 -70 60 z"/>
+    </g>
+  </svg>
+  <svg class="bird" style="top:24%;left:18%;width:60px" data-speed="0.3" viewBox="0 0 60 24"><path d="M2 14 Q14 2 28 12 Q42 2 58 14" stroke="#3d2230" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+  <svg class="bird" style="top:30%;left:62%;width:44px" data-speed="0.5" viewBox="0 0 60 24"><path d="M2 14 Q14 4 28 12 Q42 4 58 14" stroke="#3d2230" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
+  <svg class="bird" style="top:20%;left:78%;width:36px" data-speed="0.6" viewBox="0 0 60 24"><path d="M2 14 Q14 4 28 12 Q42 4 58 14" stroke="#3d2230" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+  <div class="hero-grad"></div>
+  <div class="hero-inner wrap">
+    <span class="eyebrow">為嚮往而生的旅程 · Est. 2014</span>
+    <h1 class="serif">在世界的邊緣<br><em>遇見</em>另一個自己</h1>
+    <p class="lede cjk">遠行誌策劃深度、緩慢、有溫度的旅程——從馬爾地夫的環礁到冰島的極光，每一段都為你量身打磨。</p>
+    <div class="hero-stats">
+      <div><span>48</span><small>精選目的地</small></div>
+      <div><span>12K+</span><small>旅人同行</small></div>
+      <div><span>4.9</span><small>平均評分</small></div>
+    </div>
+  </div>
+  <div class="scroll-hint">向下捲動</div>
+</section>
+
+<!-- ============ SEARCH BAR ============ -->
+<div class="searchbar wrap">
+  <div class="searchbar-card">
+    <div class="sfield">
+      <label>目的地 / 地區</label>
+      <select id="s-dest">
+        <option value="all">想去哪裡都可以</option>
+        <option value="island">海島</option>
+        <option value="mountain">山岳</option>
+        <option value="city">城市</option>
+        <option value="hidden">秘境</option>
+      </select>
+    </div>
+    <div class="sfield">
+      <label>出發 — 回程</label>
+      <input type="date" id="s-date1">
+    </div>
+    <div class="sfield">
+      <label>旅人</label>
+      <div class="stepper">
+        <button type="button" onclick="step(-1)">−</button>
+        <span id="s-trav">2</span>
+        <button type="button" onclick="step(1)">+</button>
+      </div>
+    </div>
+    <button class="search-go" onclick="doSearch()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+      搜尋旅程
+    </button>
+  </div>
+</div>
+
+<!-- ============ DESTINATIONS ============ -->
+<section class="destinations" id="destinations">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">精選行程</span>
+      <h2 class="serif">挑一段，<em>啟程</em>吧</h2>
+      <p class="cjk">每一條路線都由在地嚮導與旅遊設計師共同打磨，小團、深度、無趕場。</p>
+    </div>
+    <div class="filters reveal" id="filters">
+      <button class="filter active" data-cat="all">全部</button>
+      <button class="filter" data-cat="island">海島</button>
+      <button class="filter" data-cat="mountain">山岳</button>
+      <button class="filter" data-cat="city">城市</button>
+      <button class="filter" data-cat="hidden">秘境</button>
+    </div>
+    <div class="grid" id="cardGrid"></div>
+  </div>
+</section>
+
+<!-- ============ FEATURE PARALLAX ============ -->
+<section class="feature" id="feature" style="padding:0">
+  <svg class="scene" data-parallax="0.18" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c4a6e"/><stop offset="55%" stop-color="#2f6f8f"/><stop offset="100%" stop-color="#9fc6cf"/></linearGradient>
+      <linearGradient id="fmtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dff0f2"/><stop offset="100%" stop-color="#7fa6b3"/></linearGradient>
+      <linearGradient id="fmtn2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3c6b7d"/><stop offset="100%" stop-color="#21495a"/></linearGradient>
+    </defs>
+    <rect width="1440" height="900" fill="url(#fsky)"/>
+    <circle cx="1120" cy="200" r="80" fill="#f4f0dc" opacity=".85"/>
+    <!-- snow peaks -->
+    <path d="M0 540 L240 300 L360 420 L520 230 L680 440 L840 250 L1040 460 L1240 300 L1440 470 L1440 900 L0 900 Z" fill="url(#fmtn2)"/>
+    <path d="M520 230 L560 290 L500 300 L540 350 L470 360 L520 230 Z" fill="#fff" opacity=".85"/>
+    <path d="M840 250 L880 320 L820 330 L860 380 L790 390 L840 250 Z" fill="#fff" opacity=".8"/>
+    <path d="M0 620 L260 470 L460 580 L660 460 L880 590 L1100 470 L1320 580 L1440 520 L1440 900 L0 900 Z" fill="url(#fmtn)" opacity=".75"/>
+    <!-- lake -->
+    <rect y="700" width="1440" height="200" fill="#5b95a6" opacity=".9"/>
+    <path d="M0 700 Q360 690 720 700 T1440 700 L1440 740 L0 740 Z" fill="#cfe6ea" opacity=".4"/>
+    <!-- pines -->
+    <g fill="#173241">
+      <path d="M120 700 l24 0 l-12 -50 z M132 668 l-9 0 l9 -34 l9 34 z"/>
+      <path d="M180 700 l30 0 l-15 -64 z"/>
+      <path d="M1320 700 l28 0 l-14 -58 z"/>
+    </g>
+  </svg>
+  <div class="feature-grad"></div>
+  <div class="feature-inner wrap">
+    <span class="eyebrow" style="color:var(--gold)">招牌旅程</span>
+    <h2 class="serif">冰島環島<br>十日<em>追光</em>之旅</h2>
+    <p class="cjk">在黑沙灘上等待第一道極光，泡進地熱溫泉看星河流轉。十天裡，我們把冰島最動人的瞬間，都留給你。</p>
+    <a class="btn-ghost" onclick="openModal('iceland')">查看完整行程 →</a>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">旅途影像</span>
+      <h2 class="serif">那些<em>說不出口</em>的風景</h2>
+      <p class="cjk">點開任一張，讓畫面把你帶到現場。</p>
+    </div>
+    <div class="gallery-grid reveal" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ============ JOURNEY TIMELINE ============ -->
+<section id="journey" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">一日的節奏</span>
+      <h2 class="serif">慢，才看得見<em>細節</em></h2>
+      <p class="cjk">以京都「嵐山秘境一日」為例——我們如何安排你的一天。</p>
+    </div>
+    <div class="timeline reveal">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-when">07:00 清晨</div><h4 class="serif">竹林獨享時光</h4><p class="cjk">趕在觀光人潮之前抵達嵐山竹林，薄霧中只有風與竹葉的聲音。</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-when">09:30 上午</div><h4 class="serif">天龍寺與枯山水</h4><p class="cjk">由在地僧侶導覽，理解庭園裡每一顆石頭的留白與哲學。</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-when">12:30 午後</div><h4 class="serif">川畔懷石午宴</h4><p class="cjk">在保津川旁的百年料亭，享用當季食材的細緻懷石料理。</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-when">15:00 傍晚</div><h4 class="serif">小火車與峽谷</h4><p class="cjk">搭乘嵯峨野觀光小火車，沿著峽谷欣賞被夕陽染紅的楓紅。</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-when">18:30 入夜</div><h4 class="serif">渡月橋的燈火</h4><p class="cjk">夜幕低垂，渡月橋亮起暖燈，為這一天畫下溫柔的句點。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENQUIRY ============ -->
+<section class="enquiry" id="enquiry">
+  <svg class="deco" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="none" stroke="#fff" stroke-width="3"/><path d="M100 20 L116 100 L100 180 L84 100 Z" fill="#fff"/></svg>
+  <div class="wrap enq-grid">
+    <div class="enq-left reveal">
+      <span class="eyebrow">開始規劃</span>
+      <h2 class="serif">把你的<em>嚮往</em><br>交給我們</h2>
+      <p class="cjk">留下需求，旅遊設計師將在 24 小時內與你聯繫，量身打造專屬旅程，無任何預約費用。</p>
+      <div class="enq-trust">
+        <div><span>24h</span><small>專人回覆</small></div>
+        <div><span>0元</span><small>諮詢費用</small></div>
+        <div><span>100%</span><small>客製彈性</small></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <form class="form-card" id="enqForm" novalidate>
+        <div class="form-row">
+          <div class="fg"><label>姓名</label><input type="text" id="f-name" placeholder="您的稱呼"><div class="msg">請填寫姓名</div></div>
+          <div class="fg"><label>聯絡電話</label><input type="tel" id="f-phone" placeholder="09xx-xxx-xxx"><div class="msg">請填寫有效電話</div></div>
+        </div>
+        <div class="fg"><label>電子信箱</label><input type="email" id="f-email" placeholder="you@example.com"><div class="msg">請填寫有效信箱</div></div>
+        <div class="form-row">
+          <div class="fg"><label>嚮往的目的地</label>
+            <select id="f-dest"><option value="">請選擇</option><option>馬爾地夫・環礁海島</option><option>冰島・極光環島</option><option>京都・嵐山秘境</option><option>瑞士・少女峰山岳</option><option>葡萄牙・里斯本城市</option><option>祕魯・馬丘比丘秘境</option><option>其他 / 尚未決定</option></select>
+            <div class="msg">請選擇目的地</div>
+          </div>
+          <div class="fg"><label>旅人人數</label><input type="number" id="f-pax" min="1" value="2"><div class="msg">至少 1 人</div></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>預計出發</label><input type="date" id="f-date"><div class="msg">請選擇出發日期</div></div>
+          <div class="fg"><label>預算 / 每人</label>
+            <select id="f-budget"><option value="">請選擇</option><option>NT$ 30,000 以下</option><option>NT$ 30,000 – 60,000</option><option>NT$ 60,000 – 100,000</option><option>NT$ 100,000 以上</option></select>
+            <div class="msg">請選擇預算</div>
+          </div>
+        </div>
+        <div class="fg"><label>想對我們說的話（選填）</label><textarea id="f-note" rows="2" placeholder="例如：想慶祝結婚紀念日、希望步調慢一點…"></textarea></div>
+        <button type="submit" class="btn-submit">送出諮詢需求</button>
+      </form>
+      <div class="confirm form-card" id="confirmBox">
+        <div class="tick">✓</div>
+        <h3 class="serif">收到了，謝謝你！</h3>
+        <p class="cjk">旅遊設計師將在 24 小時內與你聯繫。以下是你的需求摘要：</p>
+        <div class="confirm-summary" id="confirmSummary"></div>
+        <button class="resetbtn" onclick="resetForm()">重新填寫</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand"><svg class="compass" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><path d="M20 8 L24 20 L20 32 L16 20 Z" fill="var(--gold)"/><circle cx="20" cy="20" r="2.5" fill="currentColor"/></svg>遠行誌</div>
+        <p class="cjk">為嚮往而生的旅程。我們相信，最好的旅行不是看了多少景點，而是被多少瞬間打動。</p>
+      </div>
+      <div class="foot-col"><h5>探索</h5><a href="#destinations">海島行程</a><a href="#destinations">山岳行程</a><a href="#destinations">城市漫遊</a><a href="#destinations">秘境探訪</a></div>
+      <div class="foot-col"><h5>關於</h5><a href="#feature">招牌旅程</a><a href="#gallery">旅途影像</a><a href="#journey">旅程節奏</a><a href="#enquiry">預約諮詢</a></div>
+      <div class="foot-col"><h5>聯絡</h5><a href="#">hello@yonder.travel</a><a href="#">02-2700-0000</a><a href="#">台北市大安區嚮往路 14 號</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 遠行誌 Yonder Travel · 本頁為示範用途虛構品牌</span>
+      <span class="foot-badge">Template by e-life-ai · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">service.e-life-ai.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-hero" id="modalHero"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-book">
+      <div class="mbk-price" id="modalBookPrice"></div>
+      <button class="btn-book" onclick="bookFromModal()">立即預訂</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav lb-prev" onclick="lbStep(-1)">‹</button>
+  <div class="lb-stage" id="lbStage"></div>
+  <button class="lb-nav lb-next" onclick="lbStep(1)">›</button>
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ====================== SVG SCENE LIBRARY ====================== */
+function scene(kind){
+  const S={
+    island:`<svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="i1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd6e0"/><stop offset="100%" stop-color="#e7f3ec"/></linearGradient><linearGradient id="i2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34b5c4"/><stop offset="100%" stop-color="#0e7c8c"/></linearGradient></defs><rect width="600" height="360" fill="url(#i1)"/><circle cx="470" cy="80" r="46" fill="#fff4d6"/><rect y="200" width="600" height="160" fill="url(#i2)"/><path d="M0 200 Q150 188 300 200 T600 200 L600 230 L0 230Z" fill="#bdeef0" opacity=".5"/><ellipse cx="300" cy="220" rx="150" ry="30" fill="#7fe0d8" opacity=".7"/><path d="M180 220 Q300 196 420 220 Q300 244 180 220Z" fill="#f4e3b8"/><g fill="#1f5f4a"><rect x="296" y="170" width="7" height="40"/><path d="M299 170 q-40 -16 -70 -2 q34 -4 70 12z"/><path d="M299 170 q40 -16 70 -2 q-34 -4 -70 12z"/><path d="M299 170 q-12 -36 -44 -42 q26 14 44 46z"/><path d="M299 170 q12 -36 44 -42 q-26 14 -44 46z"/></g></svg>`,
+    mountain:`<svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="m1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9d4e8"/><stop offset="100%" stop-color="#e9eef0"/></linearGradient></defs><rect width="600" height="360" fill="url(#m1)"/><circle cx="120" cy="80" r="34" fill="#fef4dd"/><path d="M0 220 L120 110 L200 180 L300 90 L400 200 L500 120 L600 210 L600 360 L0 360Z" fill="#5d7f8f"/><path d="M300 90 L322 140 L286 145 L308 175 L262 182 L300 90Z" fill="#fff"/><path d="M500 120 L520 162 L488 168 L500 120Z" fill="#fff"/><path d="M0 280 L160 200 L320 270 L480 200 L600 260 L600 360 L0 360Z" fill="#3a5a68"/><g fill="#1c3540"><path d="M90 360 l30 0 l-15 -50z M150 360 l24 0 l-12 -40z M470 360 l28 0 l-14 -46z"/></g></svg>`,
+    city:`<svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b27a"/><stop offset="60%" stop-color="#d98a6b"/><stop offset="100%" stop-color="#5d3a52"/></linearGradient></defs><rect width="600" height="360" fill="url(#c1)"/><circle cx="450" cy="110" r="44" fill="#ffe7b0" opacity=".9"/><g fill="#3a2540"><rect x="40" y="180" width="50" height="180"/><rect x="110" y="140" width="46" height="220"/><rect x="176" y="200" width="40" height="160"/><rect x="236" y="100" width="54" height="260"/><rect x="310" y="170" width="44" height="190"/><rect x="372" y="130" width="50" height="230"/><rect x="440" y="200" width="42" height="160"/><rect x="500" y="160" width="56" height="200"/></g><g fill="#ffd98a" opacity=".85"><rect x="120" y="160" width="6" height="8"/><rect x="134" y="160" width="6" height="8"/><rect x="248" y="120" width="7" height="9"/><rect x="262" y="140" width="7" height="9"/><rect x="384" y="150" width="6" height="8"/><rect x="512" y="180" width="7" height="9"/><rect x="528" y="180" width="7" height="9"/></g><rect y="350" width="600" height="10" fill="#241630"/></svg>`,
+    hidden:`<svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f4a4a"/><stop offset="100%" stop-color="#3f7a5e"/></linearGradient></defs><rect width="600" height="360" fill="url(#h1)"/><circle cx="380" cy="70" r="200" fill="#bfe8cf" opacity=".18"/><path d="M300 40 Q330 160 300 250 Q270 160 300 40Z" fill="#cfeede" opacity=".55"/><path d="M280 40 Q270 150 280 250 L300 250 Q290 150 300 40Z" fill="#a9dcc0" opacity=".6"/><ellipse cx="300" cy="300" rx="140" ry="36" fill="#0f3030"/><ellipse cx="300" cy="296" rx="110" ry="24" fill="#2c6b5a" opacity=".7"/><g fill="#0c2624"><path d="M60 360 q20 -120 60 -150 q-10 90 -20 150z"/><path d="M520 360 q-26 -130 -70 -160 q14 100 24 160z"/></g><circle cx="200" cy="220" r="4" fill="#d8f5e6" opacity=".7"/><circle cx="430" cy="180" r="3" fill="#d8f5e6" opacity=".6"/></svg>`,
+    iceland:`<svg viewBox="0 0 880 260" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ic1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1430"/><stop offset="100%" stop-color="#16324a"/></linearGradient><linearGradient id="aur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5af2b0" stop-opacity="0"/><stop offset="60%" stop-color="#3fd99a" stop-opacity=".8"/><stop offset="100%" stop-color="#7c8cff" stop-opacity=".3"/></linearGradient></defs><rect width="880" height="260" fill="url(#ic1)"/><path d="M0 30 Q200 120 440 50 Q660 -10 880 70 L880 150 Q660 80 440 130 Q200 180 0 110Z" fill="url(#aur)"/><path d="M0 60 Q220 140 460 80 Q700 30 880 100 L880 160 Q700 100 460 150 Q220 200 0 140Z" fill="url(#aur)" opacity=".5"/><g fill="#fff"><circle cx="80" cy="40" r="1.2"/><circle cx="200" cy="20" r="1"/><circle cx="700" cy="30" r="1.3"/><circle cx="820" cy="60" r="1"/><circle cx="500" cy="25" r="1.1"/></g><path d="M0 200 L160 130 L300 190 L460 120 L640 200 L820 140 L880 190 L880 260 L0 260Z" fill="#0a2030"/><path d="M460 120 L488 160 L432 166 L460 120Z" fill="#dff0f2"/><rect y="225" width="880" height="35" fill="#06151f"/></svg>`,
+  };
+  return S[kind]||S.island;
+}
+
+/* ====================== TOUR DATA ====================== */
+const TOURS=[
+ {id:'maldives',cat:'island',catName:'海島',title:'馬爾地夫',loc:'INDIAN OCEAN',scene:'island',desc:'住進透明海面上的水上屋，醒來就是一片無際的綠松石海。',price:128000,dur:'6 天 4 夜',rate:'4.9',
+  detail:{stats:[['天數','6 天 4 夜'],['團體','最多 8 人'],['難度','悠閒']],
+   itinerary:[['抵達天堂','搭乘水上飛機抵達私人島嶼，迎賓椰子水，入住海上水屋。'],['浮潛與海龜','專業教練帶你前往珊瑚礁，與海龜共游一整個上午。'],['無人沙洲野餐','搭船前往潮間帶才浮現的沙洲，享用私廚海鮮午宴。'],['日落巡航','登上傳統多尼船，在印度洋的金色夕陽中啜飲香檳。'],['SPA 與自由日','於水上 SPA 享受熱石按摩，午後自由放空。'],['依依不捨','晨間最後一次浮潛後，搭機返航。']],
+   includes:['四晚海上水屋','水上飛機接駁','全程早餐與兩餐正餐','浮潛裝備與教練','日落巡航','機場貴賓接待']}},
+ {id:'iceland',cat:'mountain',catName:'山岳',title:'冰島環島',loc:'NORTH ATLANTIC',scene:'iceland',desc:'十天追逐極光、瀑布與黑沙灘，泡進地熱溫泉看星河。',price:158000,dur:'10 天 8 夜',rate:'5.0',
+  detail:{stats:[['天數','10 天 8 夜'],['團體','最多 12 人'],['難度','中等']],
+   itinerary:[['雷克雅維克','抵達首都，漫步彩色屋舍與哈帕音樂廳。'],['黃金圈','間歇泉、辛格維利爾國家公園與黃金瀑布。'],['南岸瀑布','塞里雅蘭瀑布與斯科加瀑布，走進水簾後方。'],['黑沙灘','維克鎮玄武岩柱與洶湧的大西洋黑沙海岸。'],['冰河湖','傑古沙龍冰河湖與鑽石沙灘的藍冰。'],['東峽灣','沿著靜謐峽灣公路，造訪漁村與燈塔。'],['米湖地熱','米湖溫泉與沸騰的地熱泥漿地貌。'],['鑽石圈','黛提瀑布與眾神瀑布的磅礡水勢。'],['追光之夜','在無光害的曠野等待極光降臨。'],['歸途','藍湖溫泉放鬆後，搭機返航。']],
+   includes:['八晚精選旅宿','全程九人座專車與司機嚮導','每日早餐','藍湖溫泉門票','冰河健行體驗','極光追蹤行程']}},
+ {id:'kyoto',cat:'hidden',catName:'秘境',title:'京都嵐山',loc:'KANSAI · JAPAN',scene:'hidden',desc:'趕在人潮之前獨享竹林，跟著僧侶讀懂枯山水的留白。',price:62000,dur:'5 天 4 夜',rate:'4.8',
+  detail:{stats:[['天數','5 天 4 夜'],['團體','最多 6 人'],['難度','悠閒']],
+   itinerary:[['抵達京都','入住町家旅宿，傍晚先斗町巷弄散策。'],['嵐山秘境','清晨獨享竹林、天龍寺與保津川懷石。'],['東山古道','清水寺、二三年坂與祇園藝伎見學。'],['宇治茶道','宇治抹茶體驗與平等院鳳凰堂。'],['歸途','錦市場採買後，搭乘新幹線離開。']],
+   includes:['四晚町家旅宿','在地嚮導全程陪同','懷石料理一餐','抹茶道體驗','寺院特別參拜','京都市區交通卡']}},
+ {id:'lisbon',cat:'city',catName:'城市',title:'里斯本',loc:'PORTUGAL',scene:'city',desc:'坐上黃色電車穿過七丘之城，在法朵歌聲裡度過微醺夜晚。',price:88000,dur:'7 天 5 夜',rate:'4.7',
+  detail:{stats:[['天數','7 天 5 夜'],['團體','最多 10 人'],['難度','輕鬆']],
+   itinerary:[['抵達里斯本','入住阿爾法瑪老城旅宿，黃昏觀景台看夕陽。'],['電車漫遊','搭乘 28 號電車穿越古城，貝倫塔與蛋撻初體驗。'],['辛特拉','童話佩納宮與摩爾人城堡的山城一日。'],['法朵之夜','在百年酒館聆聽葡萄牙靈魂歌謠法朵。'],['波多延伸','搭車北上波多，杜羅河畔酒窖品酒。'],['自由探索','市集、書店與海鮮自由日。'],['歸途','晨間咖啡後，搭機返航。']],
+   includes:['五晚精品旅宿','市區與辛特拉導覽','法朵晚宴一場','波多酒莊品酒','機場接送','里斯本交通卡']}},
+ {id:'swiss',cat:'mountain',catName:'山岳',title:'瑞士少女峰',loc:'BERNESE ALPS',scene:'mountain',desc:'搭齒輪火車登上歐洲之巔，在阿爾卑斯草原間呼吸雪的氣息。',price:142000,dur:'8 天 6 夜',rate:'4.9',
+  detail:{stats:[['天數','8 天 6 夜'],['團體','最多 10 人'],['難度','中等']],
+   itinerary:[['蘇黎世','抵達後遊湖濱舊城，品嘗在地起司鍋。'],['茵特拉肯','湖光山色小鎮，纜車登哈德昆觀景台。'],['少女峰','齒輪火車登上歐洲之巔，冰宮與雪原健行。'],['格林德瓦','First 懸崖步道與滑板車下山體驗。'],['策馬特','馬特洪峰下的無車山城漫步。'],['冰川快車','搭乘景觀列車穿越阿爾卑斯心臟。'],['琉森','卡貝爾橋與瑞吉山日落。'],['歸途','晨間湖畔散步後返航。']],
+   includes:['六晚山景旅宿','少女峰登山火車','瑞士旅行通行證','馬特洪峰纜車','冰川快車景觀車廂','每日早餐與三餐晚宴']}},
+ {id:'machu',cat:'hidden',catName:'秘境',title:'馬丘比丘',loc:'ANDES · PERU',scene:'hidden',desc:'徒步印加古道，在雲霧散去的瞬間，遇見失落之城。',price:118000,dur:'9 天 7 夜',rate:'4.8',
+  detail:{stats:[['天數','9 天 7 夜'],['團體','最多 12 人'],['難度','挑戰']],
+   itinerary:[['利馬','抵達祕魯首都，海岸老城與祕魯料理初探。'],['庫斯科','印加帝國古都適應高度，太陽神殿巡禮。'],['聖谷','歐雁泰梯田與在地市集。'],['印加古道一','正式踏上經典印加古道，雲海中前行。'],['印加古道二','翻越死婦隘口，沿途遺跡與雪山。'],['印加古道三','下行雲霧林，抵達太陽門前哨。'],['馬丘比丘','黎明穿越太陽門，俯瞰失落之城。'],['彩虹山','可選加碼彩虹山健行。'],['歸途','庫斯科返利馬後搭機返航。']],
+   includes:['七晚旅宿與營地','專業登山嚮導與挑夫','印加古道許可證','全程餐食','馬丘比丘門票與導覽','庫斯科觀光列車']}},
+];
+
+const fmt=n=>'NT$ '+n.toLocaleString('en-US');
+
+/* ====================== RENDER CARDS ====================== */
+let currentFilter='all';
+function renderCards(filter='all'){
+  currentFilter=filter;
+  const grid=document.getElementById('cardGrid');
+  const list=filter==='all'?TOURS:TOURS.filter(t=>t.cat===filter);
+  if(!list.length){grid.innerHTML='<div class="no-results cjk">這個分類暫時沒有行程，換個方向探索看看吧。</div>';return;}
+  grid.innerHTML=list.map(t=>`
+    <article class="card reveal in" onclick="openModal('${t.id}')">
+      <div class="card-img">${scene(t.scene)}
+        <span class="card-tag">${t.catName}</span>
+        <button class="card-fav" onclick="event.stopPropagation();this.classList.toggle('on');this.textContent=this.classList.contains('on')?'♥':'♡'">♡</button>
+      </div>
+      <div class="card-body">
+        <span class="card-loc">◍ ${t.loc}</span>
+        <h3 class="serif">${t.title}</h3>
+        <p class="card-desc cjk">${t.desc}</p>
+        <div class="card-meta">
+          <div><span class="price">${fmt(t.price)} <small>/ 起</small></span></div>
+          <div style="text-align:right"><span class="dur">${t.dur}</span><br><span class="rate">★ ${t.rate}</span></div>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+/* ====================== FILTERS ====================== */
+document.getElementById('filters').addEventListener('click',e=>{
+  if(!e.target.classList.contains('filter'))return;
+  document.querySelectorAll('.filter').forEach(f=>f.classList.remove('active'));
+  e.target.classList.add('active');
+  renderCards(e.target.dataset.cat);
+});
+
+/* ====================== SEARCH BAR ====================== */
+let travelers=2;
+function step(d){travelers=Math.max(1,Math.min(12,travelers+d));document.getElementById('s-trav').textContent=travelers;}
+function doSearch(){
+  const dest=document.getElementById('s-dest').value;
+  document.querySelectorAll('.filter').forEach(f=>f.classList.toggle('active',f.dataset.cat===dest));
+  renderCards(dest);
+  const names={all:'全部目的地',island:'海島',mountain:'山岳',city:'城市',hidden:'秘境'};
+  toast(`為 ${travelers} 位旅人找到 ${ (dest==='all'?TOURS:TOURS.filter(t=>t.cat===dest)).length } 段「${names[dest]}」旅程`);
+  document.getElementById('destinations').scrollIntoView({behavior:'smooth'});
+}
+
+/* ====================== MODAL ====================== */
+function openModal(id){
+  const t=TOURS.find(x=>x.id===id);if(!t)return;
+  document.getElementById('modalHero').innerHTML=scene(t.scene)+`<div class="mh-grad"><div><div class="mh-loc">◍ ${t.loc}</div><h3 class="serif">${t.title}</h3></div></div>`;
+  const d=t.detail;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="mb-top">
+      <div class="mb-stats">${d.stats.map(s=>`<div><small>${s[0]}</small><b>${s[1]}</b></div>`).join('')}</div>
+      <div class="mb-price"><div class="p">${fmt(t.price)}</div><small>每人 / 起</small></div>
+    </div>
+    <div class="mb-sec-title serif">每日行程</div>
+    ${d.itinerary.map((it,i)=>`
+      <div class="acc-item${i===0?' open':''}">
+        <button class="acc-head" type="button" onclick="toggleAcc(this)">
+          <span class="acc-day">${i+1}<small>DAY</small></span>
+          <span class="acc-title">${it[0]}</span>
+          <span class="acc-arrow">⌄</span>
+        </button>
+        <div class="acc-panel"><div class="acc-panel-inner cjk">${it[1]}</div></div>
+      </div>`).join('')}
+    <div class="mb-sec-title serif">費用包含</div>
+    <div class="incl">${d.includes.map(x=>`<div>${x}</div>`).join('')}</div>`;
+  document.getElementById('modalBookPrice').innerHTML=`${fmt(t.price)} <small>每人 / 起 · ${t.dur}</small>`;
+  document.getElementById('modal').dataset.tour=id;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{const f=document.querySelector('.acc-item.open .acc-panel');if(f)f.style.maxHeight=f.scrollHeight+'px';},50);
+}
+function toggleAcc(btn){
+  const item=btn.closest('.acc-item');const panel=item.querySelector('.acc-panel');
+  const isOpen=item.classList.contains('open');
+  if(isOpen){item.classList.remove('open');panel.style.maxHeight=null;}
+  else{item.classList.add('open');panel.style.maxHeight=panel.scrollHeight+'px';}
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+function bookFromModal(){
+  const id=document.getElementById('modal').dataset.tour;const t=TOURS.find(x=>x.id===id);
+  closeModal();
+  document.getElementById('f-dest').value=[...document.getElementById('f-dest').options].find(o=>o.text.includes(t.title.slice(0,2)))?.text||'';
+  document.getElementById('enquiry').scrollIntoView({behavior:'smooth'});
+  toast(`已為你帶上「${t.title}」，填寫需求即可預約諮詢`);
+}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+
+/* ====================== GALLERY + LIGHTBOX ====================== */
+const GAL=[
+ {scene:'island',cap:'馬爾地夫・無人沙洲的午後',cls:'wide'},
+ {scene:'mountain',cap:'少女峰・阿爾卑斯的雪線',cls:''},
+ {scene:'iceland',cap:'冰島・曠野中的極光',cls:'tall'},
+ {scene:'city',cap:'里斯本・七丘之城的黃昏',cls:''},
+ {scene:'hidden',cap:'京都・清晨無人的竹林',cls:''},
+ {scene:'island',cap:'印度洋・水屋醒來的早晨',cls:'wide'},
+ {scene:'hidden',cap:'安地斯・雲霧中的失落之城',cls:''},
+];
+function renderGallery(){
+  document.getElementById('galleryGrid').innerHTML=GAL.map((g,i)=>`<div class="gitem ${g.cls}" onclick="openLightbox(${i})">${scene(g.scene)}</div>`).join('');
+}
+let lbIdx=0;
+function openLightbox(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function updateLb(){document.getElementById('lbStage').innerHTML=scene(GAL[lbIdx].scene);document.getElementById('lbCap').textContent=GAL[lbIdx].cap;}
+function lbStep(d){lbIdx=(lbIdx+d+GAL.length)%GAL.length;updateLb();}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox();});
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('lightbox').classList.contains('open')){
+    if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')lbStep(1);if(e.key==='ArrowLeft')lbStep(-1);
+  }
+  if(e.key==='Escape')closeModal();
+});
+
+/* ====================== ENQUIRY FORM ====================== */
+function fieldErr(id,cond){const fg=document.getElementById(id).closest('.fg');fg.classList.toggle('err',cond);return !cond;}
+document.getElementById('enqForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const dest=document.getElementById('f-dest').value;
+  const pax=document.getElementById('f-pax').value;
+  const date=document.getElementById('f-date').value;
+  const budget=document.getElementById('f-budget').value;
+  let ok=true;
+  ok&=fieldErr('f-name',name.length<1);
+  ok&=fieldErr('f-phone',!/^[0-9+\-\s]{8,}$/.test(phone));
+  ok&=fieldErr('f-email',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email));
+  ok&=fieldErr('f-dest',!dest);
+  ok&=fieldErr('f-pax',!pax||+pax<1);
+  ok&=fieldErr('f-date',!date);
+  ok&=fieldErr('f-budget',!budget);
+  if(!ok){toast('請完整填寫標示的欄位');return;}
+  document.getElementById('confirmSummary').innerHTML=`
+    <div class="row"><span>姓名</span><span>${name}</span></div>
+    <div class="row"><span>目的地</span><span>${dest}</span></div>
+    <div class="row"><span>出發日期</span><span>${date}</span></div>
+    <div class="row"><span>旅人人數</span><span>${pax} 位</span></div>
+    <div class="row"><span>每人預算</span><span>${budget}</span></div>
+    <div class="row"><span>聯絡方式</span><span>${phone} · ${email}</span></div>`;
+  document.getElementById('enqForm').style.display='none';
+  document.getElementById('confirmBox').classList.add('show');
+  document.getElementById('confirmBox').scrollIntoView({behavior:'smooth',block:'center'});
+  toast('需求已送出，我們很快與你聯繫！');
+});
+function resetForm(){
+  document.getElementById('enqForm').reset();
+  document.querySelectorAll('.fg.err').forEach(f=>f.classList.remove('err'));
+  document.getElementById('confirmBox').classList.remove('show');
+  document.getElementById('enqForm').style.display='block';
+}
+
+/* ====================== TOAST ====================== */
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);}
+
+/* ====================== SCROLL FX ====================== */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  nav.classList.toggle('scrolled',y>60);
+  document.querySelectorAll('[data-parallax]').forEach(el=>{const sp=+el.dataset.parallax;el.style.transform=`translateY(${(y-el.closest('section').offsetTop)*sp}px)`;});
+  document.querySelectorAll('.bird').forEach(b=>{b.style.transform=`translateX(${y*+b.dataset.speed}px)`;});
+});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ====================== INIT ====================== */
+(function(){
+  const t=new Date();const iso=d=>d.toISOString().slice(0,10);
+  const d1=new Date(t.getTime()+86400000*30);
+  document.getElementById('s-date1').value=iso(d1);
+  document.getElementById('f-date').value=iso(d1);
+  renderCards();renderGallery();
+})();
+</script>
+</body>
+</html>

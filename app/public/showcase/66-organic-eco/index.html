@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>霧森原野 Mossfield｜回歸土地的有機保養｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --moss: #586247;
+    --moss-deep: #3b4330;
+    --sage: #8a9577;
+    --sage-soft: #b7c0a3;
+    --clay: #c08457;
+    --clay-soft: #d9a878;
+    --sand: #e7dcc6;
+    --cream: #f6f1e6;
+    --cream-deep: #efe7d4;
+    --ink: #2e3127;
+    --ink-soft: #5c5e51;
+    --white: #fffdf8;
+    --leaf-accent: #7d9b6a;
+    --shadow-soft: 0 18px 48px -22px rgba(59, 67, 48, 0.35);
+    --shadow-card: 0 10px 30px -16px rgba(59, 67, 48, 0.4);
+    --r-lg: 34px;
+    --r-md: 22px;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Noto Sans TC", system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.7;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* paper grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3, .serif { font-family: var(--serif); font-weight: 500; letter-spacing: 0.01em; }
+
+  ::selection { background: var(--clay-soft); color: var(--moss-deep); }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { width: min(1180px, 92vw); margin-inline: auto; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 18px;
+    padding-inline: clamp(18px, 4vw, 54px);
+    transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(246, 241, 230, 0.86);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 6px 24px -18px rgba(59, 67, 48, 0.5);
+    padding-block: 12px;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: var(--serif); font-size: 1.34rem; font-weight: 600; color: var(--moss-deep); }
+  .brand svg { flex: none; }
+  .nav-links { display: flex; gap: 30px; align-items: center; font-size: 0.92rem; font-weight: 500; color: var(--ink-soft); }
+  .nav-links a { position: relative; transition: color 0.25s; }
+  .nav-links a::after {
+    content: ""; position: absolute; inset-block-end: -5px; inset-inline-start: 0;
+    width: 0; height: 2px; background: var(--clay); border-radius: 2px; transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--moss-deep); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--moss); color: var(--white); padding: 9px 20px; border-radius: 100px;
+    font-weight: 500; transition: transform 0.25s, background 0.25s; box-shadow: var(--shadow-card);
+  }
+  .nav-cta:hover { background: var(--moss-deep); transform: translateY(-2px); }
+  @media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+  /* ===== HERO ===== */
+  header.hero {
+    position: relative;
+    padding-block: clamp(130px, 18vh, 200px) clamp(70px, 10vh, 120px);
+    overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 85% -10%, rgba(192, 132, 87, 0.16), transparent 55%),
+      radial-gradient(100% 80% at 5% 110%, rgba(138, 149, 119, 0.22), transparent 55%),
+      var(--cream);
+  }
+  .blob {
+    position: absolute; z-index: 0; filter: blur(0.4px); pointer-events: none;
+    animation: float 14s ease-in-out infinite;
+  }
+  .blob.b1 { inset-block-start: -90px; inset-inline-end: -120px; width: 520px; opacity: 0.9; }
+  .blob.b2 { inset-block-end: -160px; inset-inline-start: -160px; width: 460px; opacity: 0.8; animation-delay: -5s; }
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-26px) rotate(4deg); } }
+
+  .hero-grid {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 70px); align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: rgba(138, 149, 119, 0.16); color: var(--moss-deep);
+    padding: 7px 16px; border-radius: 100px; font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.04em; margin-bottom: 24px;
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--clay); box-shadow: 0 0 0 4px rgba(192,132,87,0.2); }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6.2vw, 4.5rem); line-height: 1.04; color: var(--moss-deep);
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em { font-style: italic; color: var(--clay); }
+  .hero p.lead {
+    margin-block: 26px 34px; font-size: clamp(1rem, 1.4vw, 1.14rem); color: var(--ink-soft); max-width: 36ch;
+  }
+  .hero-cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn {
+    border: none; cursor: pointer; font-family: var(--sans); font-size: 0.96rem; font-weight: 500;
+    padding: 14px 28px; border-radius: 100px; transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+  }
+  .btn-primary { background: var(--clay); color: var(--white); box-shadow: var(--shadow-card); }
+  .btn-primary:hover { background: #ad7148; transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  .btn-ghost { background: transparent; color: var(--moss-deep); border: 1.5px solid var(--sage-soft); }
+  .btn-ghost:hover { background: rgba(138,149,119,0.14); transform: translateY(-3px); }
+
+  .hero-stats { display: flex; gap: 30px; margin-top: 46px; flex-wrap: wrap; }
+  .hero-stats .st b { font-family: var(--serif); font-size: 1.7rem; color: var(--moss); display: block; }
+  .hero-stats .st span { font-size: 0.8rem; color: var(--ink-soft); }
+
+  /* hero product visual */
+  .hero-visual { position: relative; display: flex; justify-content: center; }
+  .product-stage {
+    position: relative; width: min(420px, 78vw); aspect-ratio: 1; display: grid; place-items: center;
+  }
+  .product-stage .stage-blob { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .bottle {
+    position: relative; z-index: 2; width: 46%; filter: drop-shadow(0 26px 30px rgba(59,67,48,0.28));
+    transition: transform 0.6s cubic-bezier(.2,.8,.2,1), opacity 0.5s;
+  }
+  .leaf-orbit { position: absolute; z-index: 1; animation: spin 26s linear infinite; }
+  .leaf-orbit.lo1 { inset-block-start: 6%; inset-inline-end: 12%; width: 84px; animation-direction: reverse; }
+  .leaf-orbit.lo2 { inset-block-end: 8%; inset-inline-start: 8%; width: 70px; }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .leaf-orbit, .blob { animation: none; } }
+
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; text-align: center; }
+    .hero p.lead, .eyebrow { margin-inline: auto; }
+    .hero-cta-row, .hero-stats { justify-content: center; }
+    .hero-visual { order: -1; }
+  }
+
+  /* ===== SECTION SHELL ===== */
+  section { position: relative; padding-block: clamp(70px, 10vh, 120px); }
+  .sec-head { max-width: 640px; margin-bottom: 54px; }
+  .sec-head.center { margin-inline: auto; text-align: center; }
+  .sec-tag { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay); display: block; margin-bottom: 12px; }
+  .sec-head h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--moss-deep); line-height: 1.1; }
+  .sec-head p { margin-top: 16px; color: var(--ink-soft); }
+
+  /* ===== PRODUCT SELECTOR ===== */
+  .selector { background: var(--cream-deep); }
+  .sel-layout { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: clamp(30px, 5vw, 64px); align-items: center; }
+  .sel-visual { position: relative; display: grid; place-items: center; background:
+      radial-gradient(70% 70% at 50% 45%, rgba(138,149,119,0.22), transparent 70%);
+    border-radius: var(--r-lg); aspect-ratio: 1 / 0.92; }
+  .sel-stage { position: relative; width: 74%; aspect-ratio: 1; display: grid; place-items: center; }
+  .sel-stage .stage-blob { position: absolute; inset: 0; z-index: 0; transition: fill 0.6s; }
+  .sel-bottle { position: relative; z-index: 2; width: 50%; filter: drop-shadow(0 22px 26px rgba(59,67,48,0.26)); }
+  .sel-bottle.swap { animation: swapIn 0.55s cubic-bezier(.2,.8,.2,1); }
+  @keyframes swapIn { 0% { opacity: 0; transform: translateY(20px) scale(0.94); } 100% { opacity: 1; transform: none; } }
+
+  .sel-info h3 { font-size: clamp(1.6rem, 3vw, 2.3rem); color: var(--moss-deep); margin-bottom: 8px; }
+  .sel-info .price { font-family: var(--serif); font-size: 1.5rem; color: var(--clay); margin-bottom: 14px; }
+  .sel-info .desc { color: var(--ink-soft); margin-bottom: 22px; min-height: 3.4em; }
+  .sel-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+  .sel-tags span { font-size: 0.8rem; background: rgba(138,149,119,0.18); color: var(--moss-deep); padding: 6px 14px; border-radius: 100px; }
+  .sel-thumbs { display: flex; gap: 12px; flex-wrap: wrap; }
+  .thumb {
+    cursor: pointer; border: 2px solid transparent; background: var(--white); border-radius: var(--r-md);
+    padding: 10px; display: grid; place-items: center; width: 76px; height: 76px;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s; box-shadow: var(--shadow-card);
+  }
+  .thumb:hover { transform: translateY(-4px); }
+  .thumb.active { border-color: var(--clay); box-shadow: 0 10px 24px -12px rgba(192,132,87,0.6); }
+  .thumb svg { width: 34px; }
+  @media (max-width: 880px) { .sel-layout { grid-template-columns: 1fr; } .sel-visual { order: -1; } }
+
+  /* ===== IMPACT COUNTERS ===== */
+  .impact { background: var(--moss-deep); color: var(--cream); overflow: hidden; }
+  .impact::after {
+    content: ""; position: absolute; inset: 0; z-index: 0; opacity: 0.5;
+    background:
+      radial-gradient(60% 80% at 90% 0%, rgba(192,132,87,0.3), transparent 60%),
+      radial-gradient(50% 70% at 0% 100%, rgba(138,149,119,0.4), transparent 60%);
+  }
+  .impact .wrap { position: relative; z-index: 2; }
+  .impact .sec-head h2, .impact .sec-tag { color: var(--cream); }
+  .impact .sec-tag { color: var(--clay-soft); }
+  .impact .sec-head p { color: rgba(246,241,230,0.78); }
+  .counters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .counter {
+    background: rgba(246,241,230,0.07); border: 1px solid rgba(246,241,230,0.12);
+    border-radius: var(--r-md); padding: 30px 24px; text-align: center; backdrop-filter: blur(4px);
+  }
+  .counter .ico { width: 42px; margin-inline: auto; margin-bottom: 14px; color: var(--clay-soft); }
+  .counter b { font-family: var(--serif); font-size: clamp(2rem, 4vw, 2.8rem); display: block; color: var(--cream); line-height: 1; }
+  .counter .unit { font-size: 0.86rem; color: var(--clay-soft); margin-top: 4px; display: block; }
+  .counter span.label { font-size: 0.82rem; color: rgba(246,241,230,0.7); margin-top: 12px; display: block; }
+  @media (max-width: 880px) { .counters { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ===== STORY / INGREDIENTS ACCORDION ===== */
+  .ingredients { background: var(--cream); }
+  .acc-layout { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: start; }
+  .acc-visual { position: sticky; top: 110px; }
+  .acc-card {
+    position: relative; background: var(--sand); border-radius: var(--r-lg); padding: 40px 36px; overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+  .acc-card .quote { font-family: var(--serif); font-size: clamp(1.4rem, 2.6vw, 2rem); font-style: italic; color: var(--moss-deep); line-height: 1.3; position: relative; z-index: 2; }
+  .acc-card .sig { margin-top: 22px; font-size: 0.9rem; color: var(--ink-soft); position: relative; z-index: 2; }
+  .acc-card .sig b { font-family: var(--serif); display: block; font-size: 1.1rem; color: var(--moss); }
+  .acc-card svg.botanical { position: absolute; inset-block-end: -30px; inset-inline-end: -20px; width: 200px; opacity: 0.5; z-index: 1; }
+
+  .accordion .item {
+    border-bottom: 1px solid rgba(88,98,71,0.2);
+  }
+  .accordion .q {
+    width: 100%; background: none; border: none; cursor: pointer; font-family: var(--sans);
+    display: flex; align-items: center; gap: 16px; padding-block: 22px; text-align: start;
+    font-size: 1.08rem; font-weight: 500; color: var(--moss-deep);
+  }
+  .accordion .q .leaf-ico { flex: none; width: 26px; color: var(--sage); transition: transform 0.35s; }
+  .accordion .item.open .q .leaf-ico { transform: rotate(90deg); color: var(--clay); }
+  .accordion .q .plus { margin-inline-start: auto; flex: none; width: 22px; height: 22px; position: relative; }
+  .accordion .q .plus::before, .accordion .q .plus::after {
+    content: ""; position: absolute; inset-block-start: 50%; inset-inline-start: 50%; background: var(--clay);
+    border-radius: 2px; transform: translate(-50%,-50%); transition: transform 0.35s;
+  }
+  .accordion .q .plus::before { width: 16px; height: 2px; }
+  .accordion .q .plus::after { width: 2px; height: 16px; }
+  .accordion .item.open .q .plus::after { transform: translate(-50%,-50%) rotate(90deg); opacity: 0; }
+  .accordion .a {
+    max-height: 0; overflow: hidden; transition: max-height 0.45s ease, opacity 0.45s ease; opacity: 0;
+    color: var(--ink-soft); font-size: 0.96rem; padding-inline-start: 42px;
+  }
+  .accordion .item.open .a { max-height: 240px; opacity: 1; padding-bottom: 22px; }
+  @media (max-width: 880px) { .acc-layout { grid-template-columns: 1fr; } .acc-visual { position: static; } }
+
+  /* ===== QUIZ ===== */
+  .quiz { background: var(--cream-deep); }
+  .quiz-box {
+    background: var(--white); border-radius: var(--r-lg); box-shadow: var(--shadow-soft);
+    padding: clamp(30px, 5vw, 56px); max-width: 720px; margin-inline: auto; position: relative; overflow: hidden;
+  }
+  .quiz-progress { height: 6px; background: rgba(138,149,119,0.2); border-radius: 100px; overflow: hidden; margin-bottom: 30px; }
+  .quiz-progress .bar { height: 100%; width: 33%; background: linear-gradient(90deg, var(--sage), var(--clay)); border-radius: 100px; transition: width 0.5s ease; }
+  .quiz-step { display: none; animation: fadeUp 0.5s ease; }
+  .quiz-step.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .quiz-step h3 { font-size: clamp(1.3rem, 2.6vw, 1.8rem); color: var(--moss-deep); margin-bottom: 6px; }
+  .quiz-step .qsub { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 24px; }
+  .quiz-opts { display: grid; gap: 12px; }
+  .quiz-opt {
+    cursor: pointer; border: 1.5px solid var(--sage-soft); background: var(--cream);
+    border-radius: var(--r-md); padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+    font-size: 0.98rem; color: var(--ink); transition: all 0.25s;
+  }
+  .quiz-opt:hover { border-color: var(--clay); background: var(--white); transform: translateX(5px); }
+  .quiz-opt .emoji { font-size: 1.4rem; }
+  .quiz-result { display: none; text-align: center; animation: fadeUp 0.6s ease; }
+  .quiz-result.show { display: block; }
+  .quiz-result .res-stage { width: 150px; margin-inline: auto; margin-bottom: 18px; position: relative; display: grid; place-items: center; }
+  .quiz-result .res-stage svg.blobbg { position: absolute; inset: 0; width: 100%; }
+  .quiz-result .res-stage svg.resbottle { width: 50%; position: relative; z-index: 2; }
+  .quiz-result h3 { font-size: 1.8rem; color: var(--clay); margin-bottom: 8px; }
+  .quiz-result p { color: var(--ink-soft); max-width: 42ch; margin-inline: auto; margin-bottom: 22px; }
+  .quiz-restart { background: none; border: 1.5px solid var(--sage-soft); color: var(--moss-deep); padding: 10px 22px; border-radius: 100px; cursor: pointer; font-family: var(--sans); font-weight: 500; transition: background 0.25s; }
+  .quiz-restart:hover { background: rgba(138,149,119,0.16); }
+
+  /* ===== PLEDGE FORM ===== */
+  .pledge { background: var(--cream); }
+  .pledge-layout { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 64px); align-items: center; }
+  .pledge-art { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 1 / 0.85;
+    background: radial-gradient(80% 80% at 30% 30%, var(--sage-soft), var(--moss) 90%); display: grid; place-items: center; }
+  .pledge-art svg { width: 64%; color: var(--cream); opacity: 0.92; }
+  .pledge-art .pl-num { position: absolute; inset-block-start: 24px; inset-inline-start: 26px; font-family: var(--serif); color: var(--cream); }
+  .pledge-art .pl-num b { font-size: 2.4rem; display: block; }
+  .pledge-art .pl-num span { font-size: 0.82rem; opacity: 0.85; }
+
+  .pl-form { display: grid; gap: 16px; }
+  .pl-field label { font-size: 0.86rem; font-weight: 500; color: var(--moss-deep); display: block; margin-bottom: 6px; }
+  .pl-field input {
+    width: 100%; font-family: var(--sans); font-size: 0.96rem; padding: 13px 16px; border-radius: 14px;
+    border: 1.5px solid var(--sage-soft); background: var(--white); color: var(--ink); transition: border-color 0.25s;
+  }
+  .pl-field input:focus { outline: none; border-color: var(--clay); }
+  .pl-field input.err { border-color: #c0573f; background: #fbeee9; }
+  .pl-field .msg { font-size: 0.76rem; color: #c0573f; margin-top: 4px; min-height: 1em; display: block; }
+  .pl-submit { background: var(--moss); color: var(--white); margin-top: 6px; }
+  .pl-submit:hover { background: var(--moss-deep); transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  .pl-success {
+    display: none; background: rgba(138,149,119,0.16); border: 1.5px solid var(--sage-soft);
+    border-radius: var(--r-md); padding: 22px; text-align: center; color: var(--moss-deep);
+  }
+  .pl-success.show { display: block; animation: fadeUp 0.5s ease; }
+  .pl-success b { font-family: var(--serif); font-size: 1.2rem; display: block; margin-bottom: 4px; }
+  @media (max-width: 880px) { .pledge-layout { grid-template-columns: 1fr; } .pledge-art { order: -1; } }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--moss-deep); color: rgba(246,241,230,0.82); padding-block: 70px 40px; position: relative; overflow: hidden;
+  }
+  footer .blob { opacity: 0.18; }
+  footer .f-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; position: relative; z-index: 2; }
+  footer .brand { color: var(--cream); }
+  footer .f-about { max-width: 32ch; font-size: 0.9rem; margin-top: 16px; }
+  footer .f-cols { display: flex; gap: 60px; flex-wrap: wrap; }
+  footer .f-col h4 { font-family: var(--serif); color: var(--cream); font-size: 1rem; margin-bottom: 14px; font-weight: 500; }
+  footer .f-col a { display: block; font-size: 0.88rem; margin-bottom: 9px; opacity: 0.8; transition: opacity 0.2s, transform 0.2s; }
+  footer .f-col a:hover { opacity: 1; transform: translateX(4px); }
+  footer .f-bottom {
+    margin-top: 50px; padding-top: 24px; border-top: 1px solid rgba(246,241,230,0.14);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 0.82rem; opacity: 0.7; position: relative; z-index: 2;
+  }
+  footer .f-bottom a { color: var(--clay-soft); }
+
+  /* ===== BADGE ===== */
+  .elife-badge {
+    position: fixed; inset-block-end: 18px; inset-inline-end: 18px; z-index: 200;
+    display: flex; align-items: center; gap: 8px; background: rgba(246,241,230,0.92);
+    border: 1px solid rgba(88,98,71,0.18); color: var(--moss-deep);
+    padding: 8px 15px; border-radius: 100px; font-size: 0.8rem; font-weight: 500;
+    box-shadow: var(--shadow-card); backdrop-filter: blur(8px); transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .elife-badge:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  .elife-badge svg { width: 16px; color: var(--clay); }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(.2,.8,.2,1), transform 0.8s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: 0.08s; }
+  .reveal.d2 { transition-delay: 0.16s; }
+  .reveal.d3 { transition-delay: 0.24s; }
+  .reveal.d4 { transition-delay: 0.32s; }
+
+  /* hero entrance */
+  .hero-grid > * { opacity: 0; transform: translateY(26px); animation: heroIn 1s cubic-bezier(.2,.8,.2,1) forwards; }
+  .hero-grid > *:nth-child(1) { animation-delay: 0.15s; }
+  .hero-grid > *:nth-child(2) { animation-delay: 0.35s; }
+  @keyframes heroIn { to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="nav">
+  <a class="brand" href="#top">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+      <path d="M12 21C6 21 3 16 3 11c5 0 9 3 9 9 0-7 4-10 9-10 0 5-3 11-9 11Z" fill="#586247"/>
+      <path d="M12 21V9" stroke="#c08457" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    霧森原野
+  </a>
+  <div class="nav-links">
+    <a href="#products">產品</a>
+    <a href="#impact">永續足跡</a>
+    <a href="#story">配方理念</a>
+    <a href="#quiz">找出我的配方</a>
+    <a class="nav-cta" href="#pledge">加入綠洲計畫</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero" id="top">
+  <!-- decorative blobs (clipped by overflow:hidden on .hero) -->
+  <svg class="blob b1" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+    <path fill="#d9a878" d="M44.6-62.5C58.5-53.6 70.4-41.8 75-27.4 79.6-13 76.9 4 70.2 18.9 63.4 33.8 52.6 46.6 39 56.5 25.5 66.4 9.1 73.4-6.8 73.9-22.7 74.4-38.1 68.4-50.3 58-62.5 47.5-71.5 32.6-74.7 16.7-77.9.7-75.2-16.3-67.9-30.7-60.6-45.1-48.6-56.9-34.5-64.6-20.4-72.3-4.3-75.9 9.8-72.6 23.9-69.3 30.7-71.4 44.6-62.5Z" transform="translate(100 100)"/>
+  </svg>
+  <svg class="blob b2" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+    <path fill="#b7c0a3" d="M41.3-57.8C52.9-49.4 61.3-36.8 66.4-22.9 71.5-9 73.3 6.1 69.4 19.6 65.5 33.1 55.9 45 43.5 54.4 31.1 63.8 15.5 70.7-1.4 72.6-18.4 74.5-36.7 71.3-50.6 61.4-64.5 51.5-74 34.9-77.3 17.6-80.6.3-77.7-17.7-69.9-32.6-62.1-47.5-49.4-59.3-34.7-66.6-20-73.9-3.3-76.7 11.6-72.4 26.5-68.1 29.7-66.2 41.3-57.8Z" transform="translate(100 100)"/>
+  </svg>
+
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>再生農法 · 零塑包裝 · 在地小農</span>
+      <h1>讓肌膚回到<br><em>霧森原野</em>的呼吸</h1>
+      <p class="lead">我們在海拔八百公尺的雲霧森林裡，採集當季有機植萃，以零殘留的冷壓工法封存土地的養分。每一瓶，都是一座可以重新填裝的小小綠洲。</p>
+      <div class="hero-cta-row">
+        <a href="#products"><button class="btn btn-primary">探索保養系列</button></a>
+        <a href="#story"><button class="btn btn-ghost">認識我們的土地</button></a>
+      </div>
+      <div class="hero-stats">
+        <div class="st"><b>100%</b><span>有機植物萃取</span></div>
+        <div class="st"><b>0 塑</b><span>玻璃可回填包裝</span></div>
+        <div class="st"><b>1:1</b><span>每售一瓶種一棵樹</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="product-stage">
+        <svg class="stage-blob" viewBox="0 0 200 200" aria-hidden="true">
+          <path fill="#e7dcc6" d="M48.2-66.9C61.4-58 70-42.4 73.9-26.3 77.8-10.2 77-6.4 71.6 18.2 66.2 32.8 56.3 46.8 43.1 56.9 29.9 67 13.5 73.2-2.8 76.9-19.1 80.6-38.2 81.8-52.6 73.2-67 64.6-76.7 46.2-79.9 28.2-83.1 10.2-79.8-7.6-72.8-23.5-65.8-39.4-55.1-53.4-41.2-62.4-27.3-71.4-10.2-75.4 6.6-73.9 23.4-72.4 35-75.8 48.2-66.9Z" transform="translate(100 100)"/>
+        </svg>
+        <!-- orbiting leaves -->
+        <svg class="leaf-orbit lo1" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+          <path d="M30 6C16 14 12 30 14 48c18-2 32-16 32-34-8 0-16 2-22 8Z" fill="#7d9b6a"/>
+          <path d="M30 6c-4 14-8 28-16 42" stroke="#586247" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <svg class="leaf-orbit lo2" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+          <path d="M30 8c12 6 18 22 16 40-16 0-30-14-30-30 6-6 9-9 14-10Z" fill="#c08457"/>
+        </svg>
+        <!-- hero bottle -->
+        <svg class="bottle" id="heroBottle" viewBox="0 0 120 200" fill="none" aria-hidden="true">
+          <rect x="44" y="6" width="32" height="22" rx="6" fill="#586247"/>
+          <rect x="40" y="26" width="40" height="14" rx="5" fill="#3b4330"/>
+          <path d="M30 56c0-10 8-16 30-16s30 6 30 16v118c0 12-8 20-30 20s-30-8-30-20V56Z" fill="#8a9577"/>
+          <path d="M30 56c0-10 8-16 30-16s30 6 30 16v118c0 12-8 20-30 20s-30-8-30-20V56Z" fill="url(#hg)" opacity="0.5"/>
+          <rect x="42" y="92" width="36" height="58" rx="12" fill="#f6f1e6" opacity="0.92"/>
+          <path d="M60 104c-7 5-10 12-10 19 0 8 5 14 10 14s10-6 10-14c0-7-3-14-10-19Z" fill="#7d9b6a"/>
+          <defs><linearGradient id="hg" x1="30" y1="40" x2="90" y2="194" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity="0.5"/><stop offset="1" stop-color="#3b4330" stop-opacity="0.2"/></linearGradient></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== PRODUCT SELECTOR ===== -->
+<section class="selector" id="products">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="sec-tag">Our Collection</span>
+      <h2>六種植萃，一種純粹</h2>
+      <p>從清晨的薄霧到夜裡的森林，每一支配方都對應肌膚不同時刻的渴望。</p>
+    </div>
+
+    <div class="sel-layout">
+      <div class="sel-visual reveal">
+        <div class="sel-stage">
+          <svg class="stage-blob" id="selBlob" viewBox="0 0 200 200" aria-hidden="true">
+            <path fill="#b7c0a3" d="M48.2-66.9C61.4-58 70-42.4 73.9-26.3 77.8-10.2 77 6.4 71.6 18.2 66.2 32.8 56.3 46.8 43.1 56.9 29.9 67 13.5 73.2-2.8 76.9-19.1 80.6-38.2 81.8-52.6 73.2-67 64.6-76.7 46.2-79.9 28.2-83.1 10.2-79.8-7.6-72.8-23.5-65.8-39.4-55.1-53.4-41.2-62.4-27.3-71.4-10.2-75.4 6.6-73.9 23.4-72.4 35-75.8 48.2-66.9Z" transform="translate(100 100)"/>
+          </svg>
+          <svg class="sel-bottle" id="selBottle" viewBox="0 0 120 200" fill="none" aria-hidden="true">
+            <rect x="44" y="6" width="32" height="22" rx="6" fill="#586247"/>
+            <rect x="40" y="26" width="40" height="14" rx="5" fill="#3b4330"/>
+            <path d="M30 56c0-10 8-16 30-16s30 6 30 16v118c0 12-8 20-30 20s-30-8-30-20V56Z" fill="#8a9577" id="selBody"/>
+            <rect x="42" y="92" width="36" height="58" rx="12" fill="#f6f1e6" opacity="0.92"/>
+            <path id="selMotif" d="M60 104c-7 5-10 12-10 19 0 8 5 14 10 14s10-6 10-14c0-7-3-14-10-19Z" fill="#7d9b6a"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="sel-info reveal d1">
+        <h3 id="pName">晨霧潔顏露</h3>
+        <div class="price" id="pPrice">NT$ 680</div>
+        <p class="desc" id="pDesc">以白茶與燕麥萃取調和，溫和帶走一夜代謝，留下水潤不緊繃的清新。</p>
+        <div class="sel-tags" id="pTags"></div>
+        <div class="sel-thumbs" id="thumbs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== IMPACT COUNTERS ===== -->
+<section class="impact" id="impact">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="sec-tag">Regenerative Impact</span>
+      <h2>每一次購買，土地都會記得</h2>
+      <p>自二〇一九年創立以來，我們與十二個在地小農合作，把利潤的百分之五回到森林。</p>
+    </div>
+    <div class="counters">
+      <div class="counter reveal">
+        <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 22C7 22 4 18 4 12c5 0 8 3 8 8 0-6 3-9 8-9 0 6-3 11-8 11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <b class="num" data-target="48200" data-suffix="">0</b><span class="unit">棵樹</span>
+        <span class="label">已在雲霧森林復育</span>
+      </div>
+      <div class="counter reveal d1">
+        <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M3 17c4 0 5-3 9-3s5 3 9 3M3 12c4 0 5-3 9-3s5 3 9 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <b class="num" data-target="312" data-suffix=" 噸">0</b><span class="unit">CO₂</span>
+        <span class="label">累積減少的碳排放</span>
+      </div>
+      <div class="counter reveal d2">
+        <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M6 8h12l-1 11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6"/></svg>
+        <b class="num" data-target="89600" data-suffix="">0</b><span class="unit">個瓶身</span>
+        <span class="label">回收再填裝免於掩埋</span>
+      </div>
+      <div class="counter reveal d3">
+        <svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <b class="num" data-target="12" data-suffix="">0</b><span class="unit">在地小農</span>
+        <span class="label">共同守護有機農法</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STORY / INGREDIENTS ACCORDION ===== -->
+<section class="ingredients" id="story">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Pure Ingredients</span>
+      <h2>看得懂的成分，<br>才是真正的純淨</h2>
+      <p>我們相信透明是最好的承諾。點開每一項，看見它從土地到瓶身的旅程。</p>
+    </div>
+
+    <div class="acc-layout">
+      <div class="acc-visual reveal">
+        <div class="acc-card">
+          <p class="quote">「我不是在做保養品，<br>我只是把森林裝進玻璃裡，<br>還給每一雙手。」</p>
+          <p class="sig">創辦人 <b>林知禾</b> · 霧森原野</p>
+          <svg class="botanical" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <path d="M100 180V40" stroke="#586247" stroke-width="2" stroke-linecap="round"/>
+            <path d="M100 70c-22-4-38-18-44-40 22 4 38 18 44 40Z" fill="#7d9b6a"/>
+            <path d="M100 100c22-4 38-18 44-40-22 4-38 18-44 40Z" fill="#8a9577"/>
+            <path d="M100 130c-22-4-38-18-44-40 22 4 38 18 44 40Z" fill="#7d9b6a"/>
+            <path d="M100 160c22-4 38-18 44-40-22 4-38 18-44 40Z" fill="#8a9577"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="accordion reveal d1" id="accordion">
+        <!-- items injected by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section class="quiz" id="quiz">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="sec-tag">Find Your Match</span>
+      <h2>三個問題，找出屬於你的配方</h2>
+      <p>讓土地為你挑選，最貼近此刻肌膚與心情的那一支。</p>
+    </div>
+
+    <div class="quiz-box reveal d1">
+      <div class="quiz-progress"><div class="bar" id="quizBar"></div></div>
+
+      <div class="quiz-step active" data-step="0">
+        <h3>此刻，你的肌膚最想要什麼？</h3>
+        <p class="qsub">問題 1 / 3</p>
+        <div class="quiz-opts">
+          <div class="quiz-opt" data-v="fresh"><span class="emoji">💧</span>清爽水潤，不要黏膩</div>
+          <div class="quiz-opt" data-v="calm"><span class="emoji">🍃</span>溫和舒緩，泛紅敏感</div>
+          <div class="quiz-opt" data-v="rich"><span class="emoji">🌰</span>深層滋養，乾燥緊繃</div>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="1">
+        <h3>你最嚮往的森林時刻？</h3>
+        <p class="qsub">問題 2 / 3</p>
+        <div class="quiz-opts">
+          <div class="quiz-opt" data-v="fresh"><span class="emoji">🌅</span>清晨薄霧灑落葉間</div>
+          <div class="quiz-opt" data-v="calm"><span class="emoji">🌿</span>午後苔蘚的綠蔭</div>
+          <div class="quiz-opt" data-v="rich"><span class="emoji">🌙</span>夜裡木質的深沉香</div>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="2">
+        <h3>你的保養步驟偏好？</h3>
+        <p class="qsub">問題 3 / 3</p>
+        <div class="quiz-opts">
+          <div class="quiz-opt" data-v="fresh"><span class="emoji">✨</span>越簡單越好，一瓶搞定</div>
+          <div class="quiz-opt" data-v="calm"><span class="emoji">🤲</span>喜歡按摩的儀式感</div>
+          <div class="quiz-opt" data-v="rich"><span class="emoji">🕯️</span>睡前慢慢敷一段時光</div>
+        </div>
+      </div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="res-stage">
+          <svg class="blobbg" viewBox="0 0 200 200" aria-hidden="true"><path fill="#e7dcc6" d="M48-66C62-57 71-42 75-26 78-10 76 7 70 22 64 36 53 48 39 57 25 66 9 72-7 76-23 80-42 81-55 71-69 61-77 43-80 25-82 7-78-11-71-26-63-41-52-53-38-62-24-71-7-75 9-73 26-72 34-76 48-66Z" transform="translate(100 100)"/></svg>
+          <svg class="resbottle" id="resBottle" viewBox="0 0 120 200" fill="none" aria-hidden="true">
+            <rect x="44" y="6" width="32" height="22" rx="6" fill="#586247"/>
+            <path d="M30 56c0-10 8-16 30-16s30 6 30 16v118c0 12-8 20-30 20s-30-8-30-20V56Z" fill="#8a9577" id="resBody"/>
+            <rect x="42" y="92" width="36" height="58" rx="12" fill="#f6f1e6" opacity="0.92"/>
+          </svg>
+        </div>
+        <h3 id="resName">晨霧潔顏露</h3>
+        <p id="resDesc"></p>
+        <button class="quiz-restart" id="quizRestart">再測一次</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLEDGE FORM ===== -->
+<section class="pledge" id="pledge">
+  <div class="wrap">
+    <div class="pledge-layout">
+      <div class="pledge-art reveal">
+        <div class="pl-num"><b>5,000</b><span>株森林等你認養</span></div>
+        <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+          <path d="M60 110V44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M60 60c-18-4-30-16-34-34 18 2 30 14 34 34Z" fill="currentColor" opacity="0.85"/>
+          <path d="M60 80c18-4 30-16 34-34-18 2-30 14-34 34Z" fill="currentColor" opacity="0.7"/>
+          <path d="M60 100c-18-4-30-16-34-34 18 2 30 14 34 34Z" fill="currentColor" opacity="0.85"/>
+        </svg>
+      </div>
+
+      <div class="reveal d1">
+        <span class="sec-tag">Join the Oasis</span>
+        <h2 style="font-family:var(--serif);color:var(--moss-deep);font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.15;margin-bottom:10px;">加入綠洲計畫</h2>
+        <p style="color:var(--ink-soft);margin-bottom:26px;">留下你的承諾，我們將以你的名義種下第一株樹苗，並寄送它的生長座標給你。</p>
+
+        <form class="pl-form" id="pledgeForm" novalidate>
+          <div class="pl-field">
+            <label for="plName">你的名字</label>
+            <input type="text" id="plName" placeholder="例：知禾" />
+            <span class="msg" data-for="plName"></span>
+          </div>
+          <div class="pl-field">
+            <label for="plEmail">電子信箱</label>
+            <input type="email" id="plEmail" placeholder="you@example.com" />
+            <span class="msg" data-for="plEmail"></span>
+          </div>
+          <div class="pl-field">
+            <label for="plTrees">想認養的樹苗數量</label>
+            <input type="number" id="plTrees" placeholder="1" min="1" />
+            <span class="msg" data-for="plTrees"></span>
+          </div>
+          <button type="submit" class="btn pl-submit">許下我的綠色承諾</button>
+        </form>
+
+        <div class="pl-success" id="plSuccess">
+          <b>謝謝你，地球收到了 🌱</b>
+          <span id="plSuccessMsg"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <svg class="blob b2" style="inset-block-end:-200px;inset-inline-end:-160px;inset-inline-start:auto;width:480px;" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+    <path fill="#8a9577" d="M44.6-62.5C58.5-53.6 70.4-41.8 75-27.4 79.6-13 76.9 4 70.2 18.9 63.4 33.8 52.6 46.6 39 56.5 25.5 66.4 9.1 73.4-6.8 73.9-22.7 74.4-38.1 68.4-50.3 58-62.5 47.5-71.5 32.6-74.7 16.7-77.9.7-75.2-16.3-67.9-30.7-60.6-45.1-48.6-56.9-34.5-64.6-20.4-72.3-4.3-75.9 9.8-72.6 23.9-69.3 30.7-71.4 44.6-62.5Z" transform="translate(100 100)"/>
+  </svg>
+  <div class="wrap">
+    <div class="f-top">
+      <div>
+        <a class="brand" href="#top">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M12 21C6 21 3 16 3 11c5 0 9 3 9 9 0-7 4-10 9-10 0 5-3 11-9 11Z" fill="#b7c0a3"/>
+            <path d="M12 21V9" stroke="#d9a878" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          霧森原野
+        </a>
+        <p class="f-about">海拔八百公尺的有機保養品牌。讓肌膚與土地，一起慢慢變好。</p>
+      </div>
+      <div class="f-cols">
+        <div class="f-col">
+          <h4>探索</h4>
+          <a href="#products">全系列產品</a>
+          <a href="#quiz">找出我的配方</a>
+          <a href="#pledge">綠洲計畫</a>
+        </div>
+        <div class="f-col">
+          <h4>關於</h4>
+          <a href="#story">配方理念</a>
+          <a href="#impact">永續足跡</a>
+          <a href="#top">合作小農</a>
+        </div>
+        <div class="f-col">
+          <h4>聯繫</h4>
+          <a href="#pledge">電子報訂閱</a>
+          <a href="#top">Instagram</a>
+          <a href="#top">門市據點</a>
+        </div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 霧森原野 Mossfield · 一個虛構的永續保養品牌</span>
+      <span>網站設計與開發：<a href="https://elife-ai.com" target="_blank" rel="noopener">e-life-ai</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== BADGE ===== -->
+<a class="elife-badge" href="https://elife-ai.com" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 21C6 21 3 16 3 11c5 0 9 3 9 9 0-7 4-10 9-10 0 5-3 11-9 11Z" fill="currentColor"/></svg>
+  elife-ai.com
+</a>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ===== NAV scroll state ===== */
+  const nav = document.getElementById("nav");
+  const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 40);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* ===== PRODUCT DATA ===== */
+  const products = [
+    { name: "晨霧潔顏露", price: "NT$ 680", body: "#8a9577", motif: "#7d9b6a", key: "fresh",
+      desc: "以白茶與燕麥萃取調和，溫和帶走一夜代謝，留下水潤不緊繃的清新。",
+      tags: ["白茶萃取", "胺基酸潔淨", "弱酸親膚"] },
+    { name: "苔蘚舒緩水", price: "NT$ 820", body: "#b7c0a3", motif: "#586247", key: "calm",
+      desc: "高山苔蘚與洋甘菊精露，為泛紅敏感的肌膚撐起一層溫柔的綠蔭。",
+      tags: ["苔蘚多醣", "洋甘菊", "無酒精"] },
+    { name: "森林夜修護油", price: "NT$ 1,180", body: "#586247", motif: "#d9a878", key: "rich",
+      desc: "冷壓沙棘與雪松籽油，在睡眠時深層滋養，喚醒乾燥肌的飽滿光澤。",
+      tags: ["冷壓沙棘", "雪松籽油", "夜間修護"] },
+    { name: "陶土淨化面膜", price: "NT$ 760", body: "#c08457", motif: "#3b4330", key: "fresh",
+      desc: "火山陶土結合綠藻，溫和吸附多餘油脂，敷出像剛走出森林的透亮。",
+      tags: ["火山陶土", "綠藻", "毛孔淨化"] },
+    { name: "鼠尾草身體乳", price: "NT$ 940", body: "#7d9b6a", motif: "#e7dcc6", key: "rich",
+      desc: "鼠尾草與乳油木果，從頸肩到足踝，把整片草原的柔軟披在身上。",
+      tags: ["鼠尾草", "乳油木果", "長效保濕"] },
+    { name: "雲霧香氛精露", price: "NT$ 580", body: "#3b4330", motif: "#b7c0a3", key: "calm",
+      desc: "雪松、岩蘭草與一絲薄霧，輕輕一噴，把雲霧森林帶到你的書桌前。",
+      tags: ["天然精油", "空間香氛", "可隨身"] },
+  ];
+
+  /* ===== build thumbs + selector ===== */
+  const thumbsEl = document.getElementById("thumbs");
+  const selBody = document.getElementById("selBody");
+  const selMotif = document.getElementById("selMotif");
+  const selBottle = document.getElementById("selBottle");
+  const selBlobPath = document.querySelector("#selBlob path");
+  const blobShades = ["#b7c0a3", "#d9a878", "#8a9577", "#e7dcc6", "#c8d0b5", "#a9b694"];
+
+  function thumbSVG(p) {
+    return `<svg viewBox="0 0 120 200" fill="none"><path d="M30 56c0-10 8-16 30-16s30 6 30 16v118c0 12-8 20-30 20s-30-8-30-20V56Z" fill="${p.body}"/><rect x="44" y="6" width="32" height="20" rx="6" fill="#3b4330"/></svg>`;
+  }
+
+  function selectProduct(i) {
+    const p = products[i];
+    document.getElementById("pName").textContent = p.name;
+    document.getElementById("pPrice").textContent = p.price;
+    document.getElementById("pDesc").textContent = p.desc;
+    document.getElementById("pTags").innerHTML = p.tags.map(t => `<span>${t}</span>`).join("");
+    selBody.setAttribute("fill", p.body);
+    selMotif.setAttribute("fill", p.motif);
+    selBlobPath.setAttribute("fill", blobShades[i % blobShades.length]);
+    selBottle.classList.remove("swap");
+    void selBottle.offsetWidth; // reflow to restart animation
+    selBottle.classList.add("swap");
+    document.querySelectorAll(".thumb").forEach((t, ti) => t.classList.toggle("active", ti === i));
+  }
+
+  products.forEach((p, i) => {
+    const b = document.createElement("button");
+    b.className = "thumb" + (i === 0 ? " active" : "");
+    b.setAttribute("aria-label", p.name);
+    b.innerHTML = thumbSVG(p);
+    b.addEventListener("click", () => selectProduct(i));
+    thumbsEl.appendChild(b);
+  });
+  selectProduct(0);
+
+  /* ===== ACCORDION ===== */
+  const accData = [
+    { t: "高山有機白茶 · 抗氧守護", a: "採自合作茶園海拔一千兩百公尺的明前嫩芽，富含茶多酚，為肌膚對抗日常的氧化壓力。手採、日曬、零農藥。" },
+    { t: "雲霧苔蘚多醣 · 鎖水屏障", a: "從終年潮濕的森林石壁取得，每年僅取三成、留七成讓它自然再生，溫和地為敏弱肌築起保濕屏障。" },
+    { t: "冷壓沙棘油 · 夜間修護", a: "低溫冷壓保留完整 Omega-7 與類胡蘿蔔素，於夜間滲透滋養，喚醒乾燥肌的飽滿與光澤。" },
+    { t: "火山陶土 · 溫和淨化", a: "來自島嶼東岸的天然礦泥，富含礦物質，能溫和吸附多餘油脂與髒污，不剝奪肌膚原有的水分。" },
+    { t: "可回填玻璃瓶 · 零塑承諾", a: "所有瓶身皆為可回收玻璃，門市與宅配皆提供回填服務。每回填一次，就少製造一個新瓶身。" },
+  ];
+  const accEl = document.getElementById("accordion");
+  const leafIco = `<svg class="leaf-ico" viewBox="0 0 24 24" fill="none"><path d="M5 19C5 12 11 6 19 5c1 8-5 14-14 14Z" fill="currentColor"/><path d="M5 19C8 15 12 11 16 9" stroke="#3b4330" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+  accData.forEach((d, i) => {
+    const item = document.createElement("div");
+    item.className = "item" + (i === 0 ? " open" : "");
+    item.innerHTML = `<button class="q">${leafIco}<span>${d.t}</span><span class="plus"></span></button><div class="a"><p>${d.a}</p></div>`;
+    item.querySelector(".q").addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
+      accEl.querySelectorAll(".item").forEach(it => it.classList.remove("open"));
+      if (!isOpen) item.classList.add("open");
+    });
+    accEl.appendChild(item);
+  });
+
+  /* ===== COUNTERS (animate on reveal) ===== */
+  function animateCounter(el) {
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix || "";
+    const dur = 1600;
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(target * eased);
+      el.textContent = val.toLocaleString("en-US") + suffix;
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ===== SCROLL REVEAL + counter trigger ===== */
+  const counted = new WeakSet();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      e.target.querySelectorAll(".num").forEach(n => {
+        if (!counted.has(n)) { counted.add(n); animateCounter(n); }
+      });
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  /* Safety net: ensure no .reveal element stays permanently hidden if the user
+     never scrolls or the IntersectionObserver never fires (e.g. static/headless
+     snapshots, printing). Elements scrolled into view earlier still animate via
+     the observer; anything still hidden after this delay is forced visible. */
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.querySelectorAll(".reveal:not(.in)").forEach(el => {
+        el.classList.add("in");
+        el.querySelectorAll(".num").forEach(n => {
+          if (!counted.has(n)) { counted.add(n); animateCounter(n); }
+        });
+      });
+    }, 1400);
+  });
+
+  /* ===== QUIZ ===== */
+  const quizResults = {
+    fresh: { name: "晨霧潔顏露", body: "#8a9577", desc: "你嚮往清爽純粹。這支以白茶與燕麥調和的潔顏露，是你每個早晨最輕盈的開始。" },
+    calm: { name: "苔蘚舒緩水", body: "#b7c0a3", desc: "你需要溫柔。高山苔蘚與洋甘菊的綠蔭，會穩穩地接住你敏感的每一刻。" },
+    rich: { name: "森林夜修護油", body: "#586247", desc: "你渴望深層滋養。冷壓沙棘與雪松籽油，在夜裡把森林的養分慢慢還給肌膚。" },
+  };
+  const tally = { fresh: 0, calm: 0, rich: 0 };
+  let step = 0;
+  const steps = document.querySelectorAll(".quiz-step");
+  const bar = document.getElementById("quizBar");
+  const resultBox = document.getElementById("quizResult");
+
+  function showStep(n) {
+    steps.forEach(s => s.classList.remove("active"));
+    if (n < steps.length) {
+      steps[n].classList.add("active");
+      bar.style.width = ((n + 1) / steps.length * 100) + "%";
+    }
+  }
+  function showResult() {
+    const win = Object.keys(tally).reduce((a, b) => tally[a] >= tally[b] ? a : b);
+    const r = quizResults[win];
+    document.getElementById("resName").textContent = r.name;
+    document.getElementById("resDesc").textContent = r.desc;
+    document.getElementById("resBody").setAttribute("fill", r.body);
+    bar.style.width = "100%";
+    resultBox.classList.add("show");
+  }
+  document.querySelectorAll(".quiz-opt").forEach(opt => {
+    opt.addEventListener("click", () => {
+      tally[opt.dataset.v]++;
+      step++;
+      if (step < steps.length) showStep(step);
+      else showResult();
+    });
+  });
+  document.getElementById("quizRestart").addEventListener("click", () => {
+    tally.fresh = tally.calm = tally.rich = 0;
+    step = 0;
+    resultBox.classList.remove("show");
+    showStep(0);
+  });
+
+  /* ===== PLEDGE FORM VALIDATION ===== */
+  const form = document.getElementById("pledgeForm");
+  const success = document.getElementById("plSuccess");
+  const setErr = (id, m) => {
+    const inp = document.getElementById(id);
+    const msg = document.querySelector(`.msg[data-for="${id}"]`);
+    inp.classList.toggle("err", !!m);
+    msg.textContent = m || "";
+    return !m;
+  };
+  form.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const name = document.getElementById("plName").value.trim();
+    const email = document.getElementById("plEmail").value.trim();
+    const trees = document.getElementById("plTrees").value.trim();
+    let ok = true;
+    ok = setErr("plName", name ? "" : "請留下你的名字") && ok;
+    ok = setErr("plEmail", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "" : "請輸入正確的電子信箱") && ok;
+    const n = parseInt(trees, 10);
+    ok = setErr("plTrees", (n >= 1) ? "" : "至少認養一株樹苗") && ok;
+    if (!ok) { success.classList.remove("show"); return; }
+    document.getElementById("plSuccessMsg").textContent =
+      `${name}，我們將以你的名義種下 ${n} 株樹苗，生長座標會寄到 ${email}。`;
+    success.classList.add("show");
+    form.reset();
+  });
+})();
+</script>
+</body>
+</html>

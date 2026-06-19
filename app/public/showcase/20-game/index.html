@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>灰燼王朝 ASHFALL DYNASTY — 開放世界動作 RPG</title>
+<meta name="description" content="《灰燼王朝 Ashfall Dynasty》是一款黑暗史詩奇幻開放世界動作 RPG。在餘燼焚盡的破碎大陸上，喚醒沉睡的灰王血脈，集結餘黨對抗虛蝕之神。本頁為設計範例展示頁。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   ASHFALL DYNASTY 灰燼王朝 — Game / entertainment landing (#20)
+   Aesthetic: dark epic-fantasy AAA promo. Obsidian black ground,
+   ember-orange + molten-gold glow, arcane-cyan secondary accent.
+   Cinzel (ornate display serif) for epic titles, Rajdhani (wide
+   sci-fi/HUD face) for UI/labels/stats, Noto Sans TC for body.
+   Canvas ember/particle field, layered atmospheric gradient
+   scenes, glowing HUD-like UI, heavy cinematic depth. All imagery
+   is inline SVG / CSS / canvas. No images, no backend.
+   ============================================================ */
+
+:root{
+  --void:#08060a;          /* deepest black-plum ground */
+  --void-2:#0e0b11;        /* panel base */
+  --void-3:#15111a;        /* raised panel */
+  --char:#1d1822;          /* card */
+  --ash:#2a2330;           /* hairline-ish */
+  --smoke:#b9a7c4;         /* muted lavender-grey text */
+  --smoke-dim:#7d7088;     /* fainter */
+  --bone:#efe6e0;          /* near-white text */
+  --ember:#ff5a1f;         /* molten ember */
+  --ember-2:#ff8a3d;       /* lighter ember */
+  --gold:#ffc24b;          /* molten gold */
+  --gold-deep:#c8902a;
+  --arcane:#5ee0ff;        /* arcane cyan secondary */
+  --arcane-deep:#2aa8d8;
+  --blood:#c2293a;         /* danger / blood */
+  --line:rgba(255,194,75,.16);
+  --line-soft:rgba(239,230,224,.08);
+  --line-strong:rgba(255,90,31,.4);
+  --glow-ember:0 0 40px rgba(255,90,31,.45);
+  --glow-gold:0 0 30px rgba(255,194,75,.4);
+  --glow-arcane:0 0 34px rgba(94,224,255,.4);
+  --maxw:1320px;
+  --display:"Cinzel",Georgia,serif;
+  --ui:"Rajdhani","Noto Sans TC",system-ui,sans-serif;
+  --tc:"Noto Sans TC",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-2:cubic-bezier(.65,.05,.36,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--void);
+  color:var(--bone);
+  font-family:var(--tc);
+  font-weight:400;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--ember);color:var(--void)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+
+/* ---- shared atoms ---------------------------------------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+.eyebrow{
+  font-family:var(--ui);font-weight:600;font-size:13px;letter-spacing:.42em;
+  text-transform:uppercase;color:var(--ember-2);display:inline-flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:"";width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--ember))}
+.sec-title{
+  font-family:var(--display);font-weight:800;line-height:1.04;letter-spacing:.01em;
+  font-size:clamp(34px,5vw,62px);margin:18px 0 0;
+}
+.sec-title em{font-style:normal;color:var(--gold);text-shadow:var(--glow-gold)}
+.lede{color:var(--smoke);font-size:17px;max-width:62ch;margin-top:18px;line-height:1.85}
+.section{padding:clamp(90px,12vw,160px) 0;position:relative}
+.tag{
+  font-family:var(--ui);font-weight:600;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--line);padding:5px 12px;border-radius:2px;
+  background:rgba(255,194,75,.05);
+}
+
+/* angled HUD corner frame */
+.hud{position:relative}
+.hud::before,.hud::after{
+  content:"";position:absolute;width:18px;height:18px;border:1px solid var(--line-strong);pointer-events:none;
+}
+.hud::before{top:0;left:0;border-right:none;border-bottom:none}
+.hud::after{bottom:0;right:0;border-left:none;border-top:none}
+
+.btn{
+  font-family:var(--ui);font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
+  padding:16px 30px;display:inline-flex;align-items:center;gap:12px;position:relative;
+  transition:.4s var(--ease);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--ember),var(--ember-2));color:var(--void);
+  box-shadow:var(--glow-ember);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 56px rgba(255,90,31,.7)}
+.btn-ghost{border:1px solid var(--line-strong);color:var(--bone);background:rgba(255,90,31,.04)}
+.btn-ghost:hover{border-color:var(--ember);color:var(--gold);background:rgba(255,90,31,.1)}
+
+/* ============================================================ NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:60;padding:18px 0;
+  transition:.45s var(--ease);border-bottom:1px solid transparent;
+}
+.nav.scrolled{background:rgba(8,6,10,.82);backdrop-filter:blur(14px);border-bottom-color:var(--line-soft);padding:12px 0}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-mark{width:38px;height:38px;flex:none;filter:drop-shadow(0 0 10px rgba(255,90,31,.55))}
+.brand-name{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.12em;line-height:1;white-space:nowrap}
+.brand-name b{color:var(--gold)}
+.brand-sub{font-family:var(--ui);font-size:10px;letter-spacing:.4em;color:var(--smoke-dim);text-transform:uppercase}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{
+  font-family:var(--ui);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--smoke);transition:.3s;position:relative;padding:4px 0;
+}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--ember);transition:.3s var(--ease)}
+.nav-links a:hover{color:var(--bone)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:10px 20px;font-size:13px}
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:8px}
+.nav-burger span{width:24px;height:2px;background:var(--bone);transition:.3s}
+
+/* ============================================================ HERO */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+#ember-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
+.hero-scene{position:absolute;inset:0;z-index:0}
+.hero-veil{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 50% 120%,rgba(255,90,31,.22),transparent 55%),
+    radial-gradient(80% 60% at 50% -10%,rgba(94,224,255,.08),transparent 60%),
+    linear-gradient(180deg,rgba(8,6,10,.65) 0%,rgba(8,6,10,.25) 40%,rgba(8,6,10,.9) 100%);
+}
+.hero-in{position:relative;z-index:5;width:100%;padding-top:90px}
+.hero-eyebrow{margin-bottom:26px}
+.hero-title{
+  font-family:var(--display);font-weight:900;line-height:.92;letter-spacing:.02em;
+  font-size:clamp(58px,12.5vw,176px);text-transform:uppercase;
+  background:linear-gradient(180deg,#fff7ee 0%,var(--gold) 45%,var(--ember) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 40px rgba(255,90,31,.4));
+  position:relative;
+}
+.hero-title .ash{
+  display:block;font-size:.42em;letter-spacing:.5em;color:var(--bone);
+  -webkit-text-fill-color:var(--bone);font-weight:600;margin-top:10px;filter:none;
+  font-family:var(--ui);text-transform:uppercase;
+}
+.hero-cn{font-family:var(--tc);font-weight:900;font-size:clamp(20px,3vw,34px);letter-spacing:.3em;color:var(--bone);margin-top:6px}
+.hero-lede{color:var(--smoke);font-size:clamp(16px,1.6vw,19px);max-width:54ch;margin:30px 0 38px;line-height:1.9}
+.hero-actions{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.hero-meta{display:flex;gap:30px;margin-top:48px;flex-wrap:wrap}
+.hero-meta-item{display:flex;flex-direction:column;gap:4px}
+.hero-meta-item b{font-family:var(--ui);font-weight:700;font-size:14px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.hero-meta-item span{font-family:var(--ui);font-size:12px;letter-spacing:.18em;color:var(--smoke-dim);text-transform:uppercase}
+.scroll-cue{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:6;
+  font-family:var(--ui);font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--smoke-dim);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.scroll-cue i{width:1px;height:40px;background:linear-gradient(180deg,var(--ember),transparent);animation:cue 2s var(--ease) infinite}
+@keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.play-btn{
+  width:62px;height:62px;border-radius:50%;border:1px solid var(--line-strong);
+  display:grid;place-items:center;position:relative;flex:none;background:rgba(8,6,10,.5);
+  transition:.4s var(--ease);
+}
+.play-btn::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--ember);opacity:.5;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.5);opacity:0}}
+.play-btn svg{margin-left:3px}
+.play-row{display:flex;align-items:center;gap:14px}
+.play-row:hover .play-btn{border-color:var(--ember);box-shadow:var(--glow-ember)}
+.play-label{font-family:var(--ui);font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:14px;color:var(--smoke)}
+
+/* ============================================================ MARQUEE */
+.marquee{
+  border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+  background:rgba(14,11,17,.7);overflow:hidden;padding:16px 0;position:relative;z-index:3;
+}
+.marquee-track{display:flex;gap:40px;white-space:nowrap;animation:scroll 28s linear infinite;width:max-content}
+.marquee span{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:.16em;color:var(--smoke-dim);text-transform:uppercase;display:inline-flex;align-items:center;gap:40px}
+.marquee span::after{content:"✦";color:var(--ember)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============================================================ LORE / world intro */
+.lore{position:relative}
+.lore-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}
+.lore-art{position:relative}
+.lore-svg{width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:var(--void-2)}
+.lore-quote{font-family:var(--display);font-style:italic;font-size:clamp(20px,2.4vw,30px);line-height:1.5;color:var(--bone);margin:26px 0}
+.lore-quote em{color:var(--ember-2);font-style:italic}
+.lore-cite{font-family:var(--ui);font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--smoke-dim)}
+
+/* ============================================================ CHARACTERS */
+.char{background:radial-gradient(100% 80% at 50% 0%,rgba(255,90,31,.06),transparent 60%)}
+.char-layout{display:grid;grid-template-columns:300px 1fr;gap:50px;margin-top:60px;align-items:stretch}
+.char-list{display:flex;flex-direction:column;gap:12px}
+.char-tab{
+  display:flex;align-items:center;gap:16px;padding:14px 16px;border:1px solid var(--line-soft);
+  border-radius:3px;background:var(--void-2);transition:.35s var(--ease);text-align:left;width:100%;position:relative;overflow:hidden;
+}
+.char-tab::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ember);transform:scaleY(0);transition:.35s var(--ease)}
+.char-tab:hover{border-color:var(--line);transform:translateX(4px)}
+.char-tab.active{background:var(--void-3);border-color:var(--line-strong)}
+.char-tab.active::before{transform:scaleY(1)}
+.char-avatar{width:48px;height:48px;flex:none;border-radius:3px;overflow:hidden;border:1px solid var(--line-soft)}
+.char-tab-meta b{display:block;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:.04em}
+.char-tab-meta span{font-family:var(--ui);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke-dim)}
+.char-tab.active .char-tab-meta b{color:var(--gold)}
+
+.char-panel{
+  position:relative;border:1px solid var(--line);border-radius:4px;overflow:hidden;
+  background:linear-gradient(160deg,var(--void-3),var(--void-2));min-height:480px;
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.char-portrait{position:relative;overflow:hidden;background:var(--void)}
+.char-portrait svg{position:absolute;inset:0;width:100%;height:100%}
+.char-portrait-fade{position:absolute;inset:0;background:linear-gradient(90deg,transparent 40%,var(--void-3));z-index:2}
+.char-info{padding:clamp(28px,3vw,44px);display:flex;flex-direction:column;justify-content:center;position:relative;z-index:3}
+.char-role{font-family:var(--ui);font-weight:600;font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:var(--arcane)}
+.char-name{font-family:var(--display);font-weight:900;font-size:clamp(34px,4vw,52px);line-height:1;margin:10px 0 4px}
+.char-epithet{font-family:var(--tc);font-size:15px;color:var(--smoke);letter-spacing:.1em}
+.char-desc{color:var(--smoke);font-size:15px;line-height:1.85;margin:20px 0 26px}
+.char-stats{display:flex;flex-direction:column;gap:14px}
+.stat{display:grid;grid-template-columns:90px 1fr 42px;gap:14px;align-items:center}
+.stat-label{font-family:var(--ui);font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--smoke)}
+.stat-track{height:6px;background:var(--ash);border-radius:99px;overflow:hidden;position:relative}
+.stat-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--ember),var(--gold));transition:width 1s var(--ease);box-shadow:0 0 12px rgba(255,90,31,.5)}
+.stat-val{font-family:var(--ui);font-weight:700;font-size:14px;color:var(--gold);text-align:right}
+.char-abilities{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.ability{
+  font-family:var(--ui);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);padding:7px 13px;border-radius:2px;color:var(--gold);background:rgba(255,194,75,.05);
+  display:flex;align-items:center;gap:7px;
+}
+.ability i{width:5px;height:5px;border-radius:50%;background:var(--arcane);box-shadow:var(--glow-arcane)}
+
+/* ============================================================ WORLD / features tabs */
+.world-tabs{display:flex;gap:0;margin-top:54px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap}
+.world-tab{
+  font-family:var(--ui);font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+  padding:16px 26px;color:var(--smoke-dim);position:relative;transition:.3s;
+}
+.world-tab::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:var(--ember);transition:.4s var(--ease)}
+.world-tab:hover{color:var(--smoke)}
+.world-tab.active{color:var(--gold)}
+.world-tab.active::after{width:100%}
+.world-panels{margin-top:46px}
+.world-panel{display:none;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.world-panel.active{display:grid;animation:fadein .6s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.world-panel-art{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--void-2)}
+.world-panel-art svg{width:100%;height:auto;display:block}
+.world-h{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.4vw,42px);line-height:1.08}
+.world-h em{color:var(--gold);font-style:normal}
+.world-p{color:var(--smoke);font-size:16px;line-height:1.9;margin:18px 0 22px}
+.world-list{display:flex;flex-direction:column;gap:12px}
+.world-list li{display:flex;gap:13px;align-items:flex-start;font-size:15px;color:var(--bone);list-style:none}
+.world-list li b{font-family:var(--ui);color:var(--ember);font-size:14px;letter-spacing:.1em}
+
+/* ============================================================ EDITIONS */
+.editions{background:radial-gradient(120% 60% at 50% 100%,rgba(94,224,255,.05),transparent 60%)}
+.ed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
+.ed-card{
+  border:1px solid var(--line-soft);border-radius:5px;background:linear-gradient(180deg,var(--void-3),var(--void-2));
+  padding:34px 30px;position:relative;transition:.4s var(--ease);display:flex;flex-direction:column;overflow:hidden;
+}
+.ed-card::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 50% at 50% 0%,rgba(255,90,31,.1),transparent 60%);opacity:0;transition:.4s}
+.ed-card:hover{transform:translateY(-8px);border-color:var(--line)}
+.ed-card:hover::before{opacity:1}
+.ed-card.featured{border-color:var(--line-strong);box-shadow:0 24px 70px rgba(0,0,0,.5),inset 0 0 40px rgba(255,90,31,.05)}
+.ed-card.selected{border-color:var(--gold);box-shadow:var(--glow-gold)}
+.ed-badge{
+  position:absolute;top:0;right:24px;font-family:var(--ui);font-weight:700;font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;background:linear-gradient(135deg,var(--ember),var(--gold));color:var(--void);
+  padding:5px 14px;border-radius:0 0 3px 3px;
+}
+.ed-name{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.04em}
+.ed-tagline{font-family:var(--ui);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--smoke-dim);margin-top:4px}
+.ed-price{font-family:var(--display);font-weight:700;font-size:42px;color:var(--gold);margin:24px 0 4px;text-shadow:var(--glow-gold)}
+.ed-price small{font-family:var(--ui);font-size:15px;color:var(--smoke-dim);letter-spacing:.1em;font-weight:500}
+.ed-feats{list-style:none;display:flex;flex-direction:column;gap:13px;margin:24px 0 30px;flex:1}
+.ed-feats li{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--smoke);line-height:1.5}
+.ed-feats li svg{flex:none;margin-top:3px}
+.ed-feats li.off{opacity:.35}
+.ed-feats li.off svg path{stroke:var(--smoke-dim)}
+.ed-select{
+  font-family:var(--ui);font-weight:700;font-size:14px;letter-spacing:.16em;text-transform:uppercase;
+  padding:14px;border:1px solid var(--line-strong);border-radius:3px;color:var(--bone);transition:.35s var(--ease);
+  width:100%;text-align:center;background:rgba(255,90,31,.05);
+}
+.ed-select:hover{border-color:var(--ember);color:var(--gold);background:rgba(255,90,31,.12)}
+.ed-card.selected .ed-select{background:linear-gradient(135deg,var(--ember),var(--gold));color:var(--void);border-color:transparent}
+.ed-preorder-bar{
+  margin-top:40px;border:1px solid var(--line);border-radius:5px;background:var(--void-3);
+  padding:24px 30px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.ed-summary{font-family:var(--ui);font-size:15px;letter-spacing:.1em;color:var(--smoke)}
+.ed-summary b{color:var(--gold);font-weight:700}
+.ed-total{font-family:var(--display);font-weight:700;font-size:28px;color:var(--bone)}
+
+/* ============================================================ COUNTDOWN */
+.countdown{
+  position:relative;text-align:center;
+  background:linear-gradient(180deg,var(--void-2),var(--void));
+  border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+}
+.cd-grid{display:flex;gap:clamp(14px,3vw,42px);justify-content:center;margin-top:48px;flex-wrap:wrap}
+.cd-unit{position:relative;min-width:120px}
+.cd-num{
+  font-family:var(--display);font-weight:900;font-size:clamp(46px,7vw,86px);line-height:1;
+  background:linear-gradient(180deg,#fff7ee,var(--gold) 60%,var(--ember));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 24px rgba(255,90,31,.3));font-variant-numeric:tabular-nums;
+}
+.cd-label{font-family:var(--ui);font-weight:600;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--smoke-dim);margin-top:10px}
+.cd-sep{font-family:var(--display);font-weight:700;font-size:clamp(40px,6vw,72px);color:var(--ash);align-self:flex-start;margin-top:6px}
+
+/* ============================================================ NEWS */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.news-card{
+  border:1px solid var(--line-soft);border-radius:5px;overflow:hidden;background:var(--void-2);
+  transition:.4s var(--ease);display:flex;flex-direction:column;
+}
+.news-card:hover{transform:translateY(-6px);border-color:var(--line)}
+.news-img{aspect-ratio:16/10;overflow:hidden;position:relative}
+.news-img svg{width:100%;height:100%}
+.news-cat{
+  position:absolute;top:12px;left:12px;font-family:var(--ui);font-weight:700;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;background:rgba(8,6,10,.8);color:var(--gold);padding:5px 11px;border-radius:2px;border:1px solid var(--line);backdrop-filter:blur(4px);
+}
+.news-body{padding:22px 24px 26px;display:flex;flex-direction:column;gap:10px;flex:1}
+.news-date{font-family:var(--ui);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--smoke-dim)}
+.news-title{font-family:var(--display);font-weight:700;font-size:20px;line-height:1.3}
+.news-card:hover .news-title{color:var(--gold)}
+.news-ex{color:var(--smoke);font-size:14px;line-height:1.7;flex:1}
+.news-more{font-family:var(--ui);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);display:inline-flex;gap:8px;align-items:center}
+
+/* ============================================================ FAQ */
+.faq-list{margin-top:50px;border-top:1px solid var(--line-soft);max-width:900px}
+.faq-item{border-bottom:1px solid var(--line-soft)}
+.faq-q{
+  width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:26px 4px;font-family:var(--display);font-weight:600;font-size:clamp(17px,2vw,22px);transition:.3s;
+}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{flex:none;width:26px;height:26px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;transition:.4s var(--ease);position:relative}
+.faq-icon::before,.faq-icon::after{content:"";position:absolute;background:var(--ember);transition:.4s var(--ease)}
+.faq-icon::before{width:12px;height:2px}
+.faq-icon::after{width:2px;height:12px}
+.faq-item.open .faq-icon{transform:rotate(135deg);border-color:var(--ember)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .4s,padding .4s}
+.faq-a-in{color:var(--smoke);font-size:15px;line-height:1.9;padding:0 4px 0}
+.faq-item.open .faq-a{max-height:300px}
+.faq-item.open .faq-a-in{padding:0 4px 26px}
+
+/* ============================================================ NEWSLETTER / CTA */
+.signup{position:relative;overflow:hidden;text-align:center}
+.signup-card{
+  max-width:760px;margin:0 auto;border:1px solid var(--line);border-radius:6px;
+  background:linear-gradient(160deg,var(--void-3),var(--void-2));padding:clamp(40px,5vw,68px);position:relative;
+}
+.signup-form{display:flex;gap:12px;max-width:520px;margin:32px auto 0;flex-wrap:wrap}
+.signup-input{
+  flex:1;min-width:220px;background:var(--void);border:1px solid var(--line-soft);border-radius:3px;
+  padding:16px 18px;color:var(--bone);font-size:15px;letter-spacing:.04em;transition:.3s;
+}
+.signup-input:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(255,90,31,.12)}
+.signup-input.err{border-color:var(--blood);box-shadow:0 0 0 3px rgba(194,41,58,.15)}
+.signup-msg{font-family:var(--ui);font-size:14px;letter-spacing:.06em;margin-top:16px;min-height:20px;transition:.3s}
+.signup-msg.ok{color:var(--arcane)}
+.signup-msg.bad{color:var(--blood)}
+.signup-note{font-family:var(--ui);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke-dim);margin-top:14px}
+
+/* ============================================================ FOOTER */
+.foot{border-top:1px solid var(--line-soft);background:var(--void-2);padding:64px 0 40px}
+.foot-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:40px;border-bottom:1px solid var(--line-soft)}
+.foot-col h5{font-family:var(--ui);font-weight:700;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.foot-col a{display:block;color:var(--smoke);font-size:14px;margin-bottom:10px;transition:.3s}
+.foot-col a:hover{color:var(--bone)}
+.foot-brand{max-width:300px}
+.foot-brand p{color:var(--smoke-dim);font-size:13px;line-height:1.8;margin-top:14px}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-top:28px;flex-wrap:wrap}
+.foot-rate{font-family:var(--ui);font-size:11px;letter-spacing:.14em;color:var(--smoke-dim);text-transform:uppercase}
+.brand-foot{
+  font-family:var(--ui);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--smoke-dim);
+  border:1px solid var(--line-soft);padding:8px 16px;border-radius:3px;background:rgba(255,194,75,.03);
+}
+.brand-foot b{color:var(--gold);font-weight:700}
+.brand-foot a{color:var(--ember)}
+
+/* ============================================================ MODAL */
+.modal{
+  position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:24px;
+  background:rgba(4,3,6,.86);backdrop-filter:blur(8px);
+}
+.modal.open{display:grid;animation:fadein .35s var(--ease)}
+.modal-box{
+  width:100%;max-width:920px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:6px;overflow:hidden;
+  position:relative;background:var(--void);box-shadow:0 40px 120px rgba(0,0,0,.7),var(--glow-ember);
+}
+.modal-scene{position:absolute;inset:0}
+.modal-scene svg{width:100%;height:100%}
+.modal-veil{position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 50%,transparent,rgba(8,6,10,.7))}
+.modal-play{position:absolute;inset:0;display:grid;place-items:center;z-index:3}
+.modal-play .play-btn{width:84px;height:84px}
+.modal-cap{position:absolute;bottom:22px;left:26px;z-index:3}
+.modal-cap b{font-family:var(--display);font-weight:700;font-size:22px;display:block}
+.modal-cap span{font-family:var(--ui);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke)}
+.modal-close{
+  position:fixed;top:24px;right:24px;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;
+  display:grid;place-items:center;color:var(--bone);transition:.3s;z-index:110;background:rgba(8,6,10,.7);backdrop-filter:blur(6px);
+}
+.modal-close:hover{border-color:var(--ember);color:var(--gold);transform:rotate(90deg)}
+
+/* ============================================================ reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+
+/* ============================================================ RESPONSIVE */
+@media (max-width:980px){
+  .nav-links{display:none}
+  .nav-burger{display:flex}
+  .lore-grid,.char-panel,.world-panel.active{grid-template-columns:1fr}
+  .char-layout{grid-template-columns:1fr}
+  .char-list{flex-direction:row;overflow-x:auto;padding-bottom:8px}
+  .char-tab{min-width:200px}
+  .char-portrait{min-height:300px}
+  .ed-grid,.news-grid{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 18px}
+  .hero-meta{gap:20px}
+  .cd-sep{display:none}
+  .btn{width:100%;justify-content:center}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .play-row{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="灰燼王朝首頁">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none">
+        <path d="M24 3 L43 14 V34 L24 45 L5 34 V14 Z" stroke="url(#bg1)" stroke-width="1.4"/>
+        <path d="M24 11 L24 37 M16 20 L32 28 M32 20 L16 28" stroke="url(#bg1)" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="4.4" fill="#08060a" stroke="#ffc24b" stroke-width="1.4"/>
+        <defs><linearGradient id="bg1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#ff5a1f"/><stop offset="1" stop-color="#ffc24b"/></linearGradient></defs>
+      </svg>
+      <span>
+        <span class="brand-name">灰燼<b>王朝</b></span><br>
+        <span class="brand-sub">Ashfall Dynasty</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="#lore">世界觀</a>
+      <a href="#characters">角色</a>
+      <a href="#world">玩法</a>
+      <a href="#editions">預購</a>
+      <a href="#news">最新消息</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <button class="btn btn-primary nav-cta" onclick="document.getElementById('editions').scrollIntoView({behavior:'smooth'})">立即預購</button>
+    <button class="nav-burger" id="burger" aria-label="選單"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <div class="hero-scene" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#15111a"/><stop offset="0.5" stop-color="#241423"/><stop offset="1" stop-color="#3a160f"/>
+        </linearGradient>
+        <radialGradient id="sun" cx="50%" cy="78%" r="46%">
+          <stop offset="0" stop-color="#ffd27a"/><stop offset="0.35" stop-color="#ff7a2e"/><stop offset="0.7" stop-color="#c2293a" stop-opacity="0.5"/><stop offset="1" stop-color="#c2293a" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="mt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0f18"/><stop offset="1" stop-color="#0a0509"/></linearGradient>
+      </defs>
+      <rect width="1440" height="900" fill="url(#sky)"/>
+      <circle cx="720" cy="640" r="420" fill="url(#sun)"/>
+      <!-- distant spires -->
+      <g opacity="0.5" fill="#120c14">
+        <path d="M120 900 L160 420 L185 480 L200 380 L230 470 L255 900 Z"/>
+        <path d="M1180 900 L1220 440 L1245 500 L1262 400 L1290 480 L1320 900 Z"/>
+      </g>
+      <!-- mid ruined castle silhouette -->
+      <g fill="url(#mt)">
+        <path d="M-50 900 L-50 560 L120 560 L180 480 L260 540 L300 460 L360 540 L420 470 L470 560 L470 900 Z"/>
+        <path d="M980 900 L980 540 L1040 540 L1090 460 L1150 540 L1210 470 L1280 560 L1500 560 L1500 900 Z"/>
+        <rect x="600" y="430" width="240" height="470"/>
+        <path d="M600 430 L620 380 L640 430 M680 430 L700 360 L720 430 M760 430 L780 380 L800 430 M820 430 L840 380 L860 430" stroke="#0a0509" stroke-width="3"/>
+        <rect x="690" y="560" width="60" height="120" fill="#3a160f" opacity="0.6"/>
+      </g>
+      <!-- foreground crags -->
+      <path d="M0 900 L0 720 L160 760 L340 690 L520 760 L700 700 L900 770 L1120 700 L1320 760 L1440 720 L1440 900 Z" fill="#0a0509"/>
+      <!-- ash haze -->
+      <rect width="1440" height="900" fill="#ff5a1f" opacity="0.04"/>
+    </svg>
+  </div>
+  <canvas id="ember-canvas"></canvas>
+  <div class="hero-veil"></div>
+  <div class="wrap hero-in">
+    <span class="eyebrow hero-eyebrow">黑暗史詩 · 開放世界動作 RPG</span>
+    <h1 class="hero-title">
+      Ashfall
+      <span class="ash">Dynasty</span>
+    </h1>
+    <div class="hero-cn">灰　燼　王　朝</div>
+    <p class="hero-lede">餘燼焚盡的破碎大陸上，諸神已死、王朝傾頹。喚醒沉睡的灰王血脈，於灰燼之中重鑄你的傳奇——對抗吞噬萬物的虛蝕之神。</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="document.getElementById('editions').scrollIntoView({behavior:'smooth'})">立即預購 · NT$1,290 起</button>
+      <button class="play-row" id="openTrailer" aria-label="觀看預告">
+        <span class="play-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffc24b"><path d="M7 4v16l13-8z"/></svg>
+        </span>
+        <span class="play-label">觀看預告 · Watch Trailer</span>
+      </button>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><b>2026.09.18</b><span>全球同步發行</span></div>
+      <div class="hero-meta-item"><b>PC · PS5 · XSX</b><span>支援繁中語音</span></div>
+      <div class="hero-meta-item"><b>單人戰役</b><span>40+ 小時主線</span></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><i></i></div>
+</header>
+
+<!-- ===================== MARQUEE ===================== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>灰燼之中重生</span><span>Reforge The Dynasty</span><span>九大餘黨派系</span><span>無縫開放世界</span><span>灰王血脈覺醒</span>
+    <span>灰燼之中重生</span><span>Reforge The Dynasty</span><span>九大餘黨派系</span><span>無縫開放世界</span><span>灰王血脈覺醒</span>
+  </div>
+</div>
+
+<!-- ===================== LORE ===================== -->
+<section class="section lore" id="lore">
+  <div class="wrap">
+    <div class="lore-grid">
+      <div class="reveal hud lore-art">
+        <svg class="lore-svg" viewBox="0 0 640 480" aria-label="破碎大陸場景">
+          <defs>
+            <linearGradient id="lsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1024"/><stop offset="1" stop-color="#3a1810"/></linearGradient>
+            <radialGradient id="lglow" cx="50%" cy="62%" r="40%"><stop offset="0" stop-color="#ff8a3d" stop-opacity="0.7"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></radialGradient>
+            <linearGradient id="lrift" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c2293a"/></linearGradient>
+          </defs>
+          <rect width="640" height="480" fill="url(#lsky)"/>
+          <circle cx="320" cy="300" r="200" fill="url(#lglow)"/>
+          <!-- floating shattered islands -->
+          <g fill="#150c18" stroke="#3a160f" stroke-width="1">
+            <path d="M60 180 L150 150 L210 200 L160 250 L80 240 Z"/>
+            <path d="M430 130 L540 120 L590 175 L520 215 L440 195 Z"/>
+            <path d="M250 90 L330 80 L370 120 L300 140 Z"/>
+          </g>
+          <!-- ground rift -->
+          <path d="M0 480 L0 360 L200 380 L300 320 L420 380 L640 350 L640 480 Z" fill="#0a0509"/>
+          <path d="M280 480 L310 360 L330 360 L360 480 Z" fill="url(#lrift)" opacity="0.85"/>
+          <!-- lone figure -->
+          <g transform="translate(316 322)">
+            <path d="M0 0 L0 -34 M0 -26 L-8 -16 M0 -26 L8 -16 M0 0 L-7 18 M0 0 L7 18" stroke="#08060a" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="0" cy="-40" r="6" fill="#08060a"/>
+            <path d="M0 -34 L18 -52" stroke="#ffc24b" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <rect width="640" height="480" fill="#ff5a1f" opacity="0.03"/>
+        </svg>
+      </div>
+      <div>
+        <span class="eyebrow reveal">世界觀 · The World</span>
+        <h2 class="sec-title reveal d1">當諸神<em>化為灰燼</em></h2>
+        <p class="lore-quote reveal d2">「他們說王朝亡於虛蝕之神的降臨。<em>但真正的死亡，是無人記得我們曾經輝煌。</em>」</p>
+        <p class="lede reveal d2">千年前，灰王以血脈封印了吞噬一切的虛蝕之神。封印崩解的今日，大陸碎裂成漂浮的殘島，王都化為焦土。你，是最後一名繼承灰王餘燼的人——在九大餘黨派系的權力角力中，決定這片大陸是燃盡，還是重生。</p>
+        <p class="lore-cite reveal d3">— 摘自《灰王遺典 · 卷七》</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHARACTERS ===================== -->
+<section class="section char" id="characters">
+  <div class="wrap">
+    <span class="eyebrow reveal">英雄選擇 · Choose Your Champion</span>
+    <h2 class="sec-title reveal d1">餘燼<em>群像</em></h2>
+    <p class="lede reveal d2">每一名同行者都是一段被遺忘的史詩。選擇你的核心戰友，他們的血脈天賦將決定你的戰鬥風格。</p>
+
+    <div class="char-layout reveal d2">
+      <div class="char-list" id="charList" role="tablist"></div>
+      <div class="char-panel hud" id="charPanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WORLD / FEATURES ===================== -->
+<section class="section world" id="world">
+  <div class="wrap">
+    <span class="eyebrow reveal">核心玩法 · The Experience</span>
+    <h2 class="sec-title reveal d1">在灰燼中<em>書寫傳奇</em></h2>
+
+    <div class="world-tabs reveal d2" id="worldTabs"></div>
+    <div class="world-panels" id="worldPanels"></div>
+  </div>
+</section>
+
+<!-- ===================== EDITIONS ===================== -->
+<section class="section editions" id="editions">
+  <div class="wrap">
+    <span class="eyebrow reveal">立即預購 · Pre-Order Now</span>
+    <h2 class="sec-title reveal d1">選擇你的<em>傳承</em></h2>
+    <p class="lede reveal d2">即刻預購，解鎖「灰王覺醒」限定外觀組合，並獲得提前 72 小時搶先體驗。</p>
+
+    <div class="ed-grid reveal d2" id="edGrid"></div>
+
+    <div class="ed-preorder-bar reveal d3" id="preBar">
+      <div class="ed-summary">已選擇版本：<b id="preName">豪華版</b></div>
+      <div class="ed-total">NT$ <span id="preTotal">1,690</span></div>
+      <button class="btn btn-primary" id="preBtn">確認預購</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COUNTDOWN ===================== -->
+<section class="section countdown">
+  <div class="wrap">
+    <span class="eyebrow reveal" style="justify-content:center">距離發行 · Launching In</span>
+    <h2 class="sec-title reveal d1" style="text-align:center">灰燼<em>降臨</em></h2>
+    <div class="cd-grid reveal d2" id="countdown">
+      <div class="cd-unit"><div class="cd-num" id="cd-d">00</div><div class="cd-label">Days 天</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Hours 時</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Mins 分</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Secs 秒</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NEWS ===================== -->
+<section class="section news" id="news">
+  <div class="wrap">
+    <span class="eyebrow reveal">最新情報 · Latest Updates</span>
+    <h2 class="sec-title reveal d1">來自<em>前線</em>的消息</h2>
+    <div class="news-grid reveal d2" id="newsGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <span class="eyebrow reveal">常見問題 · FAQ</span>
+    <h2 class="sec-title reveal d1">啟程<em>之前</em></h2>
+    <div class="faq-list reveal d2" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ===================== NEWSLETTER ===================== -->
+<section class="section signup">
+  <div class="wrap">
+    <div class="signup-card hud reveal">
+      <span class="eyebrow" style="justify-content:center">加入餘黨 · Join The Remnant</span>
+      <h2 class="sec-title" style="text-align:center">領取<em>灰王徽記</em></h2>
+      <p class="lede" style="margin-left:auto;margin-right:auto;text-align:center">訂閱情報，立即獲得遊戲內限定「灰王徽記」頭像框，並搶先收到封閉測試資格通知。</p>
+      <form class="signup-form" id="signupForm" novalidate>
+        <input class="signup-input" id="emailInput" type="email" placeholder="輸入你的電子郵件 · your@email.com" aria-label="電子郵件" />
+        <button class="btn btn-primary" type="submit">領取徽記</button>
+      </form>
+      <div class="signup-msg" id="signupMsg" role="status"></div>
+      <p class="signup-note">我們僅寄送官方情報，絕不分享你的資料。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-col foot-brand">
+        <a class="brand" href="#top">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none">
+            <path d="M24 3 L43 14 V34 L24 45 L5 34 V14 Z" stroke="url(#bg2)" stroke-width="1.4"/>
+            <path d="M24 11 L24 37 M16 20 L32 28 M32 20 L16 28" stroke="url(#bg2)" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="24" cy="24" r="4.4" fill="#08060a" stroke="#ffc24b" stroke-width="1.4"/>
+            <defs><linearGradient id="bg2" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#ff5a1f"/><stop offset="1" stop-color="#ffc24b"/></linearGradient></defs>
+          </svg>
+          <span><span class="brand-name">灰燼<b>王朝</b></span><br><span class="brand-sub">Ashfall Dynasty</span></span>
+        </a>
+        <p>由 Cinderforge Studios 傾力打造的黑暗史詩奇幻開放世界 RPG。在灰燼之中，重鑄你的王朝。</p>
+      </div>
+      <div class="foot-col">
+        <h5>遊戲</h5>
+        <a href="#lore">世界觀</a><a href="#characters">角色</a><a href="#world">核心玩法</a><a href="#editions">版本與預購</a>
+      </div>
+      <div class="foot-col">
+        <h5>社群</h5>
+        <a href="#news">最新消息</a><a href="#faq">常見問題</a><a href="#">Discord 社群</a><a href="#">官方論壇</a>
+      </div>
+      <div class="foot-col">
+        <h5>支援平台</h5>
+        <a href="#">PC（Steam / Epic）</a><a href="#">PlayStation 5</a><a href="#">Xbox Series X|S</a><a href="#">媒體與商務合作</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="foot-rate">© 2026 Cinderforge Studios · 分級：限制級（18+）· 本頁為虛構遊戲之設計範例</span>
+      <span class="brand-foot">Template by <b>e-life-ai</b> · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">service.e-life-ai.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== TRAILER MODAL ===================== -->
+<div class="modal" id="trailerModal" role="dialog" aria-modal="true" aria-label="遊戲預告">
+  <button class="modal-close" id="modalClose" aria-label="關閉">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="modal-box">
+    <div class="modal-scene" aria-hidden="true">
+      <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="msky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1024"/><stop offset="1" stop-color="#4a1a10"/></linearGradient>
+          <radialGradient id="msun" cx="50%" cy="70%" r="50%"><stop offset="0" stop-color="#ffd27a"/><stop offset="0.4" stop-color="#ff7a2e"/><stop offset="1" stop-color="#ff7a2e" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="1280" height="720" fill="url(#msky)"/>
+        <circle cx="640" cy="520" r="360" fill="url(#msun)"/>
+        <path d="M0 720 L0 480 L200 440 L380 500 L560 430 L760 510 L960 440 L1160 500 L1280 460 L1280 720 Z" fill="#0a0509"/>
+        <g transform="translate(620 470)">
+          <path d="M0 0 L0 -50 M0 -38 L-12 -24 M0 -38 L12 -24 M0 0 L-10 28 M0 0 L10 28" stroke="#08060a" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="0" cy="-60" r="9" fill="#08060a"/>
+          <path d="M0 -50 L28 -78" stroke="#ffc24b" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="modal-veil"></div>
+    <div class="modal-play">
+      <span class="play-btn"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffc24b"><path d="M7 4v16l13-8z"/></svg></span>
+    </div>
+    <div class="modal-cap">
+      <b>官方首部預告片</b>
+      <span>Ashfall Dynasty — Official Reveal Trailer · 2:14</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(()=>{
+"use strict";
+
+/* ---------- NAV scroll state ---------- */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>40)},{passive:true});
+document.getElementById('burger').addEventListener('click',()=>{
+  document.querySelector('.nav-links').style.display=
+    getComputedStyle(document.querySelector('.nav-links')).display==='none'?'flex':'none';
+});
+
+/* ---------- EMBER CANVAS ---------- */
+const cv=document.getElementById('ember-canvas'),ctx=cv.getContext('2d');
+let W,H,DPR,embers=[];
+function size(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  W=cv.clientWidth;H=cv.clientHeight;
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+function mkEmber(){
+  return{x:Math.random()*W,y:H+Math.random()*60,r:Math.random()*2.2+.6,
+    vy:-(Math.random()*.6+.25),vx:(Math.random()-.5)*.5,
+    life:0,max:Math.random()*260+160,sway:Math.random()*Math.PI*2,
+    hue:Math.random()<.4?42:18};
+}
+function initEmbers(){embers=Array.from({length:Math.round(W/14)},mkEmber)}
+function tick(){
+  ctx.clearRect(0,0,W,H);
+  for(const e of embers){
+    e.life++;e.sway+=.02;
+    e.y+=e.vy;e.x+=e.vx+Math.sin(e.sway)*.4;
+    const a=Math.max(0,Math.sin((e.life/e.max)*Math.PI))*.9;
+    ctx.beginPath();
+    const g=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r*4);
+    g.addColorStop(0,`hsla(${e.hue},100%,62%,${a})`);
+    g.addColorStop(1,`hsla(${e.hue},100%,50%,0)`);
+    ctx.fillStyle=g;ctx.arc(e.x,e.y,e.r*4,0,7);ctx.fill();
+    if(e.life>=e.max||e.y<-20)Object.assign(e,mkEmber());
+  }
+  requestAnimationFrame(tick);
+}
+addEventListener('resize',()=>{size();initEmbers()});
+size();initEmbers();tick();
+
+/* ---------- TRAILER MODAL ---------- */
+const modal=document.getElementById('trailerModal');
+const openModal=()=>{modal.classList.add('open');document.body.style.overflow='hidden'};
+const closeModal=()=>{modal.classList.remove('open');document.body.style.overflow=''};
+document.getElementById('openTrailer').addEventListener('click',openModal);
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ---------- CHARACTERS ---------- */
+const charSvg=(a,b,c)=>`<svg viewBox="0 0 400 480" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cb${a}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${b}"/><stop offset="1" stop-color="#0a0509"/></linearGradient>
+    <radialGradient id="cg${a}" cx="50%" cy="42%" r="50%"><stop offset="0" stop-color="${c}" stop-opacity="0.65"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#cb${a})"/>
+  <circle cx="200" cy="200" r="170" fill="url(#cg${a})"/>
+  <g stroke="#08060a" stroke-width="7" stroke-linecap="round" fill="none">
+    <path d="M200 150 L200 320"/>
+    <path d="M200 180 L150 240 M200 180 L250 240"/>
+    <path d="M200 320 L165 430 M200 320 L235 430"/>
+  </g>
+  <circle cx="200" cy="120" r="30" fill="#08060a"/>
+  <path d="M200 150 L270 90" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="270" cy="90" r="9" fill="${c}"/>
+  <path d="M178 112 L188 118 M212 118 L222 112" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+</svg>`;
+
+const chars=[
+  {id:'ember',name:'灰燼之王 卡爾文','role':'灰王血脈 · 近戰主控',epithet:'最後的灰王繼承者',
+   c1:'#3a160f',c2:'#ff7a2e',
+   desc:'卡爾文是灰王最後的直系血脈。他能將自身生命之火化為兵刃，越接近死亡，攻擊愈為熾烈。被餘黨視為唯一能重啟封印的人。',
+   stats:[['力量',92],['敏捷',74],['法術',60],['防禦',81]],
+   abilities:['熾焰斬','餘燼爆發','灰王怒嚎']},
+  {id:'frost',name:'虛霜女巫 莉芙','role':'虛蝕學者 · 遠程法術',epithet:'背叛神殿的智者',
+   c1:'#0e1c28',c2:'#5ee0ff',
+   desc:'莉芙曾是虛蝕神殿的首席學者，因窺見真相而叛離。她以禁忌的虛霜魔法凍結時間裂隙，是隊伍中唯一能解讀虛蝕之神弱點的人。',
+   stats:[['力量',48],['敏捷',66],['法術',97],['防禦',55]],
+   abilities:['虛霜封域','時隙凍結','禁咒解析']},
+  {id:'shadow',name:'無面刺客 黯','role':'餘黨殺手 · 潛行爆發',epithet:'沒有名字的影子',
+   c1:'#1a0f24',c2:'#a978ff',
+   desc:'沒有人見過黯的真面目，連名字都已隨王朝湮滅。他在陰影中移動，一擊必殺。傳言他效忠的不是任何派系，而是復仇本身。',
+   stats:[['力量',70],['敏捷',99],['法術',52],['防禦',58]],
+   abilities:['影襲','無聲處決','煙滅']},
+  {id:'guard',name:'鐵壁守將 葛瑞','role':'王都殘軍 · 重裝坦克',epithet:'倒下也不退的盾',
+   c1:'#241a10',c2:'#ffc24b',
+   desc:'王都陷落之夜，葛瑞獨自守住最後一道城門整整三日。他的巨盾承載著一座死城的執念，是隊伍最堅固的防線。',
+   stats:[['力量',85],['敏捷',40],['法術',38],['防禦',99]],
+   abilities:['不破之盾','嘲諷怒吼','王都壁壘']},
+];
+
+const charList=document.getElementById('charList'),charPanel=document.getElementById('charPanel');
+chars.forEach((ch,i)=>{
+  const b=document.createElement('button');
+  b.className='char-tab'+(i===0?' active':'');b.setAttribute('role','tab');b.dataset.i=i;
+  b.innerHTML=`<span class="char-avatar">${charSvg(ch.id,ch.c1,ch.c2)}</span>
+    <span class="char-tab-meta"><b>${ch.name.split(' ')[0]}</b><span>${ch.role.split(' · ')[0]}</span></span>`;
+  b.addEventListener('click',()=>selectChar(i));
+  charList.appendChild(b);
+});
+function selectChar(i){
+  document.querySelectorAll('.char-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  const ch=chars[i];
+  charPanel.innerHTML=`
+    <div class="char-portrait">${charSvg(ch.id,ch.c1,ch.c2)}<div class="char-portrait-fade"></div></div>
+    <div class="char-info">
+      <div class="char-role">${ch.role}</div>
+      <div class="char-name">${ch.name.split(' ')[1]||ch.name}</div>
+      <div class="char-epithet">「${ch.epithet}」· ${ch.name.split(' ')[0]}</div>
+      <p class="char-desc">${ch.desc}</p>
+      <div class="char-stats">
+        ${ch.stats.map(([l,v])=>`<div class="stat"><span class="stat-label">${l}</span><span class="stat-track"><span class="stat-fill" data-v="${v}"></span></span><span class="stat-val">${v}</span></div>`).join('')}
+      </div>
+      <div class="char-abilities">${ch.abilities.map(a=>`<span class="ability"><i></i>${a}</span>`).join('')}</div>
+    </div>`;
+  requestAnimationFrame(()=>charPanel.querySelectorAll('.stat-fill').forEach(f=>f.style.width=f.dataset.v+'%'));
+}
+selectChar(0);
+
+/* ---------- WORLD / FEATURES TABS ---------- */
+const worldScene=(id,a,b)=>`<svg viewBox="0 0 700 460" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="ws${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="#0a0509"/></linearGradient>
+  <radialGradient id="wg${id}" cx="50%" cy="60%" r="48%"><stop offset="0" stop-color="${b}" stop-opacity="0.6"/><stop offset="1" stop-color="${b}" stop-opacity="0"/></radialGradient></defs>
+  <rect width="700" height="460" fill="url(#ws${id})"/><circle cx="350" cy="280" r="240" fill="url(#wg${id})"/>`;
+const worlds=[
+  {id:'explore',tab:'無縫世界','h':'橫越<em>破碎大陸</em>',
+   art:worldScene('e','#1c1024','#ff8a3d')+`<g fill="#150c18" stroke="#3a160f"><path d="M80 200 L180 170 L240 220 L170 270 L90 250 Z"/><path d="M460 150 L580 140 L630 200 L540 240 L470 210 Z"/></g><path d="M0 460 L0 340 L180 360 L350 300 L520 360 L700 330 L700 460 Z" fill="#0a0509"/></svg>`,
+   p:'從焦土王都到漂浮殘島，60 平方公里的無縫開放世界沒有讀取畫面。攀爬、滑翔、騎乘灰燼巨獸，每一道地平線後都藏著被遺忘的秘密。',
+   list:[['60 km²','完全無縫的開放世界，無讀取分區'],['動態天候','灰燼風暴改變地形與敵人行為'],['垂直探索','滑翔、攀岩與漂浮島嶼間的躍遷']]},
+  {id:'combat',tab:'戰鬥系統','h':'以<em>生命之火</em>為刃',
+   art:worldScene('c','#3a160f','#ff5a1f')+`<g stroke="#ffc24b" stroke-width="3" fill="none" opacity="0.85"><path d="M250 230 L450 230 M340 140 L360 320"/><path d="M280 180 L420 280 M420 180 L280 280"/></g><path d="M0 460 L0 360 L700 360 L700 460 Z" fill="#0a0509"/></svg>`,
+   p:'獨創「餘燼值」系統：受傷時積蓄火焰，在瀕死邊緣爆發毀滅性連段。完美閃避觸發「灰時凝滯」，將每一場戰鬥都化為一支死亡之舞。',
+   list:[['餘燼連段','越接近死亡，傷害愈高的高風險戰鬥'],['灰時凝滯','完美閃避減速時間，反擊處決'],['血脈天賦','四系血脈樹，超過 120 種主動技能']]},
+  {id:'factions',tab:'派系抉擇','h':'九大<em>餘黨</em>的命運',
+   art:worldScene('f','#1a0f24','#a978ff')+`<g fill="none" stroke="#a978ff" stroke-width="2.5" opacity="0.8"><circle cx="350" cy="240" r="20"/><circle cx="230" cy="160" r="14"/><circle cx="470" cy="160" r="14"/><circle cx="200" cy="300" r="14"/><circle cx="500" cy="300" r="14"/><path d="M350 240 L230 160 M350 240 L470 160 M350 240 L200 300 M350 240 L500 300"/></g><path d="M0 460 L0 380 L700 380 L700 460 Z" fill="#0a0509"/></svg>`,
+   p:'九大餘黨各懷算計，你的每個選擇都重塑大陸的權力版圖。聯盟、背叛、或將其全數抹除——多重結局取決於你在灰燼之中的取捨。',
+   list:[['動態聲望','派系關係即時影響任務與商店'],['多重結局','5 種主線結局，30+ 任務分支'],['同伴羈絆','戰友會因你的抉擇離去或覺醒']]},
+  {id:'craft',tab:'鍛造與成長','h':'於<em>灰燼爐</em>重鑄',
+   art:worldScene('r','#241a10','#ffc24b')+`<g stroke="#ffc24b" stroke-width="3" fill="none"><rect x="290" y="220" width="120" height="80" rx="6"/><path d="M310 220 L310 180 L390 180 L390 220"/><circle cx="350" cy="260" r="22" fill="#ff5a1f" opacity="0.6"/></g><path d="M0 460 L0 370 L700 370 L700 460 Z" fill="#0a0509"/></svg>`,
+   p:'蒐集殘島遺物，在灰燼爐中淬煉專屬裝備。每件傳奇武器都附帶獨一無二的覺醒詞條，隨你的傳奇成長而進化。',
+   list:[['遺物鍛造','分解遺跡材料，打造傳奇裝備'],['覺醒詞條','武器隨擊殺數成長、解鎖隱藏能力'],['外觀染色','數百種染色與徽記自訂你的灰王']]},
+];
+const worldTabs=document.getElementById('worldTabs'),worldPanels=document.getElementById('worldPanels');
+worlds.forEach((w,i)=>{
+  const t=document.createElement('button');
+  t.className='world-tab'+(i===0?' active':'');t.textContent=w.tab;t.dataset.i=i;
+  t.addEventListener('click',()=>selectWorld(i));
+  worldTabs.appendChild(t);
+  const p=document.createElement('div');
+  p.className='world-panel'+(i===0?' active':'');p.dataset.i=i;
+  p.innerHTML=`<div class="world-panel-art hud">${w.art}</div>
+    <div><h3 class="world-h">${w.h}</h3><p class="world-p">${w.p}</p>
+    <ul class="world-list">${w.list.map(([b,d])=>`<li><b>${b}</b><span>${d}</span></li>`).join('')}</ul></div>`;
+  worldPanels.appendChild(p);
+});
+function selectWorld(i){
+  document.querySelectorAll('.world-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.world-panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+
+/* ---------- EDITIONS ---------- */
+const check=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffc24b" stroke-width="2.4" stroke-linecap="round"><path d="M5 12l5 5L20 6"/></svg>`;
+const cross=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d7088" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+const editions=[
+  {id:'std',name:'標準版',tag:'Standard Edition',price:1290,featured:false,
+   feats:[[1,'《灰燼王朝》完整遊戲本體'],[1,'數位原聲帶（精選 8 首）'],[0,'「灰王覺醒」限定外觀組合'],[0,'72 小時搶先體驗'],[0,'首部資料片「虛蝕黎明」']]},
+  {id:'dlx',name:'豪華版',tag:'Deluxe Edition',price:1690,featured:true,
+   feats:[[1,'《灰燼王朝》完整遊戲本體'],[1,'數位原聲帶（完整 24 首）'],[1,'「灰王覺醒」限定外觀組合'],[1,'72 小時搶先體驗'],[0,'首部資料片「虛蝕黎明」']]},
+  {id:'col',name:'典藏版',tag:'Collector’s Edition',price:2490,featured:false,
+   feats:[[1,'《灰燼王朝》完整遊戲本體'],[1,'數位原聲帶（完整 24 首）'],[1,'「灰王覺醒」限定外觀組合'],[1,'72 小時搶先體驗'],[1,'首部資料片「虛蝕黎明」季票']]},
+];
+let selected='dlx';
+const edGrid=document.getElementById('edGrid');
+function renderEditions(){
+  edGrid.innerHTML=editions.map(e=>`
+    <div class="ed-card${e.featured?' featured':''}${e.id===selected?' selected':''}" data-id="${e.id}">
+      ${e.featured?'<span class="ed-badge">最受歡迎</span>':''}
+      <div class="ed-name">${e.name}</div>
+      <div class="ed-tagline">${e.tag}</div>
+      <div class="ed-price">NT$${e.price.toLocaleString()}<small></small></div>
+      <ul class="ed-feats">${e.feats.map(([on,t])=>`<li class="${on?'':'off'}">${on?check:cross}<span>${t}</span></li>`).join('')}</ul>
+      <button class="ed-select">${e.id===selected?'✓ 已選擇':'選擇此版本'}</button>
+    </div>`).join('');
+  edGrid.querySelectorAll('.ed-card').forEach(c=>c.addEventListener('click',()=>{selected=c.dataset.id;renderEditions();updateBar()}));
+}
+const preName=document.getElementById('preName'),preTotal=document.getElementById('preTotal'),preBtn=document.getElementById('preBtn');
+function updateBar(){
+  const e=editions.find(x=>x.id===selected);
+  preName.textContent=e.name;preTotal.textContent=e.price.toLocaleString();
+  preBtn.textContent='確認預購';preBtn.disabled=false;preBtn.classList.remove('btn-ghost');preBtn.classList.add('btn-primary');
+}
+preBtn.addEventListener('click',()=>{
+  const e=editions.find(x=>x.id===selected);
+  preBtn.textContent=`✓ 已預購《灰燼王朝・${e.name}》`;
+  preBtn.classList.remove('btn-primary');preBtn.classList.add('btn-ghost');preBtn.disabled=true;
+});
+renderEditions();updateBar();
+
+/* ---------- COUNTDOWN ---------- */
+const target=new Date('2026-09-18T00:00:00+08:00').getTime();
+const pad=n=>String(n).padStart(2,'0');
+const cdEls={d:document.getElementById('cd-d'),h:document.getElementById('cd-h'),m:document.getElementById('cd-m'),s:document.getElementById('cd-s')};
+function tickCD(){
+  let diff=Math.max(0,target-Date.now());const s=Math.floor(diff/1000);
+  cdEls.d.textContent=pad(Math.floor(s/86400));
+  cdEls.h.textContent=pad(Math.floor(s%86400/3600));
+  cdEls.m.textContent=pad(Math.floor(s%3600/60));
+  cdEls.s.textContent=pad(s%60);
+}
+tickCD();setInterval(tickCD,1000);
+
+/* ---------- NEWS ---------- */
+const newsImg=(a,b)=>`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ni${a}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="#0a0509"/></linearGradient></defs><rect width="400" height="250" fill="url(#ni${a})"/><circle cx="200" cy="170" r="130" fill="${b}" opacity="0.18"/><path d="M0 250 L0 180 L120 200 L240 160 L400 190 L400 250 Z" fill="#0a0509"/></svg>`;
+const news=[
+  {cat:'開發日誌',date:'2026.06.12',title:'灰時凝滯：我們如何重塑閃避','ex':'戰鬥總監解析「餘燼值」與完美閃避背後的設計哲學，以及它如何讓每場 boss 戰成為一支死亡之舞。',c:'#3a160f',g:'#ff5a1f'},
+  {cat:'發行消息',date:'2026.06.05',title:'封閉測試報名正式開放','ex':'第一波封閉測試將於七月登場，訂閱情報的玩家可優先取得資格，搶先踏入破碎大陸。',c:'#0e1c28',g:'#5ee0ff'},
+  {cat:'世界觀','date':'2026.05.28','title':'虛蝕之神：被刪去的第十派系','ex':'深入解讀大陸碎裂的真相，以及為何「虛蝕」這個詞在每一卷遺典中都被刻意抹去。',c:'#1a0f24',g:'#a978ff'},
+];
+document.getElementById('newsGrid').innerHTML=news.map(n=>`
+  <article class="news-card">
+    <div class="news-img">${newsImg(n.c,n.g)}<span class="news-cat">${n.cat}</span></div>
+    <div class="news-body">
+      <span class="news-date">${n.date}</span>
+      <h3 class="news-title">${n.title}</h3>
+      <p class="news-ex">${n.ex}</p>
+      <span class="news-more">閱讀全文 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
+  </article>`).join('');
+
+/* ---------- FAQ ---------- */
+const faqs=[
+  ['《灰燼王朝》預計何時發行？','本作將於 2026 年 9 月 18 日於 PC、PlayStation 5 與 Xbox Series X|S 全球同步發行。預購豪華版與典藏版可享 72 小時搶先體驗。'],
+  ['遊戲支援繁體中文嗎？','支援。本作提供完整繁體中文介面、字幕與全程繁中語音配音，由台灣在地團隊監製，確保最道地的史詩敘事體驗。'],
+  ['這是一款線上遊戲嗎？','《灰燼王朝》以單人開放世界戰役為核心，主線約 40 小時、全內容超過 100 小時，全程可完全離線遊玩。不含任何強制連線或微交易內容。'],
+  ['預購可以隨時取消嗎？','可以。於官方平台預購者，在遊戲正式發行前皆可隨時全額取消退款，限定預購獎勵則於發行時自動入庫。'],
+  ['典藏版的季票包含哪些內容？','典藏版季票涵蓋首部大型資料片「虛蝕黎明」、兩款劇情外觀包，以及未來一年內所有付費故事章節，於各內容上線時自動解鎖。'],
+];
+const faqList=document.getElementById('faqList');
+faqList.innerHTML=faqs.map(([q,a],i)=>`
+  <div class="faq-item${i===0?' open':''}">
+    <button class="faq-q" aria-expanded="${i===0}"><span>${q}</span><span class="faq-icon"></span></button>
+    <div class="faq-a"><div class="faq-a-in">${a}</div></div>
+  </div>`).join('');
+faqList.querySelectorAll('.faq-q').forEach(btn=>btn.addEventListener('click',()=>{
+  const item=btn.parentElement,open=item.classList.contains('open');
+  faqList.querySelectorAll('.faq-item').forEach(it=>{it.classList.remove('open');it.querySelector('.faq-q').setAttribute('aria-expanded','false')});
+  if(!open){item.classList.add('open');btn.setAttribute('aria-expanded','true')}
+}));
+
+/* ---------- NEWSLETTER ---------- */
+const form=document.getElementById('signupForm'),input=document.getElementById('emailInput'),msg=document.getElementById('signupMsg');
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=input.value.trim();
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  if(!v){input.classList.add('err');msg.className='signup-msg bad';msg.textContent='⚠ 請輸入你的電子郵件以領取灰王徽記。';return}
+  if(!ok){input.classList.add('err');msg.className='signup-msg bad';msg.textContent='⚠ 電子郵件格式有誤，請再次確認。';return}
+  input.classList.remove('err');
+  msg.className='signup-msg ok';
+  msg.textContent='✓ 徽記已授予！封閉測試資格通知將寄至 '+v;
+  input.value='';input.disabled=true;form.querySelector('button').disabled=true;form.querySelector('button').textContent='已加入餘黨';
+});
+input.addEventListener('input',()=>{input.classList.remove('err');if(msg.classList.contains('bad')){msg.textContent='';msg.className='signup-msg'}});
+
+/* ---------- SCROLL REVEAL ---------- */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- HERO PARALLAX ---------- */
+const scene=document.querySelector('.hero-scene');
+addEventListener('scroll',()=>{const y=scrollY;if(y<900)scene.style.transform=`translateY(${y*.28}px) scale(${1+y*.0002})`},{passive:true});
+
+})();
+</script>
+</body>
+</html>

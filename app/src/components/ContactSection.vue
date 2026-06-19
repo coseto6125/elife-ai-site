@@ -69,7 +69,7 @@ function mailtoFallback() {
   <section id="contact" ref="root" class="section">
     <div class="wrap contact-grid">
       <div class="left reveal" data-reveal>
-        <span class="eyebrow">// 05 — Contact</span>
+        <span class="eyebrow">// 06 — Contact</span>
         <h2 class="section-title">有想做的東西？<br />來聊聊。</h2>
         <p class="section-lead">
           無論是已經很明確的需求，還是一個「這做得到嗎」的模糊想法，

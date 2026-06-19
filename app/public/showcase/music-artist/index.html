@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>城市潛水 City Diving｜新專輯《霓虹漫遊》｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="夢幻流行雙人組「城市潛水」官方網站。試聽新專輯《霓虹漫遊》、收藏巡演票券。沉浸式深夜城市音場，把聲音化為流動的光。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --abyss:#0a0e1a;
+    --ink:#06080f;
+    --panel:#10162a;
+    --mist:#e9edfb;
+    --haze:#8a93b8;
+    --line:rgba(255,255,255,.08);
+    /* default track accent (overridden per track via JS) */
+    --accent:#3fe0d0;
+    --accent-2:#9d8cff;
+    --glow:rgba(63,224,208,.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--mist);
+    font-family:"Noto Sans TC",system-ui,sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent);color:var(--ink)}
+
+  /* ambient drifting light field */
+  .field{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .field span{
+    position:absolute;border-radius:50%;filter:blur(90px);opacity:.34;
+    transition:background 1.2s ease;
+  }
+  .b1{width:44vw;height:44vw;left:-10vw;top:-12vw;background:var(--accent);
+    animation:drift1 26s ease-in-out infinite}
+  .b2{width:36vw;height:36vw;right:-10vw;top:8vh;background:var(--accent-2);
+    animation:drift2 32s ease-in-out infinite}
+  .b3{width:28vw;height:28vw;left:28vw;bottom:-14vw;background:var(--accent);opacity:.22;
+    animation:drift1 38s ease-in-out infinite reverse}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,5vh) scale(1.12)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5vw,-4vh) scale(.9)}}
+
+  .wrap{position:relative;z-index:1}
+  .shell{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    backdrop-filter:blur(14px);
+    background:linear-gradient(180deg,rgba(6,8,15,.85),rgba(6,8,15,.4));
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"Unbounded";font-weight:800;
+    font-size:.95rem;letter-spacing:.02em}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 14px var(--glow);transition:background 1s,box-shadow 1s}
+  .navlinks{display:flex;gap:30px;font-size:.82rem;color:var(--haze);font-weight:400;letter-spacing:.05em}
+  .navlinks a{position:relative;transition:color .25s}
+  .navlinks a:hover,.navlinks a:focus-visible{color:var(--mist)}
+  .navlinks a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;
+    background:var(--accent);transition:width .3s}
+  .navlinks a:hover::after,.navlinks a:focus-visible::after{width:100%}
+  @media(max-width:680px){.navlinks{display:none}}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:74px 0 40px;position:relative}
+  .eyebrow{font-family:"Space Mono";font-size:.72rem;letter-spacing:.42em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:22px;transition:color 1s}
+  .hero h1{
+    font-family:"Noto Serif TC";font-weight:900;line-height:1.02;
+    font-size:clamp(3.1rem,12vw,8.4rem);letter-spacing:-.01em;
+    margin-bottom:6px;
+  }
+  .hero h1 .lat{display:block;font-family:"Unbounded";font-weight:400;
+    font-size:clamp(.95rem,3.4vw,1.7rem);letter-spacing:.34em;color:var(--haze);
+    margin-top:18px;text-transform:uppercase}
+  .tagline{max-width:30ch;color:var(--haze);font-size:1.05rem;margin:30px 0 0;font-weight:300}
+  .tagline b{color:var(--mist);font-weight:500}
+
+  /* ---------- player (SIGNATURE) ---------- */
+  .player{
+    margin:54px 0 0;background:linear-gradient(150deg,var(--panel),rgba(16,22,42,.55));
+    border:1px solid var(--line);border-radius:26px;padding:30px;
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.05);
+    position:relative;overflow:hidden;
+  }
+  .player::before{content:"";position:absolute;inset:0;border-radius:26px;padding:1px;
+    background:linear-gradient(150deg,var(--accent),transparent 40%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;transition:background 1s}
+  .player-top{display:flex;align-items:center;gap:22px;margin-bottom:24px}
+  .cover{
+    width:96px;height:96px;border-radius:16px;flex-shrink:0;position:relative;overflow:hidden;
+    background:radial-gradient(120% 120% at 30% 20%,var(--accent),var(--accent-2) 70%,var(--ink));
+    box-shadow:0 12px 30px -8px var(--glow);transition:background 1s,box-shadow 1s;
+  }
+  .cover .rings{position:absolute;inset:0;display:grid;place-items:center}
+  .cover .rings i{position:absolute;border:1.5px solid rgba(6,8,15,.4);border-radius:50%}
+  .now-meta{flex:1;min-width:0}
+  .now-meta .lab{font-family:"Space Mono";font-size:.66rem;letter-spacing:.3em;color:var(--haze);
+    text-transform:uppercase;margin-bottom:7px}
+  .now-meta .ttl{font-family:"Noto Serif TC";font-weight:700;font-size:1.5rem;line-height:1.2;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .now-meta .alb{color:var(--haze);font-size:.85rem;margin-top:3px}
+
+  .playbtn{
+    width:62px;height:62px;border-radius:50%;flex-shrink:0;cursor:pointer;
+    border:none;background:var(--accent);color:var(--ink);
+    display:grid;place-items:center;transition:transform .2s,background 1s,box-shadow .3s;
+    box-shadow:0 0 0 0 var(--glow);
+  }
+  .playbtn:hover{transform:scale(1.07)}
+  .playbtn:active{transform:scale(.96)}
+  .playbtn.on{box-shadow:0 0 0 8px var(--glow)}
+  .playbtn svg{width:24px;height:24px}
+
+  /* waveform */
+  .wave-wrap{cursor:pointer;padding:6px 0}
+  .wave{display:flex;align-items:center;gap:3px;height:64px}
+  .wave .bar{
+    flex:1;border-radius:3px;min-width:2px;
+    background:var(--haze);opacity:.35;transform-origin:center;
+    transition:background .25s;
+  }
+  .wave .bar.played{background:var(--accent);opacity:.95}
+  .wave-wrap.playing .bar{animation:pulse var(--dur,.9s) ease-in-out infinite alternate}
+  @keyframes pulse{from{transform:scaleY(.45)}to{transform:scaleY(1)}}
+  .scrub{display:flex;justify-content:space-between;font-family:"Space Mono";
+    font-size:.72rem;color:var(--haze);margin-top:10px;letter-spacing:.04em}
+  .scrub .cur{color:var(--accent);transition:color 1s}
+
+  /* track list / switcher */
+  .tracks{margin-top:26px;display:flex;flex-direction:column;gap:2px}
+  .trk{
+    display:grid;grid-template-columns:30px 1fr auto auto;align-items:center;gap:14px;
+    padding:13px 14px;border-radius:13px;cursor:pointer;border:1px solid transparent;
+    transition:background .2s,border-color .2s;
+  }
+  .trk:hover,.trk:focus-visible{background:rgba(255,255,255,.04)}
+  .trk.active{background:rgba(255,255,255,.05);border-color:var(--line)}
+  .trk .no{font-family:"Space Mono";font-size:.8rem;color:var(--haze)}
+  .trk.active .no{color:var(--accent)}
+  .trk .nm{font-weight:400;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .trk .nm small{display:block;color:var(--haze);font-size:.74rem;font-weight:300}
+  .trk .eq{display:flex;gap:2px;align-items:flex-end;height:15px;width:16px;opacity:0}
+  .trk.active .eq{opacity:1}
+  .trk .eq i{width:3px;background:var(--accent);border-radius:2px;height:30%}
+  .trk.active.live .eq i{animation:eq .7s ease-in-out infinite alternate}
+  .trk.active.live .eq i:nth-child(2){animation-delay:.18s}
+  .trk.active.live .eq i:nth-child(3){animation-delay:.34s}
+  @keyframes eq{from{height:25%}to{height:100%}}
+  .trk .dur{font-family:"Space Mono";font-size:.78rem;color:var(--haze)}
+
+  /* ---------- generic section ---------- */
+  section{padding:90px 0;position:relative}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:46px;flex-wrap:wrap}
+  .sec-head .idx{font-family:"Space Mono";font-size:.74rem;color:var(--accent);
+    letter-spacing:.3em;transition:color 1s}
+  .sec-head h2{font-family:"Noto Serif TC";font-weight:900;font-size:clamp(1.9rem,5vw,3rem);
+    line-height:1.05}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- tour ---------- */
+  .tour-row{
+    border-top:1px solid var(--line);
+  }
+  .tour-row:last-child{border-bottom:1px solid var(--line)}
+  .tour-head{
+    display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:20px;
+    padding:24px 8px;cursor:pointer;transition:padding-left .3s,color .3s;
+  }
+  .tour-head:hover{padding-left:18px}
+  .tour-head .date{font-family:"Space Mono";font-weight:700;font-size:1.05rem;color:var(--mist)}
+  .tour-head .date small{display:block;color:var(--haze);font-size:.7rem;font-weight:400;letter-spacing:.1em}
+  .tour-head .city{font-family:"Noto Serif TC";font-weight:700;font-size:1.45rem}
+  .tour-head .venue{color:var(--haze);font-size:.85rem}
+  .tour-head .status{font-family:"Space Mono";font-size:.72rem;letter-spacing:.18em;
+    padding:6px 13px;border-radius:99px;border:1px solid var(--line);white-space:nowrap}
+  .status.few{color:var(--accent);border-color:var(--accent)}
+  .status.soon{color:var(--haze)}
+  .status.sold{color:var(--haze);opacity:.55}
+  .tour-head .chev{width:13px;height:13px;border-right:2px solid var(--haze);
+    border-bottom:2px solid var(--haze);transform:rotate(45deg);transition:transform .3s;justify-self:end}
+  .tour-row.open .chev{transform:rotate(-135deg)}
+  .tour-detail{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .tour-row.open .tour-detail{max-height:240px}
+  .tour-detail-in{padding:4px 8px 28px;display:flex;flex-wrap:wrap;gap:30px;align-items:center;
+    color:var(--haze);font-size:.9rem}
+  .tour-detail-in .info b{color:var(--mist);font-weight:500;display:block;margin-bottom:3px;
+    font-family:"Space Mono";font-size:.68rem;letter-spacing:.18em;text-transform:uppercase}
+  .bticket{
+    margin-left:auto;border:none;cursor:pointer;font-family:"Noto Sans TC";font-weight:500;
+    background:var(--accent);color:var(--ink);padding:12px 26px;border-radius:99px;font-size:.9rem;
+    transition:transform .2s,box-shadow .3s,background 1s;
+  }
+  .bticket:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px var(--glow)}
+  .bticket:disabled{background:rgba(255,255,255,.1);color:var(--haze);cursor:not-allowed;transform:none;box-shadow:none}
+  @media(max-width:680px){
+    .tour-head{grid-template-columns:1fr auto;gap:6px 16px}
+    .tour-head .venue{grid-column:1/2}
+    .tour-head .status{grid-column:2;justify-self:end}
+    .tour-head .chev{grid-column:2;grid-row:1}
+    .bticket{margin-left:0}
+  }
+
+  /* ---------- album / about ---------- */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  @media(max-width:780px){.about{grid-template-columns:1fr;gap:36px}}
+  .about p{color:var(--haze);font-size:1.02rem;margin-bottom:18px}
+  .about p b{color:var(--mist);font-weight:500}
+  .stats{display:flex;gap:40px;margin-top:30px;flex-wrap:wrap}
+  .stats .s b{font-family:"Unbounded";font-weight:800;font-size:1.9rem;color:var(--accent);
+    display:block;transition:color 1s}
+  .stats .s span{font-size:.78rem;color:var(--haze);letter-spacing:.08em}
+  .album-art{
+    aspect-ratio:1;border-radius:24px;position:relative;overflow:hidden;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));
+    box-shadow:0 40px 90px -30px var(--glow);transition:background 1s,box-shadow 1s;
+  }
+  .album-art svg{position:absolute;inset:0;width:100%;height:100%}
+  .album-art .meta{position:absolute;left:24px;bottom:22px;color:var(--ink)}
+  .album-art .meta b{font-family:"Noto Serif TC";font-weight:900;font-size:1.7rem;display:block}
+  .album-art .meta span{font-family:"Space Mono";font-size:.72rem;letter-spacing:.2em}
+
+  /* ---------- newsletter CTA ---------- */
+  .cta-band{text-align:center;padding:100px 0}
+  .cta-band h2{font-family:"Noto Serif TC";font-weight:900;font-size:clamp(2rem,6vw,3.6rem);
+    line-height:1.1;margin-bottom:18px}
+  .cta-band p{color:var(--haze);max-width:34ch;margin:0 auto 34px}
+  .subscribe{display:flex;gap:10px;max-width:420px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+  .subscribe input{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line);
+    border-radius:99px;padding:14px 22px;color:var(--mist);font-family:"Noto Sans TC";font-size:.95rem}
+  .subscribe input::placeholder{color:var(--haze)}
+  .subscribe input:focus-visible{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--glow)}
+  .subscribe button{border:none;cursor:pointer;background:var(--mist);color:var(--ink);
+    font-weight:500;font-family:"Noto Sans TC";padding:14px 28px;border-radius:99px;
+    transition:transform .2s,background .25s}
+  .subscribe button:hover{transform:translateY(-2px);background:var(--accent)}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:48px 0 60px}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px}
+  .foot .lg{font-family:"Unbounded";font-weight:800;font-size:1.3rem}
+  .foot .soc{display:flex;gap:22px;font-size:.85rem;color:var(--haze)}
+  .foot .soc a:hover{color:var(--accent)}
+  .credit{color:var(--haze);font-size:.8rem;margin-top:30px;letter-spacing:.04em}
+  .credit a{color:var(--accent);font-weight:500}
+
+  /* ---------- toast ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:32px;transform:translate(-50%,140%);
+    background:var(--panel);border:1px solid var(--accent);color:var(--mist);
+    padding:15px 26px;border-radius:14px;z-index:80;font-size:.9rem;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.9);transition:transform .45s cubic-bezier(.2,.9,.3,1.3);
+    display:flex;align-items:center;gap:12px;max-width:90vw;
+  }
+  .toast.show{transform:translate(-50%,0)}
+  .toast .pip{width:9px;height:9px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 10px var(--glow);flex-shrink:0}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+    .field span{opacity:.35}
+  }
+</style>
+</head>
+<body>
+<div class="field" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+
+<div class="wrap">
+<header>
+  <div class="shell nav">
+    <div class="brand"><span class="dot"></span>城市潛水</div>
+    <nav class="navlinks">
+      <a href="#listen">試聽</a>
+      <a href="#tour">巡演</a>
+      <a href="#about">關於</a>
+      <a href="#join">訂閱</a>
+    </nav>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:74px">
+    <div class="eyebrow" id="hero-eyebrow">新專輯 · 2026.06 全平台上架</div>
+    <h1>霓虹<br>漫遊<span class="lat">City Diving — Neon Drift</span></h1>
+    <p class="tagline">夢幻流行雙人組 <b>城市潛水</b>。把午夜的城市光害，調成可以呼吸的低頻。按下播放，一起沉下去。</p>
+
+    <!-- SIGNATURE: mock player -->
+    <div class="player" id="listen">
+      <div class="player-top">
+        <div class="cover" id="cover" aria-hidden="true">
+          <div class="rings">
+            <i style="width:78%;height:78%"></i>
+            <i style="width:54%;height:54%"></i>
+            <i style="width:28%;height:28%"></i>
+          </div>
+        </div>
+        <div class="now-meta">
+          <div class="lab">正在播放 · NOW PLAYING</div>
+          <div class="ttl" id="now-title">霓虹漫遊</div>
+          <div class="alb" id="now-album">專輯《霓虹漫遊》· 城市潛水</div>
+        </div>
+        <button class="playbtn" id="playbtn" aria-label="播放" aria-pressed="false">
+          <svg id="ico-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="wave-wrap" id="wavewrap" role="slider" tabindex="0"
+           aria-label="播放進度，方向鍵快轉或倒轉" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="wave" id="wave"></div>
+        <div class="scrub"><span class="cur" id="t-cur">0:00</span><span id="t-dur">3:48</span></div>
+      </div>
+
+      <div class="tracks" id="tracks" role="listbox" aria-label="專輯曲目"></div>
+    </div>
+  </section>
+
+  <!-- TOUR -->
+  <section id="tour">
+    <div class="sec-head reveal"><span class="idx">02 — 巡演</span><h2>《霓虹漫遊》巡迴演出</h2></div>
+    <div id="tourlist"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-head reveal"><span class="idx">03 — 關於</span><h2>我們是城市潛水</h2></div>
+    <div class="about reveal">
+      <div>
+        <p>城市潛水成立於 2021 年的台北，由主唱兼合成器手 <b>林夜深</b> 與鼓機詩人 <b>沈以澄</b> 組成。我們在便利商店的冷光、捷運末班車的玻璃倒影裡找旋律。</p>
+        <p>音樂介於 <b>夢幻流行</b> 與 <b>都市流行</b> 之間——飽和的合成器鋪底、慵懶的中文咬字，像在城市的水面下緩慢漂浮。第二張專輯《霓虹漫遊》收錄六首作品，是一張寫給失眠者的深夜唱片。</p>
+        <div class="stats">
+          <div class="s"><b>2.4M</b><span>月聆聽人次</span></div>
+          <div class="s"><b>06</b><span>新專輯曲目</span></div>
+          <div class="s"><b>11</b><span>場巡演城市</span></div>
+        </div>
+      </div>
+      <div class="album-art" aria-label="專輯《霓虹漫遊》視覺">
+        <svg viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden="true">
+          <g id="art-lines" stroke="rgba(6,8,15,.45)" stroke-width="1.5" fill="none"></g>
+        </svg>
+        <div class="meta"><b>霓虹漫遊</b><span>LP · 2026 · 6 TRACKS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band reveal" id="join">
+    <h2>下一場演出<br>留個位子給你</h2>
+    <p>訂閱電子報，新歌、加場與限定黑膠開賣，第一時間通知你。</p>
+    <form class="subscribe" id="subform" novalidate>
+      <input type="email" id="email" placeholder="你的 Email" aria-label="你的 Email" required>
+      <button type="submit">訂閱通知</button>
+    </form>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell">
+    <div class="foot">
+      <div>
+        <div class="lg">城市潛水</div>
+        <div style="color:var(--haze);font-size:.82rem;margin-top:6px">City Diving · 夢幻流行雙人組</div>
+      </div>
+      <div class="soc">
+        <a href="#listen">Spotify</a>
+        <a href="#listen">YouTube Music</a>
+        <a href="#tour">巡演</a>
+        <a href="#join">電子報</a>
+      </div>
+    </div>
+    <div class="credit">設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a> ｜ 純前端展示用途，無真實音檔。</div>
+  </div>
+</footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="pip"></span><span id="toast-txt"></span></div>
+
+<script>
+(function(){
+  "use strict";
+  const reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  // ---- track data: each re-themes the page ----
+  const TRACKS = [
+    {no:"01", name:"霓虹漫遊", sub:"Neon Drift", dur:"3:48", sec:228,
+     accent:"#3fe0d0", accent2:"#9d8cff", glow:"rgba(63,224,208,.35)"},
+    {no:"02", name:"末班車玻璃", sub:"Last Train Glass", dur:"4:12", sec:252,
+     accent:"#ff8a6b", accent2:"#ffd166", glow:"rgba(255,138,107,.35)"},
+    {no:"03", name:"冷光便利店", sub:"Convenience Glow", dur:"3:21", sec:201,
+     accent:"#9d8cff", accent2:"#3fe0d0", glow:"rgba(157,140,255,.38)"},
+    {no:"04", name:"沉到海平面以下", sub:"Below Sea Level", dur:"5:06", sec:306,
+     accent:"#56b8ff", accent2:"#3fe0d0", glow:"rgba(86,184,255,.35)"},
+    {no:"05", name:"失眠者頻道", sub:"Insomniac FM", dur:"3:55", sec:235,
+     accent:"#ff6fae", accent2:"#9d8cff", glow:"rgba(255,111,174,.36)"},
+    {no:"06", name:"天亮以前", sub:"Before Daylight", dur:"4:33", sec:273,
+     accent:"#7cf0c4", accent2:"#56b8ff", glow:"rgba(124,240,196,.35)"},
+  ];
+
+  const root = document.documentElement;
+  const fmt = s => Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
+
+  // ---- build waveform bars (deterministic pseudo-random per track) ----
+  const BARS = 64;
+  const waveEl = document.getElementById("wave");
+  const bars = [];
+  for(let i=0;i<BARS;i++){
+    const b=document.createElement("div");
+    b.className="bar";
+    waveEl.appendChild(b);
+    bars.push(b);
+  }
+  function shapeWave(seed){
+    for(let i=0;i<BARS;i++){
+      // smooth-ish envelope + seeded jitter
+      const env = Math.sin((i/BARS)*Math.PI)*0.6 + 0.4;
+      const j = (Math.sin(i*1.9+seed)*0.5+0.5);
+      const h = Math.max(0.14, Math.min(1, env*0.55 + j*0.6));
+      bars[i].style.height = (h*100)+"%";
+      bars[i].style.setProperty("--dur",(0.6+ (Math.sin(i*0.7+seed)*0.5+0.5)*0.7).toFixed(2)+"s");
+    }
+  }
+
+  // ---- build track list ----
+  const tracksEl = document.getElementById("tracks");
+  TRACKS.forEach((t,i)=>{
+    const el=document.createElement("div");
+    el.className="trk"; el.tabIndex=0; el.setAttribute("role","option");
+    el.setAttribute("aria-label",`${t.name} ${t.sub}，${t.dur}`);
+    el.innerHTML=`<span class="no">${t.no}</span>
+      <span class="nm">${t.name}<small>${t.sub}</small></span>
+      <span class="eq"><i></i><i></i><i></i></span>
+      <span class="dur">${t.dur}</span>`;
+    el.addEventListener("click",()=>selectTrack(i,true));
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectTrack(i,true);}});
+    tracksEl.appendChild(el);
+  });
+  const trkEls = [...tracksEl.children];
+
+  // ---- album art lines (themed) ----
+  const artG = document.getElementById("art-lines");
+  for(let i=0;i<14;i++){
+    const y=20+i*26;
+    const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+    let d=`M0 ${y}`;
+    for(let x=0;x<=400;x+=20){
+      const off=Math.sin(x*0.03 + i*0.6)*14;
+      d+=` L${x} ${y+off}`;
+    }
+    p.setAttribute("d",d);
+    artG.appendChild(p);
+  }
+
+  // ---- state ----
+  let cur=0, playing=false, progress=0, raf=null, last=0;
+  const playBtn=document.getElementById("playbtn");
+  const icoPlay=document.getElementById("ico-play");
+  const waveWrap=document.getElementById("wavewrap");
+  const tCur=document.getElementById("t-cur");
+  const tDur=document.getElementById("t-dur");
+
+  function applyTheme(t){
+    root.style.setProperty("--accent",t.accent);
+    root.style.setProperty("--accent-2",t.accent2);
+    root.style.setProperty("--glow",t.glow);
+  }
+  function paintPlayed(){
+    const idx=Math.floor((progress/100)*BARS);
+    for(let i=0;i<BARS;i++) bars[i].classList.toggle("played", i<idx);
+    waveWrap.setAttribute("aria-valuenow",Math.round(progress));
+    tCur.textContent=fmt(progress/100*TRACKS[cur].sec);
+  }
+
+  function selectTrack(i,autoplay){
+    cur=i; const t=TRACKS[i];
+    progress=0;
+    applyTheme(t);
+    shapeWave(i*7+3);
+    document.getElementById("now-title").textContent=t.name;
+    document.getElementById("now-album").textContent=`專輯《霓虹漫遊》· 城市潛水`;
+    document.getElementById("hero-eyebrow").textContent=`Track ${t.no} · ${t.sub}`;
+    tDur.textContent=t.dur;
+    trkEls.forEach((el,k)=>el.classList.toggle("active",k===i));
+    paintPlayed();
+    if(autoplay) play(); else updateLive();
+  }
+
+  function setPlayIcon(){
+    icoPlay.innerHTML = playing
+      ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'
+      : '<path d="M8 5v14l11-7z"/>';
+    playBtn.setAttribute("aria-label", playing?"暫停":"播放");
+    playBtn.setAttribute("aria-pressed", playing);
+    playBtn.classList.toggle("on",playing);
+  }
+  function updateLive(){
+    waveWrap.classList.toggle("playing", playing && !reduce);
+    trkEls[cur].classList.toggle("live", playing);
+  }
+
+  function tick(ts){
+    if(!last) last=ts;
+    const dt=(ts-last)/1000; last=ts;
+    progress += (dt/TRACKS[cur].sec)*100;
+    if(progress>=100){ progress=0; selectTrack((cur+1)%TRACKS.length,true); return; }
+    paintPlayed();
+    raf=requestAnimationFrame(tick);
+  }
+  function play(){
+    playing=true; setPlayIcon(); updateLive();
+    last=0;
+    if(!reduce){ cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); }
+  }
+  function pause(){
+    playing=false; setPlayIcon(); updateLive();
+    cancelAnimationFrame(raf);
+  }
+  playBtn.addEventListener("click",()=> playing?pause():play());
+
+  // scrub by click / keyboard
+  waveWrap.addEventListener("click",e=>{
+    const r=waveWrap.getBoundingClientRect();
+    progress=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100));
+    paintPlayed();
+  });
+  waveWrap.addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight"){progress=Math.min(100,progress+5);paintPlayed();e.preventDefault();}
+    if(e.key==="ArrowLeft"){progress=Math.max(0,progress-5);paintPlayed();e.preventDefault();}
+    if(e.key===" "||e.key==="Enter"){e.preventDefault();playing?pause():play();}
+  });
+
+  // init
+  selectTrack(0,false);
+
+  // ---- tour data ----
+  const TOUR=[
+    {date:"07.18",dow:"FRI",city:"台北",venue:"Legacy Taipei",status:"few",label:"少量釋出",
+     time:"19:30 開演 · 18:30 入場",guest:"特別嘉賓：海邊的卡夫卡",price:"NT$1,280 起"},
+    {date:"07.26",dow:"SAT",city:"台中",venue:"Legacy Taichung",status:"soon",label:"7/01 開賣",
+     time:"19:30 開演 · 18:30 入場",guest:"暖場：夜光巴士",price:"NT$1,180 起"},
+    {date:"08.09",dow:"SAT",city:"高雄",venue:"駁二月光劇場",status:"few",label:"少量釋出",
+     time:"19:00 開演 · 18:00 入場",guest:"暖場：潛行少年",price:"NT$1,180 起"},
+    {date:"08.23",dow:"SAT",city:"台南",venue:"TCRC 後院",status:"sold",label:"完售",
+     time:"20:00 開演 · 19:00 入場",guest:"無暖場 · Live Set",price:"完售"},
+    {date:"09.13",dow:"SAT",city:"花蓮",venue:"鐵道音樂館",status:"soon",label:"7/08 開賣",
+     time:"19:00 開演 · 18:00 入場",guest:"暖場：海風電台",price:"NT$980 起"},
+  ];
+  const tourEl=document.getElementById("tourlist");
+  TOUR.forEach((s,i)=>{
+    const row=document.createElement("div");
+    row.className="tour-row reveal";
+    const sold = s.status==="sold";
+    row.innerHTML=`
+      <div class="tour-head" tabindex="0" role="button" aria-expanded="false"
+           aria-label="${s.city} ${s.venue} ${s.date} ${s.label}，展開詳情">
+        <div class="date">${s.date}<small>${s.dow} · 2026</small></div>
+        <div><div class="city">${s.city}</div><div class="venue">${s.venue}</div></div>
+        <div class="status ${s.status}">${s.label}</div>
+        <span class="chev" aria-hidden="true"></span>
+      </div>
+      <div class="tour-detail">
+        <div class="tour-detail-in">
+          <div class="info"><b>演出時間</b>${s.time}</div>
+          <div class="info"><b>票價</b>${s.price}</div>
+          <div class="info"><b>卡司</b>${s.guest}</div>
+          <button class="bticket" ${sold?"disabled":""}>${sold?"已完售":"購票"}</button>
+        </div>
+      </div>`;
+    const head=row.querySelector(".tour-head");
+    const toggle=()=>{
+      const open=row.classList.toggle("open");
+      head.setAttribute("aria-expanded",open);
+    };
+    head.addEventListener("click",toggle);
+    head.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}
+    });
+    const bt=row.querySelector(".bticket");
+    if(!sold) bt.addEventListener("click",e=>{
+      e.stopPropagation();
+      toast(`已將 ${s.city}・${s.venue}（${s.date}）加入購票清單`);
+    });
+    tourEl.appendChild(row);
+  });
+
+  // ---- subscribe ----
+  document.getElementById("subform").addEventListener("submit",e=>{
+    e.preventDefault();
+    const v=document.getElementById("email").value.trim();
+    const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if(!ok){ toast("Email 格式怪怪的，再確認一下"); return; }
+    toast("訂閱成功，新歌與加場第一手通知你");
+    e.target.reset();
+  });
+
+  // ---- toast ----
+  let toastT=null;
+  const toastEl=document.getElementById("toast");
+  function toast(msg){
+    document.getElementById("toast-txt").textContent=msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastT);
+    toastT=setTimeout(()=>toastEl.classList.remove("show"),3200);
+  }
+
+  // ---- scroll reveal ----
+  if("IntersectionObserver" in window && !reduce){
+    const io=new IntersectionObserver((ents)=>{
+      ents.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}});
+    },{threshold:.15});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  } else {
+    document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
+  }
+})();
+</script>
+</body>
+</html>

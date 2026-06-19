@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>潮間帶 TIDAL ZONE｜海岸生活誌｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="《潮間帶》是一本關於海岸生活的數位雜誌——記錄漁港、潮汐、慢食與沿海人們的故事。本頁為 e-life-ai 製作的前端設計樣板。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #16242f;        /* deep tidal blue-black, primary text */
+    --abyss: #0b1922;      /* dark reading-mode background */
+    --abyss-2: #11242f;    /* dark surface */
+    --foam: #f3efe6;       /* warm foam paper, light bg */
+    --paper: #fbf9f3;      /* lifted card surface */
+    --sea: #1f6075;        /* deep teal — links, section accent */
+    --sea-bright: #3aa0b8; /* brighter teal for dark mode */
+    --coral: #df5d3a;      /* warm catch accent */
+    --sand: #9c8c6e;       /* wet-sand muted, captions/meta */
+
+    --bg: var(--foam);
+    --surface: var(--paper);
+    --text: var(--ink);
+    --muted: var(--sand);
+    --accent: var(--sea);
+    --line: rgba(22,36,47,.14);
+
+    --serif: "Noto Serif TC", "Songti TC", serif;
+    --sans: "Noto Sans TC", system-ui, sans-serif;
+    --latin: "Playfair Display", serif;
+
+    --measure: 38rem;
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+
+  html[data-theme="dark"] {
+    --bg: var(--abyss);
+    --surface: var(--abyss-2);
+    --text: #e9e4d6;
+    --muted: #7d8c91;
+    --accent: var(--sea-bright);
+    --line: rgba(233,228,214,.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background .6s var(--ease), color .6s var(--ease);
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: var(--coral); color: #fff; }
+
+  :focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { width: min(1180px, 92vw); margin-inline: auto; }
+
+  /* ---------- top utility bar ---------- */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    font-family: var(--sans);
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    position: sticky; top: 0; z-index: 60;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+  }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 46px; gap: 1rem; }
+  .topbar .date { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar .tools { display: flex; align-items: center; gap: .35rem; flex-shrink: 0; }
+  .pill {
+    font-family: var(--sans);
+    font-size: .68rem; letter-spacing: .12em;
+    border: 1px solid var(--line);
+    background: transparent; color: var(--text);
+    padding: .42em .8em; border-radius: 100px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: .4em;
+    transition: border-color .25s, color .25s, background .25s;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+  .pill[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ---------- masthead ---------- */
+  .masthead { position: relative; padding: 2.6rem 0 1.4rem; }
+  .masthead .wrap { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1rem; }
+  .brand-block { line-height: 1; }
+  .brand-eyebrow {
+    font-family: var(--sans); font-size: .7rem; letter-spacing: .42em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: .9rem; padding-left: .1em;
+  }
+  .brand {
+    font-family: var(--serif); font-weight: 900;
+    font-size: clamp(3.4rem, 11vw, 7.2rem);
+    letter-spacing: .04em; line-height: .9;
+    position: relative; display: inline-block;
+  }
+  .brand .latin {
+    display: block; font-family: var(--latin); font-weight: 500; font-style: italic;
+    font-size: clamp(.95rem, 2.6vw, 1.5rem); letter-spacing: .5em;
+    color: var(--accent); margin-top: .6rem; padding-left: .35em;
+  }
+  /* the horizon line that doubles as reading-progress */
+  .horizon {
+    height: 3px; margin-top: 1.3rem; position: relative;
+    background: var(--line); border-radius: 2px; overflow: hidden;
+  }
+  .horizon__fill {
+    position: absolute; inset: 0; transform-origin: left; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--sea), var(--coral));
+    transition: transform .12s linear;
+  }
+  .issue-meta {
+    font-family: var(--sans); text-align: right; font-size: .74rem;
+    letter-spacing: .1em; color: var(--muted); line-height: 1.8;
+  }
+  .issue-meta strong { display: block; font-family: var(--latin); font-size: 2.1rem; color: var(--coral); letter-spacing: 0; font-style: italic; }
+
+  /* ---------- nav / section switcher ---------- */
+  nav.sections {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    position: sticky; top: 46px; z-index: 55;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+  }
+  nav.sections .wrap { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+  nav.sections .wrap::-webkit-scrollbar { display: none; }
+  .seclink {
+    font-family: var(--sans); font-weight: 500; font-size: .9rem;
+    padding: .95rem .95rem; white-space: nowrap; color: var(--muted);
+    border: none; background: none; cursor: pointer; position: relative;
+    transition: color .25s;
+  }
+  .seclink:hover { color: var(--text); }
+  .seclink[aria-current="true"] { color: var(--text); }
+  .seclink[aria-current="true"]::after {
+    content: ""; position: absolute; left: .95rem; right: .95rem; bottom: 0; height: 2px;
+    background: var(--coral);
+  }
+  .seclink small { display: block; font-family: var(--latin); font-style: italic; font-size: .62rem; letter-spacing: .1em; color: var(--accent); margin-top: 1px; }
+
+  /* ---------- lead / featured ---------- */
+  main { padding-bottom: 5rem; }
+
+  .lead { padding: 3rem 0 2.4rem; }
+  .lead .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+
+  .cover {
+    position: relative; aspect-ratio: 4/5; border-radius: 4px; overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 20% 8%, #2a7d92 0%, transparent 55%),
+      radial-gradient(140% 120% at 90% 100%, #d8552f 0%, transparent 50%),
+      linear-gradient(170deg, #0d3a48 0%, #16242f 60%, #0a1a22 100%);
+    box-shadow: 0 30px 60px -30px rgba(13,58,72,.55);
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  /* tide-line SVG layered into the cover */
+  .cover svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cover__tag {
+    position: absolute; top: 1.1rem; left: 1.1rem;
+    font-family: var(--sans); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+    background: rgba(255,255,255,.92); color: var(--ink); padding: .42em .9em; border-radius: 100px;
+  }
+  .cover__cap {
+    position: absolute; bottom: 1rem; right: 1.1rem;
+    font-family: var(--sans); font-size: .68rem; letter-spacing: .08em; color: rgba(255,255,255,.62);
+    writing-mode: vertical-rl;
+  }
+
+  .lead-copy { padding-top: .2rem; }
+  .kicker {
+    font-family: var(--sans); font-weight: 700; font-size: .76rem; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--coral); margin-bottom: 1rem;
+    display: inline-flex; align-items: center; gap: .6em;
+  }
+  .kicker::before { content: ""; width: 26px; height: 2px; background: var(--coral); display: inline-block; }
+  .lead-copy h1 {
+    font-family: var(--serif); font-weight: 900; letter-spacing: .01em;
+    font-size: clamp(2.1rem, 5.4vw, 3.5rem); line-height: 1.12; margin-bottom: 1.1rem;
+  }
+  .standfirst {
+    font-size: clamp(1.05rem, 2.2vw, 1.28rem); line-height: 1.75; font-weight: 300;
+    color: color-mix(in srgb, var(--text) 84%, transparent); max-width: 32ch;
+  }
+  .byline {
+    font-family: var(--sans); font-size: .82rem; color: var(--muted);
+    margin-top: 1.6rem; display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
+  }
+  .byline .who { color: var(--text); font-weight: 500; }
+  .byline .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted); }
+  .read-btn {
+    margin-top: 1.8rem; font-family: var(--sans); font-weight: 700; font-size: .92rem;
+    letter-spacing: .05em; background: var(--coral); color: #fff; border: none;
+    padding: .95em 1.7em; border-radius: 100px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: .6em;
+    transition: transform .25s var(--ease), box-shadow .25s, background .25s;
+  }
+  .read-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -12px var(--coral); }
+  @media (prefers-reduced-motion: reduce) { .read-btn:hover { transform: none; } }
+  .read-btn .arrow { transition: transform .3s var(--ease); }
+  .read-btn:hover .arrow { transform: translateX(4px); }
+
+  /* ---------- the article (signature: tide reading-progress) ---------- */
+  .article-shell { position: relative; padding-top: 1rem; }
+  .article-shell .wrap { display: grid; grid-template-columns: 64px minmax(0, var(--measure)) 1fr; gap: clamp(1.2rem, 3vw, 2.6rem); align-items: start; }
+
+  /* tide gauge — vertical water column that rises with reading progress */
+  .tide-rail { position: sticky; top: 120px; height: min(60vh, 460px); }
+  .tide-gauge {
+    position: relative; width: 14px; height: 100%; margin: 0 auto;
+    border: 1px solid var(--line); border-radius: 100px; overflow: hidden;
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+  .tide-water {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
+    background: linear-gradient(180deg, var(--sea-bright), var(--sea));
+    transition: height .15s linear;
+  }
+  .tide-water::before {
+    content: ""; position: absolute; top: -6px; left: 0; right: 0; height: 12px;
+    background: var(--coral); opacity: .9; border-radius: 50%;
+    filter: blur(.5px);
+  }
+  .tide-pct {
+    font-family: var(--latin); font-style: italic; font-size: 1.1rem; text-align: center;
+    color: var(--accent); margin-top: .7rem;
+  }
+  .tide-label {
+    font-family: var(--sans); font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+    text-align: center; color: var(--muted); margin-top: .15rem;
+  }
+
+  article.story { max-width: var(--measure); }
+  article.story h2 {
+    font-family: var(--serif); font-weight: 700; font-size: clamp(1.5rem, 3.2vw, 2rem);
+    margin: 2.6rem 0 1rem; letter-spacing: .01em; line-height: 1.25;
+  }
+  article.story p { font-size: 1.12rem; line-height: 1.95; margin-bottom: 1.4rem; font-weight: 300; }
+  article.story p strong { font-weight: 700; }
+  /* drop cap on the opening paragraph */
+  article.story p.opening::first-letter {
+    font-family: var(--latin); font-weight: 700; font-size: 3.6em; line-height: .76;
+    float: left; padding: .05em .12em 0 0; color: var(--coral);
+  }
+  .pullquote {
+    font-family: var(--serif); font-weight: 500; font-size: clamp(1.35rem, 3vw, 1.7rem);
+    line-height: 1.5; color: var(--accent); border-left: 3px solid var(--coral);
+    padding: .3rem 0 .3rem 1.4rem; margin: 2.2rem 0; font-style: normal;
+  }
+  .fig {
+    margin: 2.2rem 0; border-radius: 4px; aspect-ratio: 16/9; overflow: hidden;
+    background:
+      radial-gradient(90% 120% at 80% 20%, #3aa0b8 0%, transparent 55%),
+      linear-gradient(160deg, #16242f, #0d3a48);
+    position: relative;
+  }
+  .fig figcaption {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: .7rem 1rem;
+    font-family: var(--sans); font-size: .76rem; color: rgba(255,255,255,.78);
+    background: linear-gradient(transparent, rgba(0,0,0,.45));
+  }
+
+  /* aside: in-this-issue rail */
+  .issue-rail { position: sticky; top: 120px; font-family: var(--sans); }
+  .issue-rail h3 {
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+    padding-bottom: .8rem; margin-bottom: .8rem; border-bottom: 1px solid var(--line);
+  }
+  .rail-item { display: flex; gap: .8rem; padding: .75rem 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .rail-item:last-child { border-bottom: none; }
+  .rail-item .num { font-family: var(--latin); font-style: italic; color: var(--coral); font-size: 1.1rem; line-height: 1; flex-shrink: 0; }
+  .rail-item .t { font-family: var(--serif); font-size: .96rem; line-height: 1.4; transition: color .2s; }
+  .rail-item:hover .t { color: var(--accent); }
+  .rail-item .m { font-size: .7rem; color: var(--muted); margin-top: .25rem; }
+
+  /* ---------- front-page grid (re-flows on section switch) ---------- */
+  .grid-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 4rem 0 1.6rem; flex-wrap: wrap; }
+  .grid-head h2 {
+    font-family: var(--serif); font-weight: 900; font-size: clamp(1.7rem, 4vw, 2.5rem);
+    letter-spacing: .01em;
+  }
+  .grid-head h2 .latin { font-family: var(--latin); font-style: italic; font-weight: 500; color: var(--accent); font-size: .6em; margin-left: .5em; }
+  .grid-head .count { font-family: var(--sans); font-size: .8rem; color: var(--muted); letter-spacing: .08em; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+    display: flex; flex-direction: column; cursor: pointer;
+    transition: transform .35s var(--ease), box-shadow .35s, border-color .35s;
+    animation: rise .5s var(--ease) both;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -26px rgba(13,58,72,.5); border-color: transparent; }
+  @media (prefers-reduced-motion: reduce) { .card { animation: none; } .card:hover { transform: none; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card__img { aspect-ratio: 3/2; position: relative; }
+  .card__cat {
+    position: absolute; top: .7rem; left: .7rem; font-family: var(--sans);
+    font-size: .64rem; letter-spacing: .16em; text-transform: uppercase;
+    background: rgba(255,255,255,.92); color: var(--ink); padding: .35em .75em; border-radius: 100px;
+  }
+  .card__body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
+  .card__body h3 { font-family: var(--serif); font-weight: 700; font-size: 1.18rem; line-height: 1.4; margin-bottom: .55rem; }
+  .card__body p { font-size: .92rem; line-height: 1.7; color: color-mix(in srgb, var(--text) 76%, transparent); font-weight: 300; flex: 1; }
+  .card__meta { font-family: var(--sans); font-size: .74rem; color: var(--muted); margin-top: 1rem; display: flex; gap: .6rem; align-items: center; }
+  .card__meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted); }
+
+  /* expandable inline card */
+  .card.expandable .card__body { position: relative; }
+  .card__more {
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height .5s var(--ease), opacity .4s, margin-top .4s;
+    font-family: var(--serif); font-weight: 300; font-size: .92rem; line-height: 1.75;
+    color: color-mix(in srgb, var(--text) 80%, transparent);
+  }
+  .card.open .card__more { max-height: 320px; opacity: 1; margin-top: .8rem; }
+  .expand-btn {
+    margin-top: 1rem; align-self: flex-start; font-family: var(--sans); font-weight: 700;
+    font-size: .78rem; letter-spacing: .05em; color: var(--accent); background: none; border: none;
+    cursor: pointer; display: inline-flex; align-items: center; gap: .4em; padding: 0;
+  }
+  .expand-btn .chev { transition: transform .35s var(--ease); }
+  .card.open .expand-btn .chev { transform: rotate(180deg); }
+
+  .empty-grid {
+    grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;
+    font-family: var(--sans); color: var(--muted);
+  }
+
+  /* ---------- newsletter ---------- */
+  .news {
+    margin: 5rem 0 0; border-radius: 8px; overflow: hidden; position: relative;
+    background: linear-gradient(150deg, #0d3a48, #16242f 70%);
+    color: #f3efe6; padding: clamp(2.4rem, 6vw, 4rem) clamp(1.4rem, 5vw, 3.5rem);
+  }
+  .news::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(80% 120% at 90% 110%, rgba(223,93,58,.4), transparent 55%);
+  }
+  .news .inner { position: relative; max-width: 34rem; }
+  .news .kicker { color: #f0a98e; }
+  .news h2 { font-family: var(--serif); font-weight: 900; font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.2; margin-bottom: .8rem; }
+  .news p { font-weight: 300; line-height: 1.75; color: rgba(243,239,230,.82); margin-bottom: 1.6rem; }
+  .news form { display: flex; gap: .6rem; flex-wrap: wrap; }
+  .news input {
+    flex: 1; min-width: 200px; font-family: var(--serif); font-size: 1rem;
+    padding: .85em 1.1em; border-radius: 100px; border: 1px solid rgba(243,239,230,.28);
+    background: rgba(243,239,230,.06); color: #f3efe6;
+  }
+  .news input::placeholder { color: rgba(243,239,230,.5); }
+  .news input:focus-visible { outline-color: #f0a98e; border-color: #f0a98e; }
+  .news button[type=submit] {
+    font-family: var(--sans); font-weight: 700; font-size: .92rem; letter-spacing: .04em;
+    background: var(--coral); color: #fff; border: none; padding: .85em 1.8em;
+    border-radius: 100px; cursor: pointer; transition: transform .25s var(--ease), background .25s;
+  }
+  .news button[type=submit]:hover { transform: translateY(-2px); background: #e96a47; }
+  @media (prefers-reduced-motion: reduce) { .news button[type=submit]:hover { transform: none; } }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); margin-top: 5rem; padding: 2.6rem 0 3rem; }
+  footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  footer .fbrand { font-family: var(--serif); font-weight: 900; font-size: 1.4rem; letter-spacing: .04em; }
+  footer .fnote { font-family: var(--sans); font-size: .82rem; color: var(--muted); letter-spacing: .04em; }
+  footer .fnote a { color: var(--accent); font-weight: 500; }
+  footer .fnote a:hover { text-decoration: underline; }
+
+  /* ---------- toast ---------- */
+  .toast {
+    position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(140%);
+    background: var(--ink); color: var(--foam); font-family: var(--sans); font-size: .92rem;
+    padding: .95em 1.5em; border-radius: 100px; box-shadow: 0 16px 40px -16px rgba(0,0,0,.5);
+    z-index: 90; display: flex; align-items: center; gap: .7em;
+    transition: transform .5s var(--ease); max-width: 90vw;
+  }
+  html[data-theme="dark"] .toast { background: var(--coral); color: #fff; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast .mark { color: var(--coral); font-size: 1.1em; }
+  html[data-theme="dark"] .toast .mark { color: #fff; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 920px) {
+    .lead .wrap { grid-template-columns: 1fr; }
+    .cover { aspect-ratio: 16/10; order: -1; }
+    .cover__cap { writing-mode: horizontal-tb; bottom: 1rem; }
+    .article-shell .wrap { grid-template-columns: 1fr; }
+    .tide-rail { position: fixed; right: 12px; top: auto; bottom: 90px; height: auto; z-index: 40; }
+    .tide-gauge { width: 10px; height: 120px; }
+    .tide-pct, .tide-label { display: none; }
+    .issue-rail { position: static; margin-top: 2rem; }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .masthead .wrap { grid-template-columns: 1fr; }
+    .issue-meta { text-align: left; }
+    .cards { grid-template-columns: 1fr; }
+    .topbar .date { display: none; }
+    article.story p { font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== top utility bar ===== -->
+<div class="topbar">
+  <div class="wrap">
+    <span class="date" id="todayDate">海岸生活誌 · 每月一刊</span>
+    <div class="tools">
+      <button class="pill" id="themeToggle" aria-pressed="false" aria-label="切換閱讀模式">
+        <span id="themeIcon">🌊</span><span id="themeText">退潮模式</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== masthead ===== -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand-block">
+      <div class="brand-eyebrow">海岸生活誌 · 第 014 期</div>
+      <div class="brand">
+        潮間帶
+        <span class="latin">TIDAL ZONE</span>
+      </div>
+      <div class="horizon" aria-hidden="true"><div class="horizon__fill" id="horizonFill"></div></div>
+    </div>
+    <div class="issue-meta">
+      二〇二六年 · 六月號<br>
+      <strong>№14</strong>
+      潮汐與餐桌
+    </div>
+  </div>
+</header>
+
+<!-- ===== section switcher ===== -->
+<nav class="sections" aria-label="專欄分類">
+  <div class="wrap" id="secNav">
+    <button class="seclink" data-cat="all" aria-current="true">全部<small>All</small></button>
+    <button class="seclink" data-cat="ocean">海與潮<small>Ocean</small></button>
+    <button class="seclink" data-cat="table">慢食桌<small>Table</small></button>
+    <button class="seclink" data-cat="people">沿海的人<small>People</small></button>
+    <button class="seclink" data-cat="field">田野筆記<small>Field</small></button>
+  </div>
+</nav>
+
+<main>
+  <!-- ===== lead / featured ===== -->
+  <section class="lead">
+    <div class="wrap">
+      <div class="cover">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,330 C60,300 120,360 200,335 C280,310 340,360 400,335 L400,500 L0,500 Z" fill="rgba(58,160,184,.28)"/>
+          <path d="M0,375 C70,350 130,400 210,378 C300,353 350,400 400,380 L400,500 L0,500 Z" fill="rgba(31,96,117,.45)"/>
+          <path d="M0,420 C80,400 140,440 220,420 C310,398 360,438 400,422 L400,500 L0,500 Z" fill="rgba(13,58,72,.6)"/>
+          <circle cx="310" cy="110" r="46" fill="rgba(223,93,58,.78)"/>
+        </svg>
+        <span class="cover__tag">封面故事</span>
+        <span class="cover__cap">攝影 · 林晚潮</span>
+      </div>
+      <div class="lead-copy">
+        <span class="kicker">慢食桌 · 封面故事</span>
+        <h1>退潮兩小時，是一張只開給海的餐桌</h1>
+        <p class="standfirst">在台東長濱，一群人把午餐搬到退潮後裸露的礁岩上。食材沒有菜單——它由今天的潮水決定。我們跟著一場「等潮而食」，重新學會與海協商。</p>
+        <div class="byline">
+          <span class="who">文 · 周岸生</span>
+          <span class="dot"></span>
+          <span>攝影 · 林晚潮</span>
+          <span class="dot"></span>
+          <span>閱讀約 9 分鐘</span>
+        </div>
+        <button class="read-btn" id="startReading">
+          開始閱讀 <span class="arrow">↓</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== the featured article (signature progress) ===== -->
+  <section class="article-shell" id="article">
+    <div class="wrap">
+      <!-- tide gauge: signature reading-progress -->
+      <div class="tide-rail" aria-hidden="true">
+        <div class="tide-gauge"><div class="tide-water" id="tideWater"></div></div>
+        <div class="tide-pct" id="tidePct">0%</div>
+        <div class="tide-label">潮位 · 閱讀進度</div>
+      </div>
+
+      <article class="story">
+        <p class="opening">海水退去的速度比想像中慢。早上九點四十分，潮位開始下降，礁岩像一塊塊浮出水面的拼圖，露出昨夜還沉在水下的世界。長濱的廚師阿洛蹲在最靠海的那塊平台上，等的不是時間，是一條界線——當水退到第三道石縫，午餐才正式開始。</p>
+
+        <p>「我們不挑食材，是食材挑我們。」阿洛說這句話時，正用一把短刀撬開附著在礁石上的笠螺。這天的菜單，要等到潮水完全退開才會揭曉：可能是被困在潮池裡的小章魚，可能是隨浪上岸的紫菜，也可能什麼都沒有，只剩下風與鹽。<strong>等潮而食，從來不保證豐盛，只保證誠實。</strong></p>
+
+        <div class="fig">
+          <figcaption>退潮後的礁岩平台，潮池裡留下了當天的食材——攝於台東長濱</figcaption>
+        </div>
+
+        <h2>潮汐表，是這張餐桌唯一的訂位系統</h2>
+        <p>在長濱，沒有人用月曆安排這頓飯。真正掌權的是農業部漁業署每天更新的潮汐表：滿潮、乾潮、潮差，三個數字決定了當天能不能下海，又能採到什麼。潮差大的日子，裸露的礁岩面積最廣，能走到平常被海水覆蓋的「秘密菜園」；潮差小的時候，就只能在岸邊撿拾。</p>
+
+        <blockquote class="pullquote">「城市的餐廳怕缺貨，我們只怕看不懂潮水。海不會欠你，但也不會多給。」</blockquote>
+
+        <p>這套節奏，其實是沿海部落延續了上百年的生活智慧。阿洛的阿嬤那一輩，把潮汐當成時鐘：什麼潮採什麼、什麼季節什麼魚回來，全寫在記憶裡，不在紙上。如今這份記憶正在斷層，而阿洛想做的，是把它重新端上桌——讓吃的人也學會看潮。</p>
+
+        <h2>當食材由潮水決定，料理就成了一種協商</h2>
+        <p>退潮後的兩個小時，是整場午餐的全部。阿洛沒有冰箱、沒有備料，只有一只柴火爐和當天從礁岩上採到的東西。紫菜用海水快汆，笠螺直接炙烤，潮池裡那隻倔強的小章魚，最後被切成薄片，淋上一點點野生山葡萄的酸。沒有醬汁掩蓋，每一口都帶著明確的鹹度——那是海水的鹹，不是鹽罐的鹹。</p>
+
+        <p>「協商」是阿洛反覆提到的詞。他說料理不是征服食材，是跟海談條件：海今天願意給什麼，他就用什麼回應。這種被動，反而逼出了最大的創造力。當你不能決定主菜，你只能決定怎麼對待它。</p>
+
+        <p>潮水開始回漲時，這頓飯也就結束了。第三道石縫重新沒入水中，餐桌被海收回去。沒有人覺得可惜——明天的潮，會再開一張新的桌。<strong>而我們學到的，是把選擇權交還給海，本身就是一種飽足。</strong></p>
+      </article>
+
+      <!-- in-this-issue rail -->
+      <aside class="issue-rail">
+        <h3>本期目錄</h3>
+        <div class="rail-item"><span class="num">01</span><div><div class="t">退潮兩小時，只開給海的餐桌</div><div class="m">慢食桌 · 封面</div></div></div>
+        <div class="rail-item"><span class="num">02</span><div><div class="t">基隆崁仔頂魚市，凌晨三點的喊聲</div><div class="m">沿海的人</div></div></div>
+        <div class="rail-item"><span class="num">03</span><div><div class="t">為什麼東北季風一來，海就變色？</div><div class="m">海與潮</div></div></div>
+        <div class="rail-item"><span class="num">04</span><div><div class="t">一罐魚露，封存了三年的夏天</div><div class="m">慢食桌</div></div></div>
+        <div class="rail-item"><span class="num">05</span><div><div class="t">蚵農的潮間帶，一天兩次的通勤</div><div class="m">田野筆記</div></div></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== front-page grid ===== -->
+  <section class="wrap">
+    <div class="grid-head">
+      <h2 id="gridTitle">本期選讀 <span class="latin">In This Issue</span></h2>
+      <span class="count" id="gridCount"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- ===== newsletter ===== -->
+  <section class="wrap">
+    <div class="news">
+      <div class="inner">
+        <span class="kicker">隨潮而至</span>
+        <h2>每次乾潮，寄一封信給你</h2>
+        <p>《潮間帶》電子報，每月一封。我們把當期的封面故事、一份在地小店清單、還有下個月的潮汐重點，整理成一封能慢慢讀的信。不轉售名單，隨時可退訂。</p>
+        <form id="newsForm" novalidate>
+          <input type="email" id="newsEmail" placeholder="你的電子信箱" aria-label="電子信箱" required>
+          <button type="submit">訂閱電子報</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== footer ===== -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="fbrand">潮間帶 <span style="font-family:var(--latin);font-style:italic;font-weight:500;font-size:.6em;color:var(--accent)">Tidal Zone</span></div>
+    </div>
+    <div class="fnote">
+      設計樣板 · <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai.com</a>　|　本頁為前端展示，內容皆為虛構示意
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="mark">✦</span><span id="toastMsg"></span></div>
+
+<script>
+(function () {
+  "use strict";
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- article data (re-flowable front-page grid) ---------- */
+  const CAT_LABEL = { ocean: "海與潮", table: "慢食桌", people: "沿海的人", field: "田野筆記" };
+  const COVER = {
+    ocean: "radial-gradient(90% 120% at 80% 10%, #3aa0b8, transparent 55%), linear-gradient(160deg,#0d3a48,#16242f)",
+    table: "radial-gradient(90% 120% at 20% 90%, #df5d3a, transparent 55%), linear-gradient(160deg,#16242f,#0d2730)",
+    people: "radial-gradient(100% 100% at 50% 0%, #1f6075, transparent 60%), linear-gradient(160deg,#11242f,#0a1a22)",
+    field: "radial-gradient(80% 120% at 90% 100%, #9c8c6e, transparent 55%), linear-gradient(160deg,#16242f,#0d3a48)"
+  };
+  const ARTICLES = [
+    { cat:"people", t:"崁仔頂魚市，凌晨三點的喊聲", d:"基隆唯一的百年漁市，在天亮前用一種快到聽不懂的「糶手」叫賣語言，決定整座城市今天吃什麼魚。", who:"文 · 周岸生", time:"7 分鐘",
+      more:"糶手是魚市裡的靈魂人物，一秒鐘喊出價格、品項與買家，外人完全聽不懂。我們在凌晨兩點半抵達，跟著一位入行四十年的老糶手，記錄這套口耳相傳、沒有文字的拍賣系統如何運轉，以及它正面臨的傳承斷點。" },
+    { cat:"ocean", t:"東北季風一來，海為什麼變色？", d:"冬天的台灣東北角，海會從清透的藍轉成混濁的褐綠。這不是污染，而是一場每年準時上演的海洋翻轉。", who:"文 · 何潮汛", time:"6 分鐘",
+      more:"季風攪動表層海水，把海底富含營養鹽的冷水帶上來，浮游生物大量繁殖，海色因此改變。這場「湧升流」同時帶來了魚汛，是沿海漁村一年中最忙碌的季節。我們用一張潮汐圖與一位老漁人的口述，解釋這片變色的海底下發生了什麼。" },
+    { cat:"table", t:"一罐魚露，封存三年的夏天", d:"在屏東東港，一位阿嬤用最傳統的方法做魚露：只有鯷魚、海鹽、時間，與一缸不能搬動的陽光。", who:"文 · 周岸生", time:"8 分鐘",
+      more:"鯷魚與鹽以三比一的比例層層堆疊，封缸後在陽光下靜置至少三年，讓酵素慢慢把魚肉分解成琥珀色的鮮味。這篇文章記錄了一整缸魚露從入缸到開封的時間，以及為什麼工業化生產永遠複製不出那股「時間的味道」。" },
+    { cat:"field", t:"蚵農的潮間帶，一天兩次的通勤", d:"嘉義東石的蚵農，把上班時間交給潮水：乾潮下海、滿潮收工。他們的辦公室，一天淹沒兩次。", who:"文 · 何潮汛", time:"5 分鐘",
+      more:"我們跟著一位蚵農走進退潮後的蚵棚，記錄綁蚵、收蚵、巡棚的一天。潮間帶的養殖看天吃飯，也看潮做工——颱風、寒流、海水酸化，每一項都直接寫在當季的收成上。" },
+    { cat:"ocean", t:"潮池，是海留給陸地的一封短信", d:"退潮後留在礁岩窪地裡的那一小灘水，是一個被困住的微型海洋，也是觀察海洋生態最好的窗口。", who:"文 · 林晚潮", time:"6 分鐘",
+      more:"潮池裡有寄居蟹、海葵、小魚與藻類，是一個會在每次漲潮重新洗牌的封閉生態系。這篇圖文導覽帶你蹲下來，看清楚這灘水裡正在發生的競爭、共生與躲藏。" },
+    { cat:"people", t:"最後一位手工補網的人", d:"在南方澳，七十八歲的補網師傅，用一支梭子修補著越來越少人需要的漁網，也修補著一個正在消失的行業。", who:"文 · 周岸生", time:"7 分鐘",
+      more:"手工補網靠的是手感與經驗：哪一格破了、該用多粗的線、結要打多緊，全憑數十年累積的判斷。隨著塑膠網與機器修補普及，這門手藝幾乎後繼無人。我們記錄了師傅的一天，也記下他不願說破的不捨。" },
+    { cat:"table", t:"海菜餐桌：被忽略的綠色潮汐", d:"紫菜、海葡萄、石蓴——這些沿海唾手可得的海藻，其實是台灣餐桌上最被低估的在地食材。", who:"文 · 林晚潮", time:"5 分鐘",
+      more:"我們走訪三個沿海聚落，整理出一份「可食海菜」的採集與料理筆記：什麼季節採、怎麼分辨可食與不可食、最簡單的處理方式。海菜不必遠求，它就長在退潮後的那塊礁岩上。" },
+    { cat:"field", t:"一張潮汐表，如何決定一座漁村的作息", d:"在沿海聚落，時鐘是參考用的，潮汐表才是真正的行事曆。我們拆解這張不起眼的表格背後的生活邏輯。", who:"文 · 何潮汛", time:"6 分鐘",
+      more:"滿潮、乾潮、潮差、月相——這四個變數交織成漁村一整年的節奏。本文用一份實際的潮汐表，對照當地居民的下海、收工、祭典與婚喪時間，呈現潮水如何深深嵌進沿海的日常。" }
+  ];
+
+  /* ---------- render the grid ---------- */
+  const cardsEl = document.getElementById("cards");
+  const gridCount = document.getElementById("gridCount");
+  let activeCat = "all";
+
+  function cardHTML(a, i) {
+    return `<article class="card expandable" style="animation-delay:${reduce?0:i*55}ms" data-cat="${a.cat}">
+      <div class="card__img" style="background:${COVER[a.cat]}">
+        <span class="card__cat">${CAT_LABEL[a.cat]}</span>
+      </div>
+      <div class="card__body">
+        <h3>${a.t}</h3>
+        <p>${a.d}</p>
+        <div class="card__more">${a.more}</div>
+        <button class="expand-btn" type="button" aria-expanded="false">
+          繼續閱讀 <span class="chev">▾</span>
+        </button>
+        <div class="card__meta">${a.who}<span class="dot"></span>閱讀約 ${a.time}</div>
+      </div>
+    </article>`;
+  }
+
+  function render(cat) {
+    const list = cat === "all" ? ARTICLES : ARTICLES.filter(a => a.cat === cat);
+    if (!list.length) {
+      cardsEl.innerHTML = `<div class="empty-grid">這個專欄本期暫無文章，換個分類看看吧。</div>`;
+      gridCount.textContent = "";
+      return;
+    }
+    cardsEl.innerHTML = list.map(cardHTML).join("");
+    gridCount.textContent = `共 ${list.length} 篇`;
+    bindExpanders();
+  }
+
+  /* inline expand (interaction) */
+  function bindExpanders() {
+    cardsEl.querySelectorAll(".card.expandable").forEach(card => {
+      const btn = card.querySelector(".expand-btn");
+      const open = () => {
+        const willOpen = !card.classList.contains("open");
+        card.classList.toggle("open", willOpen);
+        btn.setAttribute("aria-expanded", String(willOpen));
+        btn.firstChild.textContent = willOpen ? "收合 " : "繼續閱讀 ";
+      };
+      btn.addEventListener("click", e => { e.stopPropagation(); open(); });
+      card.addEventListener("click", e => { if (!e.target.closest(".expand-btn")) open(); });
+    });
+  }
+
+  render("all");
+
+  /* ---------- section switcher (re-flow grid) ---------- */
+  const secNav = document.getElementById("secNav");
+  const gridTitle = document.getElementById("gridTitle");
+  const TITLES = {
+    all:["本期選讀","In This Issue"], ocean:["海與潮","Ocean"],
+    table:["慢食桌","Table"], people:["沿海的人","People"], field:["田野筆記","Field"]
+  };
+  secNav.addEventListener("click", e => {
+    const b = e.target.closest(".seclink");
+    if (!b) return;
+    activeCat = b.dataset.cat;
+    secNav.querySelectorAll(".seclink").forEach(x => x.setAttribute("aria-current", String(x === b)));
+    const [zh, en] = TITLES[activeCat];
+    gridTitle.innerHTML = `${zh} <span class="latin">${en}</span>`;
+    render(activeCat);
+  });
+
+  /* ---------- signature: tide reading-progress ---------- */
+  const article = document.getElementById("article");
+  const water = document.getElementById("tideWater");
+  const pct = document.getElementById("tidePct");
+  const horizon = document.getElementById("horizonFill");
+
+  function updateTide() {
+    const r = article.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = r.height - vh;
+    let p = 0;
+    if (total > 0) p = Math.min(1, Math.max(0, (-r.top) / total));
+    else if (r.top < 0) p = 1;
+    const v = Math.round(p * 100);
+    water.style.height = v + "%";
+    pct.textContent = v + "%";
+    horizon.style.transform = `scaleX(${p})`;
+  }
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { updateTide(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener("resize", updateTide);
+  updateTide();
+
+  /* ---------- start reading scroll ---------- */
+  document.getElementById("startReading").addEventListener("click", () => {
+    article.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  });
+
+  /* ---------- toast ---------- */
+  const toast = document.getElementById("toast");
+  const toastMsg = document.getElementById("toastMsg");
+  let toastTimer;
+  function showToast(msg) {
+    toastMsg.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 3400);
+  }
+
+  /* ---------- newsletter subscribe ---------- */
+  const form = document.getElementById("newsForm");
+  const email = document.getElementById("newsEmail");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const val = email.value.trim();
+    if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      showToast("信箱格式看起來怪怪的，再確認一下？");
+      email.focus();
+      return;
+    }
+    showToast("訂閱成功，下次乾潮我們就寄信給你 🌊");
+    form.reset();
+  });
+
+  /* ---------- theme (ebb/flow reading) toggle ---------- */
+  const root = document.documentElement;
+  const tBtn = document.getElementById("themeToggle");
+  const tIcon = document.getElementById("themeIcon");
+  const tText = document.getElementById("themeText");
+  function applyTheme(dark) {
+    root.setAttribute("data-theme", dark ? "dark" : "light");
+    tBtn.setAttribute("aria-pressed", String(dark));
+    tIcon.textContent = dark ? "🌙" : "🌊";
+    tText.textContent = dark ? "漲潮模式" : "退潮模式";
+  }
+  let dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(dark);
+  tBtn.addEventListener("click", () => { dark = !dark; applyTheme(dark); });
+
+  /* ---------- live date in topbar ---------- */
+  const d = new Date();
+  const wd = ["日","一","二","三","四","五","六"][d.getDay()];
+  document.getElementById("todayDate").textContent =
+    `${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日　星期${wd} · 海岸生活誌`;
+})();
+</script>
+</body>
+</html>

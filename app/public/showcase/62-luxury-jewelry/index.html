@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>緗璁 SERENË｜高級珠寶世家 · 訂製臻品｜e-life-ai</title>
+<meta name="description" content="緗璁 SERENË — 法式高級珠寶世家。鑽石、彩寶、訂製婚戒與私人鑑賞預約。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+TC:wght@300;400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0e0c0a;
+    --ink-2: #161310;
+    --cream: #f6efe3;
+    --cream-dim: #d8cfbf;
+    --gold: #c8a24a;
+    --gold-soft: #e0c074;
+    --gold-line: rgba(200, 162, 74, 0.32);
+    --champagne: #e8d9b8;
+    --muted: #9a907f;
+    --serif-disp: "Cormorant Garamond", "Noto Serif TC", serif;
+    --serif-body: "Noto Serif TC", "Cormorant Garamond", serif;
+    --sans: "Jost", "Noto Serif TC", sans-serif;
+    --max: 1240px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--serif-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* atmospheric layered background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(200, 162, 74, 0.10), transparent 55%),
+      radial-gradient(90% 60% at 90% 110%, rgba(200, 162, 74, 0.06), transparent 60%),
+      linear-gradient(180deg, #100d0a 0%, #0b0908 100%);
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--max);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 64px);
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .display {
+    font-family: var(--serif-disp);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: 0.01em;
+  }
+
+  /* ===== reveal ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 1s var(--ease), transform 1s var(--ease);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  .reveal[data-d="1"] { transition-delay: 0.12s; }
+  .reveal[data-d="2"] { transition-delay: 0.24s; }
+  .reveal[data-d="3"] { transition-delay: 0.36s; }
+  .reveal[data-d="4"] { transition-delay: 0.48s; }
+
+  /* ===== nav ===== */
+  header.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 18px;
+    padding-inline: clamp(20px, 5vw, 64px);
+    transition: background 0.6s var(--ease), border-color 0.6s var(--ease), padding-block 0.5s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  header.nav.scrolled {
+    background: rgba(12, 10, 8, 0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--gold-line);
+    padding-block: 12px;
+  }
+  .brand {
+    font-family: var(--serif-disp);
+    font-size: 1.55rem;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    color: var(--cream);
+    padding-left: 0.34em;
+  }
+  .brand small {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.52rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    margin-top: 2px;
+    padding-left: 0.5em;
+  }
+  nav.links {
+    display: flex;
+    gap: clamp(18px, 2.6vw, 40px);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+  nav.links a { position: relative; padding-block: 4px; transition: color 0.4s; }
+  nav.links a::after {
+    content: ""; position: absolute; left: 0; bottom: 0;
+    width: 0; height: 1px; background: var(--gold); transition: width 0.5s var(--ease);
+  }
+  nav.links a:hover { color: var(--gold-soft); }
+  nav.links a:hover::after { width: 100%; }
+
+  .nav-wish {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.2em;
+    color: var(--cream-dim); cursor: pointer; transition: color 0.4s;
+  }
+  .nav-wish:hover { color: var(--gold-soft); }
+  .nav-wish .count {
+    min-width: 20px; height: 20px; padding-inline: 5px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--gold-line); border-radius: 999px;
+    font-size: 0.66rem; color: var(--gold-soft);
+    transition: transform 0.4s var(--ease), background 0.4s;
+  }
+  .nav-wish .count.pulse { transform: scale(1.35); background: rgba(200,162,74,0.16); }
+
+  /* ===== hero ===== */
+  .hero {
+    min-height: 100svh;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: clamp(24px, 4vw, 60px);
+    padding-top: 96px;
+    padding-bottom: 48px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(2.9rem, 7vw, 5.6rem);
+  }
+  .hero-copy h1 em { font-style: italic; color: var(--gold-soft); }
+  .hero-copy .sub {
+    margin-top: 24px;
+    max-width: 30ch;
+    color: var(--cream-dim);
+    font-size: clamp(1rem, 1.4vw, 1.18rem);
+    font-weight: 300;
+  }
+  .hero-actions { margin-top: 38px; display: flex; gap: 18px; flex-wrap: wrap; }
+
+  .btn {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    padding: 15px 30px;
+    border: 1px solid var(--gold-line);
+    color: var(--cream);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.5s var(--ease);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(232,217,184,0.16), transparent);
+    transform: translateX(-120%);
+    transition: transform 0.7s var(--ease);
+  }
+  .btn:hover::before { transform: translateX(120%); }
+  .btn.solid {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 100%);
+    color: #1a1408; border-color: transparent; font-weight: 500;
+  }
+  .btn:hover { border-color: var(--gold); color: var(--gold-soft); }
+  .btn.solid:hover { color: #1a1408; transform: translateY(-2px); }
+
+  .hero-art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 50vh;
+  }
+  .hero-art .halo {
+    position: absolute;
+    width: 78%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,162,74,0.20), transparent 64%);
+    filter: blur(8px);
+    animation: breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.07); opacity: 1; } }
+  .hero-art svg { width: min(78%, 380px); position: relative; }
+  .spin-slow { transform-box: fill-box; transform-origin: center; animation: spin 28s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .shimmer { animation: shim 4s ease-in-out infinite; transform-origin: center; }
+  @keyframes shim { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+  /* ===== section heading ===== */
+  .sec { padding-block: clamp(72px, 10vw, 132px); }
+  .sec-head { text-align: center; margin-bottom: clamp(40px, 6vw, 72px); }
+  .sec-head .eyebrow { display: inline-block; }
+  .sec-head h2 {
+    font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+    margin-top: 14px;
+  }
+  .sec-head p { margin-top: 16px; color: var(--muted); max-width: 46ch; margin-inline: auto; font-weight: 300; }
+  .rule { width: 54px; height: 1px; background: var(--gold); margin: 18px auto 0; }
+
+  /* ===== filters ===== */
+  .filters {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 10px; margin-bottom: clamp(34px, 5vw, 54px);
+  }
+  .chip {
+    font-family: var(--sans); font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 9px 20px; border: 1px solid var(--gold-line); color: var(--cream-dim);
+    background: transparent; cursor: pointer; transition: all 0.45s var(--ease); border-radius: 999px;
+  }
+  .chip:hover { color: var(--gold-soft); border-color: var(--gold); }
+  .chip.active { background: var(--gold); color: #1a1408; border-color: var(--gold); font-weight: 500; }
+
+  /* ===== product grid ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(18px, 2.4vw, 34px);
+  }
+  .card {
+    position: relative;
+    border: 1px solid rgba(200,162,74,0.14);
+    background: linear-gradient(160deg, rgba(26,22,16,0.9), rgba(15,12,9,0.9));
+    overflow: hidden;
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), border-color 0.5s, box-shadow 0.6s;
+  }
+  .card.hide { display: none; }
+  .card:hover { border-color: var(--gold-line); box-shadow: 0 24px 60px -30px rgba(0,0,0,0.9); transform: translateY(-4px); }
+  .card-media {
+    position: relative; aspect-ratio: 4/5; display: grid; place-items: center;
+    overflow: hidden; cursor: zoom-in;
+    background: radial-gradient(120% 90% at 50% 30%, rgba(200,162,74,0.10), transparent 60%);
+  }
+  .card-media svg { width: 64%; transition: transform 0.8s var(--ease); }
+  .card:hover .card-media svg { transform: scale(1.12) rotate(-2deg); }
+  .card-media .glint {
+    position: absolute; inset: 0;
+    background: linear-gradient(115deg, transparent 40%, rgba(245,239,227,0.14) 50%, transparent 60%);
+    transform: translateX(-100%); transition: transform 0.9s var(--ease);
+  }
+  .card:hover .card-media .glint { transform: translateX(100%); }
+  .wish-btn {
+    position: absolute; top: 12px; right: 12px; z-index: 3;
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid var(--gold-line); background: rgba(12,10,8,0.6);
+    display: grid; place-items: center; cursor: pointer;
+    transition: all 0.4s var(--ease); backdrop-filter: blur(4px);
+  }
+  .wish-btn:hover { border-color: var(--gold); transform: scale(1.08); }
+  .wish-btn svg { width: 18px; transition: all 0.4s; }
+  .wish-btn .hf { fill: none; stroke: var(--gold-soft); stroke-width: 1.4; }
+  .wish-btn.on { background: rgba(200,162,74,0.2); border-color: var(--gold); }
+  .wish-btn.on .hf { fill: var(--gold-soft); stroke: var(--gold-soft); }
+  .card-body { padding: 22px 22px 26px; text-align: center; }
+  .card-body .cat { font-family: var(--sans); font-size: 0.64rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+  .card-body h3 { font-family: var(--serif-disp); font-size: 1.55rem; font-weight: 500; margin-top: 8px; }
+  .card-body .price { margin-top: 8px; color: var(--cream-dim); font-family: var(--sans); font-size: 0.86rem; letter-spacing: 0.08em; }
+  .card-body .price span { color: var(--muted); font-size: 0.72rem; }
+
+  /* ===== configurator ===== */
+  .config {
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 72px);
+    align-items: center;
+    border: 1px solid var(--gold-line);
+    padding: clamp(28px, 5vw, 64px);
+    background: linear-gradient(150deg, rgba(24,20,14,0.7), rgba(14,11,8,0.7));
+  }
+  .config-stage { position: relative; display: grid; place-items: center; min-height: 320px; }
+  .config-stage .halo {
+    position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,162,74,0.22), transparent 62%); filter: blur(6px);
+    transition: background 0.6s;
+  }
+  .config-stage svg { width: min(72%, 300px); position: relative; }
+  .cfg-band { transition: fill 0.6s var(--ease), stroke 0.6s; }
+  .cfg-gem { transition: fill 0.6s var(--ease); }
+
+  .config-panel h3 { font-family: var(--serif-disp); font-size: clamp(1.9rem,3.4vw,2.7rem); font-weight: 500; }
+  .config-panel .lead { color: var(--muted); margin-top: 8px; font-weight: 300; }
+  .opt-group { margin-top: 28px; }
+  .opt-label { font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .opt-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .opt {
+    font-family: var(--sans); font-size: 0.76rem; letter-spacing: 0.14em;
+    padding: 11px 18px; border: 1px solid var(--gold-line); background: transparent; color: var(--cream-dim);
+    cursor: pointer; transition: all 0.4s var(--ease);
+  }
+  .opt:hover { border-color: var(--gold); color: var(--gold-soft); }
+  .opt.sel { background: var(--gold); color: #1a1408; border-color: var(--gold); font-weight: 500; }
+  .swatch { display: inline-flex; align-items: center; gap: 9px; }
+  .swatch i { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); }
+  .price-out {
+    margin-top: 34px; padding-top: 26px; border-top: 1px solid var(--gold-line);
+    display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .price-out .lab { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); }
+  .price-out .amt { font-family: var(--serif-disp); font-size: clamp(2rem,4vw,3rem); font-weight: 500; color: var(--gold-soft); }
+
+  /* ===== craftsmanship story ===== */
+  .story { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 80px); align-items: center; }
+  .story-art { display: grid; place-items: center; min-height: 320px; position: relative; }
+  .story-art svg { width: min(80%, 360px); }
+  .story-copy h2 { font-family: var(--serif-disp); font-size: clamp(2rem,4vw,3.2rem); font-weight: 500; line-height: 1.1; }
+  .story-copy p { margin-top: 20px; color: var(--cream-dim); font-weight: 300; }
+  .stats { display: flex; gap: clamp(20px,4vw,46px); margin-top: 36px; flex-wrap: wrap; }
+  .stat .n { font-family: var(--serif-disp); font-size: 2.4rem; color: var(--gold-soft); font-weight: 500; }
+  .stat .l { font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  /* ===== booking ===== */
+  .booking { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(30px,5vw,72px); align-items: start; }
+  .booking-intro h2 { font-family: var(--serif-disp); font-size: clamp(2rem,4vw,3rem); font-weight: 500; line-height: 1.12; }
+  .booking-intro p { margin-top: 18px; color: var(--cream-dim); font-weight: 300; }
+  .booking-intro .contact { margin-top: 30px; font-family: var(--sans); font-size: 0.82rem; letter-spacing: 0.06em; color: var(--muted); line-height: 2.2; }
+  .booking-intro .contact b { color: var(--gold-soft); font-weight: 400; }
+
+  form.book { display: grid; gap: 20px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .field label { font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+  .field input, .field select, .field textarea {
+    font-family: var(--serif-body); font-size: 0.98rem; color: var(--cream);
+    background: rgba(255,255,255,0.02); border: 1px solid var(--gold-line);
+    padding: 13px 15px; transition: border-color 0.4s, background 0.4s;
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field input::placeholder, .field textarea::placeholder { color: #6f675a; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--gold); background: rgba(200,162,74,0.05); }
+  .field.err input, .field.err select { border-color: #b5573f; }
+  .field .msg { font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.06em; color: #d08368; min-height: 0.8em; }
+  .field select option { background: #161310; color: var(--cream); }
+  .form-note { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--muted); }
+  .book-success {
+    border: 1px solid var(--gold-line); background: rgba(200,162,74,0.07);
+    padding: 22px 24px; text-align: center; display: none;
+  }
+  .book-success.show { display: block; animation: rise 0.7s var(--ease); }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .book-success .ttl { font-family: var(--serif-disp); font-size: 1.6rem; color: var(--gold-soft); }
+  .book-success p { color: var(--cream-dim); margin-top: 8px; font-weight: 300; }
+
+  /* ===== lightbox ===== */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(8,6,4,0.92); backdrop-filter: blur(8px);
+    display: none; place-items: center; padding: 24px;
+    opacity: 0; transition: opacity 0.5s var(--ease);
+  }
+  .lightbox.open { display: grid; opacity: 1; }
+  .lb-inner { max-width: 520px; width: 100%; text-align: center; transform: scale(0.94); transition: transform 0.6s var(--ease); }
+  .lightbox.open .lb-inner { transform: scale(1); }
+  .lb-stage {
+    position: relative; aspect-ratio: 1; display: grid; place-items: center;
+    border: 1px solid var(--gold-line);
+    background: radial-gradient(120% 90% at 50% 30%, rgba(200,162,74,0.14), rgba(12,10,8,0.9) 70%);
+  }
+  .lb-stage svg { width: 60%; }
+  .lb-cap { margin-top: 22px; }
+  .lb-cap .cat { font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+  .lb-cap h3 { font-family: var(--serif-disp); font-size: 2rem; font-weight: 500; margin-top: 6px; }
+  .lb-cap .price { color: var(--cream-dim); font-family: var(--sans); margin-top: 6px; font-size: 0.9rem; }
+  .lb-close {
+    position: absolute; top: 22px; right: 24px; z-index: 210;
+    width: 46px; height: 46px; border: 1px solid var(--gold-line);
+    background: transparent; color: var(--cream); font-family: var(--sans);
+    font-size: 1.1rem; cursor: pointer; transition: all 0.4s; border-radius: 50%;
+  }
+  .lb-close:hover { border-color: var(--gold); color: var(--gold-soft); transform: rotate(90deg); }
+
+  /* ===== footer ===== */
+  footer.foot {
+    border-top: 1px solid var(--gold-line);
+    padding-block: clamp(48px, 6vw, 80px);
+    margin-top: clamp(40px, 6vw, 90px);
+  }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: clamp(28px, 4vw, 56px); }
+  .foot .brand { font-size: 1.5rem; }
+  .foot p { color: var(--muted); font-weight: 300; margin-top: 16px; max-width: 34ch; font-size: 0.94rem; }
+  .foot h4 { font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .foot ul { list-style: none; display: grid; gap: 10px; }
+  .foot ul a { color: var(--cream-dim); font-size: 0.92rem; transition: color 0.4s; }
+  .foot ul a:hover { color: var(--gold-soft); }
+  .foot-base {
+    margin-top: clamp(34px,5vw,56px); padding-top: 26px; border-top: 1px solid rgba(200,162,74,0.14);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--muted);
+  }
+  .foot-base b { color: var(--gold-soft); font-weight: 400; }
+
+  /* ===== badge ===== */
+  .badge {
+    position: fixed; bottom: 18px; right: 18px; z-index: 120;
+    font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.18em;
+    padding: 9px 15px; color: var(--ink);
+    background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+    border-radius: 999px; box-shadow: 0 10px 30px -10px rgba(200,162,74,0.5);
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: transform 0.5s var(--ease); text-transform: lowercase; font-weight: 500;
+  }
+  .badge:hover { transform: translateY(-3px); }
+  .badge i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink); opacity: 0.7; }
+
+  /* ===== responsive ===== */
+  @media (max-width: 960px) {
+    nav.links { display: none; }
+    .hero { grid-template-columns: 1fr; padding-top: 110px; text-align: center; }
+    .hero-copy .sub { margin-inline: auto; }
+    .hero-actions { justify-content: center; }
+    .hero-art { order: -1; min-height: 38vh; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .config, .story, .booking { grid-template-columns: 1fr; }
+    .config-stage { order: -1; }
+    .story-art { order: -1; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .row2 { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .brand { font-size: 1.3rem; letter-spacing: 0.26em; }
+    .nav-wish .label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <a href="#top" class="brand">緗璁<small>SERENË MAISON</small></a>
+  <nav class="links">
+    <a href="#collection">典藏系列</a>
+    <a href="#atelier">訂製臻品</a>
+    <a href="#story">工藝傳承</a>
+    <a href="#booking">私人鑑賞</a>
+  </nav>
+  <div class="nav-wish" id="navWish" title="心願清單">
+    <svg width="18" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.4 2 4.8 5.4 4.8c2 0 3.4 1.2 4.6 2.8 1.2-1.6 2.6-2.8 4.6-2.8 3.4 0 5.1 3.6 3.4 7C19.5 16.4 12 21 12 21z" fill="none" stroke="#e0c074" stroke-width="1.3"/></svg>
+    <span class="label">心願</span>
+    <span class="count" id="wishCount">0</span>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ===== HERO ===== -->
+<section class="hero wrap">
+  <div class="hero-copy">
+    <div class="eyebrow reveal in">巴黎 · 高級珠寶世家 · MMXXVI</div>
+    <h1 class="display reveal in" data-d="1">流光<br /><em>凝於指尖</em></h1>
+    <p class="sub reveal in" data-d="2">自 1924 年起，緗璁以一克拉的執著，將稀世彩鑽與貴金屬，鍛造成可佩戴的詩篇。每一件臻品，皆為獨一無二的承諾。</p>
+    <div class="hero-actions reveal in" data-d="3">
+      <a href="#collection" class="btn solid">探索典藏</a>
+      <a href="#booking" class="btn">預約鑑賞</a>
+    </div>
+  </div>
+  <div class="hero-art reveal in" data-d="2">
+    <div class="halo"></div>
+    <svg viewBox="0 0 240 240" aria-label="鑽戒">
+      <defs>
+        <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#f0d99a"/><stop offset="0.5" stop-color="#c8a24a"/><stop offset="1" stop-color="#8a6c28"/>
+        </linearGradient>
+        <radialGradient id="gDia" cx="0.4" cy="0.3" r="0.8">
+          <stop offset="0" stop-color="#ffffff"/><stop offset="0.4" stop-color="#dff0f7"/><stop offset="1" stop-color="#9cc2d6"/>
+        </radialGradient>
+      </defs>
+      <g class="spin-slow">
+        <ellipse cx="120" cy="158" rx="58" ry="60" fill="none" stroke="url(#gGold)" stroke-width="9"/>
+        <ellipse cx="120" cy="158" rx="58" ry="60" fill="none" stroke="#fff4d8" stroke-width="1.4" opacity="0.4"/>
+      </g>
+      <g>
+        <polygon points="120,40 152,76 120,118 88,76" fill="url(#gDia)" stroke="#fff" stroke-width="0.8"/>
+        <polygon points="88,76 120,76 120,118" fill="#bcd9e6" opacity="0.7"/>
+        <polygon points="152,76 120,76 120,118" fill="#e8f5fb" opacity="0.9"/>
+        <line x1="88" y1="76" x2="152" y2="76" stroke="#fff" stroke-width="0.8" opacity="0.7"/>
+        <polygon class="shimmer" points="120,40 134,76 120,90 106,76" fill="#ffffff" opacity="0.8"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== COLLECTION ===== -->
+<section class="sec wrap" id="collection">
+  <div class="sec-head">
+    <span class="eyebrow reveal">La Collection</span>
+    <h2 class="display reveal" data-d="1">典藏系列</h2>
+    <p class="reveal" data-d="2">由世家工匠手作，限量呈現。輕觸臻品以鑑賞細節，或收藏於您的心願清單。</p>
+    <div class="rule reveal" data-d="2"></div>
+  </div>
+
+  <div class="filters reveal" data-d="1">
+    <button class="chip active" data-f="all">全部</button>
+    <button class="chip" data-f="ring">戒指</button>
+    <button class="chip" data-f="necklace">項鍊</button>
+    <button class="chip" data-f="earring">耳飾</button>
+    <button class="chip" data-f="bracelet">手環</button>
+  </div>
+
+  <div class="grid" id="grid"><!-- cards injected --></div>
+</section>
+
+<!-- ===== ATELIER / CONFIGURATOR ===== -->
+<section class="sec wrap" id="atelier">
+  <div class="sec-head">
+    <span class="eyebrow reveal">L'Atelier sur Mesure</span>
+    <h2 class="display reveal" data-d="1">訂製臻品</h2>
+    <p class="reveal" data-d="2">為您量身打造。選擇貴金屬、寶石與克拉數，即時呈現您的專屬之作與估價。</p>
+    <div class="rule reveal" data-d="2"></div>
+  </div>
+
+  <div class="config reveal" data-d="1">
+    <div class="config-stage">
+      <div class="halo" id="cfgHalo"></div>
+      <svg viewBox="0 0 240 240" aria-label="訂製戒指預覽">
+        <defs>
+          <radialGradient id="cfgGemGrad" cx="0.4" cy="0.3" r="0.8">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#dff0f7" id="cfgGemStop"/><stop offset="1" stop-color="#9cc2d6"/>
+          </radialGradient>
+        </defs>
+        <ellipse class="cfg-band" id="cfgBand" cx="120" cy="160" rx="56" ry="58" fill="none" stroke="#c8a24a" stroke-width="11"/>
+        <ellipse cx="120" cy="160" rx="56" ry="58" fill="none" stroke="#fff4d8" stroke-width="1.4" opacity="0.35"/>
+        <g id="cfgGemWrap">
+          <polygon class="cfg-gem" id="cfgGem" points="120,44 154,82 120,128 86,82" fill="#dff0f7" stroke="#fff" stroke-width="0.8"/>
+          <polygon points="86,82 120,82 120,128" fill="rgba(0,0,0,0.12)"/>
+          <line x1="86" y1="82" x2="154" y2="82" stroke="#fff" stroke-width="0.8" opacity="0.6"/>
+          <polygon class="shimmer" points="120,44 136,82 120,96 104,82" fill="#ffffff" opacity="0.75"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="config-panel">
+      <h3 class="display">「永恆」訂製戒</h3>
+      <p class="lead">Le Serment · 私人訂製系列</p>
+
+      <div class="opt-group">
+        <div class="opt-label">貴金屬</div>
+        <div class="opt-row" id="metalRow">
+          <button class="opt sel swatch" data-add="0" data-color="#c8a24a" data-name="18K 黃金"><i style="background:#c8a24a"></i>18K 黃金</button>
+          <button class="opt swatch" data-add="35000" data-color="#e6e8ec" data-name="鉑金 950"><i style="background:#e6e8ec"></i>鉑金 950</button>
+          <button class="opt swatch" data-add="18000" data-color="#e7b9b0" data-name="18K 玫瑰金"><i style="background:#e7b9b0"></i>18K 玫瑰金</button>
+        </div>
+      </div>
+
+      <div class="opt-group">
+        <div class="opt-label">主石</div>
+        <div class="opt-row" id="gemRow">
+          <button class="opt sel" data-mult="1" data-gem="#dff0f7" data-name="頂級白鑽">白鑽</button>
+          <button class="opt" data-mult="1.6" data-gem="#bfe3d2" data-name="哥倫比亞祖母綠">祖母綠</button>
+          <button class="opt" data-mult="2.1" data-gem="#cdbef0" data-name="喀什米爾藍寶">藍寶石</button>
+          <button class="opt" data-mult="2.8" data-gem="#f4c0d0" data-name="緬甸帕帕拉恰">粉紅剛玉</button>
+        </div>
+      </div>
+
+      <div class="opt-group">
+        <div class="opt-label">克拉數</div>
+        <div class="opt-row" id="caratRow">
+          <button class="opt sel" data-carat="0.5" data-base="180000">0.5 ct</button>
+          <button class="opt" data-carat="1" data-base="420000">1.0 ct</button>
+          <button class="opt" data-carat="2" data-base="980000">2.0 ct</button>
+          <button class="opt" data-carat="3" data-base="1880000">3.0 ct</button>
+        </div>
+      </div>
+
+      <div class="price-out">
+        <span class="lab">預估臻品價</span>
+        <span class="amt" id="cfgPrice">NT$ —</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STORY ===== -->
+<section class="sec wrap" id="story">
+  <div class="story">
+    <div class="story-art reveal">
+      <svg viewBox="0 0 260 260" aria-label="工藝">
+        <defs>
+          <linearGradient id="gGold2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f0d99a"/><stop offset="1" stop-color="#9a7830"/>
+          </linearGradient>
+        </defs>
+        <g fill="none" stroke="url(#gGold2)" stroke-width="1.6" opacity="0.9">
+          <circle cx="130" cy="130" r="96"/>
+          <circle cx="130" cy="130" r="70" stroke-dasharray="3 6"/>
+        </g>
+        <g class="spin-slow">
+          <polygon points="130,46 168,108 130,150 92,108" fill="url(#gGold2)" opacity="0.18" stroke="url(#gGold2)" stroke-width="1.4"/>
+          <polygon points="130,110 214,130 130,150 46,130" fill="url(#gGold2)" opacity="0.18" stroke="url(#gGold2)" stroke-width="1.4"/>
+          <polygon points="130,110 130,214 92,150 168,150" fill="none" stroke="url(#gGold2)" stroke-width="1.4"/>
+        </g>
+        <circle class="shimmer" cx="130" cy="130" r="6" fill="#fff4d8"/>
+      </svg>
+    </div>
+    <div class="story-copy">
+      <span class="eyebrow reveal">Le Savoir-Faire</span>
+      <h2 class="display reveal" data-d="1">百年工藝<br />一念匠心</h2>
+      <p class="reveal" data-d="2">創辦人 Aurélie Serenë 於 1924 年在巴黎芳登廣場立業。世家堅持每一件作品皆由單一工匠，自選石、切割、鑲嵌至拋光，歷時逾 200 小時親手完成。我們不追逐潮流，只雕琢足以世代相傳的恆久之美。</p>
+      <p class="reveal" data-d="3">所有彩寶皆通過 GIA 與世家內部三重鑑定，並附獨立溯源證書。這是緗璁對「稀有」與「真實」永不妥協的承諾。</p>
+      <div class="stats reveal" data-d="3">
+        <div class="stat"><div class="n">1924</div><div class="l">世家創立</div></div>
+        <div class="stat"><div class="n">200+</div><div class="l">手作工時</div></div>
+        <div class="stat"><div class="n">12</div><div class="l">大師工匠</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOOKING ===== -->
+<section class="sec wrap" id="booking">
+  <div class="booking">
+    <div class="booking-intro">
+      <span class="eyebrow reveal">Rendez-vous Privé</span>
+      <h2 class="display reveal" data-d="1">私人鑑賞<br />預約</h2>
+      <p class="reveal" data-d="2">於台北、巴黎、東京三地沙龍，由專屬顧問為您呈現典藏臻品。一對一鑑賞，靜謐而尊榮。</p>
+      <div class="contact reveal" data-d="3">
+        台北沙龍 · <b>+886 2 8888 1924</b><br />
+        bonjour@<b>serene-maison</b>.fictif<br />
+        芳登廣場 12 號 · 信義區金融街
+      </div>
+    </div>
+
+    <div>
+      <form class="book reveal" data-d="2" id="bookForm" novalidate>
+        <div class="row2">
+          <div class="field">
+            <label for="bName">尊稱姓名</label>
+            <input type="text" id="bName" placeholder="您的姓名" />
+            <span class="msg" data-for="bName"></span>
+          </div>
+          <div class="field">
+            <label for="bPhone">聯絡電話</label>
+            <input type="tel" id="bPhone" placeholder="09xx-xxx-xxx" />
+            <span class="msg" data-for="bPhone"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bEmail">電子郵件</label>
+          <input type="email" id="bEmail" placeholder="you@example.com" />
+          <span class="msg" data-for="bEmail"></span>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="bSalon">沙龍據點</label>
+            <select id="bSalon">
+              <option value="">請選擇沙龍</option>
+              <option>台北 · 芳登廣場沙龍</option>
+              <option>巴黎 · Place Vendôme</option>
+              <option>東京 · 銀座本店</option>
+            </select>
+            <span class="msg" data-for="bSalon"></span>
+          </div>
+          <div class="field">
+            <label for="bDate">期望日期</label>
+            <input type="date" id="bDate" />
+            <span class="msg" data-for="bDate"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bNote">鑑賞需求（選填）</label>
+          <textarea id="bNote" placeholder="例：婚戒訂製、祖母綠項鍊鑑賞⋯"></textarea>
+        </div>
+        <button type="submit" class="btn solid" style="justify-self:start">確認預約</button>
+        <span class="form-note">＊此為作品集示範表單，不會送出真實資料。</span>
+      </form>
+
+      <div class="book-success" id="bookOk">
+        <div class="ttl">預約已收到</div>
+        <p id="bookOkMsg">感謝您，我們的顧問將於 24 小時內為您確認鑑賞時段。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand">緗璁 SERENË</div>
+        <p>巴黎高級珠寶世家，自 1924 年以匠心鍛造可佩戴的永恆。每一件臻品，皆為獨一無二的承諾。</p>
+      </div>
+      <div>
+        <h4>探索</h4>
+        <ul>
+          <li><a href="#collection">典藏系列</a></li>
+          <li><a href="#atelier">訂製臻品</a></li>
+          <li><a href="#story">工藝傳承</a></li>
+          <li><a href="#booking">私人鑑賞</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>世家</h4>
+        <ul>
+          <li><a href="#story">關於緗璁</a></li>
+          <li><a href="#">溯源與鑑定</a></li>
+          <li><a href="#">保養維護</a></li>
+          <li><a href="#">沙龍據點</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© MMXXVI 緗璁 SERENË MAISON · 虛構作品集示範</span>
+      <span>由 <b>e-life-ai</b> 設計與打造 · elife-ai.com</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="關閉">✕</button>
+  <div class="lb-inner">
+    <div class="lb-stage"><div id="lbArt"></div></div>
+    <div class="lb-cap">
+      <div class="cat" id="lbCat"></div>
+      <h3 class="display" id="lbName"></h3>
+      <div class="price" id="lbPrice"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BADGE ===== -->
+<a href="https://elife-ai.com" class="badge" target="_blank" rel="noopener"><i></i>elife-ai.com</a>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- inline SVG product art ---------- */
+  var gold = '<defs><linearGradient id="lg__ID__" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0d99a"/><stop offset="0.5" stop-color="#c8a24a"/><stop offset="1" stop-color="#8a6c28"/></linearGradient><radialGradient id="lr__ID__" cx="0.4" cy="0.3" r="0.8"><stop offset="0" stop-color="#fff"/><stop offset="0.45" stop-color="__GEM__"/><stop offset="1" stop-color="#7fa6bd"/></radialGradient></defs>';
+
+  function ringSVG(id, gem) {
+    return '<svg viewBox="0 0 200 200">' + gold.replace(/__ID__/g, id).replace('__GEM__', gem) +
+      '<ellipse cx="100" cy="132" rx="46" ry="48" fill="none" stroke="url(#lg' + id + ')" stroke-width="8"/>' +
+      '<ellipse cx="100" cy="132" rx="46" ry="48" fill="none" stroke="#fff4d8" stroke-width="1" opacity="0.4"/>' +
+      '<polygon points="100,40 128,68 100,104 72,68" fill="url(#lr' + id + ')" stroke="#fff" stroke-width="0.7"/>' +
+      '<polygon points="72,68 100,68 100,104" fill="rgba(0,0,0,0.12)"/>' +
+      '<line x1="72" y1="68" x2="128" y2="68" stroke="#fff" stroke-width="0.7" opacity="0.6"/></svg>';
+  }
+  function necklaceSVG(id, gem) {
+    return '<svg viewBox="0 0 200 200">' + gold.replace(/__ID__/g, id).replace('__GEM__', gem) +
+      '<path d="M50 46 Q100 130 150 46" fill="none" stroke="url(#lg' + id + ')" stroke-width="4"/>' +
+      '<polygon points="100,110 120,134 100,168 80,134" fill="url(#lr' + id + ')" stroke="#fff" stroke-width="0.7"/>' +
+      '<polygon points="80,134 100,134 100,168" fill="rgba(0,0,0,0.12)"/>' +
+      '<circle cx="50" cy="46" r="4" fill="url(#lg' + id + ')"/><circle cx="150" cy="46" r="4" fill="url(#lg' + id + ')"/></svg>';
+  }
+  function earringSVG(id, gem) {
+    return '<svg viewBox="0 0 200 200">' + gold.replace(/__ID__/g, id).replace('__GEM__', gem) +
+      '<g transform="translate(-22,0)"><circle cx="100" cy="58" r="5" fill="none" stroke="url(#lg' + id + ')" stroke-width="3"/>' +
+      '<line x1="100" y1="63" x2="100" y2="92" stroke="url(#lg' + id + ')" stroke-width="2"/>' +
+      '<polygon points="100,92 118,114 100,148 82,114" fill="url(#lr' + id + ')" stroke="#fff" stroke-width="0.7"/></g>' +
+      '<g transform="translate(22,0)"><circle cx="100" cy="58" r="5" fill="none" stroke="url(#lg' + id + ')" stroke-width="3"/>' +
+      '<line x1="100" y1="63" x2="100" y2="92" stroke="url(#lg' + id + ')" stroke-width="2"/>' +
+      '<polygon points="100,92 118,114 100,148 82,114" fill="url(#lr' + id + ')" stroke="#fff" stroke-width="0.7"/></g></svg>';
+  }
+  function braceletSVG(id, gem) {
+    return '<svg viewBox="0 0 200 200">' + gold.replace(/__ID__/g, id).replace('__GEM__', gem) +
+      '<ellipse cx="100" cy="100" rx="64" ry="46" fill="none" stroke="url(#lg' + id + ')" stroke-width="9"/>' +
+      '<ellipse cx="100" cy="100" rx="64" ry="46" fill="none" stroke="#fff4d8" stroke-width="1" opacity="0.35"/>' +
+      '<polygon points="100,40 116,58 100,80 84,58" fill="url(#lr' + id + ')" stroke="#fff" stroke-width="0.7"/></svg>';
+  }
+
+  var SVG = { ring: ringSVG, necklace: necklaceSVG, earring: earringSVG, bracelet: braceletSVG };
+
+  /* ---------- product catalogue ---------- */
+  var CATS = { ring: "戒指", necklace: "項鍊", earring: "耳飾", bracelet: "手環" };
+  var products = [
+    { id: "p1", t: "晨曦之約", c: "ring", gem: "#dff0f7", p: "NT$ 480,000", note: "頂級白鑽 1.2ct · 18K 黃金" },
+    { id: "p2", t: "翡冷翠", c: "necklace", gem: "#bfe3d2", p: "NT$ 1,260,000", note: "哥倫比亞祖母綠 · 鉑金鑲鑽" },
+    { id: "p3", t: "夜空絮語", c: "earring", gem: "#cdbef0", p: "NT$ 760,000", note: "喀什米爾藍寶 · 玫瑰金" },
+    { id: "p4", t: "緗緣", c: "bracelet", gem: "#f4c0d0", p: "NT$ 980,000", note: "帕帕拉恰剛玉 · 18K 黃金" },
+    { id: "p5", t: "永恆誓言", c: "ring", gem: "#cdbef0", p: "NT$ 1,880,000", note: "皇家藍寶 3ct · 鉑金" },
+    { id: "p6", t: "月華", c: "necklace", gem: "#dff0f7", p: "NT$ 640,000", note: "心形白鑽 · 18K 黃金" },
+    { id: "p7", t: "薔薇低語", c: "earring", gem: "#f4c0d0", p: "NT$ 520,000", note: "粉紅剛玉 · 玫瑰金鑲鑽" },
+    { id: "p8", t: "翠湖環", c: "bracelet", gem: "#bfe3d2", p: "NT$ 1,420,000", note: "祖母綠長階梯切 · 鉑金" }
+  ];
+
+  var grid = document.getElementById("grid");
+  var wished = {};
+
+  function buildCards() {
+    var html = "";
+    products.forEach(function (pr) {
+      html +=
+        '<article class="card reveal" data-cat="' + pr.c + '" data-id="' + pr.id + '">' +
+          '<div class="card-media" data-id="' + pr.id + '">' +
+            '<span class="glint"></span>' + SVG[pr.c](pr.id, pr.gem) +
+            '<button class="wish-btn" data-wish="' + pr.id + '" aria-label="加入心願清單">' +
+              '<svg class="hf" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.4 2 4.8 5.4 4.8c2 0 3.4 1.2 4.6 2.8 1.2-1.6 2.6-2.8 4.6-2.8 3.4 0 5.1 3.6 3.4 7C19.5 16.4 12 21 12 21z"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<div class="card-body">' +
+            '<div class="cat">' + CATS[pr.c] + '</div>' +
+            '<h3>' + pr.t + '</h3>' +
+            '<div class="price">' + pr.p + ' <span>' + pr.note + '</span></div>' +
+          '</div>' +
+        '</article>';
+    });
+    grid.innerHTML = html;
+    observeReveals(grid.querySelectorAll(".reveal"));
+  }
+  buildCards();
+
+  /* ---------- filtering ---------- */
+  document.querySelectorAll(".chip").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      document.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("active"); });
+      chip.classList.add("active");
+      var f = chip.dataset.f;
+      document.querySelectorAll(".card").forEach(function (card) {
+        var show = f === "all" || card.dataset.cat === f;
+        card.classList.toggle("hide", !show);
+      });
+    });
+  });
+
+  /* ---------- wishlist ---------- */
+  var wishCountEl = document.getElementById("wishCount");
+  function refreshWish() {
+    var n = Object.keys(wished).length;
+    wishCountEl.textContent = n;
+    wishCountEl.classList.add("pulse");
+    setTimeout(function () { wishCountEl.classList.remove("pulse"); }, 360);
+  }
+  grid.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-wish]");
+    if (!btn) return;
+    e.stopPropagation();
+    var id = btn.dataset.wish;
+    if (wished[id]) { delete wished[id]; btn.classList.remove("on"); }
+    else { wished[id] = true; btn.classList.add("on"); }
+    refreshWish();
+  });
+  document.getElementById("navWish").addEventListener("click", function () {
+    document.getElementById("collection").scrollIntoView({ behavior: "smooth" });
+  });
+
+  /* ---------- lightbox ---------- */
+  var lb = document.getElementById("lightbox");
+  function findP(id) { return products.filter(function (p) { return p.id === id; })[0]; }
+  grid.addEventListener("click", function (e) {
+    if (e.target.closest("[data-wish]")) return;
+    var media = e.target.closest(".card-media");
+    if (!media) return;
+    var pr = findP(media.dataset.id);
+    if (!pr) return;
+    document.getElementById("lbArt").innerHTML = SVG[pr.c](pr.id + "lb", pr.gem);
+    document.getElementById("lbCat").textContent = CATS[pr.c];
+    document.getElementById("lbName").textContent = pr.t;
+    document.getElementById("lbPrice").textContent = pr.p + " · " + pr.note;
+    lb.classList.add("open");
+  });
+  function closeLb() { lb.classList.remove("open"); }
+  document.getElementById("lbClose").addEventListener("click", closeLb);
+  lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLb(); });
+
+  /* ---------- configurator ---------- */
+  var cfg = { add: 0, mult: 1, base: 180000, color: "#c8a24a", gem: "#dff0f7" };
+  var bandEl = document.getElementById("cfgBand");
+  var gemEl = document.getElementById("cfgGem");
+  var haloEl = document.getElementById("cfgHalo");
+  var priceEl = document.getElementById("cfgPrice");
+
+  function fmt(n) { return "NT$ " + Math.round(n).toLocaleString("en-US"); }
+  function renderCfg() {
+    bandEl.setAttribute("stroke", cfg.color);
+    gemEl.setAttribute("fill", cfg.gem);
+    haloEl.style.background = "radial-gradient(circle, " + cfg.gem + "55, transparent 62%)";
+    priceEl.textContent = fmt(cfg.base * cfg.mult + cfg.add);
+  }
+  function bindRow(rowId, apply) {
+    var row = document.getElementById(rowId);
+    row.addEventListener("click", function (e) {
+      var b = e.target.closest(".opt");
+      if (!b) return;
+      row.querySelectorAll(".opt").forEach(function (o) { o.classList.remove("sel"); });
+      b.classList.add("sel");
+      apply(b.dataset);
+      renderCfg();
+    });
+  }
+  bindRow("metalRow", function (d) { cfg.add = +d.add; cfg.color = d.color; });
+  bindRow("gemRow", function (d) { cfg.mult = +d.mult; cfg.gem = d.gem; });
+  bindRow("caratRow", function (d) { cfg.base = +d.base; });
+  renderCfg();
+
+  /* ---------- booking form validation ---------- */
+  var form = document.getElementById("bookForm");
+  var ok = document.getElementById("bookOk");
+  function setErr(id, msg) {
+    var field = document.getElementById(id).closest(".field");
+    field.classList.toggle("err", !!msg);
+    var m = field.querySelector('.msg[data-for="' + id + '"]');
+    if (m) m.textContent = msg || "";
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var valid = true;
+    var name = document.getElementById("bName").value.trim();
+    var phone = document.getElementById("bPhone").value.trim();
+    var email = document.getElementById("bEmail").value.trim();
+    var salon = document.getElementById("bSalon").value;
+    var date = document.getElementById("bDate").value;
+
+    setErr("bName", name ? "" : "請留下您的尊稱"); if (!name) valid = false;
+    var phoneOk = /^[0-9+\-\s()]{8,}$/.test(phone);
+    setErr("bPhone", phoneOk ? "" : "請輸入有效電話"); if (!phoneOk) valid = false;
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setErr("bEmail", emailOk ? "" : "請輸入有效電子郵件"); if (!emailOk) valid = false;
+    setErr("bSalon", salon ? "" : "請選擇沙龍據點"); if (!salon) valid = false;
+    setErr("bDate", date ? "" : "請選擇期望日期"); if (!date) valid = false;
+
+    if (!valid) return;
+    form.style.display = "none";
+    document.getElementById("bookOkMsg").textContent =
+      "感謝您，" + name + "。我們的顧問將於 24 小時內就「" + salon + "」為您確認鑑賞時段。";
+    ok.classList.add("show");
+  });
+
+  /* ---------- scroll reveal ---------- */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  function observeReveals(els) { els.forEach(function (el) { io.observe(el); }); }
+  observeReveals(document.querySelectorAll(".reveal:not(.in)"));
+
+  /* ---------- nav scroll state ---------- */
+  var nav = document.getElementById("nav");
+  function onScroll() { nav.classList.toggle("scrolled", window.scrollY > 40); }
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+})();
+</script>
+</body>
+</html>

@@ -46,6 +46,16 @@ export interface Contact {
   href: string
 }
 
+export interface Showcase {
+  id: string
+  no: string
+  title: string
+  clientType: string
+  slug: string
+  href: string // public deployed path, e.g. /showcase/<slug>/
+  accent?: string // optional accent CSS var for per-card variety
+}
+
 export const services: Service[] = [
   {
     id: 'ai',
@@ -344,4 +354,75 @@ export const techStack = [
   'Frida',
   'GDB',
   'SQLCipher',
+]
+
+/**
+ * Interactive design templates (front-end only, mock data) showcasing design
+ * range. Each lives at /showcase/<slug>/. Accents
+ * alternate within the brand palette (mint / indigo) for visual variety.
+ */
+export const showcases: Showcase[] = [
+  { id: 'saas-landing', no: '01', title: 'SaaS 產品著陸頁', clientType: 'B2B 軟體新創', slug: '01-saas-landing', href: '/showcase/01-saas-landing/', accent: 'var(--accent)' },
+  { id: 'ecommerce', no: '02', title: '電商商品頁', clientType: '零售 / DTC 品牌', slug: '02-ecommerce', href: '/showcase/02-ecommerce/', accent: 'var(--accent-2)' },
+  { id: 'restaurant', no: '03', title: '餐廳訂位與菜單', clientType: '餐飲', slug: '03-restaurant', href: '/showcase/03-restaurant/', accent: 'var(--accent)' },
+  { id: 'portfolio', no: '04', title: '創意作品集', clientType: '設計師 / 攝影師', slug: '04-portfolio', href: '/showcase/04-portfolio/', accent: 'var(--accent-2)' },
+  { id: 'corporate', no: '05', title: '企業形象官網', clientType: '傳產 / B2B', slug: '05-corporate', href: '/showcase/05-corporate/', accent: 'var(--accent)' },
+  { id: 'editorial', no: '06', title: '編輯雜誌媒體', clientType: '媒體 / 內容品牌', slug: '06-editorial', href: '/showcase/06-editorial/', accent: 'var(--accent-2)' },
+  { id: 'ai-chat', no: '07', title: 'AI 對話介面', clientType: 'AI 產品', slug: '07-ai-chat', href: '/showcase/07-ai-chat/', accent: 'var(--accent)' },
+  { id: 'dashboard', no: '08', title: '數據分析儀表板', clientType: 'SaaS 後台', slug: '08-dashboard', href: '/showcase/08-dashboard/', accent: 'var(--accent-2)' },
+  { id: 'event', no: '09', title: '活動 / 研討會', clientType: '活動主辦', slug: '09-event', href: '/showcase/09-event/', accent: 'var(--accent)' },
+  { id: 'personal-brand', no: '10', title: '個人品牌 / 講者', clientType: '講師 / KOL', slug: '10-personal-brand', href: '/showcase/10-personal-brand/', accent: 'var(--accent-2)' },
+  { id: 'real-estate', no: '11', title: '房地產建案展示', clientType: '建商 / 仲介', slug: '11-real-estate', href: '/showcase/11-real-estate/', accent: 'var(--accent)' },
+  { id: 'clinic', no: '12', title: '醫療診所', clientType: '診所 / 醫美', slug: '12-clinic', href: '/showcase/12-clinic/', accent: 'var(--accent-2)' },
+  { id: 'fitness', no: '13', title: '健身工作室', clientType: '健身 / 運動品牌', slug: '13-fitness', href: '/showcase/13-fitness/', accent: 'var(--accent)' },
+  { id: 'course', no: '14', title: '線上課程平台', clientType: '教育 / 線上課程', slug: '14-course', href: '/showcase/14-course/', accent: 'var(--accent-2)' },
+  { id: 'web3', no: '15', title: 'Web3 / 加密產品', clientType: '區塊鏈 / Web3', slug: '15-web3', href: '/showcase/15-web3/', accent: 'var(--accent)' },
+  { id: 'travel', no: '16', title: '旅遊行程', clientType: '旅行社', slug: '16-travel', href: '/showcase/16-travel/', accent: 'var(--accent-2)' },
+  { id: 'nonprofit', no: '17', title: '非營利募資', clientType: 'NGO / 公益', slug: '17-nonprofit', href: '/showcase/17-nonprofit/', accent: 'var(--accent)' },
+  { id: 'app-landing', no: '18', title: 'App 下載著陸頁', clientType: '行動 App', slug: '18-app-landing', href: '/showcase/18-app-landing/', accent: 'var(--accent-2)' },
+  { id: 'architecture', no: '19', title: '建築 / 室內設計事務所', clientType: '建築事務所', slug: '19-architecture', href: '/showcase/19-architecture/', accent: 'var(--accent)' },
+  { id: 'game', no: '20', title: '遊戲 / 娛樂', clientType: '遊戲工作室', slug: '20-game', href: '/showcase/20-game/', accent: 'var(--accent-2)' },
+  { id: 'coffee-roastery', no: '21', title: '獨立咖啡烘焙', clientType: '精品咖啡 / 烘焙', slug: 'coffee-roastery', href: '/showcase/coffee-roastery/', accent: 'var(--accent)' },
+  { id: 'elearning-platform', no: '22', title: '線上課程平台', clientType: '教育 / 線上學習', slug: 'elearning-platform', href: '/showcase/elearning-platform/', accent: 'var(--accent-2)' },
+  { id: 'fitness-studio', no: '23', title: '健身工作室', clientType: '健身 / 運動品牌', slug: 'fitness-studio', href: '/showcase/fitness-studio/', accent: 'var(--accent)' },
+  { id: 'travel-hotel', no: '24', title: '旅宿品牌', clientType: '旅宿 / 觀光', slug: 'travel-hotel', href: '/showcase/travel-hotel/', accent: 'var(--accent-2)' },
+  { id: 'law-firm', no: '25', title: '法律事務所', clientType: '法律 / 專業服務', slug: 'law-firm', href: '/showcase/law-firm/', accent: 'var(--accent)' },
+  { id: 'music-artist', no: '26', title: '音樂藝人', clientType: '音樂 / 娛樂', slug: 'music-artist', href: '/showcase/music-artist/', accent: 'var(--accent-2)' },
+  { id: 'wedding-event', no: '27', title: '婚禮邀請', clientType: '婚禮 / 活動', slug: 'wedding-event', href: '/showcase/wedding-event/', accent: 'var(--accent)' },
+  { id: 'nonprofit-mission', no: '28', title: '非營利組織', clientType: 'NGO / 公益', slug: 'nonprofit', href: '/showcase/nonprofit/', accent: 'var(--accent-2)' },
+  { id: 'ai-startup', no: '29', title: 'AI 新創產品', clientType: 'AI 新創', slug: 'ai-startup', href: '/showcase/ai-startup/', accent: 'var(--accent)' },
+  { id: 'fashion-brand', no: '30', title: '時尚服飾品牌', clientType: '時尚 / 精品', slug: 'fashion-brand', href: '/showcase/fashion-brand/', accent: 'var(--accent-2)' },
+  { id: 'game-esports', no: '31', title: '遊戲電競', clientType: '遊戲 / 電競', slug: 'game-esports', href: '/showcase/game-esports/', accent: 'var(--accent)' },
+  { id: 'beauty-skincare', no: '32', title: '美妝保養品牌', clientType: '美妝 / 保養', slug: 'beauty-skincare', href: '/showcase/beauty-skincare/', accent: 'var(--accent-2)' },
+  { id: 'architecture-studio', no: '33', title: '建築室內設計', clientType: '建築事務所', slug: 'architecture-studio', href: '/showcase/architecture-studio/', accent: 'var(--accent)' },
+  { id: 'food-delivery', no: '34', title: '餐飲外送連鎖', clientType: '餐飲 / 外送', slug: 'food-delivery', href: '/showcase/food-delivery/', accent: 'var(--accent-2)' },
+  { id: 'magazine', no: '35', title: '數位雜誌', clientType: '媒體 / 內容品牌', slug: 'magazine', href: '/showcase/magazine/', accent: 'var(--accent)' },
+  { id: 'automotive', no: '36', title: '汽車載具', clientType: '汽車 / 載具', slug: 'automotive', href: '/showcase/automotive/', accent: 'var(--accent-2)' },
+  { id: 'farm-organic', no: '37', title: '農產永續品牌', clientType: '農業 / 永續', slug: 'farm-organic', href: '/showcase/farm-organic/', accent: 'var(--accent)' },
+  { id: 'photographer', no: '38', title: '攝影影像工作室', clientType: '攝影 / 影像', slug: 'photographer', href: '/showcase/photographer/', accent: 'var(--accent-2)' },
+  { id: 'pet-service', no: '39', title: '寵物生活服務', clientType: '寵物 / 生活', slug: 'pet-service', href: '/showcase/pet-service/', accent: 'var(--accent)' },
+  { id: 'conference', no: '40', title: '研討會活動', clientType: '活動主辦', slug: 'conference', href: '/showcase/conference/', accent: 'var(--accent-2)' },
+  { id: 'artdeco-jewelry', no: '41', title: '高級珠寶世家 (Art Deco)', clientType: '精品 / 珠寶', slug: '41-artdeco-jewelry', href: '/showcase/41-artdeco-jewelry/', accent: 'var(--accent)' },
+  { id: 'brutalist-streetwear', no: '42', title: '潮牌電商 (Neo-Brutalist)', clientType: '潮流 / 電商', slug: '42-brutalist-streetwear', href: '/showcase/42-brutalist-streetwear/', accent: 'var(--accent-2)' },
+  { id: 'editorial-finedining', no: '43', title: '精緻餐飲 (Editorial)', clientType: '餐飲 / Fine Dining', slug: '43-editorial-finedining', href: '/showcase/43-editorial-finedining/', accent: 'var(--accent)' },
+  { id: 'futuristic-ai-lab', no: '61', title: '未來主義 AI 實驗室', clientType: 'AI 研究 / 深科技', slug: '61-futuristic-ai-lab', href: '/showcase/61-futuristic-ai-lab/', accent: 'var(--accent-2)' },
+  { id: 'luxury-jewelry', no: '62', title: '奢華精品珠寶', clientType: '精品 / 珠寶', slug: '62-luxury-jewelry', href: '/showcase/62-luxury-jewelry/', accent: 'var(--accent)' },
+  { id: 'japanese-editorial', no: '63', title: '日系極簡雜誌', clientType: '設計 / 生活', slug: '63-japanese-editorial', href: '/showcase/63-japanese-editorial/', accent: 'var(--accent-2)' },
+  { id: 'brutalist-portfolio', no: '64', title: '野獸派作品集', clientType: '設計工作室', slug: '64-brutalist-portfolio', href: '/showcase/64-brutalist-portfolio/', accent: 'var(--accent)' },
+  { id: 'retro-arcade', no: '65', title: '復古街機遊戲', clientType: '遊戲工作室', slug: '65-retro-arcade', href: '/showcase/65-retro-arcade/', accent: 'var(--accent-2)' },
+  { id: 'organic-eco', no: '66', title: '有機自然永續', clientType: '有機 / 保養', slug: '66-organic-eco', href: '/showcase/66-organic-eco/', accent: 'var(--accent)' },
+  { id: 'fintech-dashboard', no: '67', title: '金融科技儀表板', clientType: '金融科技', slug: '67-fintech-dashboard', href: '/showcase/67-fintech-dashboard/', accent: 'var(--accent-2)' },
+  { id: 'specialty-coffee', no: '68', title: '精品咖啡烘焙', clientType: '精品咖啡', slug: '68-specialty-coffee', href: '/showcase/68-specialty-coffee/', accent: 'var(--accent)' },
+  { id: 'startup-saas', no: '69', title: '新創 SaaS 募資頁', clientType: 'SaaS 新創', slug: '69-startup-saas', href: '/showcase/69-startup-saas/', accent: 'var(--accent-2)' },
+  { id: 'immersive-travel', no: '70', title: '沉浸式旅遊行程', clientType: '旅遊 / 體驗', slug: '70-immersive-travel', href: '/showcase/70-immersive-travel/', accent: 'var(--accent)' },
+  { id: 'fitness-energetic', no: '71', title: '健身運動高能', clientType: '健身 / 運動', slug: '71-fitness-energetic', href: '/showcase/71-fitness-energetic/', accent: 'var(--accent-2)' },
+  { id: 'fashion-ecommerce', no: '72', title: '時尚電商品牌', clientType: '時尚 / 電商', slug: '72-fashion-ecommerce', href: '/showcase/72-fashion-ecommerce/', accent: 'var(--accent)' },
+  { id: 'medical-clinic', no: '73', title: '醫療診所信賴', clientType: '診所 / 醫療', slug: '73-medical-clinic', href: '/showcase/73-medical-clinic/', accent: 'var(--accent-2)' },
+  { id: 'music-festival', no: '74', title: '音樂節活動', clientType: '活動 / 音樂', slug: '74-music-festival', href: '/showcase/74-music-festival/', accent: 'var(--accent)' },
+  { id: 'architecture-studio-genline', no: '75', title: '建築工作室', clientType: '建築事務所', slug: '75-architecture-studio', href: '/showcase/75-architecture-studio/', accent: 'var(--accent-2)' },
+  { id: 'edtech-platform', no: '76', title: '教育課程平台', clientType: '教育 / 線上學習', slug: '76-edtech-platform', href: '/showcase/76-edtech-platform/', accent: 'var(--accent)' },
+  { id: 'web3-cyberpunk', no: '77', title: 'Web3 賽博龐克', clientType: '區塊鏈 / Web3', slug: '77-web3-cyberpunk', href: '/showcase/77-web3-cyberpunk/', accent: 'var(--accent-2)' },
+  { id: 'artisan-craft', no: '78', title: '手作工藝品牌', clientType: '手作 / 工藝', slug: '78-artisan-craft', href: '/showcase/78-artisan-craft/', accent: 'var(--accent)' },
+  { id: 'news-editorial', no: '79', title: '新聞編輯媒體', clientType: '媒體 / 新聞', slug: '79-news-editorial', href: '/showcase/79-news-editorial/', accent: 'var(--accent-2)' },
+  { id: 'personal-kol', no: '80', title: '個人 KOL 品牌', clientType: '創作者 / KOL', slug: '80-personal-kol', href: '/showcase/80-personal-kol/', accent: 'var(--accent)' },
 ]

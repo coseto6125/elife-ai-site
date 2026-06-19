@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>林望 SUMI — 影像與視覺藝術作品集</title>
+<meta name="description" content="林望（SUMI）是一位專注於影像、品牌與實驗視覺的創作者。本頁為作品集範例頁面，展示攝影、品牌、網頁與插畫的精選作品。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,500&family=Syne:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   SUMI — Creative portfolio (showcase #04)
+   Aesthetic: dramatic dark museum / kinetic editorial gallery.
+   Near-black ink, warm ivory type, single acid-lime accent.
+   High-contrast Bodoni Moda display against geometric Syne.
+   Marquee hero, masonry-ish generative-art tiles (pure CSS/SVG),
+   filterable grid, lightbox with prev/next, custom cursor,
+   staggered scroll reveals. No images, no backend.
+   ============================================================ */
+
+:root{
+  --ink:#0c0c0e;          /* near-black */
+  --ink-2:#141417;        /* panel */
+  --ink-3:#1d1d22;        /* raised */
+  --ivory:#f3efe7;        /* warm bone text */
+  --ivory-soft:#a8a49b;   /* muted */
+  --ivory-dim:#6c6961;
+  --lime:#d7ff3e;         /* acid accent */
+  --lime-deep:#aacc1e;
+  --line:rgba(243,239,231,.14);
+  --line-soft:rgba(243,239,231,.07);
+  --maxw:1320px;
+  --serif:"Bodoni Moda",Georgia,serif;
+  --sans:"Syne","Noto Sans TC",system-ui,sans-serif;
+  --tc:"Noto Sans TC",system-ui,sans-serif;
+  --mono:"Space Mono",monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);
+  color:var(--ivory);
+  font-family:var(--tc);
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+}
+@media (hover:none){ body{cursor:auto} }
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--lime);color:var(--ink)}
+
+/* ---------- custom cursor ---------- */
+.cursor,.cursor-dot{
+  position:fixed;top:0;left:0;z-index:9999;pointer-events:none;
+  border-radius:50%;mix-blend-mode:difference;will-change:transform;
+}
+.cursor{width:34px;height:34px;border:1px solid var(--ivory);
+  transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),background .25s}
+.cursor-dot{width:5px;height:5px;background:var(--ivory);transform:translate(-50%,-50%)}
+.cursor.is-hover{width:64px;height:64px;background:var(--ivory)}
+@media (hover:none){.cursor,.cursor-dot{display:none}}
+
+/* ---------- layout helpers ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--lime)}
+.muted{color:var(--ivory-soft)}
+
+/* ---------- top nav ---------- */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px clamp(20px,5vw,64px);
+  transition:background .4s var(--ease),padding .4s var(--ease),border-color .4s;
+  border-bottom:1px solid transparent;mix-blend-mode:normal}
+header.nav.scrolled{background:rgba(12,12,14,.82);backdrop-filter:blur(14px);
+  padding:14px clamp(20px,5vw,64px);border-bottom:1px solid var(--line-soft)}
+.brand{font-family:var(--serif);font-weight:700;font-size:1.5rem;letter-spacing:.02em;
+  display:flex;align-items:center;gap:.55rem}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--lime);
+  box-shadow:0 0 16px var(--lime)}
+.nav-links{display:flex;gap:clamp(18px,3vw,40px);align-items:center;
+  font-family:var(--sans);font-size:.85rem;font-weight:500;letter-spacing:.04em}
+.nav-links a{position:relative;opacity:.78;transition:opacity .3s}
+.nav-links a:hover{opacity:1}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;
+  background:var(--lime);transition:width .35s var(--ease)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{border:1px solid var(--line);padding:.5rem 1.1rem;border-radius:999px;
+  transition:background .3s,color .3s,border-color .3s}
+.nav-cta:hover{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+@media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  position:relative;padding-top:120px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;opacity:.5}
+.hero-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(243,239,231,.05) 1px,transparent 1px);
+  background-size:3px 3px}
+.hero-inner{position:relative;z-index:2}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-end;
+  flex-wrap:wrap;gap:18px;margin-bottom:clamp(28px,5vw,56px)}
+.hero-top .meta{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;
+  color:var(--ivory-soft);text-transform:uppercase;line-height:1.9;text-align:right}
+.hero h1{font-family:var(--serif);font-weight:500;
+  font-size:clamp(3.4rem,12.5vw,12rem);line-height:.86;letter-spacing:-.02em}
+.hero h1 .it{font-style:italic;font-weight:500}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line > span{display:block;transform:translateY(110%);
+  animation:riseIn 1s var(--ease) forwards}
+.hero h1 .line:nth-child(2) > span{animation-delay:.12s}
+.hero h1 .line:nth-child(3) > span{animation-delay:.24s}
+@keyframes riseIn{to{transform:translateY(0)}}
+.hero-sub{margin-top:clamp(26px,4vw,44px);max-width:560px;
+  font-size:clamp(.95rem,1.4vw,1.1rem);color:var(--ivory-soft);font-weight:300;
+  opacity:0;animation:fadeUp 1s var(--ease) .5s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.hero-stats{display:flex;gap:clamp(28px,5vw,72px);margin-top:clamp(34px,5vw,56px);
+  flex-wrap:wrap;opacity:0;animation:fadeUp 1s var(--ease) .65s forwards}
+.hero-stats .s b{font-family:var(--serif);font-size:clamp(1.8rem,3.2vw,2.6rem);
+  font-weight:600;display:block;line-height:1}
+.hero-stats .s span{font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ivory-dim)}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:2;font-family:var(--mono);font-size:.66rem;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--ivory-dim);display:flex;flex-direction:column;
+  align-items:center;gap:10px;opacity:0;animation:fadeUp 1s var(--ease) 1s forwards}
+.scroll-hint .bar{width:1px;height:46px;background:linear-gradient(var(--lime),transparent);
+  animation:scrollBar 1.8s var(--ease) infinite}
+@keyframes scrollBar{0%{transform:scaleY(.2);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  50.1%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(.2);transform-origin:bottom}}
+
+/* ---------- marquee ---------- */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;white-space:nowrap;padding:18px 0;margin-top:0;
+  background:var(--ink-2)}
+.marquee-track{display:inline-flex;gap:48px;animation:scrollX 28s linear infinite;
+  will-change:transform}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:var(--serif);font-size:clamp(1.6rem,3.6vw,2.8rem);
+  font-style:italic;font-weight:500;color:var(--ivory);display:inline-flex;
+  align-items:center;gap:48px}
+.marquee span::after{content:"✦";color:var(--lime);font-style:normal;font-size:.55em}
+@keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- section frame ---------- */
+section{position:relative}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;
+  flex-wrap:wrap;gap:18px;padding-top:clamp(70px,9vw,130px);
+  margin-bottom:clamp(30px,4vw,52px)}
+.sec-head h2{font-family:var(--serif);font-weight:500;
+  font-size:clamp(2.2rem,6vw,4.4rem);line-height:.95;letter-spacing:-.01em}
+.sec-head h2 .it{font-style:italic}
+.sec-head .idx{font-family:var(--mono);font-size:.74rem;letter-spacing:.24em;
+  color:var(--ivory-dim)}
+
+/* ---------- filters ---------- */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:clamp(26px,3vw,40px)}
+.filter{font-family:var(--sans);font-weight:500;font-size:.86rem;letter-spacing:.02em;
+  padding:.5rem 1.15rem;border-radius:999px;border:1px solid var(--line);
+  background:transparent;color:var(--ivory-soft);cursor:none;
+  transition:all .3s var(--ease)}
+@media(hover:none){.filter{cursor:pointer}}
+.filter .n{font-family:var(--mono);font-size:.66rem;opacity:.55;margin-left:.4rem}
+.filter:hover{color:var(--ivory);border-color:var(--ivory-soft)}
+.filter.active{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+.filter.active .n{opacity:.7}
+
+/* ---------- grid (masonry via columns) ---------- */
+.grid{columns:3;column-gap:clamp(14px,1.6vw,24px)}
+@media(max-width:980px){.grid{columns:2}}
+@media(max-width:560px){.grid{columns:1}}
+.card{break-inside:avoid;margin-bottom:clamp(14px,1.6vw,24px);
+  position:relative;border-radius:14px;overflow:hidden;cursor:none;
+  border:1px solid var(--line-soft);background:var(--ink-2);
+  opacity:0;transform:translateY(34px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease),border-color .4s}
+@media(hover:none){.card{cursor:pointer}}
+.card.in{opacity:1;transform:none}
+.card.hide{display:none}
+.card:hover{border-color:var(--lime)}
+.card .art{position:relative;width:100%;aspect-ratio:var(--ar,3/4);overflow:hidden}
+.card .art > svg,.card .art > .css-art{position:absolute;inset:0;width:100%;height:100%;
+  transition:transform .9s var(--ease),filter .6s}
+.card:hover .art > svg,.card:hover .art > .css-art{transform:scale(1.06)}
+.card .overlay{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:18px;
+  background:linear-gradient(to top,rgba(12,12,14,.92) 0%,rgba(12,12,14,.25) 45%,transparent 75%);
+  opacity:0;transform:translateY(12px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.card:hover .overlay{opacity:1;transform:none}
+.card .overlay .cat{font-family:var(--mono);font-size:.64rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--lime);margin-bottom:6px}
+.card .overlay .t{font-family:var(--serif);font-size:1.35rem;font-weight:600;line-height:1.1}
+.card .overlay .yr{font-family:var(--mono);font-size:.7rem;color:var(--ivory-soft);margin-top:4px}
+.card .num{position:absolute;top:14px;left:16px;z-index:3;font-family:var(--mono);
+  font-size:.66rem;letter-spacing:.2em;color:var(--ivory);
+  background:rgba(12,12,14,.5);backdrop-filter:blur(6px);
+  padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+.card .expand{position:absolute;top:12px;right:14px;z-index:3;width:34px;height:34px;
+  border-radius:50%;border:1px solid var(--line);background:rgba(12,12,14,.45);
+  backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.7);transition:all .4s var(--ease)}
+.card:hover .expand{opacity:1;transform:scale(1)}
+.card .expand svg{width:14px;height:14px}
+
+/* ---------- about / services strip ---------- */
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,80px);
+  align-items:center;padding-bottom:clamp(40px,6vw,90px)}
+@media(max-width:840px){.about{grid-template-columns:1fr}}
+.about-portrait{aspect-ratio:4/5;border-radius:16px;overflow:hidden;
+  border:1px solid var(--line);position:relative}
+.about p{font-size:clamp(1rem,1.6vw,1.25rem);color:var(--ivory);font-weight:300;
+  line-height:1.85;letter-spacing:.01em}
+.about p .hl{color:var(--lime);font-style:italic;font-family:var(--serif)}
+.svc{margin-top:34px;display:grid;gap:0}
+.svc .row{display:flex;justify-content:space-between;align-items:center;
+  padding:18px 0;border-top:1px solid var(--line);font-family:var(--sans);
+  transition:padding-left .35s var(--ease),color .35s}
+.svc .row:last-child{border-bottom:1px solid var(--line)}
+.svc .row:hover{padding-left:14px;color:var(--lime)}
+.svc .row .k{font-size:1.05rem;font-weight:600}
+.svc .row .v{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  color:var(--ivory-dim);text-transform:uppercase}
+
+/* ---------- contact ---------- */
+.contact{padding:clamp(70px,10vw,150px) 0;text-align:center;position:relative}
+.contact .big{font-family:var(--serif);font-weight:500;
+  font-size:clamp(2.6rem,9vw,7rem);line-height:.92;letter-spacing:-.02em}
+.contact .big .it{font-style:italic}
+.contact a.mail{display:inline-flex;align-items:center;gap:.6rem;margin-top:34px;
+  font-family:var(--sans);font-weight:600;font-size:clamp(1rem,2vw,1.3rem);
+  border-bottom:1px solid var(--lime);padding-bottom:6px;transition:gap .35s var(--ease)}
+.contact a.mail:hover{gap:1.2rem}
+.contact a.mail .arr{color:var(--lime)}
+
+/* ---------- footer ---------- */
+footer.ft{border-top:1px solid var(--line);padding:34px clamp(20px,5vw,64px);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer.ft .badge{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+  color:var(--ivory-soft);display:flex;align-items:center;gap:.5rem}
+footer.ft .badge b{color:var(--ivory);font-weight:700}
+footer.ft .badge .pip{width:7px;height:7px;border-radius:50%;background:var(--lime)}
+footer.ft .socials{display:flex;gap:20px;font-family:var(--sans);font-size:.82rem;
+  font-weight:500}
+footer.ft .socials a{opacity:.7;transition:opacity .3s,color .3s}
+footer.ft .socials a:hover{opacity:1;color:var(--lime)}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:1000;display:none;
+  background:rgba(8,8,10,.94);backdrop-filter:blur(8px)}
+.lb.open{display:flex;flex-direction:column;animation:lbIn .4s var(--ease)}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+.lb-bar{display:flex;justify-content:space-between;align-items:center;
+  padding:20px clamp(20px,5vw,56px);border-bottom:1px solid var(--line);flex:0 0 auto}
+.lb-bar .lb-idx{font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;
+  color:var(--lime)}
+.lb-close{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+  background:transparent;color:var(--ivory);cursor:none;display:flex;
+  align-items:center;justify-content:center;transition:all .3s var(--ease)}
+@media(hover:none){.lb-close{cursor:pointer}}
+.lb-close:hover{background:var(--lime);color:var(--ink);border-color:var(--lime);transform:rotate(90deg)}
+.lb-body{flex:1 1 auto;display:grid;grid-template-columns:1.45fr .85fr;
+  min-height:0;overflow:hidden}
+@media(max-width:860px){.lb-body{grid-template-columns:1fr;overflow-y:auto}}
+.lb-stage{position:relative;display:flex;align-items:center;justify-content:center;
+  padding:clamp(20px,4vw,56px);min-height:0;overflow:hidden}
+.lb-frame{width:100%;max-width:560px;aspect-ratio:3/4;border-radius:14px;
+  overflow:hidden;border:1px solid var(--line);position:relative;
+  box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.lb-frame > *{position:absolute;inset:0;width:100%;height:100%}
+.lb-info{border-left:1px solid var(--line);padding:clamp(26px,4vw,56px);
+  display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+@media(max-width:860px){.lb-info{border-left:none;border-top:1px solid var(--line)}}
+.lb-info .cat{font-family:var(--mono);font-size:.7rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--lime);margin-bottom:14px}
+.lb-info h3{font-family:var(--serif);font-weight:500;
+  font-size:clamp(2rem,4vw,3.2rem);line-height:1;letter-spacing:-.01em;margin-bottom:18px}
+.lb-info h3 .it{font-style:italic}
+.lb-info p{color:var(--ivory-soft);font-weight:300;line-height:1.85;margin-bottom:22px;
+  max-width:42ch}
+.lb-meta{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;
+  border-top:1px solid var(--line);padding-top:22px;margin-top:auto}
+.lb-meta .m .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ivory-dim);margin-bottom:5px}
+.lb-meta .m .d{font-family:var(--sans);font-size:.95rem;font-weight:500}
+.lb-nav{flex:0 0 auto;display:flex;border-top:1px solid var(--line)}
+.lb-nav button{flex:1;display:flex;align-items:center;gap:14px;
+  padding:18px clamp(20px,5vw,56px);background:transparent;border:none;
+  color:var(--ivory);cursor:none;font-family:var(--sans);font-weight:600;
+  font-size:.95rem;transition:background .3s,color .3s}
+@media(hover:none){.lb-nav button{cursor:pointer}}
+.lb-nav button:hover{background:var(--ink-3);color:var(--lime)}
+.lb-nav button.next{justify-content:flex-end;border-left:1px solid var(--line)}
+.lb-nav button .tt{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;
+  color:var(--ivory-dim);text-transform:uppercase}
+.lb-nav .ndir{font-size:1.2rem}
+
+/* scroll reveal generic */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s!important;transition-duration:.001s!important}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><span class="dot"></span>林望 SUMI</a>
+  <nav class="nav-links">
+    <a href="#work">作品</a>
+    <a href="#about">關於</a>
+    <a href="#services">服務</a>
+    <a class="nav-cta" href="#contact">合作洽談</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <svg class="hero-bg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="hg1" cx="20%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#26261a"/><stop offset="100%" stop-color="#0c0c0e"/>
+      </radialGradient>
+      <linearGradient id="hg2" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#d7ff3e" stop-opacity=".18"/>
+        <stop offset="100%" stop-color="#d7ff3e" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="1440" height="900" fill="url(#hg1)"/>
+    <circle cx="1080" cy="260" r="520" fill="url(#hg2)"/>
+    <g stroke="rgba(243,239,231,.06)" stroke-width="1">
+      <line x1="0" y1="225" x2="1440" y2="225"/><line x1="0" y1="450" x2="1440" y2="450"/>
+      <line x1="0" y1="675" x2="1440" y2="675"/>
+      <line x1="360" y1="0" x2="360" y2="900"/><line x1="720" y1="0" x2="720" y2="900"/>
+      <line x1="1080" y1="0" x2="1080" y2="900"/>
+    </g>
+  </svg>
+  <div class="hero-grain"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-top">
+      <span class="eyebrow">Visual Artist · 影像創作者 · Taipei</span>
+      <div class="meta">作品集 2019—2025<br/>攝影 · 品牌 · 網頁 · 插畫<br/>現正接受 2025 委託</div>
+    </div>
+    <h1>
+      <span class="line"><span>看見</span></span>
+      <span class="line"><span>未被<span class="it">命名</span></span></span>
+      <span class="line"><span>的<span class="it">光</span>。</span></span>
+    </h1>
+    <p class="hero-sub">我是林望（SUMI），以鏡頭與版面說故事。在光影、品牌與數位介面之間，尋找那些尚未被定義、卻已存在的瞬間。</p>
+    <div class="hero-stats">
+      <div class="s"><b>06+</b><span>Years Practice</span></div>
+      <div class="s"><b>48</b><span>Projects Shipped</span></div>
+      <div class="s"><b>12</b><span>Awards & Features</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>SCROLL</span><span class="bar"></span></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="mq">
+    <span>Photography</span><span>Brand Identity</span><span>Web Design</span><span>Illustration</span><span>Art Direction</span>
+    <span>Photography</span><span>Brand Identity</span><span>Web Design</span><span>Illustration</span><span>Art Direction</span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work" class="wrap">
+  <div class="sec-head reveal">
+    <h2>精選<span class="it">作品</span></h2>
+    <span class="idx">SELECTED WORK / 2019—2025</span>
+  </div>
+  <div class="filters reveal" id="filters">
+    <button class="filter active" data-cat="all">全部<span class="n">10</span></button>
+    <button class="filter" data-cat="photo">攝影<span class="n">04</span></button>
+    <button class="filter" data-cat="brand">品牌<span class="n">02</span></button>
+    <button class="filter" data-cat="web">網頁<span class="n">02</span></button>
+    <button class="filter" data-cat="illu">插畫<span class="n">02</span></button>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="wrap">
+  <div class="sec-head reveal">
+    <h2>關於<span class="it">我</span></h2>
+    <span class="idx">PROFILE / SUMI LIN</span>
+  </div>
+  <div class="about">
+    <div class="reveal">
+      <p>
+        我相信一張影像的重量，來自<span class="hl">克制</span>。十年來，我在街角的霧、品牌的留白、與螢幕的呼吸之間遊走，
+        把繁複的訊息收斂成一個能被記住的畫面。
+      </p>
+      <p style="margin-top:1.4rem;color:var(--ivory-soft);font-size:1rem">
+        曾與獨立品牌、藝文機構與新創團隊合作，作品入選《IMAGE 影像年鑑》並於台北、京都展出。
+      </p>
+      <div class="svc" id="services">
+        <div class="row"><span class="k">影像攝影</span><span class="v">Editorial · Product · Portrait</span></div>
+        <div class="row"><span class="k">品牌識別</span><span class="v">Logo · System · Guideline</span></div>
+        <div class="row"><span class="k">網頁與介面</span><span class="v">UI/UX · Art Direction</span></div>
+        <div class="row"><span class="k">插畫與視覺</span><span class="v">Editorial · Poster</span></div>
+      </div>
+    </div>
+    <div class="about-portrait reveal">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="width:100%;height:100%">
+        <defs>
+          <linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1d1d22"/><stop offset="100%" stop-color="#0c0c0e"/>
+          </linearGradient>
+          <radialGradient id="pl" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#d7ff3e" stop-opacity=".5"/>
+            <stop offset="100%" stop-color="#d7ff3e" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="500" fill="url(#pg)"/>
+        <circle cx="160" cy="180" r="150" fill="url(#pl)"/>
+        <g fill="none" stroke="rgba(243,239,231,.5)" stroke-width="1.4">
+          <path d="M120 250 q80 -120 160 0" />
+          <ellipse cx="200" cy="200" rx="62" ry="78"/>
+          <path d="M160 340 q40 50 80 0"/>
+        </g>
+        <circle cx="200" cy="200" r="3" fill="#d7ff3e"/>
+        <text x="30" y="470" fill="rgba(243,239,231,.35)" font-family="Space Mono,monospace" font-size="13" letter-spacing="3">SUMI · est.2019</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact wrap">
+  <div class="reveal">
+    <span class="eyebrow">Let's create something</span>
+    <div class="big" style="margin-top:18px">一起<span class="it">創造</span><br/>被記住的畫面</div>
+    <a class="mail" href="#contact"><span class="arr">→</span> hello@sumi.studio</a>
+  </div>
+</section>
+
+<footer class="ft">
+  <span class="badge"><span class="pip"></span>Template by <b>e-life-ai</b> · service.e-life-ai.com</span>
+  <div class="socials">
+    <a href="#contact">Instagram</a>
+    <a href="#contact">Behance</a>
+    <a href="#contact">Email</a>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="作品詳細">
+  <div class="lb-bar">
+    <span class="lb-idx" id="lbIdx">01 / 10</span>
+    <button class="lb-close" id="lbClose" aria-label="關閉">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l12 12M15 3L3 15"/></svg>
+    </button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-stage"><div class="lb-frame" id="lbFrame"></div></div>
+    <div class="lb-info">
+      <span class="cat" id="lbCat"></span>
+      <h3 id="lbTitle"></h3>
+      <p id="lbDesc"></p>
+      <div class="lb-meta">
+        <div class="m"><div class="l">Year</div><div class="d" id="lbYear"></div></div>
+        <div class="m"><div class="l">Category</div><div class="d" id="lbCatName"></div></div>
+        <div class="m"><div class="l">Client</div><div class="d" id="lbClient"></div></div>
+        <div class="m"><div class="l">Role</div><div class="d" id="lbRole"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="lb-nav">
+    <button class="prev" id="lbPrev"><span class="ndir">←</span><span><span class="tt">Previous</span><br><span id="lbPrevT"></span></span></button>
+    <button class="next" id="lbNext"><span><span class="tt">Next</span><br><span id="lbNextT"></span></span><span class="ndir">→</span></button>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ---------- generative-art tile factory (pure SVG strings) ---------- */
+const PAL = {
+  photo:  ["#1a2a2e","#2e4d4a","#d7ff3e","#8fae6b"],
+  brand:  ["#2a1f12","#5c4318","#d7ff3e","#e0a23c"],
+  web:    ["#13182a","#2a3a6b","#7c8cff","#d7ff3e"],
+  illu:   ["#2a1224","#6b2a55","#ff7cc8","#d7ff3e"]
+};
+
+function artDuotone(c){const[a,b,acc]=[c[0],c[1],c[2]];const id="g"+Math.random().toString(36).slice(2,7);
+  return `<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${a}"/><stop offset="100%" stop-color="${b}"/></linearGradient></defs><rect width="300" height="400" fill="url(#${id})"/><circle cx="90" cy="120" r="120" fill="${acc}" opacity=".16"/><g stroke="${acc}" stroke-width="1.2" fill="none" opacity=".55"><path d="M0 280 Q150 180 300 300"/><path d="M0 320 Q150 220 300 340"/><path d="M0 360 Q150 260 300 380"/></g><circle cx="220" cy="110" r="36" fill="none" stroke="${acc}" stroke-width="1.6" opacity=".7"/></svg>`;}
+
+function artGeo(c){const[a,b,acc]=[c[0],c[1],c[2]];
+  return `<svg viewBox="0 0 300 380" preserveAspectRatio="xMidYMid slice"><rect width="300" height="380" fill="${a}"/><rect x="40" y="40" width="220" height="220" fill="${b}"/><circle cx="150" cy="150" r="80" fill="${acc}"/><rect x="40" y="290" width="220" height="6" fill="${acc}"/><rect x="40" y="40" width="220" height="220" fill="none" stroke="${acc}" stroke-width="2"/></svg>`;}
+
+function artPoster(c){const[a,b,acc,acc2]=[c[0],c[1],c[2],c[3]||c[2]];const id="p"+Math.random().toString(36).slice(2,7);
+  return `<svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="${id}" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="${b}"/><stop offset="100%" stop-color="${a}"/></radialGradient></defs><rect width="300" height="420" fill="url(#${id})"/><g opacity=".9"><circle cx="150" cy="160" r="95" fill="none" stroke="${acc}" stroke-width="2"/><circle cx="150" cy="160" r="55" fill="${acc2}" opacity=".5"/><line x1="0" y1="160" x2="300" y2="160" stroke="${acc}" stroke-width="1" opacity=".4"/><line x1="150" y1="0" x2="150" y2="420" stroke="${acc}" stroke-width="1" opacity=".4"/></g><text x="22" y="395" fill="${acc}" font-family="monospace" font-size="13" letter-spacing="4" opacity=".8">FIG.0${Math.floor(Math.random()*9)+1}</text></svg>`;}
+
+function artLines(c){const[a,b,acc]=[c[0],c[1],c[2]];let lines="";for(let i=0;i<18;i++){const y=i*22+10;lines+=`<line x1="0" y1="${y}" x2="300" y2="${y-Math.sin(i)*30}" stroke="${i%4===0?acc:b}" stroke-width="${i%4===0?2:1}" opacity="${i%4===0?.8:.4}"/>`;}
+  return `<svg viewBox="0 0 300 360" preserveAspectRatio="xMidYMid slice"><rect width="300" height="360" fill="${a}"/>${lines}<circle cx="240" cy="80" r="34" fill="${acc}" opacity=".22"/></svg>`;}
+
+function artGrain(c){const[a,b,acc]=[c[0],c[1],c[2]];const id="gr"+Math.random().toString(36).slice(2,7);
+  return `<svg viewBox="0 0 300 440" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${b}"/><stop offset="55%" stop-color="${a}"/><stop offset="100%" stop-color="${a}"/></linearGradient></defs><rect width="300" height="440" fill="url(#${id})"/><ellipse cx="150" cy="170" rx="110" ry="150" fill="${acc}" opacity=".12"/><path d="M40 360 q110 -90 220 0" fill="none" stroke="${acc}" stroke-width="1.4" opacity=".5"/><path d="M40 390 q110 -90 220 0" fill="none" stroke="${acc}" stroke-width="1.4" opacity=".35"/><circle cx="150" cy="150" r="4" fill="${acc}"/></svg>`;}
+
+const ARTS=[artDuotone,artGeo,artPoster,artLines,artGrain];
+
+/* ---------- project data ---------- */
+const AR=["3/4","1/1","3/4","4/5","3/4","1/1","4/5","3/4","1/1","4/5"];
+const PROJECTS=[
+  {t:"霧城晨記",cat:"photo",catName:"攝影 / Photography",yr:"2024",client:"個人創作",role:"攝影 · 後製",art:0,
+   desc:"在城市甦醒之前，霧氣替街道蓋上一層柔焦。這組黑藍雙色調系列，記錄了台北清晨那段沒有人聲、只有光與水氣的時刻。"},
+  {t:"靜物・餘溫",cat:"photo",catName:"攝影 / Photography",yr:"2023",client:"陶作坊 KILN",role:"影像 · 美術指導",art:4,
+   desc:"為手作陶器品牌拍攝的產品影像。以單一光源與深色背景，讓器皿的釉色與手感成為畫面唯一的主角。"},
+  {t:"野地肖像",cat:"photo",catName:"攝影 / Photography",yr:"2022",client:"野遊誌",role:"攝影",art:0,
+   desc:"一系列在山林間拍攝的人物肖像，探討人與自然邊界的模糊。自然光、長時間等待，換來最不設防的神情。"},
+  {t:"夜行光譜",cat:"photo",catName:"攝影 / Photography",yr:"2024",client:"個人創作",role:"攝影 · 實驗",art:3,
+   desc:"以長曝與多重曝光捕捉城市夜晚的光軌。霓虹被拉成抽象的色帶，城市成為一張不斷流動的畫布。"},
+
+  {t:"潮間帶 品牌識別",cat:"brand",catName:"品牌識別 / Brand",yr:"2023",client:"潮間帶選物",role:"識別設計 · 規範",art:1,
+   desc:"為海洋選物品牌打造的完整視覺系統。從標誌、色彩到包裝，以潮汐的節奏為核心，傳遞品牌與海共生的理念。"},
+  {t:"晝夜咖啡 識別系統",cat:"brand",catName:"品牌識別 / Brand",yr:"2022",client:"晝夜 Day&Night",role:"識別 · 美術指導",art:1,
+   desc:"一間 24 小時咖啡店的雙面識別。以「日」與「夜」兩套對比色系交織，讓品牌隨時段切換氣質。"},
+
+  {t:"流動圖鑑 網站",cat:"web",catName:"網頁設計 / Web",yr:"2025",client:"流動藝廊",role:"UI/UX · 美術指導",art:2,
+   desc:"線上藝廊的視覺與互動設計。以滾動敘事與動態網格，讓觀者像走進實體展間一樣，一步步揭開作品。"},
+  {t:"SUMI 作品集站",cat:"web",catName:"網頁設計 / Web",yr:"2024",client:"個人專案",role:"設計 · 前端",art:2,
+   desc:"我自己的作品集網站，也是一場關於『暗房美學』的數位實驗。深色、留白、動態字體，重現觀展的儀式感。"},
+
+  {t:"植物學手記",cat:"illu",catName:"插畫 / Illustration",yr:"2023",client:"小日子雜誌",role:"插畫",art:2,
+   desc:"為雜誌專欄繪製的系列插畫。以復古植物圖鑑為靈感，用線條與單色重新詮釋都市裡常被忽略的綠意。"},
+  {t:"夢的拓樸",cat:"illu",catName:"插畫 / Illustration",yr:"2024",client:"個人創作",role:"插畫 · 視覺",art:2,
+   desc:"一組探討潛意識的抽象插畫。幾何與有機形體交疊，像是把夢境的結構攤平在紙面上的地圖。"}
+];
+
+const grid=document.getElementById("grid");
+const frag=document.createDocumentFragment();
+PROJECTS.forEach((p,i)=>{
+  const pal=PAL[p.cat];
+  const svg=ARTS[p.art](pal);
+  const card=document.createElement("article");
+  card.className="card";card.dataset.cat=p.cat;card.dataset.i=i;
+  card.style.setProperty("--ar",AR[i]);
+  const num=String(i+1).padStart(2,"0");
+  card.innerHTML=`
+    <div class="art">${svg}</div>
+    <span class="num">${num}</span>
+    <button class="expand" aria-label="放大"><svg viewBox="0 0 14 14" fill="none" stroke="#f3efe7" stroke-width="1.5"><path d="M1 5V1h4M13 9v4H9M9 1h4v4M5 13H1V9"/></svg></button>
+    <div class="overlay">
+      <span class="cat">${p.catName.split(" / ")[1]||p.catName}</span>
+      <div class="t">${p.t}</div>
+      <div class="yr">${p.yr} · ${p.catName.split(" / ")[0]}</div>
+    </div>`;
+  card.addEventListener("click",()=>openLB(i));
+  frag.appendChild(card);
+});
+grid.appendChild(frag);
+const cards=[...grid.querySelectorAll(".card")];
+
+/* ---------- scroll reveal ---------- */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12});
+function observeCards(){cards.forEach((c,i)=>{if(!c.classList.contains("hide")){c.style.transitionDelay=(Math.min(i,8)*55)+"ms";io.observe(c);}});}
+observeCards();
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+/* ---------- filtering ---------- */
+const filters=document.getElementById("filters");
+filters.addEventListener("click",(e)=>{
+  const btn=e.target.closest(".filter");if(!btn)return;
+  filters.querySelectorAll(".filter").forEach(f=>f.classList.remove("active"));
+  btn.classList.add("active");
+  const cat=btn.dataset.cat;
+  let shown=0;
+  cards.forEach(c=>{
+    const match=cat==="all"||c.dataset.cat===cat;
+    if(match){
+      c.classList.remove("hide");
+      c.classList.remove("in");
+      c.style.transitionDelay=(Math.min(shown,8)*55)+"ms";
+      shown++;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.add("in")));
+    }else{
+      c.classList.add("hide");
+      c.classList.remove("in");
+    }
+  });
+});
+
+/* ---------- lightbox ---------- */
+const lb=document.getElementById("lb");
+const lbFrame=document.getElementById("lbFrame");
+let cur=0;
+function visibleList(){
+  const active=filters.querySelector(".filter.active").dataset.cat;
+  return PROJECTS.map((p,i)=>i).filter(i=>active==="all"||PROJECTS[i].cat===active);
+}
+function openLB(i){cur=i;renderLB();lb.classList.add("open");document.body.style.overflow="hidden";}
+function closeLB(){lb.classList.remove("open");document.body.style.overflow="";}
+function renderLB(){
+  const p=PROJECTS[cur];const pal=PAL[p.cat];
+  lbFrame.innerHTML=ARTS[p.art](pal);
+  document.getElementById("lbCat").textContent=p.catName;
+  document.getElementById("lbTitle").innerHTML=p.t;
+  document.getElementById("lbDesc").textContent=p.desc;
+  document.getElementById("lbYear").textContent=p.yr;
+  document.getElementById("lbCatName").textContent=p.catName.split(" / ")[0];
+  document.getElementById("lbClient").textContent=p.client;
+  document.getElementById("lbRole").textContent=p.role;
+  const list=visibleList();
+  const pos=list.indexOf(cur);
+  document.getElementById("lbIdx").textContent=String(pos+1).padStart(2,"0")+" / "+String(list.length).padStart(2,"0");
+  const prevI=list[(pos-1+list.length)%list.length];
+  const nextI=list[(pos+1)%list.length];
+  document.getElementById("lbPrevT").textContent=PROJECTS[prevI].t;
+  document.getElementById("lbNextT").textContent=PROJECTS[nextI].t;
+}
+function step(d){
+  const list=visibleList();const pos=list.indexOf(cur);
+  cur=list[(pos+d+list.length)%list.length];renderLB();
+  lbFrame.animate([{opacity:0,transform:"scale(.97)"},{opacity:1,transform:"none"}],{duration:380,easing:"cubic-bezier(.22,1,.36,1)"});
+}
+document.getElementById("lbClose").addEventListener("click",closeLB);
+document.getElementById("lbPrev").addEventListener("click",()=>step(-1));
+document.getElementById("lbNext").addEventListener("click",()=>step(1));
+lb.addEventListener("click",(e)=>{if(e.target===lb)closeLB();});
+document.addEventListener("keydown",(e)=>{
+  if(!lb.classList.contains("open"))return;
+  if(e.key==="Escape")closeLB();
+  if(e.key==="ArrowLeft")step(-1);
+  if(e.key==="ArrowRight")step(1);
+});
+
+/* ---------- nav scroll state ---------- */
+const nav=document.getElementById("nav");
+addEventListener("scroll",()=>{nav.classList.toggle("scrolled",scrollY>40);},{passive:true});
+
+/* ---------- custom cursor ---------- */
+const cur1=document.getElementById("cursor"),cur2=document.getElementById("cursorDot");
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
+addEventListener("mousemove",(e)=>{mx=e.clientX;my=e.clientY;cur2.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;});
+(function loop(){cx+=(mx-cx)*.18;cy+=(my-cy)*.18;cur1.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+const hoverSel="a,button,.card,.filter,.svc .row";
+document.addEventListener("mouseover",(e)=>{if(e.target.closest(hoverSel))cur1.classList.add("is-hover");});
+document.addEventListener("mouseout",(e)=>{if(e.target.closest(hoverSel))cur1.classList.remove("is-hover");});
+</script>
+</body>
+</html>

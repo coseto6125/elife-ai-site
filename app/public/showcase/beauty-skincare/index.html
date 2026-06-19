@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>微光 SÉRÊN｜光感精華・裸光氣墊｜e-life-ai 設計樣板</title>
+<meta name="author" content="e-life-ai.com">
+<meta name="description" content="微光 SÉRÊN 光感保養——以發酵精米與北海道雪松萃取，為每種膚質調出屬於你的裸光氣色。色號即時試色、成分透析、膚質定製保養步驟。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --petal:#F4E9F0;       /* 珠光紫霧 background */
+    --pearl:#FBF8F5;       /* 珍珠白 cards */
+    --mauve:#B98DA8;       /* 暮紫 */
+    --mauve-deep:#9B6E8C;
+    --plum:#4A2E45;        /* 深梅紫 text */
+    --plum-soft:#6E5263;
+    --gold:#C9A86A;        /* 香檳金 accent */
+    --blush:#E8C4C0;       /* 暖頰粉 */
+    --line:rgba(74,46,69,.12);
+    --shadow-soft:0 18px 50px -22px rgba(74,46,69,.32);
+    --shadow-lift:0 30px 70px -30px rgba(74,46,69,.45);
+    --r:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    font-family:"Noto Sans TC",system-ui,sans-serif;
+    color:var(--plum);
+    background:
+      radial-gradient(120% 80% at 80% -10%, #FBEFF4 0%, transparent 55%),
+      radial-gradient(110% 70% at 0% 100%, #EFE6F2 0%, transparent 50%),
+      var(--petal);
+    background-attachment:fixed;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{width:min(1180px,92vw);margin-inline:auto}
+  a{color:inherit}
+  ::selection{background:var(--blush);color:var(--plum)}
+  :focus-visible{outline:2.5px solid var(--mauve-deep);outline-offset:3px;border-radius:6px}
+
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--mauve-deep);font-weight:500;
+  }
+  .serif{font-family:"Noto Serif TC",serif}
+  .fr{font-family:"Fraunces",serif;font-optical-sizing:auto}
+
+  /* ---------- nav ---------- */
+  header{position:sticky;top:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(14px);
+    background:rgba(251,248,245,.55);
+    border-bottom:1px solid var(--line);
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{font-family:"Fraunces",serif;font-weight:400;font-size:1.5rem;letter-spacing:.06em;display:flex;align-items:center;gap:.5rem}
+  .brand b{font-weight:300}
+  .brand .dot{width:8px;height:8px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,#fff,var(--gold));
+    box-shadow:0 0 0 4px rgba(201,168,106,.18)}
+  .navlinks{display:flex;gap:2rem;font-size:.92rem;color:var(--plum-soft)}
+  .navlinks a{text-decoration:none;position:relative;transition:color .25s}
+  .navlinks a::after{content:"";position:absolute;left:0;bottom:-5px;height:1.5px;width:0;background:var(--mauve-deep);transition:width .3s}
+  .navlinks a:hover{color:var(--plum)}
+  .navlinks a:hover::after{width:100%}
+  .nav-cta{font-size:.85rem;padding:.55rem 1.2rem;border:1px solid var(--plum);border-radius:50px;text-decoration:none;transition:.25s;white-space:nowrap}
+  .nav-cta:hover{background:var(--plum);color:var(--pearl)}
+  @media(max-width:760px){.navlinks{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(3rem,6vw,5rem)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:2.5rem}}
+  .hero h1{
+    font-family:"Noto Serif TC",serif;font-weight:300;
+    font-size:clamp(2.6rem,6.5vw,4.6rem);line-height:1.12;letter-spacing:.01em;
+    margin:1.1rem 0 1.3rem;
+  }
+  .hero h1 em{font-style:normal;color:var(--mauve-deep);position:relative;white-space:nowrap}
+  .hero h1 em::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.12em;height:.42em;
+    background:linear-gradient(90deg,transparent,rgba(232,196,192,.7),transparent);z-index:-1;border-radius:4px}
+  .hero p.lead{font-size:1.06rem;color:var(--plum-soft);max-width:40ch;margin-bottom:1.8rem}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--plum),var(--mauve-deep));
+    color:var(--pearl);border:none;cursor:pointer;
+    padding:.95rem 2rem;border-radius:50px;font-size:.98rem;font-weight:500;font-family:inherit;
+    box-shadow:var(--shadow-soft);transition:transform .28s,box-shadow .28s;
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+  .btn-ghost{text-decoration:none;font-size:.95rem;color:var(--plum);border-bottom:1.5px solid var(--gold);padding-bottom:2px;transition:.25s}
+  .btn-ghost:hover{color:var(--mauve-deep)}
+  .hero-meta{display:flex;gap:1.8rem;margin-top:2.4rem;flex-wrap:wrap}
+  .hero-meta div{font-size:.82rem;color:var(--plum-soft)}
+  .hero-meta b{display:block;font-family:"Fraunces",serif;font-size:1.5rem;font-weight:400;color:var(--plum);line-height:1}
+
+  /* hero product visual ---------- */
+  .product-stage{position:relative;display:flex;justify-content:center;align-items:center;min-height:460px}
+  .halo{position:absolute;width:min(420px,86%);aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 50% 45%, var(--tint,#E8C4C0) 0%, transparent 68%);
+    filter:blur(8px);opacity:.78;transition:background .6s ease;z-index:0}
+  .ring{position:absolute;width:min(340px,72%);aspect-ratio:1;border-radius:50%;
+    border:1px solid rgba(255,255,255,.6);
+    background:linear-gradient(160deg,rgba(255,255,255,.45),rgba(255,255,255,0));
+    box-shadow:inset 0 0 60px rgba(255,255,255,.5),var(--shadow-soft);z-index:0}
+  .bottle{position:relative;z-index:2;width:148px;filter:drop-shadow(0 24px 30px rgba(74,46,69,.28))}
+  .bottle svg{display:block;width:100%;height:auto}
+  .float{animation:bob 6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @media (prefers-reduced-motion:reduce){.float{animation:none}}
+  .swatch-tag{position:absolute;z-index:3;background:var(--pearl);border-radius:50px;
+    padding:.4rem .9rem;font-size:.78rem;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:.5rem}
+  .swatch-tag .chip{width:14px;height:14px;border-radius:50%;background:var(--tint,#E8C4C0);transition:background .5s}
+  .swatch-tag.t1{top:14%;left:2%}
+  .swatch-tag.t2{bottom:16%;right:0}
+
+  /* ---------- section frame ---------- */
+  section{padding:clamp(3.5rem,7vw,6rem) 0}
+  .sec-head{max-width:54ch;margin-bottom:2.8rem}
+  .sec-head h2{font-family:"Noto Serif TC",serif;font-weight:300;font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.2;margin:.7rem 0 .8rem}
+  .sec-head p{color:var(--plum-soft);font-size:1rem}
+
+  /* ---------- shade selector (SIGNATURE) ---------- */
+  .shade-sec{background:linear-gradient(180deg,transparent,rgba(255,255,255,.4),transparent)}
+  .shade-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  @media(max-width:880px){.shade-grid{grid-template-columns:1fr}}
+  .shade-preview{position:relative;border-radius:var(--r);padding:2.4rem;min-height:380px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+    background:var(--pearl);box-shadow:var(--shadow-soft);overflow:hidden}
+  .shade-preview .bg-tint{position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 30%, var(--tint,#E8C4C0) 0%, transparent 70%);
+    opacity:.5;transition:background .55s ease}
+  .skin-disc{position:relative;z-index:1;width:170px;height:170px;border-radius:50%;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(255,255,255,.85), transparent 45%),
+      var(--tint,#E8C4C0);
+    box-shadow:inset 0 -20px 40px rgba(74,46,69,.12), var(--shadow-soft);
+    transition:background .55s ease;margin-bottom:1.4rem}
+  .shade-preview .pv-name{position:relative;z-index:1;font-family:"Fraunces",serif;font-size:1.7rem;color:var(--plum)}
+  .shade-preview .pv-code{position:relative;z-index:1;font-size:.8rem;letter-spacing:.2em;color:var(--mauve-deep);text-transform:uppercase}
+  .shade-preview .pv-desc{position:relative;z-index:1;font-size:.9rem;color:var(--plum-soft);max-width:30ch;margin-top:.7rem}
+  .shade-panel .undertone{display:flex;gap:.6rem;margin-bottom:1.5rem;flex-wrap:wrap}
+  .undertone button{font-family:inherit;font-size:.84rem;padding:.45rem 1rem;border-radius:50px;cursor:pointer;
+    border:1px solid var(--line);background:transparent;color:var(--plum-soft);transition:.25s}
+  .undertone button[aria-pressed="true"]{background:var(--plum);color:var(--pearl);border-color:var(--plum)}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:.85rem}
+  .sw{position:relative;cursor:pointer;border:none;background:none;padding:0;border-radius:14px;aspect-ratio:1;
+    box-shadow:inset 0 0 0 1px rgba(74,46,69,.08);transition:transform .2s}
+  .sw .fill{position:absolute;inset:0;border-radius:14px;transition:box-shadow .25s}
+  .sw .lbl{position:absolute;left:0;right:0;bottom:6px;font-size:.6rem;color:rgba(74,46,69,.55);text-align:center}
+  .sw:hover{transform:translateY(-3px)}
+  .sw[aria-pressed="true"] .fill{box-shadow:0 0 0 2.5px var(--pearl),0 0 0 4.5px var(--plum)}
+  .sw[hidden]{display:none}
+  .shade-panel .add-row{margin-top:1.8rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+  .price{font-family:"Fraunces",serif;font-size:1.5rem;color:var(--plum)}
+  .price small{font-size:.78rem;color:var(--plum-soft);font-family:"Noto Sans TC"}
+
+  /* ---------- ingredient accordion ---------- */
+  .ingredients{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:start}
+  @media(max-width:880px){.ingredients{grid-template-columns:1fr}}
+  .acc-item{border-bottom:1px solid var(--line)}
+  .acc-btn{width:100%;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;
+    display:flex;align-items:center;gap:1rem;padding:1.3rem 0;color:var(--plum)}
+  .acc-btn .em{font-size:1.6rem;line-height:1;filter:saturate(.85)}
+  .acc-btn .nm{flex:1}
+  .acc-btn .nm b{font-family:"Noto Serif TC";font-weight:500;font-size:1.12rem;display:block}
+  .acc-btn .nm span{font-size:.78rem;color:var(--mauve-deep);letter-spacing:.08em}
+  .acc-btn .pl{font-size:1.4rem;color:var(--mauve-deep);transition:transform .3s;font-weight:300}
+  .acc-btn[aria-expanded="true"] .pl{transform:rotate(45deg)}
+  .acc-body{overflow:hidden;max-height:0;transition:max-height .4s ease}
+  .acc-body .inner{padding:0 0 1.4rem 2.6rem;color:var(--plum-soft);font-size:.94rem}
+  .acc-body .inner ul{margin:.6rem 0 0;padding-left:1.1rem}
+  .acc-body .inner li{margin:.25rem 0}
+  .ing-visual{position:sticky;top:90px;border-radius:var(--r);padding:2.5rem;background:var(--pearl);box-shadow:var(--shadow-soft);text-align:center}
+  .ing-visual .drop{width:120px;height:120px;margin:0 auto 1.4rem;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);
+    background:linear-gradient(135deg,#fff 0%,var(--blush) 60%,var(--mauve) 130%);
+    box-shadow:inset 0 -14px 26px rgba(74,46,69,.12),var(--shadow-soft);position:relative}
+  .ing-visual .drop::after{content:"";position:absolute;top:24%;left:24%;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.7)}
+  .ing-visual .pct{font-family:"Fraunces",serif;font-size:2.6rem;color:var(--plum);line-height:1}
+  .ing-visual .pct-lbl{font-size:.8rem;color:var(--plum-soft)}
+
+  /* ---------- routine builder ---------- */
+  .routine-sec{background:linear-gradient(180deg,transparent,rgba(255,255,255,.45),transparent)}
+  .skintype-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2.4rem}
+  .skintype-row button{font-family:inherit;cursor:pointer;border:1px solid var(--line);background:var(--pearl);
+    border-radius:16px;padding:1rem 1.3rem;text-align:left;min-width:140px;transition:.28s;color:var(--plum)}
+  .skintype-row button .ic{font-size:1.5rem;display:block;margin-bottom:.3rem}
+  .skintype-row button b{display:block;font-family:"Noto Serif TC";font-weight:500}
+  .skintype-row button small{font-size:.74rem;color:var(--plum-soft)}
+  .skintype-row button[aria-pressed="true"]{border-color:var(--mauve-deep);box-shadow:var(--shadow-soft);transform:translateY(-3px);background:linear-gradient(180deg,#fff,#FCF4F8)}
+  .routine-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+  @media(max-width:880px){.routine-steps{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.routine-steps{grid-template-columns:1fr}}
+  .step{background:var(--pearl);border-radius:18px;padding:1.5rem 1.3rem;box-shadow:var(--shadow-soft);
+    opacity:0;transform:translateY(14px);transition:opacity .45s,transform .45s}
+  .step.show{opacity:1;transform:none}
+  .step .no{font-family:"Fraunces",serif;font-size:.95rem;color:var(--gold);letter-spacing:.1em}
+  .step h4{font-family:"Noto Serif TC";font-weight:500;font-size:1.1rem;margin:.5rem 0 .3rem}
+  .step .pname{font-size:.85rem;color:var(--mauve-deep);margin-bottom:.5rem}
+  .step p{font-size:.85rem;color:var(--plum-soft)}
+  .routine-summary{margin-top:1.8rem;font-size:.92rem;color:var(--plum-soft)}
+  .routine-summary b{color:var(--plum);font-family:"Noto Serif TC"}
+
+  /* ---------- ritual quote ---------- */
+  .ritual{text-align:center}
+  .ritual blockquote{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.6rem,4vw,2.7rem);
+    line-height:1.4;max-width:22ch;margin:0 auto;color:var(--plum)}
+  .ritual blockquote span{color:var(--mauve-deep);font-style:italic}
+  .ritual cite{display:block;margin-top:1.6rem;font-style:normal;font-size:.85rem;letter-spacing:.12em;color:var(--plum-soft)}
+
+  /* ---------- closing cta ---------- */
+  .closing{margin:0 0 clamp(2rem,5vw,4rem)}
+  .closing-card{border-radius:calc(var(--r) + 8px);padding:clamp(2.5rem,6vw,4.5rem);text-align:center;
+    background:linear-gradient(150deg,var(--plum),var(--mauve-deep) 90%);color:var(--pearl);position:relative;overflow:hidden;box-shadow:var(--shadow-lift)}
+  .closing-card::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(232,196,192,.4),transparent 65%);top:-160px;right:-120px}
+  .closing-card::after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,rgba(201,168,106,.32),transparent 65%);bottom:-150px;left:-100px}
+  .closing-card h2{position:relative;font-family:"Noto Serif TC";font-weight:300;font-size:clamp(1.8rem,4.5vw,3rem);margin-bottom:1rem}
+  .closing-card p{position:relative;color:rgba(251,248,245,.82);max-width:42ch;margin:0 auto 2rem}
+  .closing-card .btn-primary{background:var(--pearl);color:var(--plum)}
+  .closing-card .btn-primary:hover{background:#fff}
+
+  /* ---------- footer ---------- */
+  footer{padding:3rem 0 2.5rem;border-top:1px solid var(--line);font-size:.86rem;color:var(--plum-soft)}
+  .foot-grid{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+  .foot-brand{font-family:"Fraunces",serif;font-size:1.25rem;color:var(--plum)}
+  .foot-demo{display:flex;align-items:center;gap:.6rem;font-size:.82rem}
+  .foot-demo a{color:var(--mauve-deep);font-weight:500}
+  .foot-demo .badge{background:var(--pearl);border:1px solid var(--line);border-radius:50px;padding:.35rem .9rem}
+
+  /* ---------- toast ---------- */
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,140%);
+    background:var(--plum);color:var(--pearl);padding:.9rem 1.5rem;border-radius:50px;
+    box-shadow:var(--shadow-lift);font-size:.92rem;display:flex;align-items:center;gap:.7rem;z-index:100;
+    transition:transform .45s cubic-bezier(.2,.9,.3,1.2);max-width:90vw}
+  #toast.show{transform:translate(-50%,0)}
+  #toast .tchip{width:16px;height:16px;border-radius:50%;background:var(--tint,#E8C4C0)}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.step{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand"><span class="dot"></span><span class="fr">Sérên<b> 微光</b></span></div>
+    <div class="navlinks">
+      <a href="#shade">裸光色號</a>
+      <a href="#ingredients">成分透析</a>
+      <a href="#routine">膚質定製</a>
+      <a href="#ritual">保養儀式</a>
+    </div>
+    <a href="#shade" class="nav-cta">尋找你的光</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">發酵精米 · 裸光氣墊精華</span>
+      <h1>不是遮蓋，<br>是讓肌膚<em>自己發光</em>。</h1>
+      <p class="lead">微光裸光氣墊精華以 72 小時低溫發酵的精米原液為底，薄透一層，融進你的膚色與膚理——讓光從裡面透出來。</p>
+      <div class="hero-cta">
+        <button class="btn-primary" data-scroll="#shade">即時試你的色號</button>
+        <a href="#ingredients" class="btn-ghost">看見裡面有什麼 →</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>72hr</b>低溫發酵</div>
+        <div><b>6 色</b>裸光色階</div>
+        <div><b>0</b>礦物油 · 酒精</div>
+      </div>
+    </div>
+
+    <div class="product-stage" id="heroStage">
+      <div class="halo"></div>
+      <div class="ring"></div>
+      <div class="swatch-tag t1"><span class="chip"></span><span id="tagName1">薄霧裸光</span></div>
+      <div class="swatch-tag t2"><span class="chip"></span>SPF 35 · PA+++</div>
+      <div class="bottle float" aria-hidden="true">
+        <svg viewBox="0 0 160 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity=".55"/>
+            </linearGradient>
+          </defs>
+          <!-- lid -->
+          <rect x="56" y="6" width="48" height="34" rx="9" fill="#4A2E45"/>
+          <rect x="60" y="12" width="40" height="8" rx="4" fill="#C9A86A" opacity=".85"/>
+          <!-- neck -->
+          <rect x="64" y="38" width="32" height="16" fill="#EFE2E9"/>
+          <!-- body glass -->
+          <rect x="34" y="52" width="92" height="166" rx="26" fill="url(#glass)" stroke="rgba(74,46,69,.18)"/>
+          <!-- liquid (tinted) -->
+          <clipPath id="liq"><rect x="34" y="52" width="92" height="166" rx="26"/></clipPath>
+          <g clip-path="url(#liq)">
+            <rect id="liquid" x="34" y="104" width="92" height="114" fill="#E8C4C0"/>
+            <ellipse id="liqTop" cx="80" cy="104" rx="46" ry="9" fill="#fff" opacity=".25"/>
+          </g>
+          <!-- shine -->
+          <rect x="44" y="64" width="13" height="120" rx="7" fill="#fff" opacity=".5"/>
+          <!-- label -->
+          <rect x="52" y="132" width="56" height="50" rx="8" fill="rgba(251,248,245,.92)"/>
+          <text x="80" y="154" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#4A2E45">Sérên</text>
+          <text x="80" y="170" text-anchor="middle" font-family="sans-serif" font-size="7" letter-spacing="2" fill="#9B6E8C">微 光</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHADE SELECTOR (SIGNATURE) -->
+<section class="shade-sec" id="shade">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Signature · 裸光試色</span>
+      <h2>找到那個，像你沒上妝一樣的色號。</h2>
+      <p>先選底調，再點色階——產品與肌膚預覽會即時換上那道光。沒有「正確」的色號，只有最像你的那一個。</p>
+    </div>
+
+    <div class="shade-grid">
+      <div class="shade-preview reveal">
+        <div class="bg-tint"></div>
+        <div class="skin-disc" id="skinDisc"></div>
+        <div class="pv-code" id="pvCode">N02</div>
+        <div class="pv-name" id="pvName">薄霧裸光</div>
+        <div class="pv-desc" id="pvDesc">中性偏白，適合自然光下追求乾淨透亮的你。</div>
+      </div>
+
+      <div class="shade-panel">
+        <div class="eyebrow" style="margin-bottom:.7rem">底調 Undertone</div>
+        <div class="undertone" id="undertone" role="group" aria-label="選擇底調">
+          <button data-tone="cool" aria-pressed="false">冷粉調</button>
+          <button data-tone="neutral" aria-pressed="true">中性調</button>
+          <button data-tone="warm" aria-pressed="false">暖蜜調</button>
+        </div>
+
+        <div class="eyebrow" style="margin-bottom:.7rem">色階 Shade</div>
+        <div class="swatches" id="swatches" role="group" aria-label="選擇色號"></div>
+
+        <div class="add-row">
+          <div class="price">NT$1,280 <small>/ 15ml</small></div>
+          <button class="btn-primary" id="addShade">加入購物袋</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INGREDIENTS -->
+<section id="ingredients">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Inside · 成分透析</span>
+      <h2>薄薄一層裡，住著四種對肌膚溫柔的東西。</h2>
+      <p>每一項都標示濃度與作用。點開看它在你臉上做了什麼。</p>
+    </div>
+    <div class="ingredients">
+      <div class="acc-list reveal" id="acc">
+        <!-- items injected -->
+      </div>
+      <div class="ing-visual reveal">
+        <div class="drop"></div>
+        <div class="pct" id="ingPct">83%</div>
+        <div class="pct-lbl" id="ingLbl">發酵精米原液濃度</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROUTINE BUILDER -->
+<section class="routine-sec" id="routine">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">For you · 膚質定製</span>
+      <h2>你的膚質，配你的步驟。</h2>
+      <p>選一種最貼近你今天肌膚狀態的，我們替你排好早晚四步。</p>
+    </div>
+
+    <div class="skintype-row reveal" id="skintype" role="group" aria-label="選擇膚質">
+      <button data-type="dry" aria-pressed="true"><span class="ic">🌵</span><b>乾燥緊繃</b><small>需要鎖水修護</small></button>
+      <button data-type="oily" aria-pressed="false"><span class="ic">💧</span><b>出油泛光</b><small>需要平衡控油</small></button>
+      <button data-type="sensitive" aria-pressed="false"><span class="ic">🌸</span><b>敏弱泛紅</b><small>需要鎮定舒緩</small></button>
+      <button data-type="dull" aria-pressed="false"><span class="ic">🌙</span><b>暗沉無光</b><small>需要提亮煥膚</small></button>
+    </div>
+
+    <div class="routine-steps" id="routineSteps"></div>
+    <p class="routine-summary" id="routineSummary"></p>
+  </div>
+</section>
+
+<!-- RITUAL -->
+<section class="ritual" id="ritual">
+  <div class="wrap reveal">
+    <span class="eyebrow">The ritual</span>
+    <blockquote style="margin-top:1.4rem">「保養不是修正，<br>是每天花三分鐘，<br><span>對自己溫柔一次。</span>」</blockquote>
+    <cite>— 微光 SÉRÊN 主理人 林安寧</cite>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="wrap">
+    <div class="closing-card reveal">
+      <h2>讓今天的你，自帶一點光。</h2>
+      <p>首次購買加贈 7 日旅行裝精華與裸光試色卡，30 天不適用可退。</p>
+      <button class="btn-primary" data-scroll="#shade">開始試色</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="foot-brand">Sérên 微光</div>
+      <div style="margin-top:.4rem">光感保養 · 台灣製造 · 純素配方</div>
+    </div>
+    <div class="foot-demo">
+      <span class="badge">設計樣板 · e-life-ai.com</span>
+      <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">前往 e-life-ai →</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"><span class="tchip"></span><span id="toastText">已加入購物袋</span></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- shade data: 6 shades × 3 undertones ---------- */
+  const TONES = {
+    cool:    {label:"冷粉調", shades:[
+      {c:"N01",n:"瓷光裸白",col:"#F3DDD8",d:"極白偏粉，適合冷白皮與打底提亮。"},
+      {c:"N02",n:"薄霧裸光",col:"#EFD0C9",d:"自然白皙，冷光下乾淨無瑕。"},
+      {c:"N03",n:"玫瑰裸粉",col:"#E6B8B0",d:"帶粉氣色，修飾蠟黃首選。"},
+      {c:"N04",n:"暖玫裸蜜",col:"#D69D93",d:"中性偏深，自然好氣色。"},
+      {c:"N05",n:"焦糖裸棕",col:"#BE8275",d:"小麥膚色的冷調平衡。"},
+      {c:"N06",n:"可可裸影",col:"#9C6356",d:"深膚色專屬，立體不灰。"},
+    ]},
+    neutral: {label:"中性調", shades:[
+      {c:"N01",n:"瓷光裸白",col:"#F4DECF",d:"乾淨白皙，不偏粉不偏黃。"},
+      {c:"N02",n:"薄霧裸光",col:"#EDCBB6",d:"中性偏白，自然光下最像素顏。"},
+      {c:"N03",n:"杏桃裸光",col:"#E2B49C",d:"百搭中性，多數膚色都合拍。"},
+      {c:"N04",n:"蜜糖裸調",col:"#CE9A7F",d:"健康氣色，戶外不顯白。"},
+      {c:"N05",n:"焦糖裸棕",col:"#B57E63",d:"小麥色的自然延伸。"},
+      {c:"N06",n:"可可裸影",col:"#955B45",d:"深膚色，溫潤不死白。"},
+    ]},
+    warm:    {label:"暖蜜調", shades:[
+      {c:"N01",n:"奶蜜裸白",col:"#F4DBC0",d:"暖白偏黃，黃皮的本命白。"},
+      {c:"N02",n:"陽光裸光",col:"#EAC6A4",d:"暖調自然，膚色立刻有精神。"},
+      {c:"N03",n:"杏桃裸蜜",col:"#DCAE89",d:"溫暖蜜糖，氣色加分。"},
+      {c:"N04",n:"蜂蜜裸調",col:"#C9926C",d:"健康膚色的飽和暖度。"},
+      {c:"N05",n:"琥珀裸棕",col:"#AF7752",d:"小麥色的暖光首選。"},
+      {c:"N06",n:"焦糖裸影",col:"#8E5536",d:"深膚色，暖而透亮。"},
+    ]},
+  };
+
+  let curTone = "neutral";
+  let curIdx = 1; // default N02
+
+  const root = document.documentElement;
+  const swatchesEl = document.getElementById("swatches");
+  const pvCode = document.getElementById("pvCode");
+  const pvName = document.getElementById("pvName");
+  const pvDesc = document.getElementById("pvDesc");
+  const liquid = document.getElementById("liquid");
+  const tagName1 = document.getElementById("tagName1");
+  const heroChips = document.querySelectorAll(".swatch-tag .chip");
+
+  function applyShade(){
+    const s = TONES[curTone].shades[curIdx];
+    root.style.setProperty("--tint", s.col);
+    pvCode.textContent = s.c;
+    pvName.textContent = s.n;
+    pvDesc.textContent = s.d;
+    if(liquid) liquid.setAttribute("fill", s.col);
+    tagName1.textContent = s.n;
+    heroChips.forEach(c=>c.style.background = s.col);
+  }
+
+  function renderSwatches(){
+    const shades = TONES[curTone].shades;
+    swatchesEl.innerHTML = shades.map((s,i)=>`
+      <button class="sw" data-i="${i}" aria-pressed="${i===curIdx}" aria-label="${s.c} ${s.n}">
+        <span class="fill" style="background:${s.col}"></span>
+        <span class="lbl">${s.c}</span>
+      </button>`).join("");
+  }
+
+  renderSwatches();
+  applyShade();
+
+  swatchesEl.addEventListener("click", e=>{
+    const b = e.target.closest(".sw");
+    if(!b) return;
+    curIdx = +b.dataset.i;
+    swatchesEl.querySelectorAll(".sw").forEach(x=>x.setAttribute("aria-pressed", x===b));
+    applyShade();
+  });
+
+  const undertoneEl = document.getElementById("undertone");
+  undertoneEl.addEventListener("click", e=>{
+    const b = e.target.closest("button");
+    if(!b) return;
+    curTone = b.dataset.tone;
+    undertoneEl.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+    renderSwatches();
+    applyShade();
+  });
+
+  /* ---------- add to bag toast ---------- */
+  const toast = document.getElementById("toast");
+  const toastText = document.getElementById("toastText");
+  let toastTimer;
+  function showToast(msg){
+    toastText.textContent = msg;
+    toast.querySelector(".tchip").style.background = getComputedStyle(root).getPropertyValue("--tint");
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toast.classList.remove("show"), 2600);
+  }
+  document.getElementById("addShade").addEventListener("click", ()=>{
+    const s = TONES[curTone].shades[curIdx];
+    showToast(`已加入購物袋 · ${s.c} ${s.n}`);
+  });
+
+  /* ---------- ingredient accordion ---------- */
+  const ING = [
+    {em:"🍶",nm:"發酵精米原液",en:"Fermented Rice Ferment",pct:"83%",lbl:"發酵精米原液濃度",
+     body:"以台灣池上米經 72 小時低溫雙重發酵，分子更小、好吸收。",
+     pts:["強化角質含水、撫平乾紋","胺基酸補給、提升透亮度","發酵後更親膚、低刺激"]},
+    {em:"🌲",nm:"北海道雪松萃取",en:"Hokkaido Cedar Extract",pct:"5%",lbl:"雪松萃取濃度",
+     body:"萃取自寒地雪松，舒緩泛紅、收斂毛孔，留下淡淡木質清香。",
+     pts:["鎮定換季敏感與泛紅","幫助維持油水平衡","天然抗氧、延緩暗沉"]},
+    {em:"💧",nm:"三重玻尿酸",en:"Triple Hyaluronic Acid",pct:"4%",lbl:"玻尿酸複合濃度",
+     body:"大中小三種分子量分層補水，從表層到深層一次到位。",
+     pts:["即時飽水、撫平細紋","建立水潤防護膜","上妝更服貼不卡粉"]},
+    {em:"🌼",nm:"洋甘菊舒緩因子",en:"Chamomile Bisabolol",pct:"2%",lbl:"洋甘菊精華濃度",
+     body:"紅沒藥醇與洋甘菊精華，給敏弱肌一層溫柔的緩衝。",
+     pts:["快速安撫刺激與緊繃","降低外在環境敏感","孕期亦可安心使用"]},
+  ];
+  const accEl = document.getElementById("acc");
+  const ingPct = document.getElementById("ingPct");
+  const ingLbl = document.getElementById("ingLbl");
+  accEl.innerHTML = ING.map((it,i)=>`
+    <div class="acc-item">
+      <button class="acc-btn" aria-expanded="${i===0}" data-i="${i}">
+        <span class="em">${it.em}</span>
+        <span class="nm"><b>${it.nm}</b><span>${it.en} · ${it.pct}</span></span>
+        <span class="pl">+</span>
+      </button>
+      <div class="acc-body"><div class="inner">
+        <p>${it.body}</p>
+        <ul>${it.pts.map(p=>`<li>${p}</li>`).join("")}</ul>
+      </div></div>
+    </div>`).join("");
+
+  function setIngVisual(it){ ingPct.textContent = it.pct; ingLbl.textContent = it.lbl; }
+  setIngVisual(ING[0]);
+
+  accEl.addEventListener("click", e=>{
+    const btn = e.target.closest(".acc-btn");
+    if(!btn) return;
+    const open = btn.getAttribute("aria-expanded") === "true";
+    accEl.querySelectorAll(".acc-btn").forEach(b=>{
+      b.setAttribute("aria-expanded","false");
+      b.nextElementSibling.style.maxHeight = null;
+    });
+    if(!open){
+      btn.setAttribute("aria-expanded","true");
+      const body = btn.nextElementSibling;
+      body.style.maxHeight = body.scrollHeight + "px";
+      setIngVisual(ING[+btn.dataset.i]);
+    }
+  });
+  // open first on load
+  requestAnimationFrame(()=>{
+    const first = accEl.querySelector('.acc-btn[aria-expanded="true"]');
+    if(first){ const b=first.nextElementSibling; b.style.maxHeight = b.scrollHeight + "px"; }
+  });
+
+  /* ---------- routine builder ---------- */
+  const ROUTINE = {
+    dry:{tip:"乾燥緊繃肌——重點在補水後立刻鎖水，避免水分蒸散。", steps:[
+      {h:"溫和潔淨",p:"胺基酸潔顏乳",d:"低泡溫和洗淨，不帶走必要油脂。"},
+      {h:"豐潤化妝水",p:"發酵精米水",d:"濕敷 1 分鐘，先把水分喝飽。"},
+      {h:"裸光氣墊精華",p:"Sérên 精華",d:"薄擦兩層，第二層按壓鎖水。"},
+      {h:"修護乳霜",p:"雪松鎖水霜",d:"最後一層封存，整夜不緊繃。"}]},
+    oily:{tip:"出油泛光肌——清爽控油，但別過度清潔造成外油內乾。", steps:[
+      {h:"控油潔淨",p:"胺基酸潔顏露",d:"洗去多餘油脂，保留水潤感。"},
+      {h:"平衡化妝水",p:"雪松收斂水",d:"輕拍 T 字部位，收斂毛孔。"},
+      {h:"裸光氣墊精華",p:"Sérên 精華",d:"薄薄一層，清爽不悶油。"},
+      {h:"清爽凝露",p:"玻尿酸水凝露",d:"無油配方補水，妝感更持久。"}]},
+    sensitive:{tip:"敏弱泛紅肌——精簡步驟，以鎮定舒緩為核心。", steps:[
+      {h:"零負擔潔淨",p:"洋甘菊潔顏霜",d:"溫水洗淨，避免摩擦刺激。"},
+      {h:"舒緩化妝水",p:"洋甘菊舒緩水",d:"濕敷鎮定，降低泛紅。"},
+      {h:"裸光氣墊精華",p:"Sérên 精華",d:"少量點壓，溫和不刺激。"},
+      {h:"修護屏障霜",p:"舒敏修護霜",d:"加強防護膜，安撫敏弱。"}]},
+    dull:{tip:"暗沉無光肌——重點在代謝與提亮，讓氣色透出來。", steps:[
+      {h:"煥亮潔淨",p:"米麴煥膚潔顏",d:"溫和代謝老廢角質。"},
+      {h:"煥膚化妝水",p:"發酵精米水",d:"幫助後續吸收、提升透亮。"},
+      {h:"裸光氣墊精華",p:"Sérên 精華",d:"即時裸光，由內透出氣色。"},
+      {h:"夜間煥亮霜",p:"維他命C晚霜",d:"夜間集中提亮、淡化暗沉。"}]},
+  };
+  const stepsEl = document.getElementById("routineSteps");
+  const summaryEl = document.getElementById("routineSummary");
+  const reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  function renderRoutine(type){
+    const r = ROUTINE[type];
+    stepsEl.innerHTML = r.steps.map((s,i)=>`
+      <div class="step" style="transition-delay:${reduce?0:i*90}ms">
+        <div class="no">STEP 0${i+1}</div>
+        <h4>${s.h}</h4>
+        <div class="pname">${s.p}</div>
+        <p>${s.d}</p>
+      </div>`).join("");
+    summaryEl.innerHTML = `<b>建議：</b>${r.tip}`;
+    requestAnimationFrame(()=>{
+      stepsEl.querySelectorAll(".step").forEach(s=>s.classList.add("show"));
+    });
+  }
+  renderRoutine("dry");
+
+  document.getElementById("skintype").addEventListener("click", e=>{
+    const b = e.target.closest("button");
+    if(!b) return;
+    document.querySelectorAll("#skintype button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+    renderRoutine(b.dataset.type);
+  });
+
+  /* ---------- smooth scroll buttons ---------- */
+  document.querySelectorAll("[data-scroll]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const t = document.querySelector(b.dataset.scroll);
+      if(t) t.scrollIntoView({behavior:reduce?"auto":"smooth"});
+    });
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  if("IntersectionObserver" in window && !reduce){
+    const io = new IntersectionObserver((es)=>{
+      es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }});
+    },{threshold:.14});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  } else {
+    document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
+  }
+})();
+</script>
+</body>
+</html>

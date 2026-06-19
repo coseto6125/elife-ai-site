@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>Lumina AI — 你的智慧協作助理</title>
+<meta name="description" content="Lumina AI 是一款 2025 世代的對話式 AI 助理介面。流動極光背景、玻璃擬態面板、串流式回覆與多執行緒側欄。AI 產品介面範例頁面。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Lumina AI — Conversational AI assistant interface (showcase #07)
+   Aesthetic: premium 2025-era AI product. Glassmorphic dark
+   surfaces over a slow-drifting "aurora" ambient background;
+   a vivid violet→cyan gradient signature for brand + accents.
+   Geometric sans Outfit for UI, JetBrains Mono for code, Noto
+   Sans TC for CJK. Token-by-token streaming, thinking indicator,
+   threaded sidebar, glass composer, light/dark themes. Distinct
+   from the studio's mint/indigo + Sora identity.
+   ============================================================ */
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  /* dark (default) */
+  --bg:#070710;
+  --bg-2:#0c0c18;
+  --surface:rgba(22,22,38,.55);
+  --surface-solid:#15152a;
+  --surface-2:rgba(33,33,56,.6);
+  --border:rgba(150,160,255,.12);
+  --border-strong:rgba(150,160,255,.22);
+  --text:#eef0ff;
+  --text-2:#a8acc8;
+  --text-3:#6b6f8e;
+  --accent-a:#a06bff;   /* violet */
+  --accent-b:#3fe0d0;   /* cyan-mint */
+  --accent-c:#ff7bd0;   /* pink, used sparingly */
+  --user-bubble:linear-gradient(135deg,rgba(160,107,255,.20),rgba(63,224,208,.14));
+  --code-bg:#0a0a16;
+  --glass-blur:18px;
+  --shadow:0 24px 60px -20px rgba(0,0,0,.7);
+  --aurora-1:rgba(160,107,255,.45);
+  --aurora-2:rgba(63,224,208,.35);
+  --aurora-3:rgba(255,123,208,.30);
+  --ring:0 0 0 1px var(--border-strong);
+}
+
+html[data-theme="light"]{
+  --bg:#f4f4fb;
+  --bg-2:#ececf7;
+  --surface:rgba(255,255,255,.66);
+  --surface-solid:#ffffff;
+  --surface-2:rgba(255,255,255,.85);
+  --border:rgba(80,70,150,.14);
+  --border-strong:rgba(80,70,150,.24);
+  --text:#1a1730;
+  --text-2:#54506e;
+  --text-3:#8d89a8;
+  --accent-a:#7b3ff0;
+  --accent-b:#0fb6a4;
+  --accent-c:#e857ad;
+  --user-bubble:linear-gradient(135deg,rgba(123,63,240,.14),rgba(15,182,164,.12));
+  --code-bg:#1a1730;
+  --shadow:0 24px 60px -24px rgba(60,40,120,.28);
+  --aurora-1:rgba(123,63,240,.30);
+  --aurora-2:rgba(15,182,164,.26);
+  --aurora-3:rgba(232,87,173,.22);
+}
+
+html,body{height:100%}
+body{
+  font-family:"Outfit","Noto Sans TC",system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  line-height:1.6;
+}
+
+/* ---------- aurora ambient background ---------- */
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora span{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.9;
+  mix-blend-mode:screen;will-change:transform;
+}
+html[data-theme="light"] .aurora span{mix-blend-mode:multiply;opacity:.7;filter:blur(80px)}
+.aurora .a1{width:46vw;height:46vw;left:-8vw;top:-10vw;background:var(--aurora-1);animation:drift1 22s ease-in-out infinite alternate}
+.aurora .a2{width:40vw;height:40vw;right:-6vw;top:8vh;background:var(--aurora-2);animation:drift2 26s ease-in-out infinite alternate}
+.aurora .a3{width:38vw;height:38vw;left:30vw;bottom:-14vw;background:var(--aurora-3);animation:drift3 30s ease-in-out infinite alternate}
+.aurora::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% -10%,transparent,var(--bg) 78%)}
+@keyframes drift1{to{transform:translate3d(8vw,6vh,0) scale(1.12)}}
+@keyframes drift2{to{transform:translate3d(-7vw,4vh,0) scale(1.08)}}
+@keyframes drift3{to{transform:translate3d(5vw,-6vh,0) scale(1.15)}}
+
+/* ---------- layout ---------- */
+.app{position:relative;z-index:1;display:grid;grid-template-columns:288px 1fr;height:100dvh;height:100vh}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:relative;display:flex;flex-direction:column;min-height:0;
+  background:var(--surface);backdrop-filter:blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(140%);
+  border-right:1px solid var(--border);
+}
+.sb-head{padding:18px 16px 12px;display:flex;align-items:center;gap:11px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .mark{
+  width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent-a),var(--accent-b));
+  box-shadow:0 6px 18px -6px var(--accent-a);
+}
+.brand .mark svg{width:19px;height:19px}
+.brand .name{font-weight:700;font-size:17px;letter-spacing:.2px;line-height:1.1}
+.brand .name b{background:linear-gradient(120deg,var(--accent-a),var(--accent-b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .tag{font-size:10.5px;color:var(--text-3);letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+
+.new-chat{
+  margin:6px 12px 12px;padding:11px 14px;display:flex;align-items:center;gap:9px;
+  font:inherit;font-weight:600;font-size:13.5px;color:var(--text);cursor:pointer;
+  border-radius:13px;border:1px solid var(--border-strong);
+  background:linear-gradient(135deg,rgba(160,107,255,.16),rgba(63,224,208,.10));
+  transition:.18s transform,.18s box-shadow,.18s border-color;
+}
+.new-chat:hover{transform:translateY(-1px);border-color:var(--accent-a);box-shadow:0 10px 26px -14px var(--accent-a)}
+.new-chat svg{width:16px;height:16px;color:var(--accent-a)}
+
+.sb-label{padding:6px 18px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600}
+.threads{flex:1;overflow-y:auto;padding:0 10px 10px;min-height:0}
+.thread{
+  position:relative;padding:10px 12px;border-radius:11px;cursor:pointer;margin-bottom:3px;
+  display:flex;flex-direction:column;gap:2px;transition:background .15s,transform .12s;
+  border:1px solid transparent;
+}
+.thread:hover{background:var(--surface-2)}
+.thread.active{background:var(--surface-2);border-color:var(--border-strong)}
+.thread.active::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:3px;border-radius:3px;background:linear-gradient(var(--accent-a),var(--accent-b))}
+.thread .t-title{font-size:13.5px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread .t-snip{font-size:11.5px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.sb-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.user-row{display:flex;align-items:center;gap:10px}
+.user-row .ava{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--accent-c),var(--accent-a))}
+.user-row .u-meta{min-width:0;line-height:1.25}
+.user-row .u-name{font-size:13px;font-weight:600}
+.user-row .u-plan{font-size:11px;color:var(--accent-b);font-weight:600}
+.credit{font-size:10.5px;color:var(--text-3);line-height:1.5}
+.credit a{color:var(--text-2);text-decoration:none;border-bottom:1px solid var(--border-strong)}
+.credit a:hover{color:var(--accent-b)}
+
+/* ---------- main / chat ---------- */
+.main{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0}
+.topbar{
+  display:flex;align-items:center;gap:12px;padding:12px 20px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(var(--bg-2),transparent);
+}
+.menu-btn{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;align-items:center;justify-content:center;flex:none}
+.menu-btn svg{width:18px;height:18px}
+.top-title{font-weight:600;font-size:15px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* model selector */
+.model-sel{position:relative}
+.model-btn{
+  display:flex;align-items:center;gap:8px;font:inherit;font-size:13px;font-weight:600;color:var(--text);
+  padding:8px 12px;border-radius:11px;border:1px solid var(--border-strong);background:var(--surface);cursor:pointer;
+  backdrop-filter:blur(8px);transition:border-color .15s;white-space:nowrap;
+}
+.model-btn:hover{border-color:var(--accent-a)}
+.model-btn .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-b);box-shadow:0 0 8px var(--accent-b)}
+.model-btn svg{width:14px;height:14px;color:var(--text-3)}
+.model-menu{
+  position:absolute;right:0;top:calc(100% + 8px);width:248px;padding:6px;z-index:30;
+  background:var(--surface-solid);border:1px solid var(--border-strong);border-radius:14px;box-shadow:var(--shadow);
+  display:none;
+}
+.model-menu.open{display:block;animation:pop .16s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+.model-opt{display:flex;gap:10px;padding:10px;border-radius:10px;cursor:pointer}
+.model-opt:hover{background:var(--surface-2)}
+.model-opt .mo-name{font-size:13.5px;font-weight:600}
+.model-opt .mo-desc{font-size:11.5px;color:var(--text-3)}
+.model-opt .check{margin-left:auto;color:var(--accent-b);opacity:0}
+.model-opt.sel .check{opacity:1}
+.model-opt .check svg{width:16px;height:16px}
+
+.icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text-2);cursor:pointer;display:grid;place-items:center;flex:none;transition:.15s}
+.icon-btn:hover{color:var(--text);border-color:var(--border-strong)}
+.icon-btn svg{width:17px;height:17px}
+
+/* scroll area */
+.scroll{flex:1;overflow-y:auto;min-height:0;scroll-behavior:smooth}
+.stream{max-width:780px;margin:0 auto;padding:26px 22px 30px;display:flex;flex-direction:column;gap:22px}
+
+/* welcome / empty state */
+.welcome{margin:auto;text-align:center;padding:40px 18px;max-width:680px;animation:fade .5s ease}
+.welcome .orb{
+  width:74px;height:74px;border-radius:22px;margin:0 auto 22px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent-a),var(--accent-b));box-shadow:0 18px 50px -16px var(--accent-a);
+  animation:floaty 5s ease-in-out infinite;
+}
+.welcome .orb svg{width:38px;height:38px}
+@keyframes floaty{50%{transform:translateY(-8px)}}
+.welcome h1{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.18}
+.welcome h1 b{background:linear-gradient(120deg,var(--accent-a),var(--accent-b),var(--accent-c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome p{color:var(--text-2);margin-top:12px;font-size:15px}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+.chip{
+  display:flex;align-items:center;gap:9px;text-align:left;font:inherit;font-size:13.5px;color:var(--text);
+  padding:12px 15px;border-radius:14px;cursor:pointer;max-width:300px;
+  border:1px solid var(--border);background:var(--surface);backdrop-filter:blur(10px);
+  transition:.18s transform,.18s border-color,.18s box-shadow;
+}
+.chip:hover{transform:translateY(-2px);border-color:var(--accent-a);box-shadow:0 12px 28px -16px var(--accent-a)}
+.chip .ci{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;background:var(--surface-2);color:var(--accent-b)}
+.chip .ci svg{width:16px;height:16px}
+.chip span{line-height:1.35}
+
+/* message rows */
+.msg{display:flex;gap:14px;animation:rise .4s cubic-bezier(.2,.7,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+@keyframes fade{from{opacity:0}}
+.msg .ava{
+  width:36px;height:36px;border-radius:11px;flex:none;display:grid;place-items:center;font-weight:700;font-size:14px;
+}
+.msg.user .ava{background:linear-gradient(135deg,var(--accent-c),var(--accent-a));color:#fff}
+.msg.ai .ava{background:linear-gradient(135deg,var(--accent-a),var(--accent-b));color:#0b0b16}
+.msg.ai .ava svg{width:19px;height:19px}
+.bubble-wrap{min-width:0;flex:1;display:flex;flex-direction:column}
+.role{font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:5px;letter-spacing:.02em}
+.bubble{
+  font-size:14.5px;color:var(--text);border-radius:16px;padding:13px 16px;width:fit-content;max-width:100%;
+  border:1px solid var(--border);word-wrap:break-word;overflow-wrap:anywhere;
+}
+.msg.user .bubble{background:var(--user-bubble);border-color:var(--border-strong);border-top-right-radius:5px}
+.msg.ai .bubble{background:var(--surface);backdrop-filter:blur(10px);border-top-left-radius:5px}
+
+/* markdown-ish content */
+.bubble p{margin:0 0 9px}.bubble p:last-child{margin-bottom:0}
+.bubble ul,.bubble ol{margin:6px 0 9px;padding-left:20px}
+.bubble li{margin:3px 0}
+.bubble strong{color:var(--text);font-weight:700}
+.bubble code:not(pre code){font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface-2);padding:2px 6px;border-radius:6px;color:var(--accent-b)}
+.bubble pre{
+  margin:10px 0;border-radius:13px;background:var(--code-bg);border:1px solid var(--border-strong);overflow:hidden;
+}
+html[data-theme="light"] .bubble pre code{color:#e6e6f5}
+.code-head{display:flex;align-items:center;gap:8px;padding:8px 13px;border-bottom:1px solid var(--border-strong);font-size:11.5px;color:var(--text-3)}
+.code-head .lang{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--accent-a)}
+.code-head .dots{display:flex;gap:5px;margin-right:4px}
+.code-head .dots i{width:9px;height:9px;border-radius:50%;display:block;background:var(--border-strong)}
+.code-copy{margin-left:auto;font:inherit;font-size:11.5px;color:var(--text-2);background:none;border:0;cursor:pointer;display:flex;gap:5px;align-items:center}
+.code-copy:hover{color:var(--accent-b)}
+.code-copy svg{width:13px;height:13px}
+.bubble pre code{display:block;padding:13px;font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.65;color:#dfe2ff;white-space:pre;overflow-x:auto}
+.tok-key{color:var(--accent-a)}.tok-str{color:var(--accent-b)}.tok-com{color:var(--text-3)}.tok-fn{color:var(--accent-c)}
+
+/* streaming cursor */
+.cursor{display:inline-block;width:8px;height:16px;margin-left:1px;border-radius:2px;background:var(--accent-b);vertical-align:-2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* message actions */
+.actions{display:flex;gap:6px;margin-top:9px;opacity:0;transition:opacity .15s}
+.msg.ai:hover .actions{opacity:1}
+.act{display:flex;align-items:center;gap:5px;font:inherit;font-size:11.5px;color:var(--text-3);background:none;border:1px solid transparent;border-radius:8px;padding:4px 8px;cursor:pointer;transition:.15s}
+.act:hover{color:var(--text);background:var(--surface-2);border-color:var(--border)}
+.act svg{width:13px;height:13px}
+.act.done{color:var(--accent-b)}
+
+/* thinking indicator */
+.thinking{display:flex;align-items:center;gap:9px;color:var(--text-2);font-size:13.5px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;border-top-left-radius:5px;width:fit-content}
+.thinking .dots{display:flex;gap:5px}
+.thinking .dots i{width:7px;height:7px;border-radius:50%;background:var(--accent-b);animation:bounce 1.3s ease-in-out infinite}
+.thinking .dots i:nth-child(2){animation-delay:.18s}
+.thinking .dots i:nth-child(3){animation-delay:.36s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+
+/* ---------- composer ---------- */
+.composer-wrap{padding:8px 22px 18px;background:linear-gradient(transparent,var(--bg-2) 40%)}
+.composer{
+  max-width:780px;margin:0 auto;position:relative;
+  background:var(--surface);backdrop-filter:blur(var(--glass-blur)) saturate(150%);
+  border:1px solid var(--border-strong);border-radius:20px;box-shadow:var(--shadow);
+  padding:8px 8px 8px 16px;display:flex;align-items:flex-end;gap:8px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.composer:focus-within{border-color:var(--accent-a);box-shadow:0 0 0 4px rgba(160,107,255,.12),var(--shadow)}
+.composer textarea{
+  flex:1;resize:none;border:0;outline:0;background:transparent;color:var(--text);
+  font:inherit;font-size:15px;line-height:1.5;padding:9px 0;max-height:160px;min-height:24px;
+}
+.composer textarea::placeholder{color:var(--text-3)}
+.tool-btn{width:38px;height:38px;flex:none;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;display:grid;place-items:center;transition:.15s}
+.tool-btn:hover{color:var(--accent-b);border-color:var(--border-strong)}
+.tool-btn svg{width:18px;height:18px}
+.send{
+  width:40px;height:40px;flex:none;border-radius:12px;border:0;cursor:pointer;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent-a),var(--accent-b));color:#0b0b16;
+  transition:.18s transform,.18s box-shadow,.2s filter;box-shadow:0 8px 22px -10px var(--accent-a);
+}
+.send:hover:not(:disabled){transform:translateY(-1px) scale(1.04)}
+.send:disabled{filter:grayscale(.7) brightness(.7);cursor:not-allowed;box-shadow:none}
+.send svg{width:18px;height:18px}
+.composer-hint{max-width:780px;margin:8px auto 0;text-align:center;font-size:11px;color:var(--text-3)}
+.composer-hint b{color:var(--text-2);font-weight:600}
+
+/* scrollbars */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--accent-a);background-clip:padding-box}
+::-webkit-scrollbar-track{background:transparent}
+
+/* mobile drawer */
+.scrim{display:none;position:fixed;inset:0;background:rgba(4,4,12,.6);backdrop-filter:blur(2px);z-index:40}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:300px;max-width:84vw;z-index:50;transform:translateX(-105%);transition:transform .28s cubic-bezier(.3,.7,.3,1);box-shadow:var(--shadow)}
+  .sidebar.open{transform:none}
+  .menu-btn{display:grid}
+  .scrim.show{display:block}
+  .stream{padding:20px 16px 24px}
+  .composer-wrap{padding:6px 14px 14px}
+  .top-title{font-size:14px}
+}
+@media (max-width:430px){
+  .model-btn .mlabel{display:none}
+  .topbar{padding:10px 14px;gap:8px}
+}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+</head>
+<body>
+<div class="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<div class="app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.4 5.3 5.6.6-4.2 3.8 1.2 5.7L12 20.8 6.9 17.9l1.2-5.7L4 8.4l5.6-.6z" fill="#0b0b16"/></svg>
+        </div>
+        <div>
+          <div class="name"><b>Lumina</b> AI</div>
+          <div class="tag">Assistant</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="new-chat" id="newChatBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      開啟新對話
+    </button>
+
+    <div class="sb-label">最近對話</div>
+    <nav class="threads" id="threads"></nav>
+
+    <div class="sb-foot">
+      <div class="user-row">
+        <div class="ava">陳</div>
+        <div class="u-meta">
+          <div class="u-name">陳又安</div>
+          <div class="u-plan">Lumina Pro · 無限額度</div>
+        </div>
+      </div>
+      <div class="credit">Template by <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai · service.e-life-ai.com</a></div>
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="開啟側欄">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="top-title" id="topTitle">新對話</div>
+
+      <div class="model-sel">
+        <button class="model-btn" id="modelBtn">
+          <span class="dot"></span>
+          <span class="mlabel" id="modelLabel">Lumina&nbsp;2 Sonata</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="model-menu" id="modelMenu"></div>
+      </div>
+
+      <button class="icon-btn" id="themeBtn" aria-label="切換主題" title="切換明暗主題">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </header>
+
+    <div class="scroll" id="scroll">
+      <div class="stream" id="streamArea"></div>
+    </div>
+
+    <div class="composer-wrap">
+      <form class="composer" id="composer">
+        <button type="button" class="tool-btn" title="附加檔案" aria-label="附加檔案">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.05l-9.2 9.2a5 5 0 0 1-7.07-7.07l9.19-9.2a3.33 3.33 0 0 1 4.72 4.72l-9.2 9.19a1.67 1.67 0 0 1-2.36-2.36l8.49-8.48"/></svg>
+        </button>
+        <textarea id="input" rows="1" placeholder="傳訊息給 Lumina…" autocomplete="off"></textarea>
+        <button type="submit" class="send" id="sendBtn" aria-label="送出">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <div class="composer-hint"><b>Enter</b> 送出 · <b>Shift + Enter</b> 換行 · Lumina 可能會出錯，重要資訊請自行查證。</div>
+    </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+/* ====================== icons ====================== */
+const SVG = {
+  star:'<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.4 5.3 5.6.6-4.2 3.8 1.2 5.7L12 20.8 6.9 17.9l1.2-5.7L4 8.4l5.6-.6z" fill="currentColor"/></svg>',
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>',
+  regen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v5h-5"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/></svg>',
+  code:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>',
+  bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 2z"/></svg>',
+};
+
+/* ====================== models ====================== */
+const MODELS = [
+  {id:'sonata', name:'Lumina&nbsp;2 Sonata', label:'Lumina 2 Sonata', desc:'最聰明・適合複雜推理與寫作'},
+  {id:'allegro', name:'Lumina&nbsp;2 Allegro', label:'Lumina 2 Allegro', desc:'速度與品質兼具的日常之選'},
+  {id:'presto', name:'Lumina&nbsp;Presto', label:'Lumina Presto', desc:'極速回應・適合即時問答'},
+];
+let currentModel = MODELS[0];
+
+/* ====================== canned replies (markdown-ish) ====================== */
+const REPLY = {
+  greet:
+`你好，我是 **Lumina**，你的智慧協作助理。我可以協助你**規劃、寫作、分析與寫程式**。
+
+今天想從哪裡開始？你也可以直接點選下方的建議來試試看。`,
+
+  plan:
+`沒問題！這是一份為期一週、能實際執行的產品上線計畫草稿：
+
+1. **D-7 啟動**：凍結功能範圍，完成最終 QA 清單與回退方案。
+2. **D-5 內容**：撰寫上線公告、Email、社群貼文與更新日誌。
+3. **D-3 預熱**：通知核心用戶與媒體，開放搶先體驗名單。
+4. **D-1 演練**：跑一次完整部署彩排，確認監控與告警就緒。
+5. **D-Day**：分批灰度發布（5% → 25% → 100%），即時盯儀表板。
+
+> 小提醒：把「成功指標」先講清楚（如啟用率、留存、客訴量），上線後才好判斷要不要回退。要我幫你把這份計畫整理成可分享的時間表嗎？`,
+
+  code:
+`當然，這是一個用 \`fetch\` 串接串流 API、逐字渲染回覆的精簡範例：
+
+\`\`\`javascript
+async function streamChat(prompt, onToken) {
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt, stream: true }),
+  });
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    onToken(decoder.decode(value)); // 逐塊更新 UI
+  }
+}
+\`\`\`
+
+重點有三個：
+- 用 \`getReader()\` 取得 **可讀串流**，邊收邊渲染，體感更快。
+- 每收到一塊就呼叫 \`onToken\`，把畫面更新與資料抓取**解耦**。
+- 別忘了處理 \`done\` 與錯誤，並在中斷時清理 reader。
+
+需要我幫你補上 React 版本，或加入「停止生成」按鈕嗎？`,
+
+  marketing:
+`這裡有 3 組可直接使用的中秋活動文案，語氣由溫暖到俏皮：
+
+- **溫暖款**：月圓人團圓，我們把這份心意，做成你今年最想分享的禮盒。
+- **俐落款**：一年一次的圓滿，值得更好的選擇。中秋限定，售完不補。
+- **俏皮款**：別只顧著賞月啦——好吃的，這邊請。🥮
+
+要不要我針對你的**目標客群**（送禮 / 自用 / 企業團購）再各寫一版，並配上適合的標題與 CTA？`,
+
+  analyze:
+`好的，我把這個問題拆成幾個可以衡量的面向：
+
+- **現況**：先用數據描述目前的轉換漏斗，找出流失最大的單一環節。
+- **假設**：針對流失點提出 2–3 個可驗證的假設（例如載入太慢、表單太長）。
+- **實驗**：每個假設設計一個 A/B 測試，並事先定義成功門檻。
+- **決策**：以統計顯著性為準，避免被短期波動誤導。
+
+如果你願意把實際的漏斗數字貼給我，我可以幫你算出**每一步的相對流失率**，並指出最值得優先處理的環節。`,
+};
+
+/* ====================== suggested prompts ====================== */
+const CHIPS = [
+  {icon:'bulb',  text:'幫我規劃一週的產品上線計畫',           reply:REPLY.plan},
+  {icon:'code',  text:'示範如何串接串流式聊天 API',           reply:REPLY.code},
+  {icon:'pen',   text:'寫三組中秋節活動行銷文案',             reply:REPLY.marketing},
+  {icon:'chart', text:'分析如何提升網站轉換率',               reply:REPLY.analyze},
+];
+
+/* ====================== conversation data ====================== */
+let conversations = [
+  {id:'c1', title:'產品上線計畫草稿', messages:[
+    {role:'user', text:'幫我規劃一週的產品上線計畫'},
+    {role:'ai', text:REPLY.plan},
+  ]},
+  {id:'c2', title:'串流式聊天 API 範例', messages:[
+    {role:'user', text:'示範如何串接串流式聊天 API'},
+    {role:'ai', text:REPLY.code},
+  ]},
+  {id:'c3', title:'中秋行銷文案發想', messages:[
+    {role:'user', text:'寫三組中秋節活動行銷文案'},
+    {role:'ai', text:REPLY.marketing},
+  ]},
+  {id:'c4', title:'提升轉換率的方法', messages:[
+    {role:'user', text:'分析如何提升網站轉換率'},
+    {role:'ai', text:REPLY.analyze},
+  ]},
+];
+let activeId = null;          // null = welcome screen of a fresh chat
+let busy = false;
+
+/* ====================== element refs ====================== */
+const $ = s => document.querySelector(s);
+const threadsEl = $('#threads');
+const streamArea = $('#streamArea');
+const scroll = $('#scroll');
+const input = $('#input');
+const sendBtn = $('#sendBtn');
+const topTitle = $('#topTitle');
+const sidebar = $('#sidebar');
+const scrim = $('#scrim');
+
+/* ====================== markdown-ish renderer ====================== */
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+function highlight(code){
+  // escape then apply lightweight JS token coloring
+  let h = esc(code);
+  h = h.replace(/(\/\/[^\n]*)/g,'<span class="tok-com">$1</span>');
+  h = h.replace(/("[^"\n]*"|'[^'\n]*'|`[^`\n]*`)/g,'<span class="tok-str">$1</span>');
+  h = h.replace(/\b(async|await|function|const|let|var|return|while|if|else|new|true|false|break|for|of)\b/g,'<span class="tok-key">$1</span>');
+  h = h.replace(/\b([A-Za-z_]\w*)(\()/g,'<span class="tok-fn">$1</span>$2');
+  return h;
+}
+
+function renderMarkdown(src){
+  const parts = src.split(/```/);   // alternating text / code
+  let out = '';
+  parts.forEach((seg, i) => {
+    if(i % 2 === 1){
+      const nl = seg.indexOf('\n');
+      const lang = seg.slice(0, nl).trim() || 'code';
+      const code = seg.slice(nl + 1).replace(/\n$/,'');
+      out += `<pre><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="lang">${esc(lang)}</span><button class="code-copy" type="button" data-code="${encodeURIComponent(code)}">${SVG.copy}<span>複製</span></button></div><code>${highlight(code)}</code></pre>`;
+    } else {
+      out += renderProse(seg);
+    }
+  });
+  return out;
+}
+
+function inline(t){
+  return esc(t)
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+}
+
+function renderProse(text){
+  const lines = text.split('\n');
+  let html = '', list = null;
+  const closeList = () => { if(list){ html += `</${list}>`; list = null; } };
+  for(let raw of lines){
+    const line = raw.trim();
+    if(!line){ closeList(); continue; }
+    let m;
+    if((m = line.match(/^[-*]\s+(.*)/))){
+      if(list !== 'ul'){ closeList(); html += '<ul>'; list='ul'; }
+      html += `<li>${inline(m[1])}</li>`;
+    } else if((m = line.match(/^\d+\.\s+(.*)/))){
+      if(list !== 'ol'){ closeList(); html += '<ol>'; list='ol'; }
+      html += `<li>${inline(m[1])}</li>`;
+    } else if((m = line.match(/^>\s?(.*)/))){
+      closeList();
+      html += `<p style="border-left:3px solid var(--accent-a);padding-left:12px;color:var(--text-2)">${inline(m[1])}</p>`;
+    } else {
+      closeList();
+      html += `<p>${inline(line)}</p>`;
+    }
+  }
+  closeList();
+  return html;
+}
+
+/* ====================== rendering ====================== */
+function avatarAI(){ return `<div class="ava">${SVG.star}</div>`; }
+function avatarUser(){ return `<div class="ava">陳</div>`; }
+
+function buildMsg(role, html, withActions){
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role;
+  const actions = (role==='ai' && withActions) ? `
+    <div class="actions">
+      <button class="act" data-act="copy">${SVG.copy}<span>複製</span></button>
+      <button class="act" data-act="regen">${SVG.regen}<span>重新生成</span></button>
+    </div>` : '';
+  wrap.innerHTML = (role==='user' ? avatarUser() : avatarAI()) + `
+    <div class="bubble-wrap">
+      <div class="role">${role==='user'?'你':'Lumina'}</div>
+      <div class="bubble">${html}</div>
+      ${actions}
+    </div>`;
+  return wrap;
+}
+
+function renderThreads(){
+  threadsEl.innerHTML = '';
+  conversations.forEach(c => {
+    const lastAI = [...c.messages].reverse().find(m=>m.role==='ai');
+    const snip = lastAI ? lastAI.text.replace(/[`*>#\-]/g,'').replace(/\s+/g,' ').trim().slice(0,40) : '尚無回覆';
+    const el = document.createElement('div');
+    el.className = 'thread' + (c.id===activeId ? ' active' : '');
+    el.innerHTML = `<div class="t-title">${esc(c.title)}</div><div class="t-snip">${esc(snip)}</div>`;
+    el.addEventListener('click', () => { openConversation(c.id); closeDrawer(); });
+    threadsEl.appendChild(el);
+  });
+}
+
+function renderWelcome(){
+  streamArea.innerHTML = `
+    <div class="welcome">
+      <div class="orb">${SVG.star}</div>
+      <h1>嗨，我是 <b>Lumina</b><br>今天想完成什麼？</h1>
+      <p>規劃、寫作、分析、寫程式——把任務交給我，一起把想法變成成果。</p>
+      <div class="chips">
+        ${CHIPS.map((c,i)=>`<button class="chip" data-chip="${i}"><span class="ci">${SVG[c.icon]}</span><span>${esc(c.text)}</span></button>`).join('')}
+      </div>
+    </div>`;
+  topTitle.textContent = '新對話';
+}
+
+function renderConversation(c){
+  streamArea.innerHTML = '';
+  c.messages.forEach(m => {
+    streamArea.appendChild(buildMsg(m.role, renderMarkdown(m.text), m.role==='ai'));
+  });
+  topTitle.textContent = c.title;
+}
+
+function openConversation(id){
+  activeId = id;
+  const c = conversations.find(x=>x.id===id);
+  renderConversation(c);
+  renderThreads();
+  jumpBottom();
+}
+
+function newChat(){
+  activeId = null;
+  renderWelcome();
+  renderThreads();
+  input.value=''; autoGrow(); input.focus();
+  closeDrawer();
+}
+
+/* ====================== scroll helpers ====================== */
+function jumpBottom(){ scroll.scrollTop = scroll.scrollHeight; }
+function nearBottom(){ return scroll.scrollHeight - scroll.scrollTop - scroll.clientHeight < 120; }
+
+/* ====================== send + streaming ====================== */
+function pickReply(userText){
+  const c = CHIPS.find(c=>c.text===userText);
+  if(c) return c.reply;
+  // keyword routing for free-typed messages
+  const t = userText.toLowerCase();
+  if(/(程式|code|api|串流|javascript|js|function)/i.test(userText)) return REPLY.code;
+  if(/(計畫|規劃|上線|時程|plan|排程)/i.test(userText)) return REPLY.plan;
+  if(/(文案|行銷|廣告|marketing|貼文)/i.test(userText)) return REPLY.marketing;
+  if(/(分析|轉換|數據|成效|analyze)/i.test(userText)) return REPLY.analyze;
+  return REPLY.greet;
+}
+
+function ensureConversation(firstUserText){
+  if(activeId) return conversations.find(c=>c.id===activeId);
+  const id = 'c' + Date.now();
+  const title = firstUserText.replace(/\s+/g,' ').trim().slice(0,18) || '新對話';
+  const c = {id, title, messages:[]};
+  conversations.unshift(c);
+  activeId = id;
+  streamArea.innerHTML = '';   // clear welcome
+  renderThreads();
+  topTitle.textContent = title;
+  return c;
+}
+
+async function sendMessage(text){
+  text = text.trim();
+  if(!text || busy) return;
+  busy = true; sendBtn.disabled = true;
+
+  const conv = ensureConversation(text);
+  conv.messages.push({role:'user', text});
+  streamArea.appendChild(buildMsg('user', renderMarkdown(text), false));
+  input.value=''; autoGrow(); jumpBottom();
+
+  // thinking indicator
+  const thinkRow = buildMsg('ai', '', false);
+  thinkRow.querySelector('.bubble').outerHTML =
+    `<div class="thinking">Lumina 思考中<span class="dots"><i></i><i></i><i></i></span></div>`;
+  streamArea.appendChild(thinkRow);
+  jumpBottom();
+
+  const reply = pickReply(text);
+  await wait(750 + Math.random()*500);
+
+  // replace thinking with empty bubble + cursor, then stream
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = '<span class="cursor"></span>';
+  thinkRow.querySelector('.thinking').replaceWith(bubble);
+
+  await streamInto(bubble, reply);
+
+  // finalize: real markdown + actions
+  bubble.innerHTML = renderMarkdown(reply);
+  const wrap = thinkRow.querySelector('.bubble-wrap');
+  wrap.insertAdjacentHTML('beforeend', `
+    <div class="actions">
+      <button class="act" data-act="copy">${SVG.copy}<span>複製</span></button>
+      <button class="act" data-act="regen">${SVG.regen}<span>重新生成</span></button>
+    </div>`);
+
+  conv.messages.push({role:'ai', text:reply});
+  renderThreads();
+  busy = false; sendBtn.disabled = false;
+  input.focus();
+}
+
+function streamInto(bubble, text){
+  return new Promise(resolve => {
+    // tokenize: keep words + punctuation + newlines, but stream raw text safely
+    const tokens = text.match(/(\s+|[^\s]+)/g) || [text];
+    let i = 0, acc = '';
+    const tick = () => {
+      if(i >= tokens.length){ resolve(); return; }
+      acc += tokens[i++];
+      // during streaming show escaped plain text (no half-parsed markdown) + cursor
+      bubble.innerHTML = esc(acc) + '<span class="cursor"></span>';
+      if(nearBottom()) jumpBottom();
+      setTimeout(tick, 14 + Math.random()*34);
+    };
+    tick();
+  });
+}
+
+const wait = ms => new Promise(r=>setTimeout(r, ms));
+
+/* ====================== textarea autogrow ====================== */
+function autoGrow(){
+  input.style.height='auto';
+  input.style.height = Math.min(input.scrollHeight,160)+'px';
+}
+
+/* ====================== drawer ====================== */
+function openDrawer(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+function closeDrawer(){ sidebar.classList.remove('open'); scrim.classList.remove('show'); }
+
+/* ====================== model menu ====================== */
+const modelMenu = $('#modelMenu');
+function renderModelMenu(){
+  modelMenu.innerHTML = MODELS.map(m=>`
+    <div class="model-opt${m.id===currentModel.id?' sel':''}" data-model="${m.id}">
+      <div><div class="mo-name">${m.name}</div><div class="mo-desc">${m.desc}</div></div>
+      <span class="check">${SVG.check}</span>
+    </div>`).join('');
+}
+
+/* ====================== theme ====================== */
+function toggleTheme(){
+  const root = document.documentElement;
+  const next = root.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  $('#themeIcon').outerHTML = next==='dark'
+    ? '<svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'
+    : '<svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>';
+}
+
+/* ====================== copy helpers ====================== */
+function flashCopy(btn, label){
+  const span = btn.querySelector('span');
+  const old = span ? span.textContent : '';
+  btn.classList.add('done');
+  if(span) span.textContent = '已複製';
+  setTimeout(()=>{ btn.classList.remove('done'); if(span) span.textContent = old || label; }, 1400);
+}
+function copyText(t){
+  if(navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).catch(()=>{});
+  const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} ta.remove();
+}
+
+/* ====================== events ====================== */
+$('#composer').addEventListener('submit', e=>{ e.preventDefault(); sendMessage(input.value); });
+input.addEventListener('input', autoGrow);
+input.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(input.value); }
+});
+
+$('#newChatBtn').addEventListener('click', newChat);
+$('#menuBtn').addEventListener('click', openDrawer);
+scrim.addEventListener('click', closeDrawer);
+$('#themeBtn').addEventListener('click', toggleTheme);
+
+$('#modelBtn').addEventListener('click', e=>{ e.stopPropagation(); modelMenu.classList.toggle('open'); });
+modelMenu.addEventListener('click', e=>{
+  const opt = e.target.closest('.model-opt'); if(!opt) return;
+  currentModel = MODELS.find(m=>m.id===opt.dataset.model);
+  $('#modelLabel').innerHTML = currentModel.name;
+  renderModelMenu(); modelMenu.classList.remove('open');
+});
+document.addEventListener('click', ()=> modelMenu.classList.remove('open'));
+
+// delegated clicks inside stream: chips, actions, code-copy
+streamArea.addEventListener('click', e=>{
+  const chip = e.target.closest('.chip');
+  if(chip){ sendMessage(CHIPS[+chip.dataset.chip].text); return; }
+
+  const codeCopy = e.target.closest('.code-copy');
+  if(codeCopy){ copyText(decodeURIComponent(codeCopy.dataset.code)); flashCopy(codeCopy,'複製'); return; }
+
+  const act = e.target.closest('.act');
+  if(act){
+    const wrap = act.closest('.bubble-wrap');
+    if(act.dataset.act==='copy'){
+      copyText(wrap.querySelector('.bubble').innerText);
+      flashCopy(act,'複製');
+    } else if(act.dataset.act==='regen'){
+      if(busy) return;
+      const conv = conversations.find(c=>c.id===activeId);
+      if(!conv) return;
+      // drop trailing AI message(s), keep up to the last user turn, then resend it
+      let lastUserText = '';
+      while(conv.messages.length && conv.messages[conv.messages.length-1].role==='ai') conv.messages.pop();
+      if(conv.messages.length) lastUserText = conv.messages[conv.messages.length-1].text;
+      act.closest('.msg').remove();
+      if(lastUserText) regenerate(conv, lastUserText);
+    }
+  }
+});
+
+async function regenerate(conv, userText){
+  busy=true; sendBtn.disabled=true;
+  const thinkRow = buildMsg('ai','',false);
+  thinkRow.querySelector('.bubble').outerHTML =
+    `<div class="thinking">Lumina 重新生成中<span class="dots"><i></i><i></i><i></i></span></div>`;
+  streamArea.appendChild(thinkRow); jumpBottom();
+  const reply = pickReply(userText);
+  await wait(600+Math.random()*400);
+  const bubble=document.createElement('div'); bubble.className='bubble'; bubble.innerHTML='<span class="cursor"></span>';
+  thinkRow.querySelector('.thinking').replaceWith(bubble);
+  await streamInto(bubble, reply);
+  bubble.innerHTML = renderMarkdown(reply);
+  thinkRow.querySelector('.bubble-wrap').insertAdjacentHTML('beforeend',`
+    <div class="actions">
+      <button class="act" data-act="copy">${SVG.copy}<span>複製</span></button>
+      <button class="act" data-act="regen">${SVG.regen}<span>重新生成</span></button>
+    </div>`);
+  conv.messages.push({role:'ai', text:reply});
+  renderThreads();
+  busy=false; sendBtn.disabled=false;
+}
+
+/* ====================== init ====================== */
+renderModelMenu();
+renderThreads();
+renderWelcome();
+autoGrow();
+input.focus();
+</script>
+</body>
+</html>

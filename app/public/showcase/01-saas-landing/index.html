@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Cadence — 給營運團隊的工作流自動化平台</title>
+<meta name="description" content="Cadence 讓跨部門的重複流程自動跑起來：拖拉式編排、即時監控、零程式碼整合。B2B SaaS 範例頁面。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Cadence — SaaS landing (showcase #01)
+   Aesthetic: warm editorial — bone/cream paper, deep ink,
+   electric coral accent, oversized Fraunces display serif
+   against a tight Bricolage grotesque. Print-magazine grid,
+   hairline rules, generous negative space, tasteful motion.
+   ============================================================ */
+
+:root{
+  --paper:#f4efe6;       /* bone */
+  --paper-2:#ece4d6;     /* warmer panel */
+  --ink:#1a1714;         /* near-black warm */
+  --ink-soft:#54493f;    /* muted body */
+  --coral:#ff5c39;       /* electric accent */
+  --coral-deep:#e2451f;
+  --mint:#1f7a5c;        /* secondary accent */
+  --line:rgba(26,23,20,.16);
+  --line-soft:rgba(26,23,20,.09);
+  --shadow:18px 18px 0 rgba(26,23,20,.92);
+  --r:18px;
+  --maxw:1180px;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Bricolage Grotesque","Noto Sans TC",system-ui,sans-serif;
+  --mono:"JetBrains Mono",monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{ /* subtle paper grain */
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+  background-image:radial-gradient(rgba(26,23,20,.035) 1px,transparent 1px);
+  background-size:4px 4px;mix-blend-mode:multiply;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+section{position:relative;z-index:2}
+
+/* ---------- type ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--coral-deep);display:inline-flex;align-items:center;gap:9px;
+}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--coral)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.02;letter-spacing:-.015em}
+.display{font-size:clamp(44px,8.2vw,108px);font-weight:600;line-height:.96}
+.display em{font-style:italic;font-weight:500;color:var(--coral)}
+h2{font-size:clamp(30px,4.6vw,56px)}
+.lead{font-size:clamp(17px,1.6vw,21px);color:var(--ink-soft);max-width:46ch;line-height:1.55}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;
+  font-size:15px;padding:14px 24px;border-radius:100px;border:1.5px solid var(--ink);
+  cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,color .2s,box-shadow .2s;
+  background:transparent;color:var(--ink);
+}
+.btn .arr{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.btn:hover .arr{transform:translateX(4px)}
+.btn--primary{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--coral)}
+.btn--primary:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--coral)}
+.btn--ghost:hover{background:var(--ink);color:var(--paper)}
+
+/* ---------- reveal motion ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}
+.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}*{scroll-behavior:auto}}
+
+/* ============ NAV ============ */
+.nav{position:sticky;top:0;z-index:40;background:rgba(244,239,230,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.brand .dot{width:13px;height:13px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 4px rgba(255,92,57,.18)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--ink-soft);transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-5px;height:1.5px;width:0;background:var(--coral);transition:width .25s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{margin-left:6px}
+.nav-burger{display:none;background:none;border:none;cursor:pointer;font-size:24px;color:var(--ink)}
+@media(max-width:860px){.nav-links{display:none}.nav-burger{display:block}}
+
+/* ============ HERO ============ */
+.hero{padding:clamp(56px,9vw,118px) 0 clamp(40px,6vw,80px)}
+.hero-grid{display:grid;grid-template-columns:1.25fr .95fr;gap:clamp(28px,5vw,68px);align-items:end}
+.hero h1{margin:22px 0 26px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.hero-note{margin-top:22px;font-size:13.5px;color:var(--ink-soft);font-family:var(--mono);display:flex;align-items:center;gap:8px}
+.hero-note b{color:var(--mint);font-weight:600}
+
+/* hero visual: a faux dashboard card */
+.dash{
+  background:var(--ink);color:var(--paper);border-radius:var(--r);padding:20px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;border:1.5px solid var(--ink);
+}
+.dash::after{content:"";position:absolute;top:-40%;right:-30%;width:70%;height:90%;background:radial-gradient(closest-side,rgba(255,92,57,.5),transparent);filter:blur(8px)}
+.dash-bar{display:flex;gap:6px;margin-bottom:16px}
+.dash-bar i{width:11px;height:11px;border-radius:50%;background:rgba(244,239,230,.32)}
+.dash-bar i:first-child{background:var(--coral)}
+.dash-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:rgba(244,239,230,.06);margin-bottom:9px;position:relative;z-index:2}
+.dash-row .ic{width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:16px;background:rgba(244,239,230,.1)}
+.dash-row .meta{flex:1;min-width:0}
+.dash-row .meta b{font-size:14px;font-weight:600;display:block;font-family:var(--sans)}
+.dash-row .meta span{font-size:11.5px;color:rgba(244,239,230,.55);font-family:var(--mono)}
+.pill{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:100px;font-weight:500;white-space:nowrap}
+.pill.ok{background:rgba(31,122,92,.28);color:#7fe9c2}
+.pill.run{background:rgba(255,92,57,.24);color:#ffb29e}
+.pill.wait{background:rgba(244,239,230,.12);color:rgba(244,239,230,.7)}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;align-items:start}.dash{margin-top:8px}}
+
+/* ============ MARQUEE / LOGOS ============ */
+.logos{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;margin-top:clamp(46px,7vw,84px);overflow:hidden}
+.logos .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:18px}
+.marquee{display:flex;gap:64px;width:max-content;animation:slide 28s linear infinite}
+.marquee:hover{animation-play-state:paused}
+.marquee span{font-family:var(--serif);font-weight:600;font-size:24px;color:var(--ink);opacity:.55;white-space:nowrap;letter-spacing:-.01em}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ============ STATS ============ */
+.stats{padding:clamp(60px,9vw,108px) 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.stat{background:var(--paper);padding:34px 26px}
+.stat .num{font-family:var(--serif);font-size:clamp(40px,5vw,62px);font-weight:600;letter-spacing:-.02em;line-height:1}
+.stat .num .suf{color:var(--coral)}
+.stat .cap{margin-top:10px;font-size:14px;color:var(--ink-soft);max-width:22ch}
+@media(max-width:760px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ============ FEATURES ============ */
+.sec-head{max-width:640px;margin-bottom:clamp(36px,5vw,58px)}
+.sec-head h2{margin:18px 0 16px}
+.features{padding:clamp(46px,7vw,88px) 0}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{
+  background:var(--paper-2);border:1.5px solid var(--ink);border-radius:var(--r);padding:28px 26px 30px;
+  position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;
+}
+.feat:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.feat.lg{grid-column:span 2;background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.feat .fnum{font-family:var(--mono);font-size:12px;color:var(--coral-deep);letter-spacing:.1em}
+.feat.lg .fnum{color:var(--coral)}
+.feat .fic{font-size:30px;margin:16px 0 18px}
+.feat h3{font-size:clamp(21px,2.4vw,27px);margin-bottom:10px}
+.feat p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:38ch}
+.feat.lg p{color:rgba(244,239,230,.72)}
+.feat .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.feat .tags b{font-family:var(--mono);font-size:11px;font-weight:500;padding:5px 11px;border-radius:100px;border:1px solid var(--line);color:var(--ink-soft)}
+.feat.lg .tags b{border-color:rgba(244,239,230,.22);color:rgba(244,239,230,.7)}
+@media(max-width:860px){.feat-grid{grid-template-columns:1fr}.feat.lg{grid-column:span 1}}
+
+/* ============ HOW / STEPS ============ */
+.how{padding:clamp(46px,7vw,88px) 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+.step{padding:34px 28px 34px 0;border-right:1px solid var(--line)}
+.step:last-child{border-right:none}
+.step .sn{font-family:var(--serif);font-size:54px;font-weight:600;color:var(--coral);line-height:1}
+.step h3{font-size:22px;margin:14px 0 10px}
+.step p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:34ch}
+@media(max-width:760px){.steps{grid-template-columns:1fr}.step{border-right:none;border-bottom:1px solid var(--line);padding-right:0}}
+
+/* ============ PRICING ============ */
+.pricing{padding:clamp(56px,8vw,100px) 0}
+.toggle-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin:30px 0 50px}
+.toggle-wrap .t-lbl{font-size:15px;font-weight:600;color:var(--ink-soft);transition:color .2s}
+.toggle-wrap .t-lbl.on{color:var(--ink)}
+.switch{width:62px;height:34px;border-radius:100px;border:1.5px solid var(--ink);background:var(--paper-2);position:relative;cursor:pointer;flex:none;padding:0}
+.switch .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--coral);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.switch.annual .knob{transform:translateX(28px)}
+.save-tag{font-family:var(--mono);font-size:11.5px;background:var(--mint);color:#fff;padding:4px 10px;border-radius:100px;font-weight:500}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+.plan{background:var(--paper-2);border:1.5px solid var(--ink);border-radius:var(--r);padding:32px 28px 34px;display:flex;flex-direction:column;transition:transform .3s}
+.plan:hover{transform:translateY(-4px)}
+.plan.feature{background:var(--ink);color:var(--paper);box-shadow:var(--shadow)}
+.plan .pname{font-family:var(--serif);font-size:24px;font-weight:600}
+.plan .ptag{font-size:13.5px;color:var(--ink-soft);margin-top:6px;min-height:38px}
+.plan.feature .ptag{color:rgba(244,239,230,.7)}
+.plan .price{display:flex;align-items:baseline;gap:4px;margin:20px 0 4px}
+.plan .price .cur{font-family:var(--serif);font-size:22px;font-weight:600}
+.plan .price .amt{font-family:var(--serif);font-size:54px;font-weight:600;letter-spacing:-.02em;line-height:1;transition:opacity .2s}
+.plan .price .per{font-size:14px;color:var(--ink-soft)}
+.plan.feature .price .per{color:rgba(244,239,230,.6)}
+.plan .billed{font-family:var(--mono);font-size:12px;color:var(--ink-soft);min-height:18px}
+.plan.feature .billed{color:rgba(244,239,230,.55)}
+.plan ul{list-style:none;margin:24px 0 28px;display:flex;flex-direction:column;gap:12px}
+.plan li{font-size:14px;display:flex;gap:10px;align-items:flex-start;line-height:1.45}
+.plan li .ck{color:var(--coral);flex:none;font-weight:700}
+.plan.feature li .ck{color:var(--coral)}
+.plan .btn{width:100%;justify-content:center;margin-top:auto}
+.plan.feature .btn{background:var(--coral);border-color:var(--coral);color:#fff;box-shadow:4px 4px 0 rgba(244,239,230,.25)}
+.plan.feature .btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(244,239,230,.25)}
+.badge-pop{position:absolute;top:-13px;right:24px;background:var(--coral);color:#fff;font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:100px;font-weight:500}
+.plan{position:relative}
+@media(max-width:860px){.plans{grid-template-columns:1fr}}
+
+/* ============ TESTIMONIAL ============ */
+.quote{padding:clamp(56px,8vw,104px) 0}
+.quote-card{background:var(--ink);color:var(--paper);border-radius:calc(var(--r) + 6px);padding:clamp(36px,6vw,72px);position:relative;overflow:hidden}
+.quote-card::before{content:"\201C";position:absolute;top:-10px;left:24px;font-family:var(--serif);font-size:240px;color:rgba(255,92,57,.22);line-height:1}
+.quote-card blockquote{font-family:var(--serif);font-size:clamp(24px,3.4vw,42px);font-weight:500;line-height:1.22;letter-spacing:-.01em;position:relative;max-width:20ch+34ch;margin-bottom:30px}
+.quote-card blockquote em{color:var(--coral);font-style:italic}
+.q-by{display:flex;align-items:center;gap:14px;position:relative}
+.q-by .av{width:48px;height:48px;border-radius:50%;background:var(--coral);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:20px;color:#fff;flex:none}
+.q-by b{font-size:15px;font-family:var(--sans);font-weight:600;display:block}
+.q-by span{font-size:13px;color:rgba(244,239,230,.6)}
+
+/* ============ FAQ ============ */
+.faq{padding:clamp(46px,7vw,88px) 0}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;background:none;border:none;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 4px;font-family:var(--serif);font-size:clamp(18px,2.2vw,24px);font-weight:600;color:var(--ink);transition:color .2s}
+.faq-q:hover{color:var(--coral-deep)}
+.faq-q .ix{font-family:var(--sans);font-size:26px;font-weight:400;flex:none;transition:transform .3s cubic-bezier(.2,.8,.2,1);color:var(--coral)}
+.faq-item.open .faq-q .ix{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.8,.2,1)}
+.faq-a p{padding:0 4px 26px;font-size:15px;color:var(--ink-soft);line-height:1.65;max-width:62ch}
+
+/* ============ CTA ============ */
+.cta{padding:clamp(56px,8vw,104px) 0}
+.cta-card{text-align:center;border:1.5px solid var(--ink);border-radius:calc(var(--r) + 6px);padding:clamp(44px,7vw,84px) 24px;background:var(--paper-2);position:relative;overflow:hidden}
+.cta-card h2{margin-bottom:18px}
+.cta-card .lead{margin:0 auto 30px}
+.cta-card .hero-actions{justify-content:center}
+.cta-card .deco{position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,92,57,.4),transparent);filter:blur(6px)}
+.cta-card .deco.a{top:-50px;left:-30px}.cta-card .deco.b{bottom:-60px;right:-20px;background:radial-gradient(closest-side,rgba(31,122,92,.35),transparent)}
+
+/* ============ FOOTER ============ */
+.foot{border-top:1px solid var(--line);padding:48px 0 36px;margin-top:20px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;margin-bottom:40px}
+.foot .brand{margin-bottom:14px}
+.foot-grid p{font-size:14px;color:var(--ink-soft);max-width:30ch;line-height:1.6}
+.foot-col h4{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;font-weight:500}
+.foot-col a{display:block;font-size:14px;color:var(--ink-soft);margin-bottom:10px;transition:color .2s}
+.foot-col a:hover{color:var(--coral-deep)}
+.foot-bar{border-top:1px solid var(--line-soft);padding-top:22px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.foot-bar .copy{font-size:13px;color:var(--ink-soft)}
+.tmpl{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:8px}
+.tmpl a{color:var(--coral-deep);font-weight:600;border-bottom:1px solid transparent;transition:border-color .2s}
+.tmpl a:hover{border-color:var(--coral-deep)}
+.tmpl .star{color:var(--coral)}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.foot-grid{grid-template-columns:1fr}}
+
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--coral);width:0;z-index:60;transition:width .1s linear}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="wrap">
+    <a href="#top" class="brand"><span class="dot"></span>Cadence</a>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#how">運作方式</a>
+      <a href="#pricing">方案價格</a>
+      <a href="#faq">常見問題</a>
+      <a href="#cta" class="btn btn--primary nav-cta">免費試用 <span class="arr">→</span></a>
+    </div>
+    <button class="nav-burger" aria-label="選單" onclick="document.querySelectorAll('.nav-links a').forEach(a=>a.scrollIntoView());location.hash='#features'">☰</button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow reveal">營運自動化平台 · B2B</span>
+      <h1 class="display reveal d1">把重複的流程，<br>交給 <em>Cadence</em> 來跑。</h1>
+      <p class="lead reveal d2">跨部門的審批、對帳、資料同步——用拖拉式編排串起你既有的工具，無需寫一行程式碼。讓團隊把時間留給真正重要的決策。</p>
+      <div class="hero-actions reveal d3">
+        <a href="#cta" class="btn btn--primary">開始 14 天免費試用 <span class="arr">→</span></a>
+        <a href="#how" class="btn btn--ghost">看它怎麼運作</a>
+      </div>
+      <div class="hero-note reveal d4">● <b>無需信用卡</b>　·　5 分鐘完成串接　·　隨時取消</div>
+    </div>
+
+    <div class="dash reveal d2" aria-hidden="true">
+      <div class="dash-bar"><i></i><i></i><i></i></div>
+      <div class="dash-row">
+        <div class="ic">📥</div>
+        <div class="meta"><b>新訂單進件</b><span>trigger · Shopify</span></div>
+        <span class="pill ok">已完成</span>
+      </div>
+      <div class="dash-row">
+        <div class="ic">🧾</div>
+        <div class="meta"><b>自動開立發票</b><span>action · 財務系統</span></div>
+        <span class="pill run">執行中</span>
+      </div>
+      <div class="dash-row">
+        <div class="ic">💬</div>
+        <div class="meta"><b>通知負責業務</b><span>action · Slack</span></div>
+        <span class="pill wait">等待中</span>
+      </div>
+      <div class="dash-row">
+        <div class="ic">📊</div>
+        <div class="meta"><b>寫入營運儀表板</b><span>action · BigQuery</span></div>
+        <span class="pill wait">等待中</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- logos -->
+  <div class="logos reveal">
+    <div class="lbl">已有 600+ 成長期團隊在用 Cadence 編排日常流程</div>
+    <div class="marquee">
+      <span>Northwind</span><span>Veridian</span><span>Lumenpay</span><span>Stackbloom</span><span>Orbitware</span><span>Castelo</span>
+      <span>Northwind</span><span>Veridian</span><span>Lumenpay</span><span>Stackbloom</span><span>Orbitware</span><span>Castelo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat reveal"><div class="num" data-count="240000"><span class="suf">+</span></div><div class="cap">每月自動執行的工作流數</div></div>
+      <div class="stat reveal d1"><div class="num" data-count="98" data-suffix="%"><span class="suf"></span></div><div class="cap">客戶任務成功率（含自動重試）</div></div>
+      <div class="stat reveal d2"><div class="num" data-count="11" data-suffix=" hrs"><span class="suf"></span></div><div class="cap">團隊平均每週省下的人工工時</div></div>
+      <div class="stat reveal d3"><div class="num" data-count="120" data-suffix="+"><span class="suf"></span></div><div class="cap">開箱即用的整合連接器</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">為什麼選 Cadence</span>
+      <h2>少一點手動，<br>多一點掌控。</h2>
+      <p class="lead">從觸發到收尾，每個環節都看得見、追得到、改得動。</p>
+    </div>
+    <div class="feat-grid">
+      <article class="feat lg reveal">
+        <div class="fnum">01</div>
+        <div class="fic">🧩</div>
+        <h3>視覺化流程編排</h3>
+        <p>在畫布上拖拉節點，串起觸發條件、判斷分支與動作。複雜邏輯一眼看懂，改流程不必再排隊等工程資源。</p>
+        <div class="tags"><b>拖拉式畫布</b><b>條件分支</b><b>迴圈 / 等待</b><b>版本紀錄</b></div>
+      </article>
+      <article class="feat reveal d1">
+        <div class="fnum">02</div>
+        <div class="fic">🔌</div>
+        <h3>120+ 原生整合</h3>
+        <p>Slack、Salesforce、Notion、BigQuery、各家會計與電商系統，以及任意 REST API。</p>
+        <div class="tags"><b>Webhook</b><b>REST</b></div>
+      </article>
+      <article class="feat reveal">
+        <div class="fnum">03</div>
+        <div class="fic">🛡️</div>
+        <h3>稽核與權限</h3>
+        <p>每一次執行都留下完整紀錄，搭配角色權限與 SSO，符合企業治理要求。</p>
+        <div class="tags"><b>SSO</b><b>RBAC</b><b>Audit log</b></div>
+      </article>
+      <article class="feat lg reveal d1">
+        <div class="fnum">04</div>
+        <div class="fic">📈</div>
+        <h3>即時監控與自動重試</h3>
+        <p>流程跑到哪、卡在哪、為什麼失敗，一目了然。設定自動重試與告警規則，半夜的意外不必你親自起床處理。</p>
+        <div class="tags"><b>即時日誌</b><b>失敗告警</b><b>自動重試</b><b>SLA 報表</b></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW ============ -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">三步上線</span>
+      <h2>從想法到自動化，<br>一個下午就夠。</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="sn">01</div><h3>連接你的工具</h3><p>用 OAuth 一鍵授權，或貼上 API 金鑰。Cadence 自動偵測可用的觸發與動作。</p></div>
+      <div class="step reveal d1"><div class="sn">02</div><h3>畫出流程</h3><p>在畫布上組合節點、設定條件，即時預覽每一步的輸入與輸出資料。</p></div>
+      <div class="step reveal d2"><div class="sn">03</div><h3>上線並監控</h3><p>一鍵啟用，流程開始全天候自動執行，所有結果都在儀表板上追得到。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <span class="eyebrow" style="justify-content:center">透明定價</span>
+      <h2>選一個跟著團隊長大的方案。</h2>
+    </div>
+
+    <div class="toggle-wrap reveal d1">
+      <span class="t-lbl on" id="lbl-monthly">月繳</span>
+      <button class="switch" id="billSwitch" role="switch" aria-checked="false" aria-label="切換月繳 / 年繳">
+        <span class="knob"></span>
+      </button>
+      <span class="t-lbl" id="lbl-annual">年繳</span>
+      <span class="save-tag">省 20%</span>
+    </div>
+
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="pname">起步 Starter</div>
+        <div class="ptag">給剛開始自動化的小團隊</div>
+        <div class="price"><span class="cur">NT$</span><span class="amt" data-monthly="690" data-annual="552">690</span><span class="per">/月</span></div>
+        <div class="billed" data-billed></div>
+        <ul>
+          <li><span class="ck">✓</span> 5 條啟用中的工作流</li>
+          <li><span class="ck">✓</span> 每月 2,000 次執行</li>
+          <li><span class="ck">✓</span> 30+ 基礎整合</li>
+          <li><span class="ck">✓</span> 7 天執行紀錄</li>
+        </ul>
+        <a href="#cta" class="btn btn--ghost">開始使用</a>
+      </div>
+
+      <div class="plan feature reveal d1">
+        <span class="badge-pop">最受歡迎</span>
+        <div class="pname">成長 Growth</div>
+        <div class="ptag">給需要規模化編排的營運團隊</div>
+        <div class="price"><span class="cur">NT$</span><span class="amt" data-monthly="2,490" data-annual="1,992">2,490</span><span class="per">/月</span></div>
+        <div class="billed" data-billed></div>
+        <ul>
+          <li><span class="ck">✓</span> 無限工作流</li>
+          <li><span class="ck">✓</span> 每月 50,000 次執行</li>
+          <li><span class="ck">✓</span> 全部 120+ 整合</li>
+          <li><span class="ck">✓</span> 自動重試與失敗告警</li>
+          <li><span class="ck">✓</span> 90 天執行紀錄與 SLA 報表</li>
+        </ul>
+        <a href="#cta" class="btn">開始 14 天免費試用 <span class="arr">→</span></a>
+      </div>
+
+      <div class="plan reveal d2">
+        <div class="pname">企業 Enterprise</div>
+        <div class="ptag">給有治理與合規需求的組織</div>
+        <div class="price"><span class="cur"></span><span class="amt" data-monthly="洽詢" data-annual="洽詢" style="font-size:44px">洽詢</span><span class="per"></span></div>
+        <div class="billed" data-billed></div>
+        <ul>
+          <li><span class="ck">✓</span> Growth 全部功能</li>
+          <li><span class="ck">✓</span> SSO / SAML 與進階 RBAC</li>
+          <li><span class="ck">✓</span> 私有部署選項</li>
+          <li><span class="ck">✓</span> 專屬客戶成功經理</li>
+          <li><span class="ck">✓</span> 99.9% SLA 保證</li>
+        </ul>
+        <a href="#cta" class="btn btn--ghost">聯絡業務</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIAL ============ -->
+<section class="quote">
+  <div class="wrap">
+    <div class="quote-card reveal">
+      <blockquote>導入 Cadence 之後，每月的對帳作業<em>從三天縮短到一個早上</em>，財務團隊終於能專心做分析，而不是複製貼上。</blockquote>
+      <div class="q-by">
+        <div class="av">林</div>
+        <div><b>林宜珊</b><span>Veridian 財務營運總監</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">常見問題</span>
+      <h2>還在猶豫？</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">需要工程背景才能使用嗎？<span class="ix">+</span></button>
+        <div class="faq-a"><p>不需要。Cadence 的核心是視覺化拖拉式編排，營運、財務、客服團隊都能自行建立流程。需要進階邏輯時，也支援自訂程式碼節點與 REST API，留給工程師延伸。</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">我現在用的工具能串接嗎？<span class="ix">+</span></button>
+        <div class="faq-a"><p>我們提供 120+ 原生連接器，涵蓋常見的 CRM、電商、會計、通訊與資料倉儲工具。即使沒有現成連接器，也能透過 Webhook 與通用 REST 節點串接任意有 API 的系統。</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">資料安全與權限怎麼處理？<span class="ix">+</span></button>
+        <div class="faq-a"><p>所有資料傳輸採 TLS 加密，憑證以加密方式保存。企業方案支援 SSO / SAML、角色權限（RBAC）與完整稽核日誌，協助你符合內部治理與合規要求。</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">超過方案的執行次數會怎樣？<span class="ix">+</span></button>
+        <div class="faq-a"><p>流程不會中斷。超量部分以級距計費，你也可以在儀表板設定用量告警，或隨時升級方案。所有用量都透明可查，不會有意外帳單。</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">可以隨時取消嗎？<span class="ix">+</span></button>
+        <div class="faq-a"><p>可以。月繳方案隨時取消、立即停止續扣；年繳方案於合約期滿前皆可取消續約。試用期間不需要信用卡，到期不會自動扣款。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <div class="cta-card reveal">
+      <span class="deco a"></span><span class="deco b"></span>
+      <span class="eyebrow" style="justify-content:center">準備好了嗎</span>
+      <h2 style="margin-top:16px">讓重複的工作，<em style="font-style:italic;color:var(--coral)">自己跑起來</em>。</h2>
+      <p class="lead">14 天免費試用，無需信用卡。今天串接，下午就能看到第一條流程自動完成。</p>
+      <div class="hero-actions">
+        <a href="#top" class="btn btn--primary">免費開始 <span class="arr">→</span></a>
+        <a href="#pricing" class="btn btn--ghost">查看方案</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="brand"><span class="dot"></span>Cadence</a>
+        <p>給營運團隊的工作流自動化平台。把重複的流程交給自動化，把時間留給決策。</p>
+      </div>
+      <div class="foot-col">
+        <h4>產品</h4>
+        <a href="#features">功能</a><a href="#how">運作方式</a><a href="#pricing">方案價格</a><a href="#">整合連接器</a>
+      </div>
+      <div class="foot-col">
+        <h4>資源</h4>
+        <a href="#">說明文件</a><a href="#">範本庫</a><a href="#faq">常見問題</a><a href="#">系統狀態</a>
+      </div>
+      <div class="foot-col">
+        <h4>公司</h4>
+        <a href="#">關於我們</a><a href="#">部落格</a><a href="#">隱私權政策</a><a href="#cta">聯絡我們</a>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span class="copy">© 2026 Cadence（示意產品）· 本頁為設計範例，所有數據與品牌皆為虛構。</span>
+      <span class="tmpl"><span class="star">✦</span> Template by <a href="https://service.e-life-ai.com" target="_blank" rel="noopener">e-life-ai</a> · service.e-life-ai.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- scroll progress ---------- */
+  var progress = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    progress.style.width = (max>0 ? (h.scrollTop||document.body.scrollTop)/max*100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- reveal on scroll ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---------- animated counters ---------- */
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function animateCount(el){
+    var target = parseInt(el.getAttribute('data-count'),10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var sufSpan = el.querySelector('.suf');
+    var sufHtml = sufSpan ? sufSpan.outerHTML : '';
+    var start = null, dur = 1500;
+    function tick(ts){
+      if(start===null) start = ts;
+      var p = Math.min((ts-start)/dur, 1);
+      var eased = 1 - Math.pow(1-p, 3);
+      var val = Math.round(target * eased);
+      el.innerHTML = fmt(val) + suffix + sufHtml;
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var countIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ animateCount(e.target); countIO.unobserve(e.target); }
+    });
+  }, {threshold:.5});
+  document.querySelectorAll('.num[data-count]').forEach(function(el){ countIO.observe(el); });
+
+  /* ---------- pricing toggle ---------- */
+  var sw = document.getElementById('billSwitch');
+  var lblM = document.getElementById('lbl-monthly');
+  var lblA = document.getElementById('lbl-annual');
+  var amts = document.querySelectorAll('.plan .amt');
+  var billedEls = document.querySelectorAll('.plan [data-billed]');
+  var annual = false;
+
+  function renderPrice(){
+    amts.forEach(function(a){
+      var val = annual ? a.getAttribute('data-annual') : a.getAttribute('data-monthly');
+      a.style.opacity = '0';
+      setTimeout(function(){ a.textContent = val; a.style.opacity = '1'; }, 130);
+    });
+    billedEls.forEach(function(b){
+      var plan = b.closest('.plan');
+      var amtEl = plan.querySelector('.amt');
+      var isNum = /\d/.test(amtEl.getAttribute('data-monthly'));
+      if(!isNum){ b.textContent = ''; return; }
+      b.textContent = annual ? '依年繳計算，每年一次扣款' : '按月扣款，可隨時取消';
+    });
+    lblM.classList.toggle('on', !annual);
+    lblA.classList.toggle('on', annual);
+    sw.classList.toggle('annual', annual);
+    sw.setAttribute('aria-checked', String(annual));
+  }
+  sw.addEventListener('click', function(){ annual = !annual; renderPrice(); });
+  renderPrice();
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    q.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(other){
+        if(other!==item){ other.classList.remove('open'); other.querySelector('.faq-a').style.maxHeight = null; }
+      });
+      if(isOpen){ item.classList.remove('open'); a.style.maxHeight = null; }
+      else{ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+    });
+  });
+})();
+</script>
+</body>
+</html>

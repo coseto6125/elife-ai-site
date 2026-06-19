@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>躍學 LEAPLAB — 線上課程 · 程式 · 設計 · 行銷 · 語言</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbf7f0; --bg2:#f3ecdf; --card:#ffffff; --ink:#1d1a16; --ink2:#46413a;
+    --muted:#7d766c; --line:rgba(29,26,22,.10); --line2:rgba(29,26,22,.06);
+    --coral:#ff5d3b; --coral-d:#e8401f; --amber:#ffb627; --mint:#1fb98c;
+    --indigo:#3c3a8e; --grape:#6d4aff;
+    --display:'Gloock',serif;
+    --disp-cjk:'Zen Maru Gothic',sans-serif;
+    --body:'Schibsted Grotesk','Zen Maru Gothic',sans-serif;
+    --r:18px; --r-lg:26px;
+    --sh:0 1px 2px rgba(29,26,22,.04),0 8px 24px rgba(29,26,22,.06);
+    --sh-lg:0 24px 60px rgba(29,26,22,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.62;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--coral);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  button{font-family:inherit}
+  .wrap{width:min(1200px,92vw);margin-inline:auto}
+  section{position:relative}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5em;font-weight:700;text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;color:var(--coral)}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--coral);border-radius:2px}
+  h1,h2,h3{font-family:var(--disp-cjk);font-weight:900;line-height:1.12;letter-spacing:-.01em}
+  .serif{font-family:var(--display);font-weight:400}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;font-weight:700;font-size:.95rem;padding:.85em 1.5em;border:none;border-radius:999px;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s,background .18s;white-space:nowrap}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 8px 20px rgba(255,93,59,.32)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,93,59,.42)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink);background:rgba(29,26,22,.03)}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* NAV */
+  header.nav{position:fixed;inset:0 0 auto 0;z-index:90;transition:.32s;border-bottom:1px solid transparent}
+  header.nav.scrolled{background:rgba(251,247,240,.82);backdrop-filter:blur(16px);border-color:var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:.6rem;font-family:var(--disp-cjk);font-weight:900;font-size:1.32rem;letter-spacing:-.02em}
+  .logo .mk{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--ink);color:var(--amber);font-family:var(--display);font-size:1.15rem;transform:rotate(-6deg)}
+  .nav-links{display:flex;gap:2rem;font-weight:600;font-size:.92rem}
+  .nav-links a{position:relative;color:var(--ink2);transition:color .2s}
+  .nav-links a:hover{color:var(--coral)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-5px;height:2px;width:0;background:var(--coral);border-radius:2px;transition:width .25s}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:.8rem}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+  @media(max-width:900px){
+    .nav-links{position:fixed;inset:72px 0 auto 0;flex-direction:column;background:var(--bg);padding:1.4rem 6vw;gap:1.3rem;border-bottom:1px solid var(--line);transform:translateY(-130%);transition:transform .35s;font-size:1.1rem}
+    .nav-links.open{transform:none}
+    .burger{display:flex}
+    .nav-cta .btn:not(.burger){display:none}
+  }
+
+  /* HERO */
+  .hero{padding:130px 0 70px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-size:clamp(2.5rem,5.4vw,4.2rem)}
+  .hero h1 .serif{color:var(--coral);font-style:italic}
+  .hero .lead{font-size:1.12rem;color:var(--ink2);margin:1.4rem 0 2rem;max-width:30em}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .hero-meta{display:flex;gap:1.8rem;margin-top:2.4rem;flex-wrap:wrap}
+  .hero-meta .m{display:flex;flex-direction:column}
+  .hero-meta .m b{font-family:var(--disp-cjk);font-weight:900;font-size:1.7rem;line-height:1}
+  .hero-meta .m span{font-size:.82rem;color:var(--muted);margin-top:.3rem}
+  .pill-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
+  .pill{font-size:.78rem;font-weight:600;padding:.4em .9em;border-radius:999px;background:var(--card);border:1px solid var(--line);box-shadow:var(--sh)}
+  .pill b{color:var(--coral)}
+
+  /* hero art */
+  .hero-art{position:relative;height:460px}
+  .blob{position:absolute;border-radius:46% 54% 60% 40%/52% 44% 56% 48%;filter:blur(2px);z-index:0}
+  .blob.b1{width:330px;height:330px;background:radial-gradient(circle at 30% 30%,#ffd27a,#ffb627);right:-20px;top:10px;animation:float1 11s ease-in-out infinite}
+  .blob.b2{width:210px;height:210px;background:radial-gradient(circle at 30% 30%,#7cf0cf,#1fb98c);left:-10px;bottom:0;animation:float2 9s ease-in-out infinite}
+  @keyframes float1{50%{transform:translateY(-22px) rotate(8deg)}}
+  @keyframes float2{50%{transform:translateY(18px) rotate(-6deg)}}
+  .hcard{position:absolute;background:var(--card);border-radius:var(--r);box-shadow:var(--sh-lg);border:1px solid var(--line2);z-index:2}
+  .hcard.player{left:0;top:24px;width:300px;padding:14px}
+  .player .thumb{height:150px;border-radius:12px;background:linear-gradient(135deg,#3c3a8e,#6d4aff);position:relative;overflow:hidden}
+  .player .thumb .play{position:absolute;inset:0;margin:auto;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center}
+  .player .thumb .play::after{content:"";border-left:16px solid var(--ink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+  .player .meta{padding:12px 6px 6px}
+  .player .meta .t{font-weight:700;font-size:.98rem}
+  .player .bar{height:6px;border-radius:6px;background:var(--bg2);margin-top:10px;overflow:hidden}
+  .player .bar i{display:block;height:100%;width:64%;background:var(--coral);border-radius:6px}
+  .hcard.badge2{right:8px;bottom:26px;width:230px;padding:16px;display:flex;gap:12px;align-items:center}
+  .badge2 .ring{flex:none}
+  .badge2 .txt b{display:block;font-family:var(--disp-cjk);font-weight:900;font-size:1.05rem;line-height:1.2}
+  .badge2 .txt span{font-size:.78rem;color:var(--muted)}
+  .hcard.streak{right:-6px;top:0;padding:10px 14px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:.9rem;z-index:3}
+  .streak .fire{font-size:1.1rem}
+
+  /* LOGO STRIP */
+  .strip{padding:26px 0;border-block:1px solid var(--line);background:var(--bg2)}
+  .strip-in{display:flex;align-items:center;gap:2.4rem;flex-wrap:wrap;justify-content:center}
+  .strip .lbl{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .strip .co{font-family:var(--disp-cjk);font-weight:900;font-size:1.05rem;color:var(--ink2);opacity:.65}
+
+  /* SECTION HEAD */
+  .sec{padding:80px 0}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-bottom:2.4rem;flex-wrap:wrap}
+  .sec-head h2{font-size:clamp(1.8rem,3.6vw,2.7rem)}
+  .sec-head p{color:var(--ink2);max-width:34em;margin-top:.5rem}
+
+  /* CATALOG */
+  .controls{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem}
+  .ctrl-row{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;padding:.85em 1em .85em 2.7em;border:1.5px solid var(--line);border-radius:999px;background:var(--card);font-size:.95rem;transition:border-color .2s,box-shadow .2s}
+  .search input:focus{outline:none;border-color:var(--coral);box-shadow:0 0 0 4px rgba(255,93,59,.12)}
+  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .sortsel{padding:.85em 2.4em .85em 1.1em;border:1.5px solid var(--line);border-radius:999px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237d766c' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 1.1em center;font-size:.92rem;font-weight:600;cursor:pointer;appearance:none}
+  .filters{display:flex;gap:.6rem;flex-wrap:wrap}
+  .chip{padding:.55em 1.15em;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s}
+  .chip:hover{border-color:var(--ink)}
+  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .chip .n{opacity:.5;font-size:.82em;margin-left:.3em}
+  .chip.active .n{opacity:.7}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .course{background:var(--card);border:1px solid var(--line2);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s;display:flex;flex-direction:column}
+  .course:hover{transform:translateY(-6px);box-shadow:var(--sh-lg)}
+  .course .cover{height:158px;position:relative;overflow:hidden}
+  .course .cover .lvl{position:absolute;left:12px;top:12px;font-size:.72rem;font-weight:700;padding:.3em .8em;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);backdrop-filter:blur(4px)}
+  .course .cover .cat{position:absolute;right:12px;top:12px;font-size:.72rem;font-weight:700;padding:.3em .8em;border-radius:999px;color:#fff}
+  .course .cover .deco{position:absolute;font-family:var(--display);font-size:5.5rem;color:rgba(255,255,255,.18);right:-6px;bottom:-26px;line-height:1}
+  .course .body{padding:18px;display:flex;flex-direction:column;flex:1}
+  .course h3{font-size:1.12rem;line-height:1.3}
+  .course .inst{display:flex;align-items:center;gap:.5rem;margin:.7rem 0;font-size:.85rem;color:var(--muted)}
+  .av{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:.72rem;font-family:var(--disp-cjk)}
+  .course .stats{display:flex;align-items:center;gap:.9rem;font-size:.82rem;color:var(--ink2);margin-top:auto;padding-top:.6rem}
+  .course .stats .star{color:var(--amber);font-weight:700}
+  .course .foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line2);margin-top:.9rem;padding-top:.9rem}
+  .course .price{font-family:var(--disp-cjk);font-weight:900;font-size:1.2rem}
+  .course .price s{font-size:.8rem;color:var(--muted);font-weight:400;margin-right:.3em}
+  .course .go{font-size:.85rem;font-weight:700;color:var(--coral)}
+  .empty{grid-column:1/-1;text-align:center;padding:50px;color:var(--muted)}
+
+  /* LEARNING DASH */
+  .dash{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:40px;display:grid;grid-template-columns:1fr 1.3fr;gap:40px;align-items:center}
+  .dash h2{color:#fff}
+  .dash .sub{color:rgba(255,255,255,.7);margin:.6rem 0 1.6rem}
+  .ringbox{display:flex;align-items:center;gap:1.4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:18px;margin-bottom:1.2rem}
+  .ringbox .pct{font-family:var(--disp-cjk);font-weight:900;font-size:1.05rem}
+  .ringbox .info{flex:1}
+  .ringbox .info b{display:block;font-size:1rem}
+  .ringbox .info span{font-size:.82rem;color:rgba(255,255,255,.6)}
+  .lessons{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:8px}
+  .lesson{display:flex;align-items:center;gap:.9rem;padding:.85em 1em;border-radius:12px;cursor:pointer;transition:background .2s}
+  .lesson:hover{background:rgba(255,255,255,.05)}
+  .lesson .chk{width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,.35);flex:none;display:grid;place-items:center;transition:.2s}
+  .lesson.done .chk{background:var(--mint);border-color:var(--mint)}
+  .lesson .chk svg{opacity:0;transition:.2s}
+  .lesson.done .chk svg{opacity:1}
+  .lesson .lt{flex:1;font-size:.95rem;transition:.2s}
+  .lesson.done .lt{color:rgba(255,255,255,.5);text-decoration:line-through}
+  .lesson .dur{font-size:.8rem;color:rgba(255,255,255,.5)}
+  .dash-cta{margin-top:1.2rem;font-size:.86rem;color:rgba(255,255,255,.7)}
+  .dash-cta b{color:var(--amber)}
+
+  /* PRICING */
+  .toggle-wrap{display:flex;justify-content:center;margin-bottom:2.4rem}
+  .toggle{display:inline-flex;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:5px;gap:4px;position:relative}
+  .toggle button{border:none;background:none;padding:.6em 1.4em;border-radius:999px;font-weight:700;font-size:.92rem;cursor:pointer;color:var(--ink2);transition:color .25s;position:relative;z-index:2}
+  .toggle button.active{color:#fff}
+  .toggle .slider{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);background:var(--coral);border-radius:999px;transition:transform .3s cubic-bezier(.2,.8,.2,1);z-index:1}
+  .toggle.year .slider{transform:translateX(100%)}
+  .save-tag{font-size:.74rem;font-weight:700;color:var(--mint);margin-left:.4em}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .plan{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;transition:transform .2s}
+  .plan:hover{transform:translateY(-4px)}
+  .plan.feat{border-color:var(--coral);box-shadow:0 18px 44px rgba(255,93,59,.16);position:relative}
+  .plan.feat::before{content:"最受歡迎";position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--coral);color:#fff;font-size:.74rem;font-weight:700;padding:.35em 1em;border-radius:999px}
+  .plan .pname{font-family:var(--disp-cjk);font-weight:900;font-size:1.25rem}
+  .plan .pdesc{font-size:.86rem;color:var(--muted);margin:.4rem 0 1.2rem;min-height:2.5em}
+  .plan .amt{font-family:var(--disp-cjk);font-weight:900;font-size:2.4rem;line-height:1}
+  .plan .amt small{font-size:.9rem;font-weight:600;color:var(--muted)}
+  .plan .per{font-size:.82rem;color:var(--muted);margin-top:.3rem;min-height:1.2em}
+  .plan ul{list-style:none;margin:1.4rem 0;display:flex;flex-direction:column;gap:.7rem}
+  .plan li{display:flex;gap:.6rem;font-size:.9rem;color:var(--ink2)}
+  .plan li svg{color:var(--mint);flex:none;margin-top:.15em}
+  .plan .btn{margin-top:auto;width:100%}
+
+  /* STATS */
+  .statsband{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+  .statsband .s b{display:block;font-family:var(--disp-cjk);font-weight:900;font-size:clamp(2rem,4vw,3rem);background:linear-gradient(120deg,var(--coral),var(--grape));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+  .statsband .s span{display:block;color:var(--muted);font-size:.9rem;margin-top:.5rem}
+
+  /* TESTIMONIALS */
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .quote{background:var(--card);border:1px solid var(--line2);border-radius:var(--r-lg);padding:26px;box-shadow:var(--sh)}
+  .quote .stars{color:var(--amber);font-weight:700;margin-bottom:.6rem}
+  .quote p{font-size:.98rem;color:var(--ink2);line-height:1.65}
+  .quote .who{display:flex;align-items:center;gap:.7rem;margin-top:1.2rem}
+  .quote .who b{font-weight:700;font-size:.92rem}
+  .quote .who span{font-size:.8rem;color:var(--muted)}
+
+  /* FAQ */
+  .faq{max-width:760px;margin-inline:auto}
+  .qa{border-bottom:1px solid var(--line);}
+  .qa .q{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.25em 0;cursor:pointer;font-weight:700;font-size:1.04rem}
+  .qa .q .ic{flex:none;width:26px;height:26px;border-radius:50%;background:var(--bg2);display:grid;place-items:center;transition:.3s;font-size:1.2rem;color:var(--coral)}
+  .qa.open .q .ic{transform:rotate(45deg);background:var(--coral);color:#fff}
+  .qa .a{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--ink2)}
+  .qa .a div{padding:0 0 1.3em}
+
+  /* CTA */
+  .bigcta{background:linear-gradient(130deg,var(--coral),#ff8a3b);border-radius:var(--r-lg);padding:60px;text-align:center;color:#fff;position:relative;overflow:hidden}
+  .bigcta::before,.bigcta::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.14)}
+  .bigcta::before{width:240px;height:240px;top:-90px;left:-60px}
+  .bigcta::after{width:180px;height:180px;bottom:-80px;right:-30px}
+  .bigcta h2{color:#fff;font-size:clamp(1.8rem,4vw,2.8rem);position:relative}
+  .bigcta p{position:relative;max-width:30em;margin:1rem auto 1.8rem;color:rgba(255,255,255,.92)}
+  .bigcta .btn-dark{position:relative}
+
+  /* FOOTER */
+  footer{padding:54px 0 30px;border-top:1px solid var(--line);margin-top:30px}
+  .foot-grid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+  .foot-grid .col h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.9rem}
+  .foot-grid .col a{display:block;color:var(--ink2);font-size:.92rem;margin-bottom:.5rem;transition:color .2s}
+  .foot-grid .col a:hover{color:var(--coral)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted)}
+  .badge{display:inline-flex;align-items:center;gap:.4em;padding:.5em 1em;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:600;box-shadow:var(--sh)}
+  .badge b{color:var(--coral)}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal.open{display:flex}
+  .modal .ov{position:absolute;inset:0;background:rgba(29,26,22,.55);backdrop-filter:blur(4px);animation:fade .3s}
+  @keyframes fade{from{opacity:0}}
+  .sheet{position:relative;background:var(--bg);width:min(840px,100%);max-height:90vh;overflow:auto;border-radius:var(--r-lg);box-shadow:var(--sh-lg);animation:pop .35s cubic-bezier(.2,.8,.2,1)}
+  @keyframes pop{from{opacity:0;transform:translateY(24px) scale(.97)}}
+  .sheet .mhead{height:180px;position:relative;display:flex;align-items:flex-end;padding:22px}
+  .sheet .mhead .x{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:none;cursor:pointer;display:grid;place-items:center;font-size:1.2rem;color:var(--ink)}
+  .sheet .mhead .mc{position:relative;color:#fff}
+  .sheet .mhead .mc .mcat{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;opacity:.9}
+  .sheet .mhead .mc h3{color:#fff;font-size:1.6rem;margin-top:.3rem}
+  .sheet .mbody{padding:26px}
+  .mrow{display:flex;gap:1.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1.4rem;font-size:.9rem;color:var(--ink2)}
+  .mrow .it{display:flex;align-items:center;gap:.45em}
+  .mrow .it b{color:var(--ink)}
+  .minst{display:flex;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:14px;margin-bottom:1.4rem}
+  .minst .av{width:46px;height:46px;font-size:1rem}
+  .minst .ii b{font-size:1rem}
+  .minst .ii span{font-size:.84rem;color:var(--muted)}
+  .mdesc{color:var(--ink2);margin-bottom:1.6rem}
+  .curri h4{font-size:1.1rem;margin-bottom:.9rem}
+  .mod{border:1px solid var(--line);border-radius:14px;margin-bottom:.7rem;overflow:hidden;background:var(--card)}
+  .mod .mh{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1em 1.2em;cursor:pointer;font-weight:700;font-size:.96rem}
+  .mod .mh .minfo{display:flex;align-items:center;gap:.7rem}
+  .mod .mh .num{width:26px;height:26px;border-radius:8px;background:var(--bg2);display:grid;place-items:center;font-size:.82rem;color:var(--coral);font-weight:700;flex:none}
+  .mod .mh .meta{font-size:.78rem;color:var(--muted);font-weight:500}
+  .mod .mh .arr{transition:.3s;color:var(--muted)}
+  .mod.open .mh .arr{transform:rotate(180deg)}
+  .mod .mc2{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .mod .mc2 ul{list-style:none;padding:0 1.2em 1em}
+  .mod .mc2 li{display:flex;align-items:center;gap:.6rem;padding:.5em 0;font-size:.9rem;color:var(--ink2);border-top:1px solid var(--line2)}
+  .mod .mc2 li .pl{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--coral);display:grid;place-items:center;flex:none}
+  .mod .mc2 li .pl::after{content:"";border-left:5px solid var(--coral);border-top:3px solid transparent;border-bottom:3px solid transparent;margin-left:1px}
+  .mod .mc2 li .ldur{margin-left:auto;color:var(--muted);font-size:.82rem}
+  .mbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--line);flex-wrap:wrap}
+  .mbar .mp{font-family:var(--disp-cjk);font-weight:900;font-size:1.6rem}
+  .mbar .mp s{font-size:.85rem;color:var(--muted);font-weight:400;margin-right:.4em}
+
+  /* TOAST */
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(140%);background:var(--ink);color:#fff;padding:1em 1.5em;border-radius:14px;box-shadow:var(--sh-lg);z-index:300;display:flex;align-items:center;gap:.7rem;font-weight:600;transition:transform .4s cubic-bezier(.2,.8,.2,1);max-width:90vw}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast .tk{width:26px;height:26px;border-radius:50%;background:var(--mint);display:grid;place-items:center;flex:none}
+
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .hero-art{height:380px;order:-1}
+    .grid,.tgrid,.plans{grid-template-columns:1fr}
+    .dash{grid-template-columns:1fr;padding:28px}
+    .statsband{grid-template-columns:repeat(2,1fr);gap:30px 16px}
+    .bigcta{padding:40px 24px}
+  }
+  @media(max-width:560px){
+    .ctrl-row{flex-direction:column;align-items:stretch}
+    .sortsel{width:100%}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top"><span class="mk">L</span>躍學 <span class="serif" style="font-size:.9em;color:var(--muted)">LeapLab</span></a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#catalog">課程目錄</a>
+      <a href="#learning">我的學習</a>
+      <a href="#pricing">方案</a>
+      <a href="#stories">學員故事</a>
+      <a href="#faq">常見問題</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#pricing" class="btn btn-primary">免費試學 7 天</a>
+      <button class="burger" id="burger" aria-label="選單"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="pill-row reveal">
+        <span class="pill">⭐ 4.9 平均評分</span>
+        <span class="pill"><b>12,800+</b> 名學員</span>
+        <span class="pill">🎓 完課即發證書</span>
+      </div>
+      <h1 class="reveal">把想學的，<br>真正<span class="serif">學會</span>。<br>從第一堂課開始。</h1>
+      <p class="lead reveal">躍學是專為忙碌的你打造的線上學習平台。實戰專案、業界導師、可下載作業，搭配學習進度追蹤，讓每一分鐘都化為真實的能力。</p>
+      <div class="hero-cta reveal">
+        <a href="#catalog" class="btn btn-primary">瀏覽課程</a>
+        <a href="#learning" class="btn btn-ghost">查看我的學習 →</a>
+      </div>
+      <div class="hero-meta reveal">
+        <div class="m"><b id="m1">0</b><span>門精選課程</span></div>
+        <div class="m"><b id="m2">0</b><span>位業界導師</span></div>
+        <div class="m"><b id="m3">0</b><span>完課滿意度</span></div>
+      </div>
+    </div>
+    <div class="hero-art reveal">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="hcard player">
+        <div class="thumb"><div class="play"></div></div>
+        <div class="meta">
+          <div class="t">React 18 實戰：打造產品級介面</div>
+          <div class="bar"><i></i></div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:6px">已完成 64% · 還剩 5 堂</div>
+        </div>
+      </div>
+      <div class="hcard streak"><span class="fire">🔥</span> 連續學習 23 天</div>
+      <div class="hcard badge2">
+        <svg class="ring" width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#f0e9da" stroke-width="7"/><circle cx="28" cy="28" r="24" fill="none" stroke="#1fb98c" stroke-width="7" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="40" transform="rotate(-90 28 28)"/></svg>
+        <div class="txt"><b>本週目標</b><span>已達成 73%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="wrap strip-in">
+    <span class="lbl">畢業學員任職於</span>
+    <span class="co">Cloudwave</span>
+    <span class="co">島嶼設計</span>
+    <span class="co">Pixel Studio</span>
+    <span class="co">綠洲科技</span>
+    <span class="co">北極星行銷</span>
+    <span class="co">語星科技</span>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<section class="sec" id="catalog">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="eyebrow">課程目錄</span>
+        <h2>找到屬於你的下一堂課</h2>
+        <p>依分類篩選、搜尋關鍵字，或依熱門程度排序。點擊任一課程查看完整大綱。</p>
+      </div>
+    </div>
+
+    <div class="controls reveal">
+      <div class="ctrl-row">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="search" placeholder="搜尋課程、導師或主題…">
+        </div>
+        <select class="sortsel" id="sort">
+          <option value="popular">排序：最熱門</option>
+          <option value="newest">排序：最新上架</option>
+          <option value="rating">排序：評分最高</option>
+          <option value="price">排序：價格低到高</option>
+        </select>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- LEARNING DASHBOARD -->
+<section class="sec" id="learning">
+  <div class="wrap">
+    <div class="dash reveal">
+      <div>
+        <span class="eyebrow" style="color:var(--amber)">我的學習</span>
+        <h2>你的進度，一目了然</h2>
+        <p class="sub">勾選完成的單元，進度環會即時更新。學習不再憑感覺，而是看得見的累積。</p>
+        <div class="ringbox">
+          <svg width="76" height="76" viewBox="0 0 76 76">
+            <circle cx="38" cy="38" r="31" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="9"/>
+            <circle id="progRing" cx="38" cy="38" r="31" fill="none" stroke="#ffb627" stroke-width="9" stroke-linecap="round" stroke-dasharray="194.8" stroke-dashoffset="194.8" transform="rotate(-90 38 38)" style="transition:stroke-dashoffset .5s ease"/>
+            <text id="progTxt" x="38" y="44" text-anchor="middle" font-size="17" font-weight="900" fill="#fff" font-family="Zen Maru Gothic">0%</text>
+          </svg>
+          <div class="info">
+            <b>JavaScript 進階：非同步與效能</b>
+            <span id="progCount">已完成 0 / 5 單元</span>
+          </div>
+        </div>
+        <p class="dash-cta">勾選下方單元即可看到 <b>進度即時變化</b> →</p>
+      </div>
+      <div class="lessons" id="lessons"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="sec">
+  <div class="wrap statsband reveal" id="statsband">
+    <div class="s"><b data-to="98" data-suffix="%">0</b><span>學員推薦本平台</span></div>
+    <div class="s"><b data-to="320" data-suffix="+">0</b><span>小時實戰內容</span></div>
+    <div class="s"><b data-to="46" data-suffix="">0</b><span>位業界導師</span></div>
+    <div class="s"><b data-to="12800" data-suffix="+" data-comma="1">0</b><span>名活躍學員</span></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal" style="justify-content:center;text-align:center;flex-direction:column;align-items:center">
+      <span class="eyebrow">學習方案</span>
+      <h2>單堂購買，或一次解鎖全部</h2>
+      <p>隨時可取消。年訂閱享 2 個月免費。</p>
+    </div>
+    <div class="toggle-wrap reveal">
+      <div class="toggle" id="toggle">
+        <span class="slider"></span>
+        <button class="active" data-plan="month">月繳</button>
+        <button data-plan="year">年繳<span class="save-tag">省 17%</span></button>
+      </div>
+    </div>
+    <div class="plans reveal">
+      <div class="plan">
+        <div class="pname">單堂購買</div>
+        <div class="pdesc">挑你需要的那一門，永久觀看。</div>
+        <div class="amt">NT$<span data-m="1280" data-y="1280">1,280</span><small> 起</small></div>
+        <div class="per">單次付費 · 終身存取</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>單一課程完整內容</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>可下載作業與素材</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>完課證書</li>
+        </ul>
+        <button class="btn btn-ghost enroll" data-plan-name="單堂購買">選擇課程</button>
+      </div>
+      <div class="plan feat">
+        <div class="pname">無限訂閱 Pro</div>
+        <div class="pdesc">解鎖全站課程，最適合認真學習的你。</div>
+        <div class="amt">NT$<span data-m="690" data-y="575">690</span><small>/月</small></div>
+        <div class="per" id="proPer">每月計費</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>全站 80+ 門課程無限看</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>每月新課同步解鎖</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>導師問答與學習社群</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>所有課程證書</li>
+        </ul>
+        <button class="btn btn-primary enroll" data-plan-name="無限訂閱 Pro">開始免費試學</button>
+      </div>
+      <div class="plan">
+        <div class="pname">團隊 Team</div>
+        <div class="pdesc">為團隊打造的技能養成方案。</div>
+        <div class="amt">NT$<span data-m="590" data-y="490">590</span><small>/人/月</small></div>
+        <div class="per" id="teamPer">每月計費 · 最少 5 人</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>Pro 所有權益</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>團隊學習儀表板</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>專屬客戶成功經理</li>
+        </ul>
+        <button class="btn btn-ghost enroll" data-plan-name="團隊 Team">聯絡團隊方案</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec" id="stories">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="eyebrow">學員故事</span>
+        <h2>他們從這裡躍進下一步</h2>
+      </div>
+    </div>
+    <div class="tgrid">
+      <div class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <p>「零基礎報名前端課程，三個月後成功轉職。導師的程式碼審查回饋是我進步最快的關鍵。」</p>
+        <div class="who"><span class="av" style="background:linear-gradient(135deg,#ff5d3b,#ff8a3b)">怡</span><div><b>林怡瑄</b><span>前端工程師 · Cloudwave</span></div></div>
+      </div>
+      <div class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <p>「平台的進度追蹤讓我每天都想打開來學一點。看著進度環一點點填滿，超有成就感。」</p>
+        <div class="who"><span class="av" style="background:linear-gradient(135deg,#6d4aff,#3c3a8e)">宇</span><div><b>陳宇翔</b><span>UI 設計師 · 島嶼設計</span></div></div>
+      </div>
+      <div class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <p>「行銷成長課程的實戰專案直接拿來用在公司專案上，第一個月就把訂閱費賺回來了。」</p>
+        <div class="who"><span class="av" style="background:linear-gradient(135deg,#1fb98c,#27e7b0)">雅</span><div><b>黃雅筑</b><span>成長行銷 · 北極星行銷</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal" style="justify-content:center;text-align:center;flex-direction:column;align-items:center">
+      <span class="eyebrow">常見問題</span>
+      <h2>學習前，先解答你的疑問</h2>
+    </div>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec">
+  <div class="wrap">
+    <div class="bigcta reveal">
+      <h2>今天就開始，給未來的自己一個交代</h2>
+      <p>免費試學 7 天，全站課程任你看。不滿意隨時取消，不收任何費用。</p>
+      <a href="#pricing" class="btn btn-dark">免費開始學習 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="col" style="max-width:280px">
+        <a class="logo" href="#top" style="margin-bottom:.8rem"><span class="mk">L</span>躍學 LeapLab</a>
+        <p style="font-size:.9rem;color:var(--muted)">專為忙碌的你打造的線上學習平台。實戰、導師、進度追蹤，讓學習真正發生。</p>
+      </div>
+      <div class="col"><h4>課程</h4><a href="#catalog">程式開發</a><a href="#catalog">設計創作</a><a href="#catalog">數位行銷</a><a href="#catalog">語言學習</a></div>
+      <div class="col"><h4>平台</h4><a href="#learning">我的學習</a><a href="#pricing">學習方案</a><a href="#stories">學員故事</a><a href="#faq">常見問題</a></div>
+      <div class="col"><h4>關於</h4><a href="#">成為導師</a><a href="#">企業培訓</a><a href="#">部落格</a><a href="#">聯絡我們</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 躍學 LeapLab（範例網站）· 為展示而生的虛構品牌</span>
+      <a class="badge" href="https://service.e-life-ai.com" target="_blank" rel="noopener">Template by <b>e-life-ai</b> · service.e-life-ai.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="ov" id="modalOv"></div>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="mhead" id="mhead">
+      <button class="x" id="modalX" aria-label="關閉">✕</button>
+      <div class="mc"><div class="mcat" id="mModCat"></div><h3 id="mModTitle"></h3></div>
+    </div>
+    <div class="mbody">
+      <div class="mrow" id="mModRow"></div>
+      <div class="minst" id="mModInst"></div>
+      <p class="mdesc" id="mModDesc"></p>
+      <div class="curri">
+        <h4>課程大綱</h4>
+        <div id="mModCurri"></div>
+      </div>
+      <div class="mbar">
+        <div class="mp" id="mModPrice"></div>
+        <button class="btn btn-primary enroll" id="mEnroll" data-plan-name="">立即報名 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="tk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4"><path d="M5 13l4 4L19 7"/></svg></span><span id="toastMsg"></span></div>
+
+<script>
+/* ---------- DATA ---------- */
+const CAT_COLORS={程式:'#6d4aff',設計:'#ff5d3b',行銷:'#1fb98c',語言:'#3c3a8e'};
+const COURSES=[
+  {id:1,title:'React 18 實戰：打造產品級介面',cat:'程式',lvl:'進階',inst:'李承恩',initial:'承',avc:'linear-gradient(135deg,#6d4aff,#3c3a8e)',rating:4.9,reviews:1820,price:1880,old:2680,lessons:48,hours:11.5,students:4120,pop:98,new:6,
+    desc:'從 Hooks、狀態管理到效能優化，跟著資深工程師一步步打造一個可上線的產品介面。包含 8 個真實情境的實作專案。',
+    cur:[['核心觀念與環境',['JSX 與元件思維','Props 與狀態流','開發環境與工具鏈']],['Hooks 全攻略',['useState 與 useEffect','useMemo / useCallback 效能','自訂 Hook 設計']],['狀態管理',['Context 與 Reducer','資料獲取與快取','表單與驗證']],['效能與上線',['程式碼分割','渲染優化技巧','部署與監控']]]},
+  {id:2,title:'UI/UX 設計系統：從零到落地',cat:'設計',lvl:'中階',inst:'吳采潔',initial:'采',avc:'linear-gradient(135deg,#ff5d3b,#ff8a3b)',rating:4.8,reviews:960,price:1680,old:2280,lessons:36,hours:9,students:2890,pop:92,new:9,
+    desc:'學會建立可擴充的設計系統：色彩、字級、元件庫與設計代幣，並交付能讓工程師直接開發的規格。',
+    cur:[['設計基礎',['視覺層級與留白','色彩與對比','字體排印系統']],['元件化思維',['原子設計方法','建立元件庫','設計代幣 Tokens']],['交付與協作',['標註與交付規格','與工程協作流程','可用性測試']]]},
+  {id:3,title:'成長行銷實戰：從流量到轉換',cat:'行銷',lvl:'中階',inst:'張博鈞',initial:'博',avc:'linear-gradient(135deg,#1fb98c,#27e7b0)',rating:4.7,reviews:1240,price:1480,old:1980,lessons:30,hours:7.5,students:3560,pop:90,new:4,
+    desc:'用數據驅動的方法做行銷：建立轉換漏斗、設計 A/B 測試、操作廣告投放與內容策略，把流量變成營收。',
+    cur:[['成長框架',['AARRR 海盜指標','建立轉換漏斗','北極星指標設定']],['獲客與投放',['廣告投放實戰','內容與 SEO','社群經營策略']],['轉換與留存',['A/B 測試設計','落地頁優化','再行銷與 EDM']]]},
+  {id:4,title:'商用英語簡報：自信開口',cat:'語言',lvl:'初階',inst:'Emily Chen',initial:'E',avc:'linear-gradient(135deg,#3c3a8e,#6d4aff)',rating:4.9,reviews:740,price:1280,old:1680,lessons:24,hours:6,students:2110,pop:85,new:2,
+    desc:'專為職場設計的英語簡報課。掌握開場、轉折、數據陳述與問答應對的實用句型，自信站上國際舞台。',
+    cur:[['簡報結構',['有力的開場','邏輯轉折語','收尾與行動呼籲']],['表達技巧',['數據與圖表陳述','語調與節奏','肢體與眼神']],['問答應對',['常見問題句型','化解刁難提問','現場互動技巧']]]},
+  {id:5,title:'Python 資料分析入門',cat:'程式',lvl:'初階',inst:'王志豪',initial:'志',avc:'linear-gradient(135deg,#6d4aff,#27e7b0)',rating:4.8,reviews:2050,price:1580,old:2180,lessons:40,hours:10,students:5230,pop:96,new:5,
+    desc:'零基礎也能學會用 Python 處理與分析資料。從 pandas 清洗、視覺化到產出可交付的分析報告。',
+    cur:[['Python 基礎',['環境與語法速成','資料型別與流程','函式與模組']],['資料處理',['pandas 資料清洗','合併與聚合','時間序列']],['視覺化與報告',['matplotlib 圖表','探索式分析','產出分析報告']]]},
+  {id:6,title:'品牌視覺與插畫設計',cat:'設計',lvl:'進階',inst:'蔡宜庭',initial:'宜',avc:'linear-gradient(135deg,#ff8a3b,#ffb627)',rating:4.9,reviews:580,price:1980,old:2680,lessons:32,hours:8.5,students:1640,pop:88,new:8,
+    desc:'打造有記憶點的品牌視覺：標誌設計、插畫風格、版面節奏與品牌指南，建立完整的視覺識別系統。',
+    cur:[['品牌策略',['品牌定位與調性','視覺關鍵字','靈感蒐集']],['視覺設計',['標誌與輔助圖形','插畫風格建立','版面與節奏']],['系統交付',['品牌指南製作','應用情境設計','作品集呈現']]]},
+  {id:7,title:'SQL 與資料庫實務',cat:'程式',lvl:'中階',inst:'林冠廷',initial:'冠',avc:'linear-gradient(135deg,#3c3a8e,#1fb98c)',rating:4.7,reviews:890,price:1380,old:1880,lessons:28,hours:7,students:2470,pop:84,new:7,
+    desc:'從查詢、聯結到效能調校，掌握真實工作中會用到的 SQL 技巧，能自信地分析與管理關聯式資料庫。',
+    cur:[['查詢基礎',['SELECT 與篩選','排序與聚合','多表 JOIN']],['進階查詢',['子查詢與 CTE','視窗函式','索引概念']],['實務調校',['查詢效能分析','資料建模','備份與安全']]]},
+  {id:8,title:'日語入門：50 音到日常會話',cat:'語言',lvl:'初階',inst:'佐藤美咲',initial:'咲',avc:'linear-gradient(135deg,#ff5d3b,#6d4aff)',rating:4.8,reviews:1130,price:1180,old:1580,lessons:34,hours:8,students:3940,pop:91,new:3,
+    desc:'從零開始學日語。系統化掌握 50 音、基礎文法與生活常用句，搭配情境會話，輕鬆開口說日語。',
+    cur:[['發音入門',['平假名 50 音','片假名與長音','濁音與拗音']],['基礎文法',['名詞與助詞','形容詞變化','動詞時態']],['生活會話',['自我介紹','購物與點餐','問路與旅遊']]]},
+  {id:9,title:'內容行銷與品牌敘事',cat:'行銷',lvl:'初階',inst:'周庭妤',initial:'庭',avc:'linear-gradient(135deg,#1fb98c,#ffb627)',rating:4.6,reviews:670,price:1280,old:1680,lessons:26,hours:6.5,students:1980,pop:80,new:1,
+    desc:'用故事打動人心。學會內容策略、品牌敘事框架與多平台經營，打造能持續累積信任的內容資產。',
+    cur:[['內容策略',['受眾與洞察','內容支柱規劃','編輯日曆']],['品牌敘事',['故事框架','文案寫作技巧','視覺與文字搭配']],['經營與成效',['多平台分發','數據追蹤','社群互動經營']]]},
+];
+
+const FAQS=[
+  ['課程可以看多久？','單堂購買為終身存取，購買後可無限次重複觀看；訂閱方案則在訂閱期間內可觀看全站課程。'],
+  ['沒有基礎也能上嗎？','可以。每門課程都標示難度（初階／中階／進階），我們也提供清楚的學習路徑建議，零基礎可從初階課程開始。'],
+  ['完課會有證書嗎？','會的。完成課程所有單元後即可下載專屬完課證書，可分享至 LinkedIn 或加入履歷。'],
+  ['可以隨時取消訂閱嗎？','當然可以。訂閱方案隨時可在帳戶設定取消，取消後仍可使用至當期結束，不收任何手續費。'],
+  ['有提供作業批改或問答嗎？','Pro 與 Team 方案包含導師問答與學習社群；部分實戰課程提供程式碼／作品審查回饋。'],
+];
+
+const ENROLLED_LESSONS=[
+  ['Promise 與 async/await','14:20',true],
+  ['事件迴圈與微任務','18:05',true],
+  ['錯誤處理與重試機制','12:40',false],
+  ['記憶體與效能剖析','21:15',false],
+  ['實戰：打造非同步資料層','26:30',false],
+];
+
+/* ---------- CATALOG ---------- */
+const grid=document.getElementById('grid');
+const filtersEl=document.getElementById('filters');
+const searchEl=document.getElementById('search');
+const sortEl=document.getElementById('sort');
+let activeCat='全部';
+const cats=['全部',...Object.keys(CAT_COLORS)];
+
+function catCount(c){return c==='全部'?COURSES.length:COURSES.filter(x=>x.cat===c).length}
+filtersEl.innerHTML=cats.map(c=>`<button class="chip${c==='全部'?' active':''}" data-cat="${c}">${c}<span class="n">${catCount(c)}</span></button>`).join('');
+filtersEl.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;activeCat=b.dataset.cat;filtersEl.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===b));render();});
+searchEl.addEventListener('input',render);
+sortEl.addEventListener('change',render);
+
+function coverSvg(c){
+  const col=CAT_COLORS[c.cat];
+  return `<div class="cover" style="background:linear-gradient(135deg,${col},${shade(col,-26)})">
+    <span class="lvl">${c.lvl}</span>
+    <span class="cat" style="background:rgba(0,0,0,.18)">${c.cat}</span>
+    <span class="deco">${c.cat.slice(0,1)}</span>
+    <svg width="100%" height="100%" style="position:absolute;inset:0;opacity:.5" viewBox="0 0 300 158" preserveAspectRatio="none"><defs><pattern id="p${c.id}" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="3" cy="3" r="2" fill="rgba(255,255,255,.22)"/></pattern></defs><rect width="300" height="158" fill="url(#p${c.id})"/></svg>
+  </div>`;
+}
+function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=(n>>16)+p,g=(n>>8&255)+p,b=(n&255)+p;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return'#'+(r<<16|g<<8|b).toString(16).padStart(6,'0')}
+
+function render(){
+  const q=searchEl.value.trim().toLowerCase();
+  let list=COURSES.filter(c=>(activeCat==='全部'||c.cat===activeCat)&&(!q||(c.title+c.inst+c.cat).toLowerCase().includes(q)));
+  const s=sortEl.value;
+  const sorters={popular:(a,b)=>b.pop-a.pop,newest:(a,b)=>a.new-b.new,rating:(a,b)=>b.rating-a.rating,price:(a,b)=>a.price-b.price};
+  list.sort(sorters[s]);
+  if(!list.length){grid.innerHTML='<div class="empty">找不到符合的課程，試試其他關鍵字或分類。</div>';return;}
+  grid.innerHTML=list.map(c=>`
+    <article class="course" data-id="${c.id}">
+      ${coverSvg(c)}
+      <div class="body">
+        <h3>${c.title}</h3>
+        <div class="inst"><span class="av" style="background:${c.avc}">${c.initial}</span>${c.inst}</div>
+        <div class="stats"><span class="star">★ ${c.rating}</span><span>(${c.reviews.toLocaleString()})</span><span>· ${c.lessons} 單元</span><span>· ${c.hours} 小時</span></div>
+        <div class="foot"><span class="price"><s>NT$${c.old.toLocaleString()}</s>NT$${c.price.toLocaleString()}</span><span class="go">查看課程 →</span></div>
+      </div>
+    </article>`).join('');
+}
+grid.addEventListener('click',e=>{const a=e.target.closest('.course');if(a)openModal(+a.dataset.id);});
+render();
+
+/* ---------- MODAL ---------- */
+const modal=document.getElementById('modal');
+function openModal(id){
+  const c=COURSES.find(x=>x.id===id);if(!c)return;
+  const col=CAT_COLORS[c.cat];
+  document.getElementById('mhead').style.background=`linear-gradient(135deg,${col},${shade(col,-30)})`;
+  document.getElementById('mModCat').textContent=c.cat+' · '+c.lvl;
+  document.getElementById('mModTitle').textContent=c.title;
+  document.getElementById('mModRow').innerHTML=`
+    <span class="it"><b style="color:var(--amber)">★ ${c.rating}</b> (${c.reviews.toLocaleString()} 則評價)</span>
+    <span class="it">👥 <b>${c.students.toLocaleString()}</b> 名學員</span>
+    <span class="it">📚 <b>${c.lessons}</b> 單元</span>
+    <span class="it">⏱ <b>${c.hours}</b> 小時</span>`;
+  document.getElementById('mModInst').innerHTML=`<span class="av" style="background:${c.avc}">${c.initial}</span><div class="ii"><b>${c.inst}</b><span>業界資深導師 · ${c.cat}領域</span></div>`;
+  document.getElementById('mModDesc').textContent=c.desc;
+  let lc=0;c.cur.forEach(m=>lc+=m[1].length);
+  document.getElementById('mModCurri').innerHTML=c.cur.map((m,i)=>`
+    <div class="mod${i===0?' open':''}">
+      <div class="mh"><div class="minfo"><span class="num">${i+1}</span><span>${m[0]}</span></div><span class="meta">${m[1].length} 堂 <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span></div>
+      <div class="mc2"><ul>${m[1].map(l=>`<li><span class="pl"></span>${l}<span class="ldur">${(Math.random()*8+5).toFixed(0)}:${String(Math.floor(Math.random()*60)).padStart(2,'0')}</span></li>`).join('')}</ul></div>
+    </div>`).join('');
+  document.getElementById('mModPrice').innerHTML=`<s>NT$${c.old.toLocaleString()}</s>NT$${c.price.toLocaleString()}`;
+  document.getElementById('mEnroll').dataset.planName=c.title;
+  document.querySelectorAll('#mModCurri .mod').forEach(m=>{
+    const h=m.querySelector('.mh'),c2=m.querySelector('.mc2');
+    if(m.classList.contains('open'))c2.style.maxHeight=c2.scrollHeight+'px';
+    h.addEventListener('click',()=>{const o=m.classList.toggle('open');c2.style.maxHeight=o?c2.scrollHeight+'px':0;});
+  });
+  modal.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeModal(){modal.classList.remove('open');document.body.style.overflow='';}
+document.getElementById('modalX').addEventListener('click',closeModal);
+document.getElementById('modalOv').addEventListener('click',closeModal);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ---------- LEARNING PROGRESS ---------- */
+const lessonsEl=document.getElementById('lessons');
+const ringTotal=194.8;
+lessonsEl.innerHTML=ENROLLED_LESSONS.map((l,i)=>`
+  <div class="lesson${l[2]?' done':''}" data-i="${i}">
+    <span class="chk"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4"><path d="M5 13l4 4L19 7"/></svg></span>
+    <span class="lt">${l[0]}</span><span class="dur">${l[1]}</span>
+  </div>`).join('');
+function updateProgress(){
+  const done=lessonsEl.querySelectorAll('.lesson.done').length;
+  const total=ENROLLED_LESSONS.length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('progRing').style.strokeDashoffset=ringTotal*(1-done/total);
+  document.getElementById('progTxt').textContent=pct+'%';
+  document.getElementById('progCount').textContent=`已完成 ${done} / ${total} 單元`;
+}
+lessonsEl.addEventListener('click',e=>{const l=e.target.closest('.lesson');if(!l)return;const wasDone=l.classList.toggle('done');updateProgress();if(wasDone)toast('完成單元，進度更新！');});
+updateProgress();
+
+/* ---------- PRICING TOGGLE ---------- */
+const toggle=document.getElementById('toggle');
+toggle.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const yr=b.dataset.plan==='year';
+  toggle.classList.toggle('year',yr);
+  toggle.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.amt span[data-m]').forEach(s=>{s.textContent=(+(yr?s.dataset.y:s.dataset.m)).toLocaleString();});
+  document.getElementById('proPer').textContent=yr?'依年計費，平均每月':'每月計費';
+  document.getElementById('teamPer').textContent=yr?'依年計費 · 最少 5 人':'每月計費 · 最少 5 人';
+});
+
+/* ---------- ENROLL / TOAST ---------- */
+const toastEl=document.getElementById('toast'),toastMsg=document.getElementById('toastMsg');
+let toastT;
+function toast(msg){toastMsg.textContent=msg;toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove('show'),3000);}
+document.body.addEventListener('click',e=>{
+  const b=e.target.closest('.enroll');if(!b)return;
+  const name=b.dataset.planName||'課程';
+  const orig=b.textContent;b.textContent='✓ 報名成功！';b.disabled=true;b.style.opacity='.85';
+  toast(`已為你保留「${name}」的名額，查收 email 開始學習 🎉`);
+  if(modal.classList.contains('open'))setTimeout(closeModal,900);
+  setTimeout(()=>{b.textContent=orig;b.disabled=false;b.style.opacity='';},2600);
+});
+
+/* ---------- FAQ ---------- */
+const faqEl=document.getElementById('faq');
+faqEl.innerHTML=FAQS.map(([q,a])=>`<div class="qa"><div class="q">${q}<span class="ic">+</span></div><div class="a"><div>${a}</div></div></div>`).join('');
+faqEl.addEventListener('click',e=>{const q=e.target.closest('.q');if(!q)return;const item=q.parentElement,a=item.querySelector('.a');const o=item.classList.toggle('open');a.style.maxHeight=o?a.scrollHeight+'px':0;});
+
+/* ---------- COUNT-UP ---------- */
+function countUp(el){
+  const to=+el.dataset.to,suffix=el.dataset.suffix||'',comma=el.dataset.comma;
+  const dur=1400,t0=performance.now();
+  function step(now){const p=Math.min(1,(now-t0)/dur);const v=Math.floor((1-Math.pow(1-p,3))*to);el.textContent=(comma?v.toLocaleString():v)+suffix;if(p<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+const sb=document.getElementById('statsband');
+const sbObs=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){sb.querySelectorAll('b').forEach(countUp);sbObs.disconnect();}}),{threshold:.4});
+sbObs.observe(sb);
+
+/* hero meta count */
+function heroCount(id,to,suffix){const el=document.getElementById(id);const t0=performance.now();function s(n){const p=Math.min(1,(n-t0)/1200);el.textContent=Math.floor((1-Math.pow(1-p,3))*to)+(suffix||'');if(p<1)requestAnimationFrame(s);}requestAnimationFrame(s);}
+setTimeout(()=>{heroCount('m1',80,'+');heroCount('m2',46,'');heroCount('m3',98,'%');},300);
+
+/* ---------- REVEAL & NAV ---------- */
+const rObs=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');rObs.unobserve(en.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>rObs.observe(el));
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
+const burger=document.getElementById('burger'),navlinks=document.getElementById('navlinks');
+burger.addEventListener('click',()=>navlinks.classList.toggle('open'));
+navlinks.addEventListener('click',e=>{if(e.target.tagName==='A')navlinks.classList.remove('open');});
+</script>
+</body>
+</html>
