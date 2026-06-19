@@ -70,6 +70,9 @@
   .back { display: inline-block; margin-bottom: 14px; color: var(--brand);
     cursor: pointer; font-size: 14px; }
   .back:hover { text-decoration: underline; }
+  a.open { color: var(--brand); text-decoration: none; font-size: 13px; white-space: nowrap; }
+  a.open:hover { text-decoration: underline; }
+  a.open.prev { color: var(--ink-2); }
 </style>
 </head>
 <body>
@@ -124,7 +127,9 @@
       '<div class="big-label">總開啟次數</div>' +
       '<div class="big">' + (d.count || 0) + '</div>' +
       '<div class="meta">最近一次開啟：<b>' + last + '</b><br />' +
-      '<span class="hashline">提案 hash：' + d.hash + '</span></div>' +
+      '<span class="hashline">提案 hash：' + d.hash + '</span><br />' +
+      '<a class="open" href="/demo/' + d.hash + '/" target="_blank">開啟提案頁↗（客戶連結，會計數）</a>　' +
+      '<a class="open prev" href="/demo/' + d.hash + '/?preview=1" target="_blank">預覽（不計數）</a></div>' +
       '<div class="list"><h3>開啟時間紀錄（最近 ' + recent.length + ' 筆，台灣時間）</h3>' + rows + '</div>';
     document.getElementById('back').addEventListener('click', function () {
       history.pushState({}, '', location.pathname);
@@ -140,17 +145,21 @@
     }
     var total = items.reduce(function (s, it) { return s + it.count; }, 0);
     var rows = items.map(function (it) {
+      var page = '/demo/' + it.hash + '/';
       return '<tr class="row" data-h="' + it.hash + '">' +
         '<td>' + (it.label ? esc(it.label) : '<span class="empty">（未命名）</span>') +
         '<br /><span class="h">' + it.hash + '</span></td>' +
         '<td>' + (it.last ? fmt(it.last) : '—') + '</td>' +
-        '<td class="n">' + it.count + '</td></tr>';
+        '<td class="n">' + it.count + '</td>' +
+        '<td><a class="open" href="' + page + '" target="_blank" title="客戶連結（會計數）">頁面↗</a>' +
+        ' <a class="open prev" href="' + page + '?preview=1" target="_blank" title="預覽（不計數）">預覽</a></td>' +
+        '</tr>';
     }).join('');
     out.innerHTML =
       '<div class="big-label">所有提案總開啟次數</div>' +
       '<div class="big">' + total + '</div>' +
-      '<div class="list"><h3>各提案（點任一列看明細，依次數排序）</h3>' +
-      '<table><thead><tr><th>提案／hash</th><th>最近開啟</th><th style="text-align:right">次數</th></tr></thead>' +
+      '<div class="list"><h3>各提案（點列看明細；「頁面」開客戶連結、「預覽」不計數）</h3>' +
+      '<table><thead><tr><th>提案／hash</th><th>最近開啟</th><th style="text-align:right">次數</th><th>提案頁</th></tr></thead>' +
       '<tbody>' + rows + '</tbody></table></div>';
     Array.prototype.forEach.call(out.querySelectorAll('tr.row'), function (tr) {
       tr.addEventListener('click', function () {
@@ -159,6 +168,10 @@
         input.value = h;
         query(h);
       });
+    });
+    // 提案頁連結不觸發列的明細切換
+    Array.prototype.forEach.call(out.querySelectorAll('a.open'), function (a) {
+      a.addEventListener('click', function (e) { e.stopPropagation(); });
     });
   }
 

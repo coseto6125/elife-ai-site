@@ -51,6 +51,7 @@ sed "s#\.\./logo/logo-mark\.svg#logo-mark.svg#g" "$SRC" \
       print "<!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->"
       print "<script>"
       print "  (function () {"
+      print "    if (/[?&]preview=1\\b/.test(location.search)) return;"
       print "    var base = '\''" worker "/track'\'';"
       print "    var q = '\''?p=" hash "&label='\'' + encodeURIComponent('\''" label "'\'');"
       print "    new Image().src = base + q + '\''&t='\'' + Date.now();"

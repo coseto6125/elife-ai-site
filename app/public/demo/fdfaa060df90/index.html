@@ -222,6 +222,8 @@
 <!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
 <script>
   (function () {
+    // 自己看用 ?preview=1 連結，不計入次數
+    if (/[?&]preview=1\b/.test(location.search)) return;
     var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
     var q = '?p=fdfaa060df90&label=' + encodeURIComponent('訂單抽取案 TK26061711IBDEQ89');
     new Image().src = base + q + '&t=' + Date.now();
