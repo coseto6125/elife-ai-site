@@ -1,0 +1,231 @@
+/* =========================================================================
+   e-life-ai — 提案專用版面 (proposal layout system)
+   亮底信賴感 × mint→indigo 品牌 edge gradient × 深色品牌 footer。
+   給傳統產業／企業客戶看的正式報價提案，可列印成乾淨 PDF。
+   用法見 proposals/README.md。
+   ========================================================================= */
+
+:root {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #eef3f9;
+  --ink-0: #14233a;
+  --ink-1: #41526b;
+  --ink-2: #7b8aa3;
+  --line: #e2e9f2;
+  --brand: #1f6feb;
+  --brand-dark: #1559c4;
+  --brand-soft: #e8f1ff;
+  --ok: #16a34a;
+  --warn-soft: #fff4e6;
+  --warn-ink: #b45309;
+  --mint: #34e3c4;
+  --indigo: #7c8cff;
+  --edge: linear-gradient(120deg, var(--mint), var(--indigo));
+  --radius: 16px;
+  --radius-sm: 11px;
+  --shadow: 0 10px 30px rgba(20, 50, 90, 0.08);
+  --maxw: 880px;
+  --pad-x: clamp(18px, 5vw, 56px);
+  --font: 'Noto Sans TC', system-ui, sans-serif;
+  --font-display: 'Sora', 'Noto Sans TC', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink-1);
+  font-family: var(--font);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { color: var(--ink-0); line-height: 1.35; font-family: var(--font-display); }
+
+/* ---------- watermark: diagonal tiled e-life-ai.com on content bg ---------- */
+.paper {
+  position: relative;
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='180'%3E%3Ctext x='0' y='110' transform='rotate(-24 0 110)' font-family='Sora, sans-serif' font-size='30' font-weight='700' fill='%231f6feb' fill-opacity='0.035'%3Ee-life-ai.com%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+.wrap { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: clamp(24px, 5vw, 56px) var(--pad-x); }
+
+/* ---------- cover header ---------- */
+header.cover {
+  position: relative;
+  background: radial-gradient(ellipse 90% 70% at 50% -20%, var(--brand-soft), transparent 70%), var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+header.cover::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--edge); }
+.brandline { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.logo-mark { width: 40px; height: 40px; border-radius: 10px; display: block; box-shadow: 0 4px 12px rgba(20, 50, 90, 0.18); }
+.brand-name { font-weight: 800; font-size: 19px; color: var(--ink-0); font-family: var(--font-display); }
+.brand-tag { font-size: 13px; color: var(--ink-2); padding-left: 12px; border-left: 1px solid var(--line); }
+.eyebrow {
+  display: inline-block; background: var(--surface); border: 1px solid var(--line);
+  color: var(--brand); font-weight: 700; font-size: 13px; padding: 6px 16px;
+  border-radius: 999px; margin-bottom: 18px; box-shadow: var(--shadow);
+}
+h1.title { font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -0.01em; margin-bottom: 16px; }
+.lead { font-size: 16.5px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.chip {
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-1);
+  font-size: 13.5px; font-weight: 500; padding: 6px 14px; border-radius: 999px;
+}
+.chip b { color: var(--ink-0); }
+
+/* ---------- sections ---------- */
+section { margin-top: clamp(40px, 6vw, 64px); }
+.sec-no {
+  display: inline-grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 8px; background: var(--edge); color: #06210e; font-weight: 800; font-size: 15px;
+  margin-right: 12px; vertical-align: middle; font-family: var(--font-display);
+}
+h2.sec { font-size: clamp(21px, 3.5vw, 27px); font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; }
+p + p { margin-top: 12px; }
+
+/* ---------- diagram (legacy ASCII) ---------- */
+pre.diagram {
+  background: var(--ink-0); color: #cfe0f5; border-radius: var(--radius);
+  padding: 24px 26px; overflow-x: auto; font-size: 13.5px; line-height: 1.65;
+  font-family: var(--font-mono); box-shadow: var(--shadow); margin: 18px 0;
+}
+
+/* ---------- flow diagram (CSS boxes, always aligned) ---------- */
+.flow {
+  background: radial-gradient(ellipse 80% 120% at 50% -20%, #142033, #0b121d 75%);
+  border-radius: var(--radius); padding: clamp(24px, 4vw, 36px) 20px;
+  box-shadow: var(--shadow); margin: 18px 0;
+}
+.flow-col { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.node {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px; padding: 10px 18px; text-align: center; max-width: 100%;
+  color: #eaf2fb; font-size: 14.5px; font-weight: 600;
+}
+.node .sub { display: block; font-size: 12.5px; font-weight: 400; color: #8ba0bd; margin-top: 3px; }
+.node.accent { border-color: var(--mint); box-shadow: 0 0 0 1px rgba(52,227,196,0.25) inset; }
+.flow .arrow { width: 2px; height: 22px; background: var(--mint); position: relative; opacity: 0.85; }
+.flow .arrow::after {                  /* downward arrowhead at line bottom (CSS triangle, never distorted) */
+  content: ""; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--mint);
+}
+.flow .arrow .note {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  white-space: nowrap; color: #8ba0bd; font-size: 12.5px; font-weight: 400;
+}
+/* Connector drawn as ONE SVG → corners join cleanly, arrowheads sit flush.
+   No column-gap so the 3 column centres are exactly viewBox 110/330/550. */
+.flow-fan {
+  width: 100%; max-width: 660px;
+  display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 0; row-gap: 0;
+}
+.flow-fan .flow-conn {
+  grid-column: 1 / -1; grid-row: 1; width: 100%; height: 60px; display: block; overflow: visible;
+}
+.flow-fan .flow-conn .ln { fill: none; stroke: var(--mint); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
+.flow-fan .node {
+  grid-row: 2; align-self: stretch; display: flex; flex-direction: column; justify-content: center;
+  margin: 0 clamp(6px, 1.6vw, 14px);           /* spacing without column-gap, keeps centres exact */
+  position: relative;
+}
+.flow-fan .node::before {              /* downward arrowhead on each branch node top; node centre = line x (aligned) */
+  content: ""; position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--mint); opacity: 0.85;
+}
+.flow-fan .node:nth-of-type(1) { grid-column: 1; }
+.flow-fan .node:nth-of-type(2) { grid-column: 2; }
+.flow-fan .node:nth-of-type(3) { grid-column: 3; }
+
+/* ---------- cards ---------- */
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px 26px; box-shadow: var(--shadow); margin-bottom: 16px;
+}
+.card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.card p { font-size: 15px; }
+
+/* ---------- table ---------- */
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin: 8px 0; }
+th, td { text-align: left; padding: 13px 16px; font-size: 14.5px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: var(--brand-soft); color: var(--brand-dark); font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+td.num, th.num { width: 44px; text-align: center; color: var(--ink-2); font-weight: 700; }
+td.pct, th.pct { width: 70px; text-align: right; font-weight: 700; color: var(--ink-0); }
+
+/* ---------- numbered confirm list ---------- */
+ol.confirm { list-style: none; counter-reset: c; }
+ol.confirm > li {
+  counter-increment: c; position: relative; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px 18px 64px;
+  margin-bottom: 14px; box-shadow: var(--shadow);
+}
+ol.confirm > li::before {
+  content: counter(c); position: absolute; left: 20px; top: 18px;
+  width: 30px; height: 30px; border-radius: 50%; background: var(--edge); color: #06210e;
+  font-weight: 800; display: grid; place-items: center; font-size: 15px; font-family: var(--font-display);
+}
+ol.confirm > li > b { color: var(--ink-0); display: block; margin-bottom: 4px; font-size: 16px; }   /* card title only (direct child) */
+ol.confirm > li p { font-size: 14.5px; }
+ol.confirm > li p b { color: var(--ink-0); }   /* inline emphasis inside body text stays inline */
+
+/* ---------- callout ---------- */
+.callout {
+  background: var(--warn-soft); border: 1px solid #fcd9a8; border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14.5px; color: var(--warn-ink); margin: 14px 0;
+}
+.callout b { color: #92400e; }
+
+/* ---------- checklists ---------- */
+ul.plain { list-style: none; margin-top: 8px; }
+ul.plain li { position: relative; padding-left: 24px; margin-bottom: 9px; font-size: 15px; }
+ul.plain li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 900; }
+ul.exclude li::before { content: "✕"; color: var(--ink-2); }
+
+.price-note { background: var(--brand-soft); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 15px; color: var(--brand-dark); font-weight: 500; margin: 14px 0; }
+.price-note b { color: var(--brand-dark); }
+
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+
+/* ---------- footer: dark brand band ---------- */
+footer {
+  margin-top: 56px; position: relative; overflow: hidden;
+  background: radial-gradient(ellipse 70% 120% at 50% -30%, #142033, #0b121d 70%);
+  padding: clamp(34px, 5vw, 48px) var(--pad-x) clamp(26px, 4vw, 36px);
+  color: #8ba0bd; font-size: 13.5px;
+}
+footer::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--edge); opacity: 0.8; }
+footer .foot-inner { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; }
+.foot-lockup { display: flex; align-items: center; gap: 11px; margin-bottom: 20px; }
+.foot-lockup img { width: 32px; height: 32px; border-radius: 8px; display: block; }
+.foot-lockup .fl-name { font-family: var(--font-display); font-weight: 800; font-size: 17px; color: #eaf2fb; }
+footer .foot-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: #c2d2e6; }
+footer .foot-reg { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); color: #7589a3; }
+footer a { color: var(--mint); text-decoration: none; font-weight: 700; }
+
+/* ---------- print: clean PDF, watermark + dark band toned for paper ---------- */
+@media print {
+  body, .paper { background: #fff; }
+  .paper { background-image: none; }            /* watermark off on paper to keep it clean */
+  .card, table, ol.confirm > li, pre.diagram, .flow { box-shadow: none; }
+  section { break-inside: avoid; }
+  pre.diagram { background: #fff; color: var(--ink-0); border: 1px solid var(--line); }
+  .flow { background: #fff; border: 1px solid var(--line); }
+  .flow .node { color: var(--ink-0); border-color: var(--line); background: var(--surface-2); }
+  .flow .node .sub, .flow .arrow .note { color: var(--ink-2); }
+  .flow .arrow { background: var(--brand); }
+  .flow .arrow::after, .flow-fan .node::before { border-top-color: var(--brand); }
+  .flow-conn .ln { stroke: var(--brand); }
+  footer { background: #fff !important; color: var(--ink-2); border-top: 1px solid var(--line); padding: 22px 0 8px; }
+  footer::before { display: none; }
+  .foot-lockup .fl-name { color: var(--ink-0); }
+  footer .foot-inner { max-width: none; }
+  footer .foot-top { color: var(--ink-1); }
+  footer .foot-reg { color: var(--ink-2); border-top: 1px dashed var(--line); }
+  footer a { color: var(--brand); }
+}
