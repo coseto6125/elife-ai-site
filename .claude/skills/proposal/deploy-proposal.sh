@@ -62,8 +62,8 @@ sed "s#\.\./logo/logo-mark\.svg#logo-mark.svg#g" "$SRC" \
     { print }
   ' > "$DIR/index.html"
 
-# 驗證注入成功
-grep -q "track?p=$HASH" "$DIR/index.html" || { echo "✘ 追蹤腳本注入失敗" >&2; exit 1; }
+# 驗證注入成功（beacon 把 base 與 q 拆成兩個 JS 變數，故檢查 q 字串裡的 ?p=<hash>）
+grep -q "?p=$HASH&label=" "$DIR/index.html" || { echo "✘ 追蹤腳本注入失敗" >&2; exit 1; }
 echo "▸ 已建立 $DIR/（index.html + assets + logo，含追蹤）"
 
 # 3) commit + push main
