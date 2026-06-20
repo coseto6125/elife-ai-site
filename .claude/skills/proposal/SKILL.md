@@ -16,6 +16,7 @@ description: 為 e-life-ai（數位綠洲）接案平台寫報價提案、部署
 - 範本：`proposals/_template.html`（HTML）、近期提案 `.md`（如 `proposals/TK*-*.md`）。版面系統說明見 `proposals/README.md`。
 - 產兩份：`proposals/<案號>-<slug>.md`（純文字，貼平台/email）+ `proposals/<案號>-<slug>.html`（套版、**必加 `<meta name="robots" content="noindex">`**、可印 PDF）。
 - HTML 不要改 `assets/proposal.css`；版型靠既有 class（cover/sec/sec-no/table/confirm/diagram/card/why-grid/plain/exclude/price-note/callout）。
+- **開頭附「您的原始需求」區塊**：在第一個正式章節（「我們對這個需求的理解」）之前，原文照貼案主在平台貼出的需求（含其箭頭流程、條列、用詞，不改寫、不修飾），讓案主一眼確認我們完整讀懂。HTML 用無 `sec-no` 的 `<h2 class="sec">您的原始需求</h2>` + `pre.diagram`（保留原排版）+ 一句 `callout` 點明「以下逐項對應」；MD 用 ```` ``` ```` 區塊照貼。需求若為截圖，轉謄成文字後照貼。
 
 ### 語氣規範（沉穩商業提案，硬性）
 - **第一人稱一律「我們」**，不用「本團隊」、不用獨白式「我」。
