@@ -218,9 +218,10 @@ footer a { color: var(--mint); text-decoration: none; font-weight: 700; }
   section { break-inside: auto; }
   h2.sec { break-after: avoid; }                                  /* heading stays with its content */
   thead { display: table-header-group; }                          /* repeat table header on each page */
-  tr, .card, pre.diagram, .flow, .callout, .price-note,
-  ol.confirm > li, ul.plain > li { break-inside: avoid; }          /* never split these mid-row/box */
-  table, ol.confirm, ul.plain, .why-grid { break-inside: auto; }   /* but the containers may span pages */
+  tr, .card, ol.confirm > li, ul.plain > li { break-inside: avoid; } /* short atomic units: never split mid-row/item */
+  pre.diagram, .flow { break-inside: avoid; }                        /* diagrams read wrong if split; keep whole */
+  table, ol.confirm, ul.plain, .why-grid,
+  .callout, .price-note { break-inside: auto; }                      /* long boxes/containers may span pages, no blank-page push */
   pre.diagram { background: #fff; color: var(--ink-0); border: 1px solid var(--line); }
   .flow { background: #fff; border: 1px solid var(--line); }
   .flow .node { color: var(--ink-0); border-color: var(--line); background: var(--surface-2); }
