@@ -1,2 +1,6 @@
 User-agent: *
 Disallow: /demo/
+Disallow: /demos/
+Disallow: /stats/
+
+Sitemap: https://service.e-life-ai.com/sitemap.xml
