@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>自動化繳費提醒 — 報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<!-- ============ 封面 header ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價</span>
+    <h1 class="title">自動化繳費提醒</h1>
+    <p class="lead">把「人工核對名單」跟「一封封發繳費通知」自動化，整套建在您自己的 Google 帳號，做好就歸您所有。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26062101GDGV25</b></span>
+      <span class="chip">類型 <b>自動化工具</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">預算 <b>$10,000</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 內容區 ============ -->
+<div class="paper">
+<div class="wrap">
+
+  <!-- 您的原始需求 -->
+  <section>
+    <h2 class="sec">您的原始需求</h2>
+    <pre class="diagram">想要自動化提醒繳費的流程
+
+目前只用簡單 excel 整理資料人工核對才發繳費通知，希望可以自動化。</pre>
+    <div class="callout">下面就照您這段需求，一項一項說明我們會怎麼做、要多少錢。</div>
+  </section>
+
+  <!-- 1. 我們的理解 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們怎麼理解您的需求</h2>
+    <p class="lead">您現在的做法，我們理解是這樣：</p>
+    <pre class="diagram">Excel 整理名單 ──► 人工逐筆核對誰該繳、誰逾期 ──► 人工一封一封發繳費通知</pre>
+    <p>最花時間、也最容易出錯的，是中間「人工核對」跟最後「一封一封發通知」這兩段：每期都要重看一次名單、自己算誰到期、再一個一個發出去，量一多就累，也容易漏發或重複發。</p>
+    <p>我們要做的，就是把這兩段交給系統自動處理，您只要照舊維護名單：</p>
+    <pre class="diagram">您維護名單 ──► 系統自動讀取、自動算出該繳/逾期名單 ──► 自動產生並發出繳費通知</pre>
+    <p>您原本怎麼整理名單都不用大改，我們順著您現在的習慣接上自動化，不是要您換一套新系統重學。</p>
+  </section>
+
+  <!-- 2. 不綁我們 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>這套工具是您自己的，不綁我們</h2>
+    <p class="lead">先講一個重點，因為它影響您日後的成本跟自主權：<b>這套自動化我們會直接建在您自己的 Google 帳號裡（您的 Google 試算表＋它內建的自動化），不是架在我們的伺服器上。</b></p>
+    <ul class="plain">
+      <li><b>東西是您的：</b>名單、自動化、行事曆全都在您自己的 Google 帳號，您完全掌握。</li>
+      <li><b>不依賴我們：</b>我們建好、教會您之後就能交接，這套東西照常自己跑，跟我們之後在不在沒有關係。</li>
+      <li><b>長期不用一直付費：</b>在 Google 一般的免費額度內就能運作，不會變成每個月要付我們維運費的東西。</li>
+    </ul>
+    <div class="callout">我們的角色是把它一次做好、交到您手上，不是讓您從此離不開我們。</div>
+  </section>
+
+  <!-- 3. 能做什麼 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>這套工具能做什麼</h2>
+    <ol class="confirm">
+      <li><b>自動讀您的名單：</b><p>照您現在的欄位（姓名、金額、到期日、聯絡方式等）讀，您一更新名單，系統就用最新的。</p></li>
+      <li><b>自動算出該提醒誰：</b><p>系統每天自動比對到期日，把「快到期」「當天到期」「已逾期」的人挑出來，不用再一筆一筆人工核對。</p></li>
+      <li><b>自動寫好繳費通知：</b><p>每個人的通知會自動帶入他的金額、到期日、繳費方式，內容照您先給的範本走，措辭跟格式都跟著您的習慣。</p></li>
+      <li><b>自動發出去：</b><p>照您選的管道（Email／LINE／簡訊，見第四節）自動發，不用再一封一封手動寄。</p></li>
+      <li><b>發過的不重複發、逾期的會追：</b><p>系統記得這期誰已經提醒過，不會重複打擾；逾期還沒繳的可以再提醒一次，不漏追。</p></li>
+      <li><b>留下紀錄：</b><p>誰、哪天、發了什麼，系統都留底，之後您要查或對帳都方便。</p></li>
+    </ol>
+  </section>
+
+  <!-- 4. 管道 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>繳費通知要用哪個管道發</h2>
+    <p class="lead">通知怎麼送到對方手上，會影響做法跟有沒有額外費用。常見有三種，您可以選一個或多個，我們照您選的範圍報價：</p>
+    <table>
+      <thead><tr><th>管道</th><th>說明</th><th>額外費用</th></tr></thead>
+      <tbody>
+        <tr><td><b>Email</b></td><td>自動寄繳費通知信，可以帶金額、到期日、繳費方式跟連結。最單純、好上手。</td><td>一般沒有</td></tr>
+        <tr><td><b>LINE</b></td><td>用官方 LINE 把繳費提醒推給對方。需要有 LINE 官方帳號。</td><td>看官方帳號方案</td></tr>
+        <tr><td><b>簡訊 SMS</b></td><td>發手機簡訊提醒，適合對方不一定會看 email／LINE 的情況。</td><td>有逐則簡訊費</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>如果現在還不確定：</b>我們可以先用 Email 把自動化做起來（最快、不用多花錢），其他管道之後想加再加。</div>
+    <p><b>另外，您這邊也會有一份自己的到期看板。</b>系統可以把每筆的到期日自動寫進<b>您（或您團隊）的 Google 行事曆</b>，到期前自動跳提醒，您自己不漏收。這裡先講清楚一件事：行事曆的提醒是給<b>您這邊看的</b>（提醒您自己去收款），沒辦法直接跳到<b>繳費客戶</b>的手機上，因為我們無法把行程塞進別人的帳號。所以「提醒客戶本人繳費」走上面的 Email／LINE／簡訊，「您自己的到期看板」走行事曆，兩者搭配最完整。</p>
+    <p>還有一個更輕的做法：如果您希望<b>通知還是自己親手發</b>，系統可以只負責「自動挑出該繳／逾期的人、把每個人的通知內容寫好」，整理成一份清單給您，您再貼上去發。這個版本上線最快、最省，要發給誰、什麼時候發，全都還是您說了算。</p>
+    <div class="callout"><b>留個方向給您：</b>日後如果名單變得比較雜（日期、備註各種寫法），或想讓通知更聰明一點（依不同客戶自動調整內容），可以再加上 AI 協助。這不在這次報價內，等您真的有需要再談就好。</div>
+  </section>
+
+  <!-- 5. 時機 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>什麼時候提醒</h2>
+    <p class="lead">我們建議用<b>每天自動跑</b>的方式：系統每天自己跑一次，照到期日判斷今天該提醒誰，您完全不用手動去點。提醒的時間點可以照您的收費規則設，例如：</p>
+    <ul class="plain">
+      <li><b>到期前提醒：</b>到期前幾天先發一次（幾天由您定，例如提前 3 天、7 天）。</li>
+      <li><b>當天提醒：</b>到期當天再提醒一次。</li>
+      <li><b>逾期追繳：</b>超過到期日還沒繳，可以再提醒（提醒幾次、隔幾天由您定）。</li>
+    </ul>
+    <p>上面每個時機都能開關、天數能調。如果您其實只想「需要的時候手動跑一下就好」，我們也可以改成手動執行的版本，這點報價前再跟您確認。</p>
+  </section>
+
+  <!-- 6. 會幫您做到的 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>會幫您做到的</h2>
+    <table>
+      <thead><tr><th class="num">#</th><th>項目</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>建在您自己的 Google 帳號</b></td><td>整套做在您的 Google 試算表＋自動化裡，名單與自動化都歸您所有</td></tr>
+        <tr><td class="num">2</td><td><b>自動讀名單</b></td><td>照您現有的欄位讀，您更新就生效，不用改現在的整理習慣</td></tr>
+        <tr><td class="num">3</td><td><b>自動判斷該繳／逾期</b></td><td>每天自動比對到期日，自動挑出快到期、當天、逾期的人，取代人工核對</td></tr>
+        <tr><td class="num">4</td><td><b>自動寫好繳費通知</b></td><td>照您給的範本，自動帶入每個人的金額、到期日、繳費方式</td></tr>
+        <tr><td class="num">5</td><td><b>自動發送</b></td><td>照選定管道（Email／LINE／簡訊）自動發；或整理成清單給您人工發</td></tr>
+        <tr><td class="num">6</td><td><b>到期進您的行事曆</b></td><td>到期日自動寫進您／團隊的 Google 行事曆，當作您這邊的到期看板</td></tr>
+        <tr><td class="num">7</td><td><b>去重與逾期追繳</b></td><td>記住已提醒過的人避免重複，逾期的照規則再提醒</td></tr>
+        <tr><td class="num">8</td><td><b>發送紀錄</b></td><td>留下發給誰、什麼時候、發了什麼，方便查核對帳</td></tr>
+        <tr><td class="num">9</td><td><b>操作說明 ＋ 一次線上教學</b></td><td>教您怎麼維護名單、調整提醒時機跟範本，之後您自己就能操作</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 7. 確認事項 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>報價前想先跟您確認的</h2>
+    <ol class="confirm">
+      <li><b>可以給我們一份現在的名單範例嗎？</b><p>這是這個案子最關鍵的東西。看過您實際的欄位排版（姓名、金額、到期日、聯絡方式怎麼放），我們才能對得準，正式報價也才講得準。資料可以去識別化或換成假的，只要欄位結構跟真的一樣就好。</p></li>
+      <li><b>方便把名單放到 Google 試算表嗎？</b><p>為了讓這套東西完全歸您所有、不依賴我們，我們會建在您自己的 Google 帳號裡。用法跟您現在的 Excel 幾乎一樣，只是改放雲端。如果您有不方便用 Google 的考量，也請先告訴我們，我們再一起想其他作法。</p></li>
+      <li><b>繳費通知想怎麼寫？</b><p>給我們一兩則您平常發的通知（或您想要的格式），系統就照這個產生，稱呼、措辭、繳費方式說明都跟著您的習慣。</p></li>
+      <li><b>通知要走哪個管道？</b><p>Email、LINE、簡訊選一個或多個（見第四節）；或先只整理清單由您人工發。這會決定有沒有額外費用跟要不要串接。</p></li>
+      <li><b>提醒的規則</b><p>到期前幾天提醒、當天要不要再提醒、逾期要不要追、追幾次，照您的收費規則設（見第五節）。</p></li>
+      <li><b>大概多少筆、多久一期？</b><p>名單大概多少人（幾十筆、幾百筆或更多）、多久一期（月繳、季繳等），會影響我們怎麼做。</p></li>
+    </ol>
+  </section>
+
+  <!-- 8. 報價 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">8</span>報價與分期</h2>
+    <p class="lead">下面先給您一個大概的報價，<b>等上面幾件事確認、看過您的名單範例之後，我們再給正式報價。</b></p>
+    <table>
+      <thead><tr><th>階段</th><th>做的事</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期：讀取與判斷</b></td><td>在您的 Google 試算表上建好自動化、讀名單、自動算出該繳／逾期名單、把繳費通知內容寫好</td><td class="pct">60%</td></tr>
+        <tr><td><b>第二期：發送與交付</b></td><td>接上選定的發送管道、到期寫進行事曆、去重與逾期追繳、發送紀錄、操作說明跟一次線上教學</td><td class="pct">40%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">在「自動讀名單 ＋ 自動判斷該繳／逾期 ＋ 自動寫好通知 ＋ 自動發送（以 Email 為主）＋ 到期進行事曆」這個範圍內，於 <b>$10,000</b> 預算內完成。這類名單自動化我們做過很多、算熟路，知道哪裡會卡、怎麼做最省工，所以能在這個預算內把能用的東西交到您手上，而且是建在您自己帳號、日後不用一直付我們維運費的版本。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確不含（要的話另外報價）</p>
+    <ul class="plain exclude">
+      <li>簡訊逐則費用、LINE 官方帳號方案費等外部服務的長期使用費（看用量，可以幫您先估）</li>
+      <li>線上收款、金流串接、自動對帳銷帳（這個案子是「提醒繳費」，不含實際收錢）</li>
+      <li>從頭做一套會員／收費管理系統（這個案子是順著您現有的名單做，不是取代它）</li>
+      <li>上線後的長期維運跟大幅加功能（這套東西交付後您自己就能維護；若日後想要我們持續協助，可以另外談）</li>
+    </ul>
+    <div class="callout"><b>要注意的一點：</b>提醒準不準，看您名單跟到期日填得準不準；系統是照您維護的名單在跑，名單越乾淨，提醒就越準。</div>
+  </section>
+
+  <!-- 9. 時程 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">9</span>時程</h2>
+    <p class="lead"><b>確認需求、拿到名單範例後，付訂 3～5 天內完工。</b></p>
+    <p>先在您的 Google 試算表上把「自動讀取、自動判斷、寫好通知並用 Email 自動發、到期進行事曆」這個能用的版本做出來，之後再照實際名單微調時機跟範本。</p>
+  </section>
+
+  <!-- 10. 為什麼找我們做 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">10</span>為什麼找我們做</h2>
+    <ul class="plain">
+      <li><b>一看就懂您的痛點：</b>您要的不是換系統，而是把「人工核對」跟「一封封發通知」這兩段自動化。我們順著您現在的名單接上自動化，不用您重學。</li>
+      <li><b>交付給您、不綁我們：</b>整套建在您自己的 Google 帳號，做好交接後就歸您所有、自己能維護，不會變成離不開我們的東西，日後也不用一直付維運費。</li>
+      <li><b>這類自動化我們熟：</b>名單比對、定時提醒、自動寄送這種題目我們做過很多，知道怎麼做最穩、最省工，這個預算內就能交付能用的成果。</li>
+      <li><b>該講清楚的先講、不把範圍講死：</b>看過您的名單範例跟通知措辭再給正式報價，不含的（金流、收款）先講明白，不會事後加價。</li>
+    </ul>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ footer ============ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+<!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
+<script>
+  (function () {
+    if (/[?&]preview=1\b/.test(location.search)) return;
+    var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+    var q = '?p=890b9a10bf6a&label=' + encodeURIComponent('TK26062101GDGV25 自動化繳費提醒');
+    new Image().src = base + q + '&t=' + Date.now();
+  })();
+</script>
+</body>
+</html>
