@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>自動化繳費提醒 — 報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<!-- ============ 封面 header ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">自動化繳費提醒</h1>
+    <p class="lead">把「人工核對名單」與「逐筆發繳費通知」自動化，您只要維護現有的 Excel。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26062101GDGV25</b></span>
+      <span class="chip">類型 <b>自動化工具</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">預算 <b>$10,000</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 內容區 ============ -->
+<div class="paper">
+<div class="wrap">
+
+  <!-- 您的原始需求 -->
+  <section>
+    <h2 class="sec">您的原始需求</h2>
+    <pre class="diagram">想要自動化提醒繳費的流程
+
+目前只用簡單 excel 整理資料人工核對才發繳費通知，希望可以自動化。</pre>
+    <div class="callout">以下提案即依此需求，逐項說明我們的做法與報價。</div>
+  </section>
+
+  <!-- 1. 我們的理解 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們對這個需求的理解</h2>
+    <p class="lead">您現在的流程，我們理解是這樣：</p>
+    <pre class="diagram">Excel 整理名單 ──► 人工逐筆核對誰該繳、誰逾期 ──► 人工一封一封發繳費通知</pre>
+    <p>最花時間、也最容易出錯的，是中間「人工核對」與最後「人工逐筆發通知」這兩段：每期都要重看一次名單、自己算誰到期、再一個一個發出去，量一多就累、也容易漏發或重複發。</p>
+    <p>我們要做的，是把這兩段<b>自動化</b>，您只需要維護那份 Excel，剩下的交給系統：</p>
+    <pre class="diagram">您維護 Excel ──► 系統自動讀取、自動算出該繳/逾期名單 ──► 自動產生並發出繳費通知</pre>
+    <p>您原本怎麼整理 Excel 不用改，我們順著您現有的習慣接上自動化，不是要您換一套系統重學。</p>
+  </section>
+
+  <!-- 2. 能做到什麼 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>這套自動化能做到什麼</h2>
+    <ol class="confirm">
+      <li><b>自動讀您的 Excel：</b><p>照您現在的欄位（姓名、金額、到期日、聯絡方式等）讀取，您更新名單，系統就用最新的。</p></li>
+      <li><b>自動算出該提醒誰：</b><p>系統每天自動比對到期日，挑出「快到期」「當天到期」「已逾期」的名單，不必再人工一筆筆核對。</p></li>
+      <li><b>自動產生繳費通知：</b><p>每位對象的通知自動帶入他的金額、到期日、繳費方式，內容由您先給的範本決定，措辭、格式都照您的習慣。</p></li>
+      <li><b>自動發出去：</b><p>依您選定的管道（Email／LINE／簡訊，見第三節）自動發送，不必再一封一封手動發。</p></li>
+      <li><b>發過的不重複發、逾期的會追：</b><p>系統記得這期誰已經提醒過，避免重複打擾；逾期未繳的可再次提醒，不漏追。</p></li>
+      <li><b>留下紀錄：</b><p>哪些人、哪天、發了什麼，系統留底，方便您日後查核對帳。</p></li>
+    </ol>
+  </section>
+
+  <!-- 3. 管道 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>繳費通知要用哪個管道發</h2>
+    <p class="lead">通知怎麼送到繳費人手上，會影響做法與是否有外部費用。常見有三種，可擇一或多選，我們依您選的範圍報價：</p>
+    <table>
+      <thead><tr><th>管道</th><th>說明</th><th>外部費用</th></tr></thead>
+      <tbody>
+        <tr><td><b>Email</b></td><td>自動寄送繳費通知信，可帶金額、到期日、繳費方式與連結。我們已有現成的寄信能力，最單純。</td><td>一般無</td></tr>
+        <tr><td><b>LINE</b></td><td>透過官方 LINE 推播繳費提醒給對象。需有 LINE 官方帳號。</td><td>依官方帳號方案</td></tr>
+        <tr><td><b>簡訊 SMS</b></td><td>發手機簡訊提醒，適合對象不一定看 email／LINE 的情況。</td><td>有逐則簡訊費</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>若一時還不確定：</b>我們可先以 Email 完成自動化（最快、無額外費用），其餘管道日後要加再加。</div>
+    <p>另外提供一個更輕的選項：若您希望<b>通知仍由人工親自發</b>，系統可只負責「自動挑出該繳／逾期名單、產好每個人的通知內容」，匯成一份清單給您，您再貼去發。這個版本最快上線、最省，發送的掌控權也完全在您手上。</p>
+  </section>
+
+  <!-- 4. 時機 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>提醒的時機怎麼定</h2>
+    <p class="lead">我們建議採<b>每天自動排程</b>：系統每天自動跑一次，依到期日自動判斷該提醒誰，您完全不必手動觸發。時機點可依您的收費規則設定，例如：</p>
+    <ul class="plain">
+      <li><b>到期前提醒：</b>到期前 N 天先發一次（N 由您定，例如提前 3 天、7 天）。</li>
+      <li><b>當天提醒：</b>到期當天再提醒一次。</li>
+      <li><b>逾期追繳：</b>超過到期日仍未繳，可再次提醒（提醒幾次、間隔幾天由您定）。</li>
+    </ul>
+    <p>以上每個時機都可開關、天數可調。若您其實只想「手動跑一下就好、不要長期掛著」，我們也可改成手動執行版本，這點報價前再與您確認。</p>
+  </section>
+
+  <!-- 5. 交付範圍 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>本案交付範圍</h2>
+    <table>
+      <thead><tr><th class="num">#</th><th>交付物</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>Excel 自動讀取</b></td><td>依您現有 Excel 欄位讀取繳費名單，您更新名單即生效，無需改變現有整理習慣</td></tr>
+        <tr><td class="num">2</td><td><b>該繳／逾期自動判斷</b></td><td>每天自動比對到期日，自動挑出快到期、當天、逾期名單，取代人工核對</td></tr>
+        <tr><td class="num">3</td><td><b>繳費通知自動產生</b></td><td>依您提供的通知範本，自動帶入每人金額、到期日、繳費方式</td></tr>
+        <tr><td class="num">4</td><td><b>自動發送</b></td><td>依選定管道（Email／LINE／簡訊）自動發出；或產清單交人工發</td></tr>
+        <tr><td class="num">5</td><td><b>去重與逾期追繳</b></td><td>記錄已提醒對象避免重複，逾期者依規則再次提醒</td></tr>
+        <tr><td class="num">6</td><td><b>發送紀錄</b></td><td>留存發送對象、時間、內容，供查核對帳</td></tr>
+        <tr><td class="num">7</td><td><b>操作說明 + 一次線上教學</b></td><td>如何維護 Excel、調整提醒時機與範本，使同仁得以自行操作</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. 確認事項 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>報價前需與貴公司確認的事項</h2>
+    <ol class="confirm">
+      <li><b>能否提供一份目前的 Excel 範例？</b><p>這是本案最關鍵的素材。看過您實際的欄位排版（姓名、金額、到期日、聯絡方式怎麼放），我們才能精準對應，正式報價也才能講準。可去識別化或用假資料，只要欄位結構與真實一致即可。</p></li>
+      <li><b>繳費通知希望用什麼措辭？</b><p>提供一兩則您平常發的通知範例（或希望的格式），系統就照這個產生，措辭、稱呼、繳費方式說明都依您的習慣。</p></li>
+      <li><b>通知要走哪個管道？</b><p>Email、LINE、簡訊擇一或多選（見第三節）；或先只產清單由人工發。這會決定是否有外部費用與串接工作。</p></li>
+      <li><b>提醒時機的規則</b><p>到期前幾天提醒、當天是否再提醒、逾期要不要追、追幾次，依您的收費規則設定（見第四節）。</p></li>
+      <li><b>大約多少筆、多久一期？</b><p>名單規模（數十筆、數百筆或更多）與週期（月繳、季繳等），影響執行方式的選型。</p></li>
+    </ol>
+  </section>
+
+  <!-- 7. 報價 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>報價與分期</h2>
+    <p class="lead">以下為依需求說明之初步報價區間，<b>正式報價於上述事項確認、看過您的 Excel 範例後出具。</b></p>
+    <table>
+      <thead><tr><th>階段</th><th>交付內容</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期：讀取與判斷</b></td><td>讀取您的 Excel、自動算出該繳／逾期名單、產生繳費通知內容</td><td class="pct">60%</td></tr>
+        <tr><td><b>第二期：發送與交付</b></td><td>接上選定的發送管道、去重與逾期追繳、發送紀錄、操作說明與一次線上教學</td><td class="pct">40%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">於「自動讀 Excel ＋ 自動判斷該繳／逾期 ＋ 自動產生通知 ＋ 自動發送（以 Email 為主）」的範圍內，可於 <b>$10,000</b> 預算內完成。我們之所以能在此預算內交付可用工具，是因為名單比對、排程、寄送這些底層能力是我們現有的資產，不必為本案從零打造，省下的成本反映在報價上。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確排除（如需，另行報價）</p>
+    <ul class="plain exclude">
+      <li>簡訊逐則費用、LINE 官方帳號方案費用等外部服務的長期使用費（依用量計，可代為說明預估）</li>
+      <li>線上收款、金流串接、自動對帳銷帳（本案範圍為「提醒繳費」，不含實際收款）</li>
+      <li>從頭重建一套會員／收費管理系統（本案順著您現有 Excel 做，不取代它）</li>
+      <li>上線後長期維運與大幅功能擴充（可另議維運合約）</li>
+    </ul>
+    <div class="callout"><b>關鍵相依：</b>提醒準不準，取決於您 Excel 名單與到期日的正確性；系統依您維護的名單運作，名單越乾淨，提醒越準。</div>
+  </section>
+
+  <!-- 8. 時程 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">8</span>時程</h2>
+    <p class="lead"><b>確認需求與取得 Excel 範例後，付訂後 3～5 日內完工。</b></p>
+    <p>先以您提供的範例完成「自動讀取、自動判斷、產生通知並以 Email 自動發送」的可用版本，其後依實際名單微調時機與範本。</p>
+  </section>
+
+  <!-- 9. 為什麼是我們 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">9</span>為什麼是我們</h2>
+    <ul class="plain">
+      <li><b>一眼看懂您的痛點：</b>您要的不是換系統，而是把「人工核對」與「逐筆發通知」這兩段自動化。我們順著您現有的 Excel 接上自動化，不要您重學。</li>
+      <li><b>能在 $10,000 內交付可用工具：</b>名單比對、定時排程、自動寄送是我們現有資產，不必從零建置，成本優勢直接反映在報價。</li>
+      <li><b>誠實掛條件、不把範圍講死：</b>看過您的 Excel 範例與通知措辭再出正式報價，該排除的（金流、收款）先講清楚，不事後加價。</li>
+      <li><b>可自行維護：</b>交付後附操作說明，您維護 Excel、調整提醒時機與範本都能自己來；需要時亦可續約升級。</li>
+    </ul>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ footer ============ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+<!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
+<script>
+  (function () {
+    if (/[?&]preview=1\b/.test(location.search)) return;
+    var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+    var q = '?p=976931d1c692&label=' + encodeURIComponent('TK26062101GDGV25 自動化繳費提醒');
+    new Image().src = base + q + '&t=' + Date.now();
+  })();
+</script>
+</body>
+</html>
