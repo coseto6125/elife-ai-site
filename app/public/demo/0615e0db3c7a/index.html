@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>4.多租戶 SaaS 平台 · 雲端基礎設施與多區域架構建置｜報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">4.多租戶 SaaS 平台 · 雲端基礎設施與多區域架構建置</h1>
+    <p class="lead">■ 案件類型</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26062314FEKK27</b></span>
+      <span class="chip">行業 <b>電子商務/零售</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">預算 <b>$400,000</b></span>
+    </div>
+  </div>
+</header>
+<div class="paper">
+<div class="wrap">
+<section><h2 class="sec"><span class="sec-no">1</span>您的需求</h2><ul class="plain"><li>■ 案件類型</li><li>雲端架構 / DevOps / 資安工程（一次性建置 + 技術移轉，非長期維運）</li><li>■ 專案概述</li><li>本公司開發一套多租戶（multi-tenant）SaaS 平台，徵求專業團隊協助完成</li><li>GCP 雲端基礎設施建置。核心需求為「資料層的多區域（multi-region）部署</li><li>能力」：系統須能依租戶（tenant）配置其資料落地區域，不同區域之資料庫</li><li>與備份各自獨立、不跨區複製，且新增一個區域不需重構既有程式。</li><li>本案為一次性建置，交付驗收後結案。業主設有內部技術人員，將於建置期間</li><li>參與並於交付後承接日常維運；故本案不含長期維運外包，惟需廠商完成完整</li><li>技術移轉，確保業主團隊能獨立維運。</li><li>■ 工作範圍</li><li>1. 雲端基礎架構：VPC / 防火牆 / Load Balancing / Cloud Armor（WAF）/</li><li>CDN；三套隔離環境（DEV / STG / PROD）</li><li>2. 運算層：Cloud Run 服務部署、自動擴縮</li><li>3. 資料層：Cloud SQL（PostgreSQL 16）+ pgvector 安裝與索引調校；</li><li>依 tenant 路由至對應區域；備份 / PITR / 還原機制</li><li>4. 多區域能力：資料層須 region 可配置，初期實際建置一個區域，</li><li>其餘區域於架構上預留、可快速開通</li><li>5. Gateway 與計量：API Gateway（路由 / 限流 / 金鑰）、Secret Manager、</li><li>用量計量</li><li>6. 資安：CMEK 加密（金鑰由業主掌管）、IAM 最小權限、稽核留痕</li><li>（Audit Logs）、弱點掃描與基本滲透測試</li><li>7. 交付自動化：Terraform（IaC）、CI/CD 管線</li><li>8. 移交與技術移轉：架構圖、部署 / 維運手冊、資安設定文件；業主技術</li><li>人員須能全程參與建置過程並存取程式碼倉庫（repo）；交付須含知識</li><li>移轉，使業主團隊具備獨立維運能力；帳號權限完整移交、廠商權限於</li><li>交付後撤銷</li><li>■ 廠商資格</li><li>‧ 具 GCP（或 AWS / Azure）實際建置經驗</li><li>‧ 具 multi-region 多區域架構、多租戶 SaaS 經驗者優先</li><li>‧ 具 PostgreSQL / pgvector、Terraform（IaC）、IAM / 加密 / 稽核實作經驗</li><li>■ 合作條件</li><li>‧ 一次性建置案；報價請拆解至工作項目層級，並區分「首區建置費」與</li><li>「每新增一區域之增量費用」</li><li>‧ 本案為「建置 + 技轉」模式，不含長期維運；業主內部技術人員承接後續</li><li>維運。廠商須配合業主技術人員之銜接（建置期參與、上線後一段期間之</li><li>技術支援詢問）</li><li>‧ 所有雲端帳號、網域、第三方服務帳號開立於業主名下，廠商以授權權限</li><li>作業、交付後撤權</li><li>‧ 成果之智慧財產權與資料所有權歸業主；原始碼、IaC 腳本與文件完整交付</li><li>‧ GCP 雲端費用屬代收性質、掛業主自有帳號、不得加價</li><li>‧ 詳細技術規格於初步接洽後提供；涉及系統細節者須簽署保密協議（NDA）</li><li>後揭露</li><li>■ 報價方式</li><li>請提供：</li><li>（1）團隊簡介與類似 multi-region 案例</li><li>（2）工作項目拆解報價（區分一次性建置 / 代收雲端費）</li><li>（3）預估工期與里程碑</li><li>預算為參考，意者請（此處填平台站內信 / 聯絡方式）聯繫。</li></ul></section>
+<section>
+<h2 class="sec"><span class="sec-no">2</span>我們對需求的理解</h2>
+<p class="lead">我們理解這是一個一次性的雲端基礎設施建置案，核心不在於後續維運，而在於把一套能依租戶配置資料落地區域的多租戶 SaaS 架構，紮實地建好並完整移交給貴公司的內部技術團隊。建置完成、驗收結案後，廠商權限撤除，由貴公司自行承接。</p>
+<ul class="plain">
+<li>資料層的多區域能力是本案的重心。我們理解的目標是：每個租戶都能被指派到對應區域，各區域的資料庫與備份彼此獨立、不跨區複製，而且日後新增一個區域時，既有程式不需要重構，只要走既定流程開通即可。</li>
+<li>初期實際只建置一個區域，其餘區域在架構上預留。這代表我們在第一個區域落地時，就要把「可配置、可擴增」的設計做進去，而不是事後再補。這是我們在第一個區域投入較多心力的原因，也是後續每新增一區域能快速開通的基礎。</li>
+<li>三套隔離環境（DEV / STG / PROD）、運算層的自動擴縮、資料庫的備份與時間點還原、API Gateway 的路由與限流計量、加密與稽核留痕，這些都是要在第一次建置就一併到位的項目。</li>
+<li>加密金鑰由貴公司掌管、所有雲端與第三方帳號開立於貴公司名下、原始碼與基礎設施腳本完整交付、交付後我們撤權，這幾點我們完全認同，會在作業流程中如實遵守。</li>
+<li>技術移轉是驗收的一部分，而非附帶事項。貴公司技術人員會在建置期間全程參與並存取程式碼倉庫，我們會把建置過程視為共同作業，搭配文件與知識移轉，讓貴公司團隊在交付後具備獨立維運的能力。</li>
+</ul>
+</section>
+
+<section>
+<h2 class="sec"><span class="sec-no">3</span>我們能提供的能力</h2>
+<p class="lead">我們以基礎設施即程式碼的方式進行建置，讓整套環境可被版本控管、可重現、可審閱，而不是仰賴個別人員的手動操作。這也是我們認為能讓貴公司團隊順利接手的關鍵。</p>
+<ul class="plain">
+<li>雲端基礎架構：私有網路、防火牆規則、負載平衡、應用層防護與內容快取，以及 DEV / STG / PROD 三套互相隔離的環境，我們會以一致的腳本產出，確保各環境設定可比對、可追溯。</li>
+<li>運算與資料層：容器化服務的部署與自動擴縮、PostgreSQL 16 與向量索引的安裝及調校、依租戶路由至對應區域的資料層設計，以及備份、時間點還原與還原演練機制。</li>
+<li>多區域可配置設計：我們會把「區域」抽象為可配置參數，第一個區域實際落地，其餘區域在架構與腳本上預留，讓新增區域成為一套可重複執行的開通流程，而非重新開發。</li>
+<li>閘道與計量：API 閘道的路由、限流與金鑰管理、機密資訊集中保管，以及用量計量的串接。</li>
+<li>資安實作：採用由貴公司掌管金鑰的加密方式、最小權限的存取控管、稽核留痕，並進行弱點掃描與基本滲透測試，於文件中說明設定原由。</li>
+<li>交付自動化與移轉：基礎設施即程式碼腳本、持續整合與部署管線，搭配架構圖、部署與維運手冊、資安設定文件，並安排知識移轉，讓貴公司技術人員能獨立操作後續維運。</li>
+</ul>
+</section>
+
+<section>
+<h2 class="sec"><span class="sec-no">4</span>報價與前提</h2>
+<p class="lead">本案為一次性建置加技術移轉，不含長期維運。我們會把報價拆解到工作項目層級，並明確區分「首區建置費」與「每新增一區域之增量費用」。以下先就整體報價區間與必要前提說明，細項與里程碑會在取得正式技術規格後定版。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>說明</th></tr>
+</thead>
+<tbody>
+<tr><td>首區建置費</td><td>含基礎架構、三套隔離環境、運算與資料層、閘道與計量、資安實作、自動化腳本與管線，以及多區域可配置設計於第一個區域的實際落地與技術移轉。多區域的可擴增設計屬本階段成本，會反映在首區費用中。</td></tr>
+<tr><td>每新增一區域增量費用</td><td>於首區架構完成後，依既定開通流程新增單一區域所需的作業費用，逐區計價，與首區分列。</td></tr>
+<tr><td>代收雲端費用</td><td>掛貴公司自有帳號、屬代收性質、不加價，與建置服務費分開列示。</td></tr>
+</tbody>
+</table>
+<div class="price-note">
+就工作範圍所列項目，我們的一次性建置服務費報價區間為 <b>NT$320,000 至 NT$480,000</b>（不含代收雲端費用）。實際金額取決於技術規格細節、區域數量與資安測試範圍。在尚未取得完整技術規格前，此區間為依現有需求說明所做的初步評估，正式報價將於下列前提齊備、確認範圍後提供。
+</div>
+<p class="lead">我們需要先取得下
+</div>
+</div>
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+<script>(function(){var u='https://service.e-life-ai.com/track?p=0615e0db3c7a&label='+encodeURIComponent('4.多租戶 SaaS 平台 · 雲端基礎設施與多區域架構建置 TK26062314FEKK27');new Image().src=u+'&t='+Date.now();})();</script>
+</body>
+</html>
