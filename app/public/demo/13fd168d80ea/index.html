@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>SQL Server 資料倉儲遷移到 BigQuery｜報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<!-- ============ 封面 header ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">SQL Server 資料倉儲遷移到 BigQuery</h1>
+    <p class="lead">把您的分析資料倉儲穩穩搬上雲端，資料一致、可逐表對帳驗證，並建立每天自動更新的同步管線。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26062408OCEM70</b></span>
+      <span class="chip">行業 <b>製造業</b></span>
+      <span class="chip">執行地點 <b>台北市（可遠端）</b></span>
+      <span class="chip">預算 <b>$20,000</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 內容區 ============ -->
+<div class="paper">
+<div class="wrap">
+
+  <!-- 原始需求 -->
+  <section>
+    <h2 class="sec">您的原始需求</h2>
+    <pre class="diagram">轉移 SQL Server Datawarehouse to BigQuery
+
+原架構
+SQL server(ERP) to SQL Server(Data warehouse) -> SQL Analysis Services
+1 個 fact table，8 個 dimension table
+希望轉換雲端架構 to BigQuery</pre>
+    <div class="callout">以下逐項對應您的原始需求，說明我們的理解、做法、範圍與報價方式。</div>
+  </section>
+
+  <!-- 一、理解 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們對這個需求的理解</h2>
+    <p class="lead">您目前的分析架構是一套典型、而且整理得很乾淨的微軟資料倉儲：</p>
+    <pre class="diagram">  SQL Server（ERP）              營運系統，所有原始資料的源頭
+        │
+        ▼
+  SQL Server（資料倉儲）          整理成分析用的倉庫，1 個事實表 + 8 個維度表
+        │
+        ▼
+  SQL Analysis Services（SSAS）   把資料預先彙總，給報表快速查詢</pre>
+    <p>您希望把這套架構搬上 Google BigQuery，改成雲端資料倉儲。我們把它拆成三層來看，因為這三層的難度與風險差很多，講清楚對您決定範圍最有幫助：</p>
+    <ol class="confirm">
+      <li><b>資料層（搬資料本身）：</b><p>把 1 個事實表 + 8 個維度表的結構與資料搬到 BigQuery，並建立一條每天自動把新資料送上雲的同步管線。您的規模乾淨明確，這一層是可控、可驗證的。</p></li>
+      <li><b>分析層（SSAS 那塊）：</b><p>BigQuery 沒有 SSAS 的對應物，原本 SSAS 裡的彙總與計算邏輯若要保留，需要在 BigQuery 上以另一種方式重建。這一層的工作量，取決於 SSAS 裡累積了多少計算邏輯。</p></li>
+      <li><b>下游層（誰在用這個倉儲）：</b><p>原本連著這個倉儲的報表或程式，遷移後需要重新指向 BigQuery。這一層取決於您這邊的下游是哪一種。</p></li>
+    </ol>
+    <div class="callout"><b>我們的判斷：</b>真正的價值與風險，不在「搬資料」，而在第 2、3 層。搬資料反而是最確定的部分。所以這份提案會把範圍清楚地切在「資料層」，把第 2、3 層的處理方式講明白，讓您先用最低風險完成核心遷移，再決定要不要把上層一起做。</div>
+  </section>
+
+  <!-- 二、為什麼是我們 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>為什麼是我們</h2>
+    <p class="lead">資料庫遷移與雲端基礎設施建置，是我們實際做過、交付上線的工作。我們處理過正式環境的資料庫搬遷與雲端架構建置，也維運過生產級的資料同步管線，知道一場遷移真正會出問題的地方在哪。</p>
+    <p>這個案子的本質，正是我們熟悉的遷移問題：</p>
+    <table>
+      <thead><tr><th>一場資料倉儲遷移的關鍵</th><th>我們的對應經驗</th></tr></thead>
+      <tbody>
+        <tr><td>把既有資料庫完整、無誤地搬到新環境</td><td>做過正式環境的資料庫遷移</td></tr>
+        <tr><td>在雲端把基礎設施與權限架好</td><td>做過雲端基礎設施建置</td></tr>
+        <tr><td>建一條每天自動更新的資料同步管線</td><td>維運過生產級的資料同步</td></tr>
+        <tr><td>遷移後驗證新舊資料一致</td><td>遷移收尾的對帳，是我們本來就會做的事</td></tr>
+      </tbody>
+    </table>
+    <p>遷移的方法論是跨雲通用的：全量搬遷、增量同步、切換前的逐表對帳，這套流程不會因為目的地從一朵雲換成另一朵雲而改變，差別只在換用對應的工具。BigQuery 作為一個全託管的雲端倉儲，遷移要點與我們做過的資料庫遷移一致。您的規模（1 事實表 + 8 維度表）乾淨明確，我們有把握把資料層做穩、做對。</p>
+  </section>
+
+  <!-- 三、交付範圍 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>本案的交付範圍（資料層）</h2>
+    <p class="lead">我們建議把這次的範圍切在「資料層」，這是可以保證做對、而且可以用數字驗證的部分：</p>
+    <table>
+      <thead><tr><th class="num">#</th><th>交付物</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>BigQuery 倉儲建置</b></td><td>在您的雲端專案上，依現有的事實表與維度表結構，建立對應的 BigQuery 資料表，並處理好型別與精度的對應</td></tr>
+        <tr><td class="num">2</td><td><b>歷史資料全量遷移</b></td><td>把現有的全部歷史資料，完整搬進 BigQuery</td></tr>
+        <tr><td class="num">3</td><td><b>每日自動同步管線</b></td><td>建立一條管線，每天自動把 ERP 端產生的新資料更新到 BigQuery，不需要人工搬運</td></tr>
+        <tr><td class="num">4</td><td><b>資料一致性對帳</b></td><td>遷移完成後，逐表比對新舊兩邊的筆數與關鍵金額／數量總計，提供一份對帳結果，讓「資料搬對了」是可驗證的，而不是口頭保證</td></tr>
+        <tr><td class="num">5</td><td><b>切換與交付文件</b></td><td>切換步驟、同步管線的運作說明、後續維護要點，讓您這邊日後可自行維護</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 四、數字一致性 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>有一件事我們想先誠實跟您說：數字一致性</h2>
+    <p class="lead">這是真正懂這類遷移的人才會主動提醒您的一點，我們想講在前面。</p>
+    <p>SQL Server 與 BigQuery 在一些底層行為上有細微差異，例如數值的小數精度、整數相除的處理、空值在加總與排序時的行為、日期時間的時區處理。這些差異多半不會報錯，卻可能讓搬過去的數字默默差一點點，最後反映成「報表金額跟舊系統差了幾塊錢」。</p>
+    <p>我們處理這件事的方式很直接：<b>把「逐表對帳」當成交付的一部分，而不是做完才檢查。</b>我們會逐表比對新舊兩邊的筆數，以及關鍵的金額、數量總計，確認兩邊一致才算這一層完成。這份對帳結果會交給您，是您驗收「資料層做對了」的客觀依據。</p>
+    <div class="callout"><b>一句話：</b>我們保證的是「資料一致，且可對帳驗證」，這是我們能負責、也能證明的部分。</div>
+  </section>
+
+  <!-- 五、範圍外 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>我們建議先劃在範圍外的部分（盤點後另行報價）</h2>
+    <p class="lead">承上，有三塊工作的份量，取決於您這邊現況的細節，在還沒看到實際內容前無法準確估算。我們建議先不放進這次的固定範圍，等盤點清楚後，您再決定要不要加做、我們再給對應報價。這樣對您最公平，也避免把不確定的工作硬塞進固定價裡：</p>
+    <ol class="confirm">
+      <li><b>SSAS 分析層的重建：</b><p>原本 SSAS 裡累積的彙總與計算邏輯（各種計算欄位、KPI 公式），BigQuery 沒有直接對應物，若要保留需在 BigQuery 上重新建立。這部分的工作量，取決於 SSAS 裡有多少計算邏輯，而這些邏輯通常沒有文件、只存在於 SSAS 的設定裡。我們需要先取得 SSAS 的設定內容盤點過，才能準確報價。</p></li>
+      <li><b>既有報表的重新接線或重建：</b><p>原本連著這個倉儲的報表（例如 Power BI、Excel 樞紐分析），遷移後需要重新指向 BigQuery。如果報表原本是連一般資料表，多半是調整連線設定；如果報表原本是連 SSAS，則需要在 BigQuery 上重建對應的資料模型。實際工作量取決於報表數量，以及它們原本連的是資料表還是 SSAS。</p></li>
+      <li><b>下游程式的連線與語法適配：</b><p>如果您這邊有應用程式直接連這個倉儲撈資料，遷移後該程式的連線方式與內嵌的查詢語法需要做對應調整（SQL Server 與 BigQuery 的連線方式與部分語法不同）。這部分取決於有沒有這類程式、有幾支。</p></li>
+    </ol>
+    <div class="callout">這三塊不是我們不做，而是它們的份量現在看不到。先盤點、再報價，您不會替看不見的工作買單。</div>
+  </section>
+
+  <!-- 六、POC 與成本 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>關於 POC 與雲端成本</h2>
+    <p class="lead">我們會以一個可實際驗證的 POC（先把資料搬上去、跑通同步、完成對帳）作為第一階段的交付。關於成本，先講清楚讓您安心：</p>
+    <ul class="plain">
+      <li><b>POC 與正式環境，都直接建在您方的 Google 雲端專案上。</b>雲端資源與帳單歸您方，我們不經手。這樣做的好處是：POC 驗證過的環境，就是日後的正式環境，不需要再搬一次、不會重工。</li>
+      <li><b>這個階段的雲端費用很低。</b>資料的搬遷與每日同步、以及驗證用的查詢，用量都很小，通常落在 BigQuery 的免費額度內。唯一會實際產生費用的是資料的儲存，而它取決於您事實表的大小；以這類規模，即使超出免費額度，每月儲存費用也僅在極小的範圍。實際金額我們可在看到資料量後為您估算。</li>
+      <li>您這邊需要先準備的，是開好一個 Google 雲端專案、設好計費帳戶，並讓我們能存取。這部分我們可以協助您一步步設定。</li>
+    </ul>
+  </section>
+
+  <!-- 七、確認事項 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>報價前想先跟您確認的事項</h2>
+    <p class="lead">以下幾點會直接影響範圍與工作量，想先跟您確認，以利於對齊認知：</p>
+    <ol class="confirm">
+      <li><b>遷移時是否需要做到「不中斷」？</b><p>這個倉儲是給分析報表用的，一般而言可以挑離峰時段做切換，使用者幾乎無感，不需要中斷您的 ERP 營運。想先跟您確認：您這邊對切換時的服務中斷，是可以接受短暫離峰切換，還是有「完全不可中斷」的硬性要求？這會影響做法與報價。</p></li>
+      <li><b>SSAS 那塊，您打算保留多少？</b><p>原本 SSAS 裡的彙總與計算邏輯，您希望在 BigQuery 上原樣保留，還是趁這次遷移簡化、或改用別的報表方式重建？這決定第五節第 1 點要不要做、份量多大。</p></li>
+      <li><b>現在是誰在用這個倉儲、用什麼工具？</b><p>下游的報表或程式是哪幾種（Power BI、Excel、其他 BI 工具，或是某支內部程式）？它們原本是連一般資料表，還是連 SSAS？這決定第五節第 2、3 點的範圍。</p></li>
+      <li><b>來源端的存取與資料樣態：</b><p>我們需要能連到來源的 SQL Server 來做遷移與同步。您這邊的資料表裡，是否有可靠的「更新時間」或主鍵欄位可用來判斷增量？以本案規模，即使沒有，我們也可以用每日全量重載穩定處理，這題只是讓我們挑最合適的同步方式。</p></li>
+    </ol>
+  </section>
+
+  <!-- 八、報價與分期 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">8</span>報價與分期</h2>
+    <p>以下為依目前公開需求、針對「資料層遷移」範圍的初步報價方式。正式報價待第七節事項確認後提供。</p>
+    <table>
+      <thead><tr><th>階段</th><th>交付內容</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期：建置與全量遷移</b></td><td>BigQuery 倉儲建置、型別對應、歷史資料全量搬遷、完成首次對帳</td><td class="pct">約 45%</td></tr>
+        <tr><td><b>第二期：自動同步管線</b></td><td>每日自動同步管線建置、增量更新機制、同步後對帳</td><td class="pct">約 35%</td></tr>
+        <tr><td><b>第三期：切換與交付</b></td><td>正式切換、運作與維護文件、最終逐表對帳交付</td><td class="pct">約 20%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">在「資料層遷移（倉儲建置 + 全量搬遷 + 每日同步 + 逐表對帳）」的範圍內，可於 $20,000 預算內完成。您的規模乾淨明確，加上遷移與對帳是我們熟悉的工作，工程風險可控，這個優勢會反映在報價上。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確排除（如需，盤點後另行報價）</p>
+    <ul class="plain exclude">
+      <li>SSAS 分析層的彙總與計算邏輯重建（需先取得 SSAS 設定盤點）</li>
+      <li>既有 BI 報表的重新接線或重建（依報表數量與類型評估）</li>
+      <li>下游應用程式的連線與查詢語法適配（依程式數量評估）</li>
+      <li>雲端服務的長期使用費用（依用量計，由您方雲端專案承擔，可代為估算）</li>
+      <li>上線後的長期維運與功能擴充（可另議維運合約）</li>
+    </ul>
+    <div class="callout"><b>關鍵相依：</b>時程與正式報價，取決於您提供來源 SQL Server 的存取、以及開好 Google 雲端專案的存取權限。這兩項到位後，我們即可開始，並把上面的級距收斂成確定數字。</div>
+  </section>
+
+  <!-- 九、時程 -->
+  <section>
+    <h2 class="sec"><span class="sec-no">9</span>時程</h2>
+    <p class="lead">自取得來源資料庫存取與 Google 雲端專案存取後：</p>
+    <ul class="plain">
+      <li><b>第一期（建置 + 全量遷移 + 首次對帳）：</b>約 1～2 週，您能實際在 BigQuery 上看到搬好的資料與對帳結果。</li>
+      <li><b>第二期（每日自動同步管線）：</b>約 1～2 週。</li>
+      <li><b>第三期（切換與交付）：</b>約 1 週。</li>
+    </ul>
+    <p>我們傾向先把「資料搬上去、對帳對得起來」這個能實際驗證的版本交給您，讓您早點確認資料正確、及早給回饋，再往上補同步與切換，而不是憋到最後才一次交付。</p>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ footer ============ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+<!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
+<script>
+  (function () {
+    if (/[?&]preview=1\b/.test(location.search)) return;
+    var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+    var q = '?p=13fd168d80ea&label=' + encodeURIComponent('TK26062408OCEM70');
+    new Image().src = base + q + '&t=' + Date.now();
+  })();
+</script>
+</body>
+</html>
