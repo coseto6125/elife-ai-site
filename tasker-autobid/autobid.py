@@ -79,6 +79,8 @@ TRACK_WORKER = "https://elife-ai-contact.digital-oasis-tw.workers.dev"
 ANTHROPIC_API = "https://api.anthropic.com/v1/messages"
 ANTHROPIC_MODEL = os.getenv("AUTOBID_MODEL", "claude-opus-4-8")
 OAUTH_BETA = "oauth-2025-04-20"
+CLAUDE_MAX_RETRIES = 4  # transient 429/529/503 retries before giving up
+CLAUDE_BACKOFF_BASE = 3.0  # seconds; doubles each attempt → 3,6,12,24
 # The subscription OAuth endpoint rejects requests (429) unless the system
 # prompt opens with Claude Code's own identity line — verified empirically.
 SPOOF_SYSTEM = "You are Claude Code, Anthropic's official CLI for Claude."
@@ -143,12 +145,22 @@ async def can_propose(cli: Client, tk_no: str) -> bool:
     return bool(isinstance(data, dict) and data.get("data", {}).get("can_propose"))
 
 
-async def submit_proposal(cli: Client, tk_no: str, price_min: int, price_max: int, content: str) -> tuple[bool, str]:
-    """POST a real proposal as multipart/form-data. Returns (ok, detail)."""
+async def submit_proposal(cli: Client, tk_no: str, price_min: int, price_max: int, content: str,
+                          quota_amount: int = 0) -> tuple[bool, str]:
+    """
+    POST a real proposal as multipart/form-data. Returns (ok, detail).
+
+    quota_amount is the ⚡️ ranking-boost quota spent in the SAME form (it rides
+    on the proposal POST, there is no separate endpoint). 0 = no boost. Balance
+    is at GET /api/member/wallet/info (quota_balance); spending it raises
+    proposal_order. Auto sweeps pass 0 — boost is a manual judgement per case.
+    """
     boundary = "----autobid7MA4YWxkTrZu0gW"
-    fields = (("initial_price_min", price_min), ("initial_price_max", price_max), ("content", content))
+    fields = [("initial_price_min", price_min), ("initial_price_max", price_max), ("content", content)]
+    if quota_amount > 0:
+        fields.append(("quota_amount", quota_amount))
     body = "".join(
-        f"--{boundary}\r\nContent-Disposition: form-data; name=\"{n}\"\r\n\r\n{v}\r\n" for n, v in fields
+        f'--{boundary}\r\nContent-Disposition: form-data; name="{n}"\r\n\r\n{v}\r\n' for n, v in fields
     ) + f"--{boundary}--\r\n"
     headers = _tasker_headers() | {"Content-Type": f"multipart/form-data; boundary={boundary}"}
     r = await cli.post(f"{TASKER_API}/api/issue/{tk_no}/proposal", headers=headers, body=body.encode("utf-8"))
@@ -205,18 +217,28 @@ async def _claude(cli: Client, system: str, user: str, max_tokens: int = 1024) -
         "anthropic-beta": OAUTH_BETA,
         "Content-Type": "application/json",
     }
-    r = await cli.post(ANTHROPIC_API, headers=headers, body=body)
-    raw = await r.bytes()
-    if r.status != 200:
-        log(f"claude {r.status}: {raw[:160]!r}")
-        return ""
-    blocks = _decoder.decode(raw).get("content", [])
-    return "".join(b.get("text", "") for b in blocks if b.get("type") == "text").strip()
+    # 429/529/503 + body-level overloaded are transient overload. Back off and
+    # retry rather than returning "" (an empty result silently poisons the
+    # proposal/html downstream and can ship a dead demo URL to the owner).
+    for attempt in range(CLAUDE_MAX_RETRIES + 1):
+        r = await cli.post(ANTHROPIC_API, headers=headers, body=body)
+        raw = await r.bytes()
+        if r.status == 200:
+            blocks = _decoder.decode(raw).get("content", [])
+            return "".join(b.get("text", "") for b in blocks if b.get("type") == "text").strip()
+        transient = r.status in {429, 503, 529} or b"overloaded" in raw.lower()
+        if not transient or attempt == CLAUDE_MAX_RETRIES:
+            log(f"claude {r.status}: {raw[:160]!r}")
+            return ""
+        delay = CLAUDE_BACKOFF_BASE * 2**attempt
+        log(f"claude {r.status} transient, retry {attempt + 1}/{CLAUDE_MAX_RETRIES} in {delay:.0f}s")
+        await asyncio.sleep(delay)
+    return ""
 
 
 FEASIBILITY_SYSTEM = (
     "你是數位綠洲（純軟體外包團隊，純遠端交付，專長：全端開發、網站、App、AI/LLM 應用、軟體自動化、資料分析）的接案評估助手。"
-    "判斷一個 Tasker 案件是否落在我們的守備範圍、值得投標。只回 JSON：{\"fit\": true/false, \"reason\": \"一句話\"}。"
+    '判斷一個 Tasker 案件是否落在我們的守備範圍、值得投標。只回 JSON：{"fit": true/false, "reason": "一句話"}。'
     "fit:true 僅限純軟體、且可全程遠端交付的案：網站、Web/手機 App、後端/API、AI/LLM 應用、軟體流程自動化、資料分析與報表、軟體技術顧問。"
     "fit:false 一律排除以下，即使涉及程式："
     "（1）硬體／韌體／嵌入式：Arduino、ESP32、單晶片、PLC、伺服馬達、控制盤、電路、PCB、機構、LoRa 等需要動到實體電子或韌體的；"
@@ -246,7 +268,8 @@ PROPOSAL_SYSTEM = (
 
 
 async def assess_fit(cli: Client, title: str, content: str) -> tuple[str, str]:
-    """Ask Claude if the case fits our wheelhouse.
+    """
+    Ask Claude if the case fits our wheelhouse.
 
     Returns (verdict, reason) where verdict is "fit" / "not_fit" / "error".
     "error" means the Claude call failed (empty/401/garbage) — the caller must
@@ -257,7 +280,7 @@ async def assess_fit(cli: Client, title: str, content: str) -> tuple[str, str]:
     if not out:
         return "error", "claude empty (call failed)"
     try:
-        d = _decoder.decode(re.search(r"\{.*\}", out, re.S).group(0))
+        d = _decoder.decode(re.search(r"\{.*\}", out, re.DOTALL).group(0))
         return ("fit" if bool(d.get("fit")) else "not_fit"), str(d.get("reason", ""))[:80]
     except (msgspec.DecodeError, AttributeError):
         return "error", f"unparseable: {out[:60]}"
@@ -282,10 +305,10 @@ async def register_track(cli: Client, hash_: str, label: str) -> bool:
 HTML_SYSTEM = (
     "你為數位綠洲（e-life-ai）產出一份簡版 HTML 提案頁的內容區，套用既有版面 class。"
     "只輸出數個 <section> 區塊（不要 <html>/<head>/<body>/header/footer，外層由系統包好）。"
-    "可用結構：<section><h2 class=\"sec\"><span class=\"sec-no\">N</span>標題</h2><p class=\"lead\">…</p>"
-    "<ul class=\"plain\"><li>…</li></ul></section>，需要表格時用 <table><thead><tr><th>…</th></tr></thead>"
-    "<tbody><tr><td>…</td></tr></tbody></table>，報價結論用 <div class=\"price-note\">…</div>，"
-    "關鍵相依用 <div class=\"callout\"><b>關鍵相依：</b>…</div>。"
+    '可用結構：<section><h2 class="sec"><span class="sec-no">N</span>標題</h2><p class="lead">…</p>'
+    '<ul class="plain"><li>…</li></ul></section>，需要表格時用 <table><thead><tr><th>…</th></tr></thead>'
+    '<tbody><tr><td>…</td></tr></tbody></table>，報價結論用 <div class="price-note">…</div>，'
+    '關鍵相依用 <div class="callout"><b>關鍵相依：</b>…</div>。'
     "業主原始需求區塊（sec-no 1）由系統另外加上，你的內容從 sec-no 2 開始依序："
     "2 我們對需求的理解、3 我們能提供的能力、4 報價與前提（含報價區間與需先取得的素材）。"
     "語氣規範同提案正文：穩重的專業書面語（避開公文八股與口語白話兩端）、第一人稱「我們」、不用破折號、不揭露特定技術名、報價誠實掛條件、禁業務尾巴（陳述完即收，不回頭表態自己很在乎／很懂）、不貶低對照組、不教育業主、避開強調性詞彙。"
@@ -299,10 +322,10 @@ HTML_SYSTEM = (
 DETAILED_HTML_SYSTEM = (
     "你為數位綠洲（e-life-ai）產出一份詳盡 HTML 提案頁的內容區，套用既有版面 class，目標是讓業主一眼看出我們最懂這題。"
     "只輸出 <section> 區塊（不要 <html>/<head>/<body>/header/footer，外層由系統包好）。"
-    "可用結構：<section><h2 class=\"sec\"><span class=\"sec-no\">N</span>標題</h2><p class=\"lead\">…</p>"
-    "<ul class=\"plain\"><li>…</li></ul></section>；功能用 <table><thead><tr><th class=\"num\">#</th><th>模組</th><th>內容</th></tr></thead><tbody>…</tbody></table>；"
-    "確認事項用 <ol class=\"confirm\"><li><b>項目：</b><p>說明</p></li></ol>；報價分期用表格加 <div class=\"price-note\">結論</div>；"
-    "明確排除用 <ul class=\"plain exclude\"><li>…</li></ul>；關鍵相依用 <div class=\"callout\"><b>關鍵相依：</b>…</div>。"
+    '可用結構：<section><h2 class="sec"><span class="sec-no">N</span>標題</h2><p class="lead">…</p>'
+    '<ul class="plain"><li>…</li></ul></section>；功能用 <table><thead><tr><th class="num">#</th><th>模組</th><th>內容</th></tr></thead><tbody>…</tbody></table>；'
+    '確認事項用 <ol class="confirm"><li><b>項目：</b><p>說明</p></li></ol>；報價分期用表格加 <div class="price-note">結論</div>；'
+    '明確排除用 <ul class="plain exclude"><li>…</li></ul>；關鍵相依用 <div class="callout"><b>關鍵相依：</b>…</div>。'
     "業主原始需求區塊（sec-no 1）由系統另外加上，你的內容從 sec-no 2 開始依序："
     "2 我們對需求的理解（把業主的模糊用詞翻成清楚的概念）、"
     "3 我們建議的做法與功能範圍（用功能表，每個模組搭一句業主能想像的具體情境，例如『點開一位族人即可看到其上下三代與所屬房份，一鍵列出某一房在世成員』，不堆技術名詞）、"
@@ -385,7 +408,8 @@ def _html_shell(title: str, lead: str, tk_no: str, industry: str, budget: int, s
 async def build_html_proposal(cli: Client, tk_no: str, title: str, content: str, industry: str,
                               budget: int, lo: int, hi: int, hash_: str,
                               detailed: bool = False, domain_hint: str = "") -> bool:
-    """Generate the HTML proposal page and write it to the deploy queue. Returns success.
+    """
+    Generate the HTML proposal page and write it to the deploy queue. Returns success.
 
     detailed=True uses the big-case prompt; domain_hint feeds per-case insight
     (e.g. "以宗族關係圖譜與會員行政為雙主軸").
@@ -425,7 +449,8 @@ async def _git(repo: Path, *args: str) -> tuple[int, str]:
 
 
 async def deploy_to_repo(hash_: str, title: str) -> bool:
-    """Build the self-contained demo under the repo and push main (OCI path).
+    """
+    Build the self-contained demo under the repo and push main (OCI path).
 
     Mirrors deploy-queue.sh: copies the queued HTML + shared css/logo into
     app/public/demo/<hash>/, then commits and pushes only that path. Returns
@@ -479,7 +504,7 @@ async def email_owner(cli: Client, to_addr: str, title: str, proposal: str, pric
     })
     headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
     r = await cli.post("https://api.resend.com/emails", headers=headers, body=body)
-    ok = r.status in (200, 201)
+    ok = r.status in {200, 201}
     if not ok:
         log(f"resend {r.status}: {(await r.bytes())[:120]!r}")
     return ok
@@ -584,7 +609,14 @@ async def sweep() -> None:
         # now; the HTML page is queued for a later batch deploy from a git host.
         hash_ = secrets.token_hex(6)
         demo_url = f"{SITE_BASE}/demo/{hash_}/"
-        await build_html_proposal(cli, tk, title, content, detail.get("industry", ""), budget, lo, hi, hash_)
+        # If the HTML page didn't build (e.g. Claude overload exhausted retries),
+        # skip the whole case: never submit/email a demo_url that will 404.
+        # Leave it unrecorded as gen_failed so a later sweep retries the case.
+        if not await build_html_proposal(cli, tk, title, content, detail.get("industry", ""), budget, lo, hi, hash_):
+            log(f"  html-failed {tk} 「{title[:24]}」: skip submit (no live demo page)")
+            record(conn, tk, title=title, budget=budget, fit=True, reason=reason, status="gen_failed",
+                   price_min=lo, price_max=hi)
+            continue
         proposal_full = f"{proposal}\n\n完整提案頁：{demo_url}"
 
         if DRY_RUN:
