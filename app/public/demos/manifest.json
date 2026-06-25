@@ -638,5 +638,45 @@
 "href": "/showcase/80-personal-kol/",
 "thumb": "/showcase/80-personal-kol/thumb.webp",
 "thumbM": "/showcase/80-personal-kol/thumb-m.webp"
+},
+{
+"no": "81",
+"kind": "策略管理顧問",
+"title": "策略顧問事務所",
+"href": "/showcase/strategy-consulting/",
+"thumb": "/showcase/strategy-consulting/thumb.webp",
+"thumbM": "/showcase/strategy-consulting/thumb-m.webp"
+},
+{
+"no": "82",
+"kind": "財務／併購顧問",
+"title": "精品併購顧問",
+"href": "/showcase/boutique-advisory/",
+"thumb": "/showcase/boutique-advisory/thumb.webp",
+"thumbM": "/showcase/boutique-advisory/thumb-m.webp"
+},
+{
+"no": "83",
+"kind": "數位轉型顧問",
+"title": "數位轉型顧問",
+"href": "/showcase/digital-transformation/",
+"thumb": "/showcase/digital-transformation/thumb.webp",
+"thumbM": "/showcase/digital-transformation/thumb-m.webp"
+},
+{
+"no": "84",
+"kind": "人資／組織顧問",
+"title": "人力資源顧問",
+"href": "/showcase/hr-consulting/",
+"thumb": "/showcase/hr-consulting/thumb.webp",
+"thumbM": "/showcase/hr-consulting/thumb-m.webp"
+},
+{
+"no": "85",
+"kind": "ESG／永續顧問",
+"title": "ESG 永續顧問",
+"href": "/showcase/esg-sustainability/",
+"thumb": "/showcase/esg-sustainability/thumb.webp",
+"thumbM": "/showcase/esg-sustainability/thumb-m.webp"
 }
 ]

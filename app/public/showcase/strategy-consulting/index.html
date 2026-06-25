@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>縱橫策略顧問 Meridian Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Schibsted+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:        #16243b;
+    --ink-deep:   #0e1929;
+    --ink-mid:    #1e3050;
+    --ink-soft:   #2a4268;
+    --slate:      #4b6282;
+    --slate-dim:  #8398b0;
+    --fog:        #d4dce6;
+    --snow:       #f0f3f6;
+    --page:       #f5f7fa;
+    --ochre:      #b8923f;
+    --ochre-dim:  #d4ae68;
+    --ochre-mute: rgba(184,146,63,.18);
+    --rule:       rgba(22,36,59,.12);
+    --rule-light: rgba(22,36,59,.07);
+    --rule-gold:  rgba(184,146,63,.28);
+
+    --display: "Fraunces", Georgia, serif;
+    --body:    "Schibsted Grotesk", "Inter", system-ui, sans-serif;
+    --mono:    "JetBrains Mono", "Courier New", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    background: var(--page);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--ochre); color: var(--ink-deep); }
+  :focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 36px; }
+
+  /* ===== Reveal ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .9s ease, transform .9s cubic-bezier(.18,.72,.18,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ===== Header ===== */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    padding: 20px 0;
+    background: transparent;
+    transition: background .5s, box-shadow .5s, padding .5s;
+  }
+  header.solid {
+    background: rgba(14, 25, 41, 0.96);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 rgba(184,146,63,.2), 0 16px 40px -24px rgba(0,0,0,.55);
+    padding: 13px 0;
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .brand-name { line-height: 1; }
+  .brand-name .en {
+    font-family: var(--display); font-weight: 300; font-style: italic;
+    font-size: 22px; letter-spacing: .02em; color: #e8edf3; display: block;
+  }
+  .brand-name .zh {
+    font-family: var(--body); font-size: 11px; letter-spacing: .38em;
+    color: var(--ochre-dim); display: block; margin-top: 2px;
+  }
+  nav { display: flex; align-items: center; gap: 32px; }
+  nav a.lnk {
+    font-family: var(--body); font-size: 14px; letter-spacing: .06em;
+    color: rgba(212,220,230,.78); text-decoration: none;
+    position: relative; padding: 4px 0;
+    transition: color .35s;
+  }
+  nav a.lnk::after {
+    content: ""; position: absolute; left: 0; bottom: 0;
+    height: 1px; width: 0; background: var(--ochre);
+    transition: width .4s cubic-bezier(.18,.72,.18,1);
+  }
+  nav a.lnk:hover { color: #e8edf3; }
+  nav a.lnk:hover::after { width: 100%; }
+  .nav-cta {
+    font-family: var(--body); font-size: 13px; font-weight: 500;
+    letter-spacing: .1em; color: var(--ink-deep);
+    background: var(--ochre); padding: 10px 22px;
+    text-decoration: none; cursor: pointer;
+    transition: background .35s, transform .35s;
+    border: none; white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--ochre-dim); transform: translateY(-1px); }
+  .menu-btn {
+    display: none; background: none; border: 1px solid rgba(184,146,63,.3);
+    color: #e8edf3; width: 40px; height: 36px; cursor: pointer;
+    font-size: 18px; line-height: 1;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    background: linear-gradient(155deg, var(--ink-deep) 0%, var(--ink) 45%, var(--ink-mid) 100%);
+    color: #e8edf3; overflow: hidden; position: relative;
+    padding: 130px 0 80px;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        rgba(75,98,130,.06) 0px,
+        rgba(75,98,130,.06) 1px,
+        transparent 1px,
+        transparent 80px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        rgba(75,98,130,.06) 0px,
+        rgba(75,98,130,.06) 1px,
+        transparent 1px,
+        transparent 80px
+      );
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 72px; align-items: center;
+  }
+  .hero-copy { padding-right: 8px; }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+    color: var(--ochre-dim); text-transform: uppercase; margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: ""; display: inline-block; width: 28px; height: 1px; background: var(--ochre);
+  }
+  .hero h1 {
+    font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4vw, 54px);
+    line-height: 1.12; letter-spacing: -.01em; margin-bottom: 24px; color: #e8edf3;
+  }
+  .hero h1 em { font-style: italic; color: var(--ochre-dim); font-weight: 300; }
+  .hero-thesis {
+    font-size: clamp(15px, 1.5vw, 17px);
+    color: rgba(212,220,230,.8); line-height: 1.78; margin-bottom: 36px; max-width: 480px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: var(--body); font-size: 14px; font-weight: 500; letter-spacing: .1em;
+    color: var(--ink-deep); background: var(--ochre);
+    padding: 13px 28px; text-decoration: none; cursor: pointer;
+    transition: background .35s, transform .3s; border: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--ochre-dim); transform: translateY(-1px); }
+  .btn-outline {
+    font-family: var(--body); font-size: 14px; letter-spacing: .08em;
+    color: rgba(212,220,230,.85); border: 1px solid rgba(184,146,63,.35);
+    padding: 12px 28px; text-decoration: none; background: transparent;
+    transition: border-color .35s, background .35s; cursor: pointer; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--ochre); background: rgba(184,146,63,.07); }
+
+  /* ===== STRATEGY MATRIX (signature element) ===== */
+  .matrix-wrap { position: relative; padding-left: 44px; padding-bottom: 26px; }
+  .matrix-label-row {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+    color: var(--ochre-dim); text-transform: uppercase; text-align: center;
+    margin-bottom: 10px; opacity: .85;
+  }
+  .matrix-outer {
+    position: relative;
+    border: 1px solid rgba(184,146,63,.25);
+    background: rgba(14,25,41,.45);
+  }
+  .matrix-axis-y {
+    position: absolute; left: -40px; top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+    color: var(--ochre-dim); text-transform: uppercase; white-space: nowrap; opacity: .85;
+  }
+  .matrix-axis-x {
+    position: absolute; bottom: -22px; right: 0; left: 0; text-align: center;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+    color: var(--ochre-dim); text-transform: uppercase; opacity: .85;
+  }
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px;
+    background: rgba(184,146,63,.15);
+    aspect-ratio: 1.1 / 1;
+  }
+  .mq {
+    background: rgba(14,25,41,.6);
+    padding: 20px 18px;
+    position: relative;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    transition: background .45s;
+    cursor: default;
+  }
+  .mq:hover { background: rgba(30,48,80,.75); }
+  .mq-tag {
+    font-family: var(--mono); font-size: 9px; font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ochre-dim); margin-bottom: 6px;
+    position: absolute; top: 12px; left: 14px;
+  }
+  .mq-name {
+    font-family: var(--display); font-size: 15px; font-weight: 400;
+    color: #c8d4e0; line-height: 1.2; margin-bottom: 4px;
+  }
+  .mq-desc {
+    font-family: var(--body); font-size: 11px; color: rgba(180,196,212,.6);
+    line-height: 1.45;
+  }
+  /* Strategic sweet spot: high competition x high maturity */
+  .mq--star { background: rgba(184,146,63,.1); }
+  .mq--star:hover { background: rgba(184,146,63,.16); }
+  .mq--star .mq-name { color: var(--ochre-dim); }
+  .mq--star .mq-tag { color: var(--ochre); }
+  /* Crosshair */
+  .matrix-crosshair {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .matrix-crosshair::before {
+    content: "";
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent 5%, rgba(184,146,63,.22) 30%, rgba(184,146,63,.22) 70%, transparent 95%);
+  }
+  .matrix-crosshair::after {
+    content: "";
+    position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent 5%, rgba(184,146,63,.22) 30%, rgba(184,146,63,.22) 70%, transparent 95%);
+  }
+  .matrix-center-dot {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ochre); z-index: 2; pointer-events: none;
+  }
+
+  /* ===== Sections ===== */
+  .sec { padding: 100px 0; }
+
+  .sec-head { margin-bottom: 60px; }
+  .sec-head--center { text-align: center; }
+  .kicker {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--ochre); margin-bottom: 14px;
+    display: block;
+  }
+  .sec-head h2 {
+    font-family: var(--display); font-weight: 400; font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.12; letter-spacing: -.01em; color: inherit;
+  }
+  .sec-head h2 em { font-style: italic; font-weight: 300; color: var(--ochre-dim); }
+  .sec-head .sub {
+    margin-top: 14px; font-size: 16px; line-height: 1.7;
+    color: rgba(75,98,130,.85); max-width: 560px;
+  }
+
+  /* ===== Services ===== */
+  .services { background: var(--page); }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .svc {
+    background: var(--page); padding: 40px 32px;
+    position: relative;
+    transition: background .4s;
+  }
+  .svc::before {
+    content: ""; position: absolute; left: 0; top: 0;
+    width: 2px; height: 0; background: var(--ochre);
+    transition: height .55s cubic-bezier(.18,.72,.18,1);
+  }
+  .svc:hover { background: #fff; }
+  .svc:hover::before { height: 100%; }
+  .svc-icon {
+    width: 36px; height: 36px; color: var(--ochre);
+    margin-bottom: 20px; transition: transform .4s;
+  }
+  .svc:hover .svc-icon { transform: translateX(4px); }
+  .svc h3 {
+    font-family: var(--display); font-size: 21px; font-weight: 400;
+    color: var(--ink); margin-bottom: 4px; letter-spacing: -.01em;
+  }
+  .svc .svc-en {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    color: var(--ochre); margin-bottom: 12px; text-transform: uppercase;
+  }
+  .svc p { font-size: 14px; color: rgba(22,36,59,.65); line-height: 1.75; }
+
+  /* ===== Methodology ===== */
+  .method { background: var(--ink); }
+  .method-inner {
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px; align-items: start;
+  }
+  .method-copy .kicker { color: var(--ochre); }
+  .method-copy h2 { color: #e8edf3; }
+  .method-copy h2 em { color: var(--ochre-dim); }
+  .method-copy p {
+    font-size: 15.5px; color: rgba(180,196,212,.8); line-height: 1.8; margin-bottom: 18px;
+  }
+  .method-pillars { list-style: none; }
+  .method-pillars li {
+    display: flex; gap: 18px; padding: 20px 0;
+    border-top: 1px solid rgba(75,98,130,.2);
+    align-items: flex-start;
+  }
+  .method-pillars li:last-child { border-bottom: 1px solid rgba(75,98,130,.2); }
+  .pillar-num {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+    color: var(--ochre); min-width: 26px; margin-top: 3px; letter-spacing: .1em;
+  }
+  .pillar-body h4 {
+    font-family: var(--body); font-weight: 600; font-size: 15px;
+    color: #c8d4e0; margin-bottom: 5px;
+  }
+  .pillar-body p { font-size: 13.5px; color: rgba(131,152,176,.78); line-height: 1.65; }
+
+  /* ===== Case Insight ===== */
+  .case { background: var(--snow); }
+  .case-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 72px; align-items: start; }
+  .case-label {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ochre); display: block; margin-bottom: 18px;
+  }
+  .case-title {
+    font-family: var(--display); font-size: clamp(21px, 2.8vw, 32px);
+    font-weight: 400; color: var(--ink); line-height: 1.18;
+    letter-spacing: -.01em; margin-bottom: 22px;
+  }
+  .case-meta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    color: var(--slate); margin-bottom: 28px;
+    border-left: 2px solid var(--ochre); padding-left: 14px;
+  }
+  .case-meta span { display: block; margin-bottom: 4px; }
+  .case-copy { font-size: 15px; color: rgba(22,36,59,.7); line-height: 1.82; }
+  .case-copy p + p { margin-top: 16px; }
+  .case-outcomes {
+    border-top: 1px solid var(--rule); padding-top: 30px; margin-top: 30px;
+  }
+  .case-outcomes h4 {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ochre); margin-bottom: 18px;
+  }
+  .outcome-list { list-style: none; }
+  .outcome-list li {
+    display: flex; gap: 14px; align-items: baseline;
+    padding: 13px 0; border-bottom: 1px solid var(--rule-light);
+  }
+  .outcome-list li:last-child { border-bottom: none; }
+  .outcome-num {
+    font-family: var(--display); font-size: 24px; font-weight: 400;
+    color: var(--ochre); min-width: 68px; line-height: 1;
+  }
+  .outcome-desc { color: rgba(22,36,59,.68); line-height: 1.5; font-size: 14px; }
+  /* Narrative card */
+  .case-narrative {
+    background: var(--ink); padding: 40px 36px;
+    position: sticky; top: 96px;
+  }
+  .case-narrative .cn-tag {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ochre-dim); margin-bottom: 18px; display: block;
+  }
+  .case-narrative blockquote {
+    font-family: var(--display); font-size: clamp(17px, 2vw, 22px);
+    font-weight: 300; font-style: italic;
+    color: #c8d4e0; line-height: 1.55; margin-bottom: 22px;
+    border-left: 2px solid var(--ochre); padding-left: 20px;
+  }
+  .case-narrative .cn-attr {
+    font-family: var(--body); font-size: 13px; color: var(--slate-dim); letter-spacing: .04em;
+  }
+  .case-narrative .cn-attr b { color: rgba(180,196,212,.85); font-weight: 500; }
+  .cn-divider { height: 1px; background: rgba(75,98,130,.25); margin: 26px 0; }
+  .cn-data-row { display: flex; gap: 0; }
+  .cn-data {
+    flex: 1; text-align: center; padding: 18px 10px;
+    border-right: 1px solid rgba(75,98,130,.18);
+  }
+  .cn-data:last-child { border-right: none; }
+  .cn-data .dn {
+    font-family: var(--display); font-size: 28px; font-weight: 400;
+    color: var(--ochre-dim); line-height: 1; display: block; margin-bottom: 6px;
+  }
+  .cn-data .dl {
+    font-family: var(--mono); font-size: 9px; letter-spacing: .14em;
+    text-transform: uppercase; color: rgba(131,152,176,.72);
+  }
+
+  /* ===== Team ===== */
+  .team { background: var(--page); }
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .member {
+    padding: 28px 22px 24px;
+    background: #fff;
+    border: 1px solid var(--rule-light);
+    border-bottom: 2px solid transparent;
+    transition: border-color .4s, transform .4s, box-shadow .4s;
+  }
+  .member:hover {
+    border-bottom-color: var(--ochre);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px -18px rgba(22,36,59,.18);
+  }
+  .member-avatar {
+    width: 60px; height: 60px; margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--ink-mid), var(--ink-deep));
+    border: 1px solid rgba(184,146,63,.22);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .member-avatar span {
+    font-family: var(--display); font-size: 24px; font-weight: 400;
+    color: var(--ochre-dim);
+  }
+  .member h4 {
+    font-family: var(--body); font-weight: 600; font-size: 16px;
+    color: var(--ink); letter-spacing: .02em; margin-bottom: 4px;
+  }
+  .member .role {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ochre); margin-bottom: 10px;
+  }
+  .member .spec { font-size: 13px; color: rgba(22,36,59,.6); line-height: 1.55; }
+
+  /* ===== Testimonials ===== */
+  .testimonials { background: var(--ink-deep); }
+  .testimonials .sec-head h2 { color: #e8edf3; }
+  .tlist { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(75,98,130,.12); border: 1px solid rgba(75,98,130,.12); }
+  .tcard {
+    background: rgba(14,25,41,.7); padding: 34px 30px;
+    transition: background .4s;
+  }
+  .tcard:hover { background: rgba(22,36,59,.85); }
+  .tcard blockquote {
+    font-family: var(--display); font-weight: 300; font-style: italic;
+    font-size: 16.5px; color: rgba(200,212,224,.85); line-height: 1.65; margin-bottom: 22px;
+  }
+  .tcard .t-rule { height: 1px; background: rgba(184,146,63,.2); margin-bottom: 16px; }
+  .tcard .t-name {
+    font-family: var(--body); font-weight: 500; font-size: 14px;
+    color: rgba(200,212,224,.9); margin-bottom: 3px;
+  }
+  .tcard .t-title {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--slate-dim);
+  }
+
+  /* ===== CTA Section ===== */
+  .cta-section {
+    background: var(--ink-deep); position: relative; overflow: hidden; padding: 120px 0;
+  }
+  .cta-section::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: linear-gradient(90deg, transparent 10%, var(--ochre) 50%, transparent 90%);
+  }
+  .cta-section::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(60% 80% at 50% 0%, rgba(184,146,63,.05), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-inner { text-align: center; position: relative; z-index: 1; }
+  .cta-inner .kicker { margin-bottom: 20px; }
+  .cta-inner h2 {
+    font-family: var(--display); font-weight: 300; font-style: italic;
+    font-size: clamp(28px, 4.5vw, 52px); color: #e8edf3; line-height: 1.14;
+    letter-spacing: -.01em; margin-bottom: 22px;
+  }
+  .cta-inner h2 strong { font-style: normal; font-weight: 400; color: var(--ochre-dim); }
+  .cta-inner p {
+    max-width: 480px; margin: 0 auto 40px;
+    font-size: 16px; color: rgba(163,185,204,.8); line-height: 1.78;
+  }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .cta-contact {
+    margin-top: 48px; padding-top: 40px; border-top: 1px solid rgba(75,98,130,.2);
+    display: flex; justify-content: center; gap: 52px; flex-wrap: wrap;
+  }
+  .cta-contact .ci {
+    font-family: var(--body); font-size: 14px; color: rgba(163,185,204,.7);
+    letter-spacing: .04em; text-align: center;
+  }
+  .cta-contact .ci b {
+    color: var(--ochre-dim); font-weight: 500; display: block;
+    margin-bottom: 3px; font-size: 15px;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    background: var(--ink-deep); border-top: 1px solid rgba(75,98,130,.15);
+    padding: 56px 0 32px;
+  }
+  .foot-row {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px; padding-bottom: 40px;
+    border-bottom: 1px solid rgba(75,98,130,.15);
+  }
+  .foot-brand-col .fb-en {
+    font-family: var(--display); font-size: 22px; font-weight: 300; font-style: italic;
+    color: #e0e8f0; letter-spacing: .02em; margin-bottom: 4px;
+  }
+  .foot-brand-col .fb-zh {
+    font-family: var(--body); font-size: 11px; letter-spacing: .3em;
+    color: var(--ochre-dim); margin-bottom: 16px;
+  }
+  .foot-brand-col p {
+    font-size: 13.5px; color: rgba(131,152,176,.7); line-height: 1.8; max-width: 300px;
+  }
+  .foot-col h5 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ochre); margin-bottom: 16px;
+  }
+  .foot-col a {
+    display: block; font-size: 14px; color: rgba(163,185,204,.65);
+    text-decoration: none; margin-bottom: 10px; letter-spacing: .03em;
+    transition: color .35s;
+  }
+  .foot-col a:hover { color: rgba(212,220,230,.9); }
+  .foot-bottom {
+    padding-top: 24px; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .foot-bottom .credit { font-size: 12px; letter-spacing: .1em; color: rgba(131,152,176,.55); }
+  .foot-bottom .credit b { color: var(--ochre-dim); font-weight: 400; }
+  .foot-bottom .legal { font-size: 12px; color: rgba(131,152,176,.4); letter-spacing: .06em; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1020px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+    .matrix-wrap { max-width: 440px; }
+    .method-inner { grid-template-columns: 1fr; gap: 48px; }
+    .case-grid { grid-template-columns: 1fr; gap: 40px; }
+    .case-narrative { position: static; }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .tlist { grid-template-columns: 1fr; }
+    .foot-row { grid-template-columns: 1fr 1fr; }
+    .foot-brand-col { grid-column: 1 / -1; }
+  }
+  @media (max-width: 780px) {
+    .wrap { padding: 0 22px; }
+    .sec { padding: 72px 0; }
+    nav { display: none; }
+    .menu-btn { display: block; }
+    .services-grid { grid-template-columns: 1fr; }
+    .cta-contact { flex-direction: column; gap: 20px; align-items: center; }
+    .foot-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 28px; }
+    .matrix-wrap { padding-left: 0; }
+    .matrix-axis-y { display: none; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .cn-data-row { flex-direction: column; }
+    .cn-data { border-right: none; border-bottom: 1px solid rgba(75,98,130,.18); }
+    .cn-data:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header id="hdr">
+  <div class="wrap bar">
+    <a href="#top" class="brand" aria-label="縱橫策略顧問 Meridian Strategy">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <circle cx="17" cy="17" r="15" stroke="rgba(184,146,63,.4)" stroke-width="1"/>
+        <path d="M17 4 V30 M4 17 H30" stroke="rgba(184,146,63,.28)" stroke-width=".8"/>
+        <circle cx="17" cy="17" r="4" fill="none" stroke="#b8923f" stroke-width="1.2"/>
+        <circle cx="17" cy="17" r="1.5" fill="#b8923f"/>
+      </svg>
+      <div class="brand-name">
+        <span class="en">Meridian</span>
+        <span class="zh">縱 橫 策 略 顧 問</span>
+      </div>
+    </a>
+    <nav aria-label="主要導覽">
+      <a class="lnk" href="#services">服務領域</a>
+      <a class="lnk" href="#method">方法論</a>
+      <a class="lnk" href="#case">案例洞察</a>
+      <a class="lnk" href="#team">團隊</a>
+      <a class="lnk" href="#contact">聯繫</a>
+      <a class="nav-cta" href="#contact">預約首次對談</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="開啟選單">≡</button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <!-- Copy side -->
+      <div class="hero-copy">
+        <p class="hero-eyebrow reveal">Strategy Partners · Est. 2011 · Taipei</p>
+        <h1 class="reveal">
+          市場競爭的勝負，<br />
+          往往在<em>決策架構</em>定型前<br />
+          就已分曉
+        </h1>
+        <p class="hero-thesis reveal">
+          我們不做投影片美化。我們進入客戶的核心決策層，
+          以第一手競爭情報與嚴謹的市場分析，
+          協助企業在格局形成前搶先佔位。
+        </p>
+        <div class="hero-actions reveal">
+          <a class="btn-primary" href="#contact">預約首次對談</a>
+          <a class="btn-outline" href="#case">查看案例洞察</a>
+        </div>
+      </div>
+
+      <!-- Strategy Matrix signature element -->
+      <div class="matrix-wrap reveal" aria-label="策略分析矩陣視覺">
+        <p class="matrix-label-row">策略定位矩陣 / 市場成熟度 × 競爭強度</p>
+        <div class="matrix-outer">
+          <span class="matrix-axis-y" aria-hidden="true">競 爭 強 度</span>
+          <div class="matrix-grid" role="img" aria-label="四象限策略矩陣：顯示不同市場成熟度與競爭強度組合下的策略建議">
+            <!-- Row 1 left: 高競爭 × 低成熟 -->
+            <div class="mq">
+              <span class="mq-tag">Q2</span>
+              <p class="mq-name">快速切入</p>
+              <p class="mq-desc">搶佔定義期市場的先機</p>
+            </div>
+            <!-- Row 1 right: 高競爭 × 高成熟 (★ sweet spot) -->
+            <div class="mq mq--star">
+              <span class="mq-tag">Q1 ★</span>
+              <p class="mq-name">差異化守位</p>
+              <p class="mq-desc">成熟市場中建立不可取代的競爭壁壘</p>
+            </div>
+            <!-- Row 2 left: 低競爭 × 低成熟 -->
+            <div class="mq">
+              <span class="mq-tag">Q3</span>
+              <p class="mq-name">選擇性佈局</p>
+              <p class="mq-desc">藍海早期鎖定利基錨點</p>
+            </div>
+            <!-- Row 2 right: 低競爭 × 高成熟 -->
+            <div class="mq">
+              <span class="mq-tag">Q4</span>
+              <p class="mq-name">效率收割</p>
+              <p class="mq-desc">低競爭成熟市場的利潤最大化</p>
+            </div>
+          </div>
+          <div class="matrix-crosshair" aria-hidden="true">
+            <div class="matrix-center-dot"></div>
+          </div>
+          <span class="matrix-axis-x" aria-hidden="true">市 場 成 熟 度</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="sec services" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Services</span>
+      <h2>服務 <em>領域</em></h2>
+      <p class="sub">六個聚焦面向，每項由資深合夥人主持，不外包、不分包。</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc reveal">
+        <svg class="svc-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <path d="M19 4 L33 10 V22 C33 30 27 35 19 34 C11 35 5 30 5 22 V10 Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M13 19 H25 M19 13 V25" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <h3>競爭策略</h3>
+        <p class="svc-en">Competitive Strategy</p>
+        <p>從競爭情報收集到定位選擇，為客戶釐清在誰的賽場、以什麼規則競爭，並制定清晰的行動優先順序。</p>
+      </div>
+      <div class="svc reveal">
+        <svg class="svc-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <rect x="5" y="10" width="12" height="18" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="21" y="5" width="12" height="23" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M17 16 L21 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <h3>市場進入</h3>
+        <p class="svc-en">Market Entry</p>
+        <p>新市場或新品類進入，我們評估進入時機、切入路徑與所需資源投入，降低早期試誤成本。</p>
+      </div>
+      <div class="svc reveal">
+        <svg class="svc-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <circle cx="19" cy="19" r="13" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M12 19 H26 M19 12 L26 19 L19 26" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>成長架構</h3>
+        <p class="svc-en">Growth Architecture</p>
+        <p>有機成長、夥伴關係或併購，我們協助找到適合當前規模與風險承受力的成長路徑，而非套用模板。</p>
+      </div>
+      <div class="svc reveal">
+        <svg class="svc-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <path d="M8 28 L15 18 L22 23 L30 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30" cy="10" r="2.4" fill="currentColor"/>
+        </svg>
+        <h3>組織轉型</h3>
+        <p class="svc-en">Organizational Transformation</p>
+        <p>策略方向定了，執行力卻受組織結構拖累，是常見的落差。我們深入組織設計與治理機制，讓策略可以落地。</p>
+      </div>
+      <div class="svc reveal">
+        <svg class="svc-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <path d="M6 32 Q12 8 19 20 Q26 32 32 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          <path d="M6 32 H32" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/>
+        </svg>
+        <h3>情境規劃</h3>
+        <p class="svc-en">Scenario Planning</p>
+        <p>面對高度不確定性，我們協助管理層建立多情境思維，設計在各種外部條件下都具有韌性的決策框架。</p>
+      </div>
+      <div class="svc reveal">
+        <svg class="svc-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <rect x="6" y="6" width="11" height="11" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="21" y="6" width="11" height="11" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="6" y="21" width="11" height="11" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="21" y="21" width="11" height="11" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M17 11.5 H21 M11.5 17 V21 M26.5 17 V21 M17 26.5 H21" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/>
+        </svg>
+        <h3>投資組合管理</h3>
+        <p class="svc-en">Portfolio Strategy</p>
+        <p>集團或多事業體客戶，我們評估各單位的戰略地位，作出資源配置的優先排序與取捨建議。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHODOLOGY ===== -->
+<section class="sec method" id="method">
+  <div class="wrap">
+    <div class="method-inner">
+      <div class="method-copy reveal">
+        <span class="kicker">Our Approach</span>
+        <h2>我們的<br /><em>做法</em></h2>
+        <p>
+          多數策略顧問的分析止步於建議書。我們的約定從建議書之後才真正開始，
+          直到客戶的核心決策層形成共識並準備好執行。
+        </p>
+        <p>
+          每個項目由一名合夥人全程主責，不交棒給資淺顧問。
+          我們每年接受的項目數量刻意設上限，確保投入品質。
+        </p>
+      </div>
+      <ul class="method-pillars" aria-label="方法論四步驟">
+        <li class="reveal">
+          <span class="pillar-num">01</span>
+          <div class="pillar-body">
+            <h4>診斷，而非直接給答案</h4>
+            <p>前四週只做一件事：深入理解客戶真正面臨的問題。我們拒絕在情況不明的狀態下提出策略方向。</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="pillar-num">02</span>
+          <div class="pillar-body">
+            <h4>競爭情報的第一手驗證</h4>
+            <p>我們不只分析公開資訊。對客戶、競爭對手客戶與通路夥伴的直接訪談，是判斷的核心輸入。</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="pillar-num">03</span>
+          <div class="pillar-body">
+            <h4>選擇的紀律，不追求面面俱到</h4>
+            <p>好策略的本質是取捨。協助客戶說清楚「不做什麼」，往往比列出行動清單更有價值。</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="pillar-num">04</span>
+          <div class="pillar-body">
+            <h4>共識形成，才算結案</h4>
+            <p>沒有讓客戶領導團隊對方向形成真正共識，我們不結案。紙上策略與執行決心之間的落差，是我們的責任。</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CASE INSIGHT ===== -->
+<section class="sec case" id="case">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Case Insight</span>
+      <h2>成效 <em>洞察</em></h2>
+    </div>
+    <div class="case-grid">
+      <div>
+        <span class="case-label reveal">2024 · 台灣消費品集團</span>
+        <h3 class="case-title reveal">
+          市場份額連三年流失，<br />
+          問題出在定價邏輯，而非品牌力
+        </h3>
+        <div class="case-meta reveal">
+          <span>產業：消費品 / 個護</span>
+          <span>規模：年營收 NTD 42 億</span>
+          <span>項目周期：18 個月</span>
+        </div>
+        <div class="case-copy reveal">
+          <p>
+            客戶面對連續三年毛利下滑與通路商轉單的雙重壓力，
+            起初診斷認為問題在品牌老化。
+            我們介入後，通過系統性的訂價敏感度分析與競爭對手通路訪談，
+            發現核心問題是定價帶的設計讓高端產品在貨架上自我競食。
+          </p>
+          <p>
+            重新設計品類定價架構後，高端線毛利率在十二個月內顯著提升，
+            且未拉高品牌整體定價，反而改善了通路商的進貨意願。
+          </p>
+        </div>
+        <div class="case-outcomes reveal">
+          <h4>關鍵成果</h4>
+          <ul class="outcome-list">
+            <li>
+              <span class="outcome-num">+6.2%</span>
+              <span class="outcome-desc">高端品類毛利率提升，超出項目原訂目標 40%</span>
+            </li>
+            <li>
+              <span class="outcome-num">3 個月</span>
+              <span class="outcome-desc">主力通路轉單問題在新定價架構上線後穩定收斂</span>
+            </li>
+            <li>
+              <span class="outcome-num">2 品牌</span>
+              <span class="outcome-desc">原定中止的子品牌，因定位重構後決定保留並加碼投資</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="case-narrative reveal">
+          <span class="cn-tag">Client Perspective</span>
+          <blockquote>
+            「他們花了比我們預期更長的時間診斷問題。當時我有點不耐煩，
+            但最後才明白，如果按照我們原來的假設走，
+            我們解決的會是錯的問題。」
+          </blockquote>
+          <p class="cn-attr"><b>陳執行長</b><br/>某消費品集團，台灣</p>
+          <div class="cn-divider"></div>
+          <div class="cn-data-row">
+            <div class="cn-data">
+              <span class="dn">18</span>
+              <span class="dl">個月合作</span>
+            </div>
+            <div class="cn-data">
+              <span class="dn">4</span>
+              <span class="dl">事業線重組</span>
+            </div>
+            <div class="cn-data">
+              <span class="dn">12</span>
+              <span class="dl">決策者共識</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEAM ===== -->
+<section class="sec team" id="team">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Our Team</span>
+      <h2>核心 <em>顧問團隊</em></h2>
+      <p class="sub">每位合夥人都有超過十二年的實務顧問或產業高管經驗，親自主持每個項目。</p>
+    </div>
+    <div class="team-grid">
+      <div class="member reveal">
+        <div class="member-avatar" aria-hidden="true"><span>縱</span></div>
+        <h4>謝縱橫</h4>
+        <div class="role">Managing Partner</div>
+        <p class="spec">競爭策略 · 消費品 · 零售<br />前麥肯錫亞太合夥人</p>
+      </div>
+      <div class="member reveal">
+        <div class="member-avatar" aria-hidden="true"><span>靜</span></div>
+        <h4>林靜宜</h4>
+        <div class="role">Partner</div>
+        <p class="spec">市場進入 · 東南亞擴張<br />前波士頓顧問集團資深顧問</p>
+      </div>
+      <div class="member reveal">
+        <div class="member-avatar" aria-hidden="true"><span>承</span></div>
+        <h4>鄭承恩</h4>
+        <div class="role">Partner</div>
+        <p class="spec">組織轉型 · 製造業<br />前台灣大型集團策略長</p>
+      </div>
+      <div class="member reveal">
+        <div class="member-avatar" aria-hidden="true"><span>若</span></div>
+        <h4>陳若慈</h4>
+        <div class="role">Senior Consultant</div>
+        <p class="spec">情境規劃 · 金融服務<br />倫敦政經學院策略碩士</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="sec testimonials" id="testimonials">
+  <div class="wrap">
+    <div class="sec-head sec-head--center reveal">
+      <span class="kicker">Client Voices</span>
+      <h2>客戶 <em>見證</em></h2>
+    </div>
+    <div class="tlist">
+      <div class="tcard reveal">
+        <blockquote>
+          「縱橫的顧問從不告訴你你想聽的，
+          他們告訴你你需要面對的。
+          這讓我們第一季很難受，但接下來三年受益匪淺。」
+        </blockquote>
+        <div class="t-rule"></div>
+        <p class="t-name">王○禾</p>
+        <p class="t-title">某上市科技公司 / 執行長</p>
+      </div>
+      <div class="tcard reveal">
+        <blockquote>
+          「他們願意跟我們一起坐進董事會，
+          在現場協助解釋策略邏輯，而不是只交出報告就消失，
+          這是我合作過的顧問中少見的。」
+        </blockquote>
+        <div class="t-rule"></div>
+        <p class="t-name">蔡○明</p>
+        <p class="t-title">某傳統製造集團 / 策略長</p>
+      </div>
+      <div class="tcard reveal">
+        <blockquote>
+          「我們請過三家顧問公司，
+          只有縱橫清楚說明了他們不擅長什麼，
+          這反而讓我們更信任他們說擅長的部分。」
+        </blockquote>
+        <div class="t-rule"></div>
+        <p class="t-name">劉○芸</p>
+        <p class="t-title">某消費金融新創 / 共同創辦人</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="contact">
+  <div class="wrap">
+    <div class="cta-inner">
+      <span class="kicker reveal">開始對話</span>
+      <h2 class="reveal">
+        您正面臨的決策，<br />
+        <strong>值得一次認真的對話</strong>
+      </h2>
+      <p class="reveal">
+        首次對談免費，四十五分鐘，不做簡報，只做診斷。
+        我們想先確認，縱橫是否是適合您這個項目的顧問。
+      </p>
+      <div class="cta-actions reveal">
+        <a class="btn-primary" href="mailto:consult@meridian-strategy.tw">發送諮詢信件</a>
+        <a class="btn-outline" href="tel:+886227568800">電話預約</a>
+      </div>
+      <div class="cta-contact reveal">
+        <div class="ci">
+          <b>02-2756-8800</b>
+          週一至週五，09:00 至 18:00
+        </div>
+        <div class="ci">
+          <b>consult@meridian-strategy.tw</b>
+          兩個工作日內回覆
+        </div>
+        <div class="ci">
+          <b>台北市信義區松仁路 88 號 22 樓</b>
+          捷運信義安和站步行 5 分鐘
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="foot-brand-col">
+        <div class="fb-en">Meridian Strategy</div>
+        <div class="fb-zh">縱 橫 策 略 顧 問</div>
+        <p>以競爭情報與決策架構為核心，協助企業領導人在格局定型前做出正確的策略選擇。</p>
+      </div>
+      <div class="foot-col">
+        <h5>服務導覽</h5>
+        <a href="#services">服務領域</a>
+        <a href="#method">我們的做法</a>
+        <a href="#case">案例洞察</a>
+        <a href="#team">顧問團隊</a>
+      </div>
+      <div class="foot-col">
+        <h5>聯絡資訊</h5>
+        <a href="tel:+886227568800">02-2756-8800</a>
+        <a href="mailto:consult@meridian-strategy.tw">consult@meridian-strategy.tw</a>
+        <a href="#contact">預約首次對談</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="credit">範例設計 · <b>e-life-ai.com</b></div>
+      <div class="legal">© 2026 縱橫策略顧問有限公司 · 版權所有</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header solidify on scroll
+  const hdr = document.getElementById('hdr');
+  const syncHeader = () => hdr.classList.toggle('solid', window.scrollY > 50);
+  window.addEventListener('scroll', syncHeader, { passive: true });
+  syncHeader();
+
+  // Mobile menu: jump to contact
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Scroll reveal with staggered delay per batch
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        const delay = (Math.min(i % 6, 5) * 80);
+        e.target.style.transitionDelay = delay + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

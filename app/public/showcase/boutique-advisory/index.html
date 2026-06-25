@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>磐石 Cornerstone 資本顧問</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Noto+Serif+TC:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --charcoal:       #1a1c1e;
+    --charcoal-deep:  #131416;
+    --charcoal-mid:   #22252a;
+    --charcoal-lift:  #2c2f35;
+    --paper:          #f3efe7;
+    --paper-dim:      #e8e3d8;
+    --brass:          #9a7b4f;
+    --brass-bright:   #b8955f;
+    --brass-dim:      #7a6040;
+    --ink:            #1e2024;
+    --ink-soft:       rgba(30,32,36,.72);
+    --rule:           rgba(154,123,79,.28);
+    --rule-paper:     rgba(154,123,79,.18);
+    --mono:           "IBM Plex Mono", monospace;
+    --serif:          "Spectral", "Noto Serif TC", serif;
+    --cjk:            "Noto Serif TC", serif;
+    --sans:           "Inter", system-ui, sans-serif;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--cjk);
+    background: var(--charcoal);
+    color: var(--paper);
+    line-height: 1.75;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--brass); color: var(--charcoal-deep); }
+
+  a:focus-visible, button:focus-visible,
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--brass-bright);
+    outline-offset: 3px;
+  }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 36px; }
+
+  /* ===== Reveal ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ===== Header ===== */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    padding: 20px 0;
+    background: transparent;
+    transition: background .5s ease, box-shadow .5s ease, padding .5s ease;
+  }
+  header.solid {
+    background: rgba(19,20,22,.96);
+    box-shadow: 0 1px 0 var(--rule), 0 12px 36px -20px rgba(0,0,0,.7);
+    padding: 13px 0;
+  }
+
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+
+  .brand { display: flex; align-items: center; gap: 14px; color: var(--paper); text-decoration: none; }
+  .brand-mark { width: 36px; height: 36px; flex: none; }
+  .brand-text { line-height: 1.08; }
+  .brand-text b {
+    font-family: var(--serif); font-weight: 600; font-size: 22px;
+    letter-spacing: .05em; display: block; color: var(--paper);
+  }
+  .brand-text span {
+    font-family: var(--cjk); font-size: 10.5px; letter-spacing: .38em;
+    color: var(--brass-bright); display: block; margin-top: 3px;
+  }
+
+  nav { display: flex; align-items: center; gap: 32px; }
+  nav a.lnk {
+    color: var(--paper-dim); text-decoration: none; font-family: var(--cjk);
+    font-size: 14.5px; letter-spacing: .1em; position: relative; padding: 4px 0;
+    transition: color .4s;
+  }
+  nav a.lnk::after {
+    content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 0;
+    background: var(--brass); transition: width .45s cubic-bezier(.2,.7,.2,1);
+  }
+  nav a.lnk:hover { color: var(--paper); }
+  nav a.lnk:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-family: var(--cjk); font-size: 13.5px; letter-spacing: .16em;
+    color: var(--charcoal-deep); background: var(--brass);
+    border: 1px solid var(--brass); padding: 10px 22px; text-decoration: none;
+    transition: background .4s, transform .35s; cursor: pointer; white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--brass-bright); transform: translateY(-1px); }
+
+  .menu-btn {
+    display: none; background: none; border: 1px solid var(--rule);
+    color: var(--paper); width: 42px; height: 38px; cursor: pointer;
+    font-size: 20px; line-height: 1; align-items: center; justify-content: center;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: center;
+    background: var(--charcoal-deep);
+    overflow: hidden; padding: 140px 0 90px;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(154,123,79,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(154,123,79,.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 20%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 20%, transparent 100%);
+  }
+  .hero::after {
+    content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--brass) 30%, var(--brass) 70%, transparent);
+    opacity: .3;
+  }
+
+  .hero-inner { position: relative; max-width: 860px; }
+
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .48em; text-transform: uppercase;
+    color: var(--brass); margin-bottom: 40px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hero-eyebrow::after {
+    content: ""; display: block; flex: 1; max-width: 120px; height: 1px; background: var(--rule);
+  }
+
+  .hero h1 {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(36px, 5.8vw, 72px); line-height: 1.12;
+    letter-spacing: .01em; color: var(--paper);
+    margin-bottom: 30px;
+  }
+  .hero h1 em { font-style: italic; color: var(--brass-bright); }
+
+  .hero-sub {
+    max-width: 600px; font-family: var(--cjk); font-size: clamp(15px, 1.6vw, 17px);
+    color: rgba(243,239,231,.65); line-height: 1.95; margin-bottom: 52px;
+  }
+
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    font-family: var(--cjk); font-size: 14px; letter-spacing: .18em;
+    background: var(--brass); color: var(--charcoal-deep);
+    border: 1px solid var(--brass); padding: 13px 28px; text-decoration: none;
+    transition: background .4s, transform .35s; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--brass-bright); transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-family: var(--cjk); font-size: 14px; letter-spacing: .16em; color: var(--paper-dim);
+    border: 1px solid var(--rule); padding: 13px 28px; text-decoration: none;
+    transition: border-color .4s, color .4s, background .4s;
+  }
+  .btn-ghost:hover { border-color: var(--brass); color: var(--paper); background: rgba(154,123,79,.06); }
+
+  .hero-credentials {
+    margin-top: 64px; padding-top: 28px;
+    border-top: 1px solid rgba(154,123,79,.18);
+    display: flex; gap: 40px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .3em;
+    color: rgba(154,123,79,.65); text-transform: uppercase;
+  }
+
+  /* ===== Section commons ===== */
+  .sec { padding: 108px 0; }
+
+  .sec-head { margin-bottom: 60px; }
+  .sec-head .kicker {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .42em; text-transform: uppercase;
+    color: var(--brass); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .sec-head .kicker::after {
+    content: ""; display: block; width: 36px; height: 1px; background: var(--rule);
+  }
+  .sec-head h2 {
+    font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 4.2vw, 46px);
+    line-height: 1.14; letter-spacing: .01em;
+  }
+  .sec-head h2 em { font-style: italic; color: var(--brass-bright); }
+  .sec-head .sub { margin-top: 14px; font-size: 15.5px; color: rgba(243,239,231,.58); max-width: 560px; }
+
+  /* ===== Services ===== */
+  .services { background: var(--charcoal); }
+
+  .svc-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  .svc-card {
+    background: var(--charcoal); padding: 48px 44px;
+    position: relative; overflow: hidden;
+    transition: background .5s;
+  }
+  .svc-card::before {
+    content: ""; position: absolute; left: 0; top: 0; width: 2px; height: 0;
+    background: var(--brass); transition: height .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .svc-card:hover { background: var(--charcoal-mid); }
+  .svc-card:hover::before { height: 100%; }
+
+  .svc-num {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .3em;
+    color: var(--brass-dim); margin-bottom: 22px; display: block;
+  }
+  .svc-ico { width: 38px; height: 38px; color: var(--brass-dim); margin-bottom: 26px; }
+  .svc-card h3 {
+    font-family: var(--serif); font-weight: 500; font-size: 26px;
+    color: var(--paper); letter-spacing: .02em; margin-bottom: 6px; line-height: 1.2;
+  }
+  .svc-card .en {
+    font-family: var(--serif); font-style: italic; font-size: 13.5px;
+    color: var(--brass); letter-spacing: .06em; margin-bottom: 18px; display: block;
+  }
+  .svc-card p { font-family: var(--cjk); font-size: 14.5px; color: rgba(243,239,231,.62); line-height: 1.9; }
+
+  /* ===== Tombstone / Deal Register ===== */
+  .tombstones { background: var(--charcoal-deep); position: relative; }
+  .tombstones::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--brass) 20%, var(--brass) 80%, transparent);
+    opacity: .2;
+  }
+  .tombstones::after {
+    content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--brass) 20%, var(--brass) 80%, transparent);
+    opacity: .2;
+  }
+
+  .ledger-head {
+    display: grid;
+    grid-template-columns: 2.4fr 1fr 1fr 0.7fr;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 14px;
+  }
+  .ledger-head span {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .36em; text-transform: uppercase;
+    color: var(--brass-dim); padding: 0 18px;
+  }
+  .ledger-head span:first-child { padding-left: 0; }
+
+  .tombstone {
+    display: grid;
+    grid-template-columns: 2.4fr 1fr 1fr 0.7fr;
+    align-items: center;
+    border-bottom: 1px solid rgba(154,123,79,.1);
+    padding: 28px 0;
+    transition: background .4s;
+    position: relative;
+  }
+  .tombstone::before {
+    content: ""; position: absolute; left: -36px; right: -36px; top: 0; bottom: 0;
+    background: transparent; transition: background .4s; pointer-events: none;
+  }
+  .tombstone:hover::before { background: rgba(154,123,79,.04); }
+  .tombstone:last-child { border-bottom: none; }
+
+  .ts-cell { padding: 0 18px; }
+  .ts-cell:first-child { padding-left: 0; }
+  .ts-cell:last-child { padding-right: 0; }
+
+  .ts-name {
+    font-family: var(--serif); font-weight: 400; font-size: 17.5px;
+    color: var(--paper); letter-spacing: .01em; line-height: 1.25; margin-bottom: 6px;
+  }
+  .ts-detail {
+    font-family: var(--cjk); font-size: 12px; letter-spacing: .05em;
+    color: rgba(243,239,231,.43); line-height: 1.65;
+  }
+  .ts-value {
+    font-family: var(--mono); font-size: 17px; font-weight: 400;
+    color: var(--brass-bright); letter-spacing: .02em; line-height: 1;
+  }
+  .ts-value-unit {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
+    color: var(--brass-dim); margin-top: 5px; display: block;
+  }
+  .ts-role {
+    font-family: var(--cjk); font-size: 13px; letter-spacing: .04em;
+    color: rgba(243,239,231,.68); line-height: 1.6;
+  }
+  .ts-year {
+    font-family: var(--mono); font-size: 13px; letter-spacing: .18em;
+    color: rgba(154,123,79,.68);
+  }
+  .ts-dot {
+    display: inline-block; width: 7px; height: 7px;
+    background: var(--brass); border-radius: 50%;
+    vertical-align: middle; margin-right: 10px; flex: none;
+  }
+
+  /* ===== Differentiators ===== */
+  .difference { background: var(--charcoal); }
+  .diff-grid {
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: start;
+  }
+  .diff-copy h2 {
+    font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.16; margin-bottom: 22px;
+  }
+  .diff-copy h2 em { font-style: italic; color: var(--brass-bright); }
+  .diff-copy p {
+    font-family: var(--cjk); font-size: 15.5px;
+    color: rgba(243,239,231,.63); line-height: 1.95; margin-bottom: 20px;
+  }
+
+  .diff-pillars { list-style: none; }
+  .diff-pillar {
+    padding: 26px 0; border-top: 1px solid var(--rule);
+    display: grid; grid-template-columns: 36px 1fr; gap: 20px; align-items: start;
+  }
+  .diff-pillar:last-child { border-bottom: 1px solid var(--rule); }
+  .dp-num {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .28em;
+    color: var(--brass); padding-top: 3px;
+  }
+  .dp-body h4 {
+    font-family: var(--serif); font-weight: 500; font-size: 18px;
+    color: var(--paper); letter-spacing: .02em; margin-bottom: 8px;
+  }
+  .dp-body p {
+    font-family: var(--cjk); font-size: 14px;
+    color: rgba(243,239,231,.58); line-height: 1.9; margin: 0;
+  }
+
+  /* ===== Team ===== */
+  .team { background: var(--charcoal-deep); }
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--rule); border: 1px solid var(--rule); }
+  .team-card {
+    background: var(--charcoal-deep); padding: 44px 36px; transition: background .5s;
+  }
+  .team-card:hover { background: var(--charcoal-mid); }
+  .team-initial {
+    width: 64px; height: 64px; border: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+    font-family: var(--serif); font-size: 28px; font-weight: 300;
+    color: var(--brass-bright); letter-spacing: .04em; transition: border-color .5s;
+  }
+  .team-card:hover .team-initial { border-color: var(--brass); }
+  .team-card h4 {
+    font-family: var(--cjk); font-weight: 500; font-size: 18px;
+    color: var(--paper); letter-spacing: .1em; margin-bottom: 4px;
+  }
+  .team-card .title {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    color: var(--brass); letter-spacing: .04em; margin-bottom: 12px; display: block;
+  }
+  .team-card .bio {
+    font-family: var(--cjk); font-size: 13.5px; color: rgba(243,239,231,.52); line-height: 1.85;
+  }
+
+  /* ===== Trust ===== */
+  .trust { background: var(--charcoal); }
+  .trust-band {
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--rule);
+  }
+  .trust-item { background: var(--charcoal); padding: 36px 28px; }
+  .trust-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--brass-dim); margin-bottom: 14px; display: block;
+  }
+  .trust-quote {
+    font-family: var(--serif); font-style: italic; font-size: 16px;
+    color: var(--paper-dim); line-height: 1.78; margin-bottom: 14px;
+  }
+  .trust-source {
+    font-family: var(--cjk); font-size: 12px; letter-spacing: .06em; color: rgba(243,239,231,.38);
+  }
+
+  /* ===== Contact ===== */
+  .contact-sec { background: var(--charcoal-deep); }
+  .contact-layout {
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: 72px; align-items: start;
+  }
+  .contact-copy h2 {
+    font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.14; margin-bottom: 24px;
+  }
+  .contact-copy h2 em { font-style: italic; color: var(--brass-bright); }
+  .contact-copy .lead {
+    font-family: var(--cjk); font-size: 15.5px; color: rgba(243,239,231,.63);
+    line-height: 1.95; margin-bottom: 32px;
+  }
+  .contact-detail { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .contact-row { display: flex; gap: 16px; align-items: baseline; font-family: var(--cjk); font-size: 14px; }
+  .contact-row .lbl {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--brass-dim); white-space: nowrap; min-width: 54px;
+  }
+  .contact-row .val { color: var(--paper-dim); letter-spacing: .04em; }
+
+  .form-panel {
+    background: var(--charcoal-mid); border: 1px solid var(--rule); padding: 44px 40px; position: relative;
+  }
+  .form-panel::before {
+    content: ""; position: absolute; inset: 8px; border: 1px solid rgba(154,123,79,.12); pointer-events: none;
+  }
+  .form-head {
+    font-family: var(--serif); font-size: 22px; font-weight: 400;
+    color: var(--paper); letter-spacing: .04em; margin-bottom: 4px;
+  }
+  .form-sub {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--brass-dim); margin-bottom: 30px;
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .26em;
+    color: rgba(243,239,231,.52); margin-bottom: 8px; text-transform: uppercase;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; background: rgba(243,239,231,.03); border: 1px solid rgba(154,123,79,.22);
+    border-bottom: 1px solid rgba(154,123,79,.36); color: var(--paper);
+    padding: 11px 13px; font-family: var(--cjk); font-size: 14.5px;
+    outline: none; transition: border-color .4s, background .4s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--brass); background: rgba(154,123,79,.05);
+  }
+  .field select { appearance: none; cursor: pointer; }
+  .field select option { background: var(--charcoal-deep); color: var(--paper); }
+  .field textarea { resize: vertical; min-height: 84px; }
+  .form-submit {
+    width: 100%; margin-top: 10px; background: var(--brass); border: none;
+    color: var(--charcoal-deep); font-family: var(--cjk); font-size: 14.5px;
+    letter-spacing: .2em; padding: 14px; cursor: pointer;
+    transition: background .4s, transform .3s;
+  }
+  .form-submit:hover { background: var(--brass-bright); }
+  .form-submit:disabled { opacity: .65; cursor: default; }
+  .form-note {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+    color: rgba(243,239,231,.32); margin-top: 14px; text-align: center; line-height: 1.8;
+  }
+  .form-confirm { display: none; text-align: center; padding: 32px 12px; }
+  .form-confirm.show { display: block; animation: fadeUp .8s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .form-confirm svg { margin: 0 auto 20px; display: block; }
+  .form-confirm h3 {
+    font-family: var(--serif); font-size: 26px; color: var(--paper);
+    margin-bottom: 10px; letter-spacing: .04em;
+  }
+  .form-confirm p { font-family: var(--cjk); font-size: 14px; color: var(--paper-dim); line-height: 1.9; }
+
+  /* ===== Footer ===== */
+  footer { background: var(--charcoal-deep); border-top: 1px solid var(--rule); padding: 64px 0 36px; }
+  .foot-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 44px;
+    padding-bottom: 44px; border-bottom: 1px solid rgba(154,123,79,.12);
+  }
+  .foot-brand-name { font-family: var(--serif); font-size: 24px; font-weight: 500; color: var(--paper); letter-spacing: .05em; }
+  .foot-brand-zh { font-family: var(--cjk); font-size: 11px; letter-spacing: .32em; color: var(--brass); margin: 5px 0 18px; }
+  .foot-brand-desc { font-family: var(--cjk); font-size: 13.5px; color: rgba(243,239,231,.42); line-height: 1.9; max-width: 300px; }
+  .foot-col h5 {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--brass-dim); margin-bottom: 18px;
+  }
+  .foot-col a {
+    display: block; font-family: var(--cjk); font-size: 14px;
+    color: rgba(243,239,231,.48); text-decoration: none; margin-bottom: 12px;
+    letter-spacing: .06em; transition: color .4s;
+  }
+  .foot-col a:hover { color: var(--brass-bright); }
+  .foot-col .addr { font-family: var(--cjk); font-size: 13px; color: rgba(243,239,231,.42); line-height: 1.9; margin-top: 6px; }
+  .foot-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; padding-top: 24px; flex-wrap: wrap;
+  }
+  .foot-credit { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; color: rgba(243,239,231,.32); }
+  .foot-credit b { color: var(--brass-dim); font-weight: 400; }
+  .foot-legal { font-family: var(--cjk); font-size: 11.5px; color: rgba(243,239,231,.26); letter-spacing: .06em; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 980px) {
+    .svc-grid { grid-template-columns: 1fr; }
+    .diff-grid { grid-template-columns: 1fr; gap: 48px; }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .trust-band { grid-template-columns: repeat(2, 1fr); }
+    .contact-layout { grid-template-columns: 1fr; gap: 44px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .foot-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 760px) {
+    .ledger-head { display: none; }
+    .tombstone {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px 12px;
+      padding: 24px 0;
+    }
+    .ts-cell { padding: 0; }
+    .ts-cell:nth-child(3) { text-align: right; }
+    .ts-cell:nth-child(4) { text-align: right; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 22px; }
+    nav { display: none; }
+    .menu-btn { display: flex; }
+    .sec { padding: 78px 0; }
+    .team-grid { grid-template-columns: 1fr; }
+    .trust-band { grid-template-columns: 1fr; background: none; border: none; gap: 0; }
+    .trust-item { border-bottom: 1px solid var(--rule); }
+    .foot-grid { grid-template-columns: 1fr; }
+    .hero-credentials { gap: 20px; }
+  }
+  @media (max-width: 400px) {
+    .wrap { padding: 0 16px; }
+    .diff-pillar { grid-template-columns: 28px 1fr; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header id="hdr">
+  <div class="wrap bar">
+    <a href="#top" class="brand" aria-label="磐石 Cornerstone 資本顧問">
+      <svg class="brand-mark" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="34" height="34" stroke="#9a7b4f" stroke-width="1"/>
+        <rect x="5" y="5" width="26" height="26" stroke="rgba(154,123,79,.4)" stroke-width=".6"/>
+        <path d="M18 10 L10 26 H26 Z" stroke="#9a7b4f" stroke-width="1.1" stroke-linejoin="round" fill="none"/>
+        <path d="M14 20 H22" stroke="rgba(154,123,79,.55)" stroke-width=".7"/>
+      </svg>
+      <span class="brand-text">
+        <b>Cornerstone</b>
+        <span>磐 石 資 本 顧 問</span>
+      </span>
+    </a>
+    <nav>
+      <a class="lnk" href="#services">服務</a>
+      <a class="lnk" href="#tombstones">代表交易</a>
+      <a class="lnk" href="#difference">我們的不同</a>
+      <a class="lnk" href="#team">團隊</a>
+      <a class="lnk" href="#contact">聯絡</a>
+      <a class="nav-cta" href="#contact">預約洽談</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="開啟選單">≡</button>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <p class="hero-eyebrow reveal">Est. 2008 · 台北</p>
+    <h1 class="reveal">交易複雜，<br><em>判斷不能妥協。</em></h1>
+    <p class="hero-sub reveal">
+      磐石資本顧問專注於跨境併購、私募募資與企業重組。我們以精確的財務分析與審慎的市場判斷，協助客戶在關鍵轉折點上取得有利地位。
+    </p>
+    <div class="hero-actions reveal">
+      <a class="btn-primary" href="#tombstones">瀏覽代表交易</a>
+      <a class="btn-ghost" href="#contact">預約洽談</a>
+    </div>
+    <div class="hero-credentials reveal">
+      <span>金融監理合規機構成員</span>
+      <span>台灣私募股權協會</span>
+      <span>跨境交易聯盟</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section class="sec services" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="kicker">Services</p>
+      <h2>核心<em>服務</em></h2>
+      <p class="sub">四項專業服務，由資深合夥人親自主導，從策略規劃到交易完成全程參與。</p>
+    </div>
+
+    <div class="svc-grid">
+      <div class="svc-card reveal">
+        <svg class="svc-ico" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <rect x="4" y="4" width="30" height="30" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M4 14h30M14 4v30" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
+          <circle cx="29" cy="29" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="svc-num">01</span>
+        <h3>併購顧問</h3>
+        <span class="en">Mergers &amp; Acquisitions</span>
+        <p>買方或賣方顧問服務，涵蓋目標篩選、交易架構設計、盡職調查協調與談判主導。我們只接受真正有把握的案子，確保每筆交易都具備完整執行力。</p>
+      </div>
+
+      <div class="svc-card reveal">
+        <svg class="svc-ico" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <circle cx="19" cy="19" r="14" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M19 10v9l6 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 19h3M27 19h3M19 8v3M19 27v3" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+        </svg>
+        <span class="svc-num">02</span>
+        <h3>私募募資</h3>
+        <span class="en">Private Capital Raising</span>
+        <p>協助成長期企業與家族企業向私募基金、策略投資人或主權基金完成股權融資。我們的投資人網絡橫跨台灣、香港與新加坡，能觸及真正有決策能力的資本方。</p>
+      </div>
+
+      <div class="svc-card reveal">
+        <svg class="svc-ico" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <path d="M6 32L14 20l7 6 7-14 8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="4" y="4" width="30" height="30" stroke="currentColor" stroke-width="1.2" opacity=".3"/>
+        </svg>
+        <span class="svc-num">03</span>
+        <h3>企業估值</h3>
+        <span class="en">Valuation Advisory</span>
+        <p>以 DCF、EV/EBITDA 及可比交易等多元方法建立估值模型，應用於交易談判、員工股權計畫與財務報告目的。估值報告具備法律援引效力，可作為仲裁呈堂文件。</p>
+      </div>
+
+      <div class="svc-card reveal">
+        <svg class="svc-ico" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+          <path d="M8 30V18l11-10 11 10V30" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+          <rect x="14" y="22" width="10" height="8" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M4 30h30" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span class="svc-num">04</span>
+        <h3>財務重組</h3>
+        <span class="en">Restructuring</span>
+        <p>協助陷入財務困境的企業重新規劃資本結構、債務重組條件與資產處置策略。在與債權人、股東及主管機關的多方談判中，我們代表的是客戶，不是中間立場。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TOMBSTONES ========== -->
+<section class="sec tombstones" id="tombstones">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="kicker">Selected Transactions</p>
+      <h2>代表<em>交易</em></h2>
+      <p class="sub">以下為近年已完成交易之節錄。每筆交易均由本所合夥人親自主導，從委任至成交全程參與。</p>
+    </div>
+
+    <div class="reveal">
+      <div class="ledger-head" aria-hidden="true">
+        <span style="padding-left:0">交易摘要</span>
+        <span>規模</span>
+        <span>我們的角色</span>
+        <span>完成年份</span>
+      </div>
+
+      <div role="list">
+
+        <div class="tombstone reveal" role="listitem">
+          <div class="ts-cell">
+            <div class="ts-name"><span class="ts-dot" aria-hidden="true"></span>消費零售業跨境收購</div>
+            <div class="ts-detail">台灣連鎖業者收購東南亞區域零售商，含品牌授權架構重組</div>
+          </div>
+          <div class="ts-cell">
+            <div class="ts-value">NT$4.8B</div>
+            <span class="ts-value-unit">新台幣十億</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-role">買方財務顧問</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-year">2024</span>
+          </div>
+        </div>
+
+        <div class="tombstone reveal" role="listitem">
+          <div class="ts-cell">
+            <div class="ts-name"><span class="ts-dot" aria-hidden="true"></span>半導體設備商私募增資</div>
+            <div class="ts-detail">B 輪股權融資，投資方含亞洲主權基金與產業策略股東</div>
+          </div>
+          <div class="ts-cell">
+            <div class="ts-value">US$62M</div>
+            <span class="ts-value-unit">美元</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-role">獨家募資顧問</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-year">2024</span>
+          </div>
+        </div>
+
+        <div class="tombstone reveal" role="listitem">
+          <div class="ts-cell">
+            <div class="ts-name"><span class="ts-dot" aria-hidden="true"></span>食品集團非核心事業剝離</div>
+            <div class="ts-detail">家族控股公司出售旗下冷鏈物流子公司，完成股東協議重整</div>
+          </div>
+          <div class="ts-cell">
+            <div class="ts-value">NT$2.1B</div>
+            <span class="ts-value-unit">新台幣十億</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-role">賣方獨家顧問</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-year">2023</span>
+          </div>
+        </div>
+
+        <div class="tombstone reveal" role="listitem">
+          <div class="ts-cell">
+            <div class="ts-name"><span class="ts-dot" aria-hidden="true"></span>醫療器材平台跨國合併</div>
+            <div class="ts-detail">台、日雙邊合併交易，涉及產品線重整與技術移轉安排</div>
+          </div>
+          <div class="ts-cell">
+            <div class="ts-value">US$38M</div>
+            <span class="ts-value-unit">美元</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-role">財務顧問，雙邊</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-year">2023</span>
+          </div>
+        </div>
+
+        <div class="tombstone reveal" role="listitem">
+          <div class="ts-cell">
+            <div class="ts-name"><span class="ts-dot" aria-hidden="true"></span>房地產開發商負債重組</div>
+            <div class="ts-detail">多銀行聯貸重整，協商新償還計畫與部分資產抵押安排</div>
+          </div>
+          <div class="ts-cell">
+            <div class="ts-value">NT$6.3B</div>
+            <span class="ts-value-unit">新台幣十億</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-role">債務人財務顧問</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-year">2022</span>
+          </div>
+        </div>
+
+        <div class="tombstone reveal" role="listitem">
+          <div class="ts-cell">
+            <div class="ts-name"><span class="ts-dot" aria-hidden="true"></span>科技服務業策略投資引進</div>
+            <div class="ts-detail">上市前策略輪，引進歐洲企業軟體集團作為產業股東</div>
+          </div>
+          <div class="ts-cell">
+            <div class="ts-value">US$24M</div>
+            <span class="ts-value-unit">美元</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-role">獨家募資顧問</span>
+          </div>
+          <div class="ts-cell">
+            <span class="ts-year">2022</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:40px; font-family:var(--mono); font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:rgba(154,123,79,.4); text-align:right;">
+      僅列示部分已完成交易，詳情依保密協議不予揭露
+    </p>
+  </div>
+</section>
+
+<!-- ========== DIFFERENCE ========== -->
+<section class="sec difference" id="difference">
+  <div class="wrap diff-grid">
+    <div class="diff-copy reveal">
+      <div class="sec-head" style="margin-bottom:0">
+        <p class="kicker">Why Cornerstone</p>
+        <h2>我們的<em>不同</em></h2>
+      </div>
+      <p style="margin-top:28px;">
+        台灣的財務顧問市場不乏大型機構，但大型機構的核心能力在於承銷，不在於顧問。
+        我們不承銷，不持倉，不存在利益衝突。每筆委任，一位合夥人全程負責。
+      </p>
+      <p>
+        磐石成立的初衷，是讓中型交易也能獲得過去只有最大型客戶才接得到的執行品質。
+        這是我們持續在做、也能持續做到的事。
+      </p>
+    </div>
+
+    <ul class="diff-pillars reveal">
+      <li class="diff-pillar">
+        <span class="dp-num" aria-hidden="true">01</span>
+        <div class="dp-body">
+          <h4>合夥人親自執行</h4>
+          <p>委任由合夥人全程主導，不轉交初級分析師。您的判斷應當建立在最有經驗的人所提供的意見上。</p>
+        </div>
+      </li>
+      <li class="diff-pillar">
+        <span class="dp-num" aria-hidden="true">02</span>
+        <div class="dp-body">
+          <h4>不承銷，不持倉</h4>
+          <p>我們的收入來自顧問費，而非承銷佣金或投資部位。立場純粹，建議才能純粹。</p>
+        </div>
+      </li>
+      <li class="diff-pillar">
+        <span class="dp-num" aria-hidden="true">03</span>
+        <div class="dp-body">
+          <h4>嚴格選案</h4>
+          <p>我們同時進行的委任數量受到刻意控制。接受一個案子，意味著我們真的有把握把它做完。</p>
+        </div>
+      </li>
+      <li class="diff-pillar">
+        <span class="dp-num" aria-hidden="true">04</span>
+        <div class="dp-body">
+          <h4>實質跨境能力</h4>
+          <p>在台北、香港與新加坡均有長期合作夥伴。跨境交易的執行協調由我們承接，而非丟給你自行應對。</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== TEAM ========== -->
+<section class="sec team" id="team">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="kicker">Our Team</p>
+      <h2>核心<em>團隊</em></h2>
+      <p class="sub">三位資深合夥人，合計逾六十筆已完成交易，涵蓋十二個產業別。</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-initial" aria-hidden="true">盛</div>
+        <h4>謝盛倫</h4>
+        <span class="title">Managing Partner</span>
+        <p class="bio">前高盛亞太部門副總裁，逾二十年併購顧問資歷。專長：科技、消費零售業跨境交易。台大財金系、London Business School MBA。</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-initial" aria-hidden="true">恩</div>
+        <h4>陳恩慶</h4>
+        <span class="title">Senior Partner</span>
+        <p class="bio">前美林亞洲私募融資部門，主持過超過三十筆私募增資案。專長：成長期企業股權融資、上市前資本規劃。政大企管、Wharton MBA。</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-initial" aria-hidden="true">瑾</div>
+        <h4>林瑾昀</h4>
+        <span class="title">Partner, Restructuring</span>
+        <p class="bio">德勤財務重組部門資歷十五年，處理過台灣規模最大的單宗非上市公司債務重組案。專長：多銀行協商、資本結構優化。成大財管、LSE MSc Finance。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TRUST ========== -->
+<section class="sec trust" id="trust">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="kicker">Client Trust</p>
+      <h2>客戶<em>信任</em></h2>
+    </div>
+    <div class="trust-band reveal">
+      <div class="trust-item">
+        <span class="trust-label">消費零售，2024</span>
+        <p class="trust-quote">「磐石對買方談判利益的保護比任何我接觸過的顧問都更到位，他們不做多餘的事，但關鍵的事絕對不少。」</p>
+        <span class="trust-source">某上市消費零售集團財務長</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-label">科技製造，2023</span>
+        <p class="trust-quote">「盡職調查期間，他們比我們自己的內部團隊更清楚哪些條款必須守住。這種投入程度很少見。」</p>
+        <span class="trust-source">某半導體設備商執行長</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-label">家族企業，2023</span>
+        <p class="trust-quote">「不是每個顧問都願意在談判桌上直接跟對方說「這個條件不行」，磐石的人會。」</p>
+        <span class="trust-source">某食品集團第二代接班人</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-label">醫療器材，2022</span>
+        <p class="trust-quote">「跨境交易最怕中間人傳話失真。磐石在台日兩端都有直接執行能力，這讓整個流程快了至少三個月。」</p>
+        <span class="trust-source">某醫療器材公司董事長</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="sec contact-sec" id="contact">
+  <div class="wrap contact-layout">
+    <div class="contact-copy reveal">
+      <h2>預約<em>洽談</em></h2>
+      <p class="lead">
+        初次洽談不收費，亦無任何委任義務。請簡述您的需求，我們將在兩個工作日內安排合夥人與您聯繫，進行保密討論。
+      </p>
+      <div class="contact-detail">
+        <div class="contact-row">
+          <span class="lbl">電話</span>
+          <span class="val">02-2720-5588</span>
+        </div>
+        <div class="contact-row">
+          <span class="lbl">信箱</span>
+          <span class="val">advisory@cornerstone-tw.com</span>
+        </div>
+        <div class="contact-row">
+          <span class="lbl">地址</span>
+          <span class="val">台北市信義區忠孝東路五段 412 號 31 樓</span>
+        </div>
+      </div>
+      <p style="font-family:var(--mono); font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:rgba(154,123,79,.48);">
+        所有洽談內容依保密原則處理
+      </p>
+    </div>
+
+    <div class="form-panel" id="formPanel">
+      <form id="contactForm" novalidate>
+        <div class="form-head">洽談申請</div>
+        <div class="form-sub">Confidential Inquiry</div>
+        <div class="field">
+          <label for="f-name">姓名</label>
+          <input id="f-name" name="name" type="text" placeholder="您的稱呼" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="f-company">公司</label>
+          <input id="f-company" name="company" type="text" placeholder="公司名稱（選填）" autocomplete="organization" />
+        </div>
+        <div class="field">
+          <label for="f-service">服務類別</label>
+          <select id="f-service" name="service" required>
+            <option value="" disabled selected>請選擇服務項目</option>
+            <option>併購顧問</option>
+            <option>私募募資</option>
+            <option>企業估值</option>
+            <option>財務重組</option>
+            <option>其他</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-message">需求摘要</label>
+          <textarea id="f-message" name="message" placeholder="請簡述您的情況（此表單為範例，不會傳送任何資料）"></textarea>
+        </div>
+        <button type="submit" class="form-submit" id="formBtn">送出申請</button>
+        <p class="form-note">此為設計展示頁面，表單不傳送任何實際資料</p>
+      </form>
+      <div class="form-confirm" id="formConfirm">
+        <svg width="68" height="68" viewBox="0 0 68 68" fill="none" aria-hidden="true">
+          <circle cx="34" cy="34" r="30" stroke="#9a7b4f" stroke-width="1.2"/>
+          <circle cx="34" cy="34" r="24" stroke="rgba(154,123,79,.35)" stroke-width=".7"/>
+          <path d="M23 35l8 8 14-16" stroke="#b8955f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>申請已收到</h3>
+        <p>感謝您，<span id="cfName" style="color:var(--brass-bright)"></span>。<br/>我們將於兩個工作日內與您聯繫。</p>
+        <p style="margin-top:12px; font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:rgba(154,123,79,.52);">受理編號，<span id="cfRef"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="foot-brand-name">Cornerstone</div>
+        <div class="foot-brand-zh">磐 石 資 本 顧 問 有 限 公 司</div>
+        <p class="foot-brand-desc">以精確的財務分析與嚴格的職業倫理，協助企業在關鍵轉折點上取得有利地位。磐石，是客戶信任的基礎。</p>
+      </div>
+      <div class="foot-col">
+        <h5>服務</h5>
+        <a href="#services">併購顧問</a>
+        <a href="#services">私募募資</a>
+        <a href="#services">企業估值</a>
+        <a href="#services">財務重組</a>
+      </div>
+      <div class="foot-col">
+        <h5>聯絡</h5>
+        <a href="#team">核心團隊</a>
+        <a href="#tombstones">代表交易</a>
+        <a href="#contact">預約洽談</a>
+        <p class="addr">台北市信義區忠孝東路五段 412 號 31 樓<br/>02-2720-5588</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-credit">Design by <b>e-life-ai.com</b></div>
+      <div class="foot-legal">© 2026 磐石資本顧問有限公司，版權所有，此為設計展示頁面</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header solidify on scroll
+  const hdr = document.getElementById('hdr');
+  const syncHeader = () => hdr.classList.toggle('solid', window.scrollY > 44);
+  window.addEventListener('scroll', syncHeader, { passive: true });
+  syncHeader();
+
+  // Mobile menu (scroll to contact)
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Scroll reveal via IntersectionObserver
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = (Math.min(i, 6) * 65) + 'ms';
+        entry.target.classList.add('in');
+        revealIO.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+  // Contact form simulation
+  const contactForm = document.getElementById('contactForm');
+  const formConfirm  = document.getElementById('formConfirm');
+  const formBtn      = document.getElementById('formBtn');
+
+  contactForm.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const name = (document.getElementById('f-name').value || '').trim();
+    const svc  = document.getElementById('f-service').value;
+    if (!name || !svc) {
+      formBtn.textContent = '請填寫姓名與服務類別';
+      formBtn.style.background = '#5a3a2a';
+      formBtn.style.color = 'var(--paper-dim)';
+      setTimeout(() => {
+        formBtn.textContent = '送出申請';
+        formBtn.style.background = '';
+        formBtn.style.color = '';
+      }, 1800);
+      return;
+    }
+    formBtn.disabled = true;
+    formBtn.textContent = '處理中…';
+    setTimeout(() => {
+      const ref = 'CS-' + (Math.floor(Math.random() * 9000) + 1000) + '-' + new Date().getFullYear();
+      document.getElementById('cfName').textContent = name;
+      document.getElementById('cfRef').textContent  = ref;
+      contactForm.style.display = 'none';
+      formConfirm.classList.add('show');
+    }, 1200);
+  });
+</script>
+</body>
+</html>
