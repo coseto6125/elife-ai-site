@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>既有資料庫重構 ＋ AI 撮合 — 報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/proposal.css" />
+</head>
+<body>
+
+<!-- ============ 封面 header ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="logo-mark.svg" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與報價提案</span>
+    <h1 class="title">保留舊資料庫，長出一套會自己撮合人才的新系統</h1>
+    <p class="lead">您累積的資料一個欄位都不動，我們在它旁邊建一套全新的介面與 AI，讓系統自己讀懂需求與人才、由高到低推薦最適合的人選。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26062919WZKB86</b></span>
+      <span class="chip">行業 <b>軟體開發｜AI 應用</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">預算 <b>$300,000</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 內容區 ============ -->
+<div class="paper">
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">您的原始需求</h2>
+    <pre class="diagram">為現有的企業內部人力資源管理與智能撮合系統，進行技術重構與 AI 功能升級。
+完全捨棄舊有網頁前後端程式碼（無須程式碼考古），但必須完整保留並沿用現有 SQL 資料庫，
+直接連線並對齊既有欄位，不得破壞歷史資料。
+
+第一階段：基礎畫面重構與資料庫串接
+  ・讀取舊 SQL，完美讀取「需求項目」「人才名冊」「文件檔案」
+  ・管理看板：人才/需求主列表（關鍵字搜尋、標籤篩選）
+  ・進度管線 Pipeline 看板（拖拉改變對接狀態）
+  ・基礎權限控管（管理員與一般使用者讀寫限制）
+
+第二階段：AI 功能整合
+  ・AI 長文摘要：上傳 PDF/Word 或長文，LLM 產生結構化 300 字摘要，JSON 寫入並呈現
+  ・AI 自動標籤分類：自動貼標準化標籤（如 [產業:醫療IC]、[年資:5年]）
+  ・AI 語意撮合：新需求建立時自動比對人才庫，由高到低推薦並給媒合比率
+  ・資安合規：送往公有雲 API 前，後端先做去識別化（遮蔽姓名、聯絡方式）</pre>
+    <div class="callout">下面就照您這份需求，把我們的理解、做法、選型與報價，以及您指定要回答的三個問題，一項一項說清楚。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們對這個需求的理解</h2>
+    <p class="lead">您要的，我們理解是這樣一條線：</p>
+    <pre class="diagram">舊資料庫（只讀，不動一個欄位）
+   └─► 讀進需求、人才、文件 ──► 全新的管理介面（看板、搜尋、篩選、拖拉、權限）
+         └─► AI 自動讀懂內容 ──► 摘要、貼標籤、由高到低推薦最適合的人選</pre>
+    <p>核心有兩件事：</p>
+    <ul class="plain">
+      <li><b>第一，舊資料一筆不漏地接過來，且不動它分毫：</b>舊系統的程式碼可以整個換掉，但十年累積在資料庫裡的「需求項目、人才名冊、文件檔案」必須完整接過來，而且絕對不能在過程中動到它、傷到它。</li>
+      <li><b>第二，讓系統「自己會看」，不只是把畫面做新：</b>一份履歷或需求進來，系統自動摘要、自動貼上可篩選的標籤、自動從人才庫裡找出最合適的人並給出媒合比率。</li>
+    </ul>
+    <p>我們的做法會把這兩件事的風險都收到最低，下面逐項說明。</p>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>為什麼是我們</h2>
+    <ul class="plain">
+      <li><b>語意撮合是我們開發並實際在營運的系統，不是第一次做：</b>我們開發過一整套至今仍在線上運作、服務上百個企業租戶的語意檢索系統，做的正是「把大量文字向量化、用語意距離找出最相關的內容」這件事。您這案的「自動推薦最適合的人選並給媒合比率」，骨架與我們每天在跑的東西一致，所以我們知道怎麼做得準、做得快、做得省。</li>
+      <li><b>接手既有資料庫、不破壞歷史資料，是我們處理過的題目：</b>我們做過「舊資料庫原樣保留、在旁邊長出新系統」的重構，知道怎麼讓新舊並存而不互相干擾。</li>
+      <li><b>LLM 串接是我們的日常：</b>長文摘要、自動分類、把模型輸出依固定 schema（欄位結構）收斂後寫回資料庫，這些都是我們實際交付過、跑在生產環境裡的能力。</li>
+      <li><b>站在實際使用的人想事情：</b>我們會把看板、搜尋、推薦做成讓承辦人「省事」的樣子，而不是多一套要學的工具。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>最關鍵的一步：舊資料庫一個欄位都不動</h2>
+    <p>您最在意的「不得破壞歷史資料」，我們用一個很乾淨的做法保證：</p>
+    <ul class="plain">
+      <li><b>舊資料庫全程「只讀」：</b>新系統連到舊資料庫時，只讀不寫。它讀得到需求、人才、文件，但動不了舊庫裡的任何一筆，所以歷史資料零風險，連「不小心改到」的可能都沒有。</li>
+      <li><b>新功能的資料，寫進另外開的新資料庫：</b>AI 產生的摘要、標籤、撮合結果、看板的狀態，全部寫到我們另開的一個新資料庫，跟舊庫各自獨立。兩邊以您既有的欄位對齊，該關聯的關聯得起來，但彼此不會互踩。</li>
+      <li><b>這樣安排的好處：</b>舊資料安全、新功能放手做，日後要備份、要回溯、要交接，新舊分明、清清楚楚。</li>
+    </ul>
+    <div class="callout">換句話說，我們不是在您十年的資料上動刀，而是在它旁邊建一棟新房子，需要時去舊倉庫取貨，但從不改動倉庫本身。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>本案的交付範圍</h2>
+    <p><b>第一階段：基礎畫面重構與資料庫串接</b></p>
+    <table>
+      <thead><tr><th class="num">#</th><th>項目</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>舊資料庫讀取與對齊</b></td><td>連上舊 SQL（MySQL／PostgreSQL 皆可），完整讀取需求項目、人才名冊、文件檔案，對齊既有欄位，舊庫只讀不動</td></tr>
+        <tr><td class="num">2</td><td><b>人才／需求主列表</b></td><td>列表檢視，含關鍵字搜尋與標籤篩選</td></tr>
+        <tr><td class="num">3</td><td><b>Pipeline 進度看板</b></td><td>拖拉式看板，拖動即可改變人才與需求對接的狀態階段</td></tr>
+        <tr><td class="num">4</td><td><b>權限控管</b></td><td>管理員與一般使用者的讀寫權限區分</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:18px"><b>第二階段：AI 功能整合</b></p>
+    <table>
+      <thead><tr><th class="num">#</th><th>項目</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td class="num">5</td><td><b>AI 長文摘要</b></td><td>上傳 PDF／Word 或輸入長文，系統自動產生結構化的摘要（如核心技術、年資等），以固定格式（JSON）寫入資料庫並呈現在畫面上</td></tr>
+        <tr><td class="num">6</td><td><b>AI 自動標籤分類</b></td><td>自動辨識內容並貼上標準化標籤（如 [產業:醫療IC]、[年資:5年]），讓前端能多條件精準篩選</td></tr>
+        <tr><td class="num">7</td><td><b>AI 語意撮合</b></td><td>建立新需求時，系統自動比對人才庫，由高到低推薦最適合的人選並給出媒合比率</td></tr>
+        <tr><td class="num">8</td><td><b>去識別化（資安合規）</b></td><td>任何文字送往公有雲 AI 之前，後端先遮蔽姓名、聯絡方式等隱私欄位</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>前端要用 Retool 還是自己寫？我們的誠實評估</h2>
+    <p>您在需求裡同時提到了 Retool（低代碼）與「由工程師評估最快、最不易產生技術債的現代框架，如 Next.js」。這兩條路我們都做得來，差別不在會不會，而在這個案子用哪個對您最划算。把幾個關鍵角度攤開來看：</p>
+    <table>
+      <thead><tr><th>看的角度</th><th>低代碼（Retool）</th><th>自己寫（Next.js）</th></tr></thead>
+      <tbody>
+        <tr><td><b>標準的列表、表單、篩選</b></td><td>很快，這是它的強項</td><td>稍慢一點，但完全可控</td></tr>
+        <tr><td><b>拖拉式 Pipeline 看板</b></td><td>會卡：這類重互動的畫面在低代碼裡愈做愈彆扭，常要繞路</td><td>順：本來就是它擅長的互動</td></tr>
+        <tr><td><b>即時呈現媒合比率、客製卡片</b></td><td>受限於平台元件，難做到貼合</td><td>想怎麼呈現就怎麼呈現</td></tr>
+        <tr><td><b>長期維護成本</b></td><td>有平台月費，畫面與資料綁在它平台上</td><td>原始碼是您的，沒有平台月費，不綁任何人</td></tr>
+        <tr><td><b>反應速度與順手感</b></td><td>透過平台多一層，重畫面時體感較鈍</td><td>直接，操作起來順</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>我們的建議：這案用 Next.js 做。</b>這案的看板要拖拉、撮合比率要即時呈現，正好是低代碼的天花板所在；用低代碼省下的前端工時，往往之後會在「硬要做到客製互動」上加倍還回去，變成技術債，加上平台月費與綁定，中長期反而更貴。Next.js 一開始多花一些，但畫面完全貼合、沒有月費、原始碼交到您手上，這也是您需求裡留的那條「最不易產生技術債」的路。基於此，下面的報價我們直接以 Next.js 規劃，把方案收斂在最適合您的這一條，不讓您在划不來的選項上糾結。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>AI 撮合怎麼做到準、又省、又安全</h2>
+    <p>「自動推薦最適合的人選」這件事，我們用三個角度幫您把它做扎實，這也是我們營運中的系統每天在處理的事：</p>
+    <ul class="plain">
+      <li><b>準：語意比對，不只是關鍵字：</b>系統會把每份需求與人才的內容轉成可比對的形式，用「意思相近」而不只是「字面相同」來找人。換句話說，就算用詞不一樣，只要實質相符，也找得出來，再由高到低排出媒合比率。</li>
+      <li><b>省：標籤先篩、語意再排，效能與成本都顧到：</b>我們會讓系統先用標籤（如產業、年資）快速縮小範圍，再對縮小後的人選做語意比對。這樣做的好處很實際：要比對的量變小，回應更快、佔用的記憶體更低，呼叫 AI 的次數也省下來，長期的雲端費用跟著省。常用的摘要與標籤結果會存起來重複使用，不會每次都重算，這對您的儲存成本與時間成本都是省的。</li>
+      <li><b>安全：送雲端前先去識別化：</b>任何要送往公有雲 AI 的文字，後端會先把姓名、聯絡方式這類隱私欄位遮掉，雲端那邊看不到當事人是誰，符合您的資安合規要求。若您日後對「資料完全不離開自己環境」有更高要求，我們也能改成在您自己掌握的環境內完成比對，這部分可在確認需求後另談。</li>
+    </ul>
+    <div class="callout">技術上向量比對我們以資料庫內建的向量能力為主（與我們營運系統同一套成熟做法），日後若您的資料量大幅成長，也能無痛改用更輕量的本地向量索引。這些對您是無感的，您看到的就是「推薦得準、跑得快、費用可控」。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>報價前想先跟您確認的事項</h2>
+    <p>下面幾件事會直接影響工作量與報價精準度，想先跟您確認：</p>
+    <ol class="confirm">
+      <li><b>舊資料庫的型別與規模？</b><p>是 MySQL 還是 PostgreSQL、大概多少筆人才與需求、多少份文件。這幾個面向先有個大方向即可，細部欄位等正式開始後我們再一起對齊。</p></li>
+      <li><b>文件檔案目前怎麼存？</b><p>PDF／Word 是存在資料庫裡、檔案系統、還是雲端空間，這會影響讀取與摘要的接法。</p></li>
+      <li><b>標籤體系由誰定？</b><p>標準化標籤（產業、年資等）的分類是您已有一套、還是希望我們一起定。</p></li>
+      <li><b>開發期間的 AI 帳號與成本由誰負擔？</b><p>串接 OpenAI／Gemini 會產生雲端 API 用量費。慣例上這筆用量費由您的帳號負擔，畢竟跑的是您的資料、日後也是您在用。開發期間我們會用最省的方式測試、把呼叫量壓到最低，並先幫您估好量。若由您負擔，我們會完整記錄每一筆 API 請求的花費明細，逐筆可對帳，絕不讓您承擔額外、非必要、或非用於開發本系統的支出；這份記錄也會在交付時一併給您。</p></li>
+      <li><b>權限分幾種角色？</b><p>除了管理員與一般使用者，是否還有其他角色或更細的權限需求。</p></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">8</span>報價與分期</h2>
+    <p>如第五節所述，我們直接以 Next.js 規劃這案：畫面完全客製、交付完整原始碼、沒有平台月費，也是您需求裡那條「最不易產生技術債」的路。報價依系統實際的複雜度落在一個區間：</p>
+    <table>
+      <thead><tr><th>項目</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td><b>做法</b></td><td>Next.js 自行開發，畫面完全客製、交付完整原始碼、無平台月費</td></tr>
+        <tr><td><b>報價區間</b></td><td><b>$280,000 ～ $380,000</b>，依系統實際複雜度而定</td></tr>
+        <tr><td><b>初版 POC</b></td><td>約兩週內完成可實際操作的初版（讓您先看到系統跑起來）</td></tr>
+        <tr><td><b>後期</b></td><td>對齊細項需求、完善驗證後交付，並提供完整維護說明與後續再開發的文件引導</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:10px;color:var(--ink-1)">複雜度主要看：人才與文件的資料量、標籤體系的精細度、權限角色的多寡、撮合規則的特殊要求。這幾項確認後，我們會在區間內給出明確的數字。</p>
+    <p style="margin-top:16px"><b>分期：</b></p>
+    <table>
+      <thead><tr><th>階段</th><th>交付內容</th><th class="pct">占比</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一期：基礎重構</b></td><td>舊庫讀取對齊、人才/需求列表、Pipeline 拖拉看板、權限控管，讓系統能跑、能看資料</td><td class="pct">45%</td></tr>
+        <tr><td><b>第二期：AI 功能</b></td><td>長文摘要、自動標籤、語意撮合與媒合比率、送雲端前去識別化，含交付、完整維護說明與一次線上教學</td><td class="pct">55%</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">在「舊庫只讀對齊 ＋ 看板重構與權限 ＋ 三項 AI 功能（摘要／標籤／語意撮合）＋ 送雲端前去識別化」這個範圍內，依複雜度於 <b>$280,000 ～ $380,000</b> 完成，並交付完整原始碼與維護文件。語意撮合這類題目，我們開發過至今仍在營運、服務上百企業租戶的系統，所以能把它做得準、做得省，而不是從零摸索。</div>
+    <p style="font-weight:700;color:var(--ink-0);margin-top:18px;margin-bottom:6px">明確不含（如需，另外報價）</p>
+    <ul class="plain exclude">
+      <li>公有雲 AI（OpenAI／Gemini）的 API 用量費用（由您的帳號支付，我們協助估量與控管）</li>
+      <li>舊系統本身的資料清洗或結構修改（我們只讀、對齊，不改舊庫）</li>
+      <li>需求清單以外的新功能、長期維運與大幅擴充（交付後可另談）</li>
+    </ul>
+    <div class="callout"><b>關鍵相依：</b>時程從正式開始、取得可連線的測試環境（或樣本資料）起算；若 AI 帳號由您提供，請於第二期開始前備妥。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">9</span>您指定請投標工程師回答的三個問題</h2>
+    <ol class="confirm">
+      <li><b>是否有「接手既有 SQL 資料庫重構網頁」之經驗？</b><p>有。我們做過舊資料庫原樣保留、在旁邊長出新系統的重構，採「舊庫只讀、新功能寫新庫、以既有欄位對齊」的做法，正是本案要的不破壞歷史資料的方式（見第三節）。</p></li>
+      <li><b>過去開發過哪些 LLM API 串接、向量資料庫實作案例？</b><p>我們開發過一整套至今仍在線上運作、服務上百個企業租戶的語意檢索（embedding RAG）系統，每天在做「把大量文字向量化、以語意距離找出最相關內容」的事，與本案的語意撮合骨架一致。LLM 串接（長文摘要、自動分類、把模型輸出依固定 schema 收斂後寫回資料庫）也是我們跑在生產環境的日常能力。</p></li>
+      <li><b>使用 Low-Code（Retool）與傳統硬刻（Next.js）的報價與工時落點各是多少？</b><p>我們評估後建議這案直接以 Next.js 做（理由見第五節：拖拉看板與即時撮合正是低代碼的天花板，且有平台月費與綁定）。報價依系統複雜度落在 <b>$280,000 ～ $380,000</b>，約兩週內可完成可操作的初版 POC，後期對齊細項、完善驗證後交付，並提供完整維護說明與後續再開發的文件引導。Retool 雖能更快搭出標準畫面，但在本案的客製互動上會受限、長期反而較貴，所以我們不另報 Retool 的數字，把方案收斂在最適合您的這一條，詳見第八節。</p></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">10</span>時程</h2>
+    <p><b>付訂並取得可連線的測試環境後，依系統複雜度，約兩週內可完成一個能實際操作的初版 POC。</b>我們會先把第一階段跑通，讓您實際看到舊資料完整讀進來、看板能拖拉操作，再進到 AI 功能。POC 之後進入後期：對齊細項需求、完善驗證後交付，並提供完整維護說明與後續再開發的文件引導，讓您日後要自行維護或擴充都有依據。節奏是先交一個您能實際操作的版本，再依您的回饋順著調整，讓每一步都看得到進展、風險低。</p>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ footer ============ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="logo-mark.svg" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+<!-- 提案瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
+<script>
+  (function () {
+    if (/[?&]preview=1\b/.test(location.search)) return;
+    var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+    var q = '?p=483f92d93f6c&label=' + encodeURIComponent('TK26062919WZKB86 SQL重構AI撮合');
+    new Image().src = base + q + '&t=' + Date.now();
+  })();
+</script>
+</body>
+</html>
