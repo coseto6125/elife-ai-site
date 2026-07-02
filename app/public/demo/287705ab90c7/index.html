@@ -242,6 +242,7 @@
   .chip.xls:hover{background:var(--ok-soft);color:#166534;border-color:var(--ok)}
 
   .section-sub{font-size:12px;color:var(--ink-2);margin:2px 0 14px;display:flex;align-items:center;gap:8px}
+  .section-sub svg{width:16px;height:16px;flex:0 0 16px;stroke:currentColor;fill:none;stroke-width:1.8}
   .pill{background:var(--amber-soft);color:#92400E;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
 
   /* toast */
@@ -874,7 +875,7 @@ function showQuote(){
   el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 </script>
-<!-- 瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
+<!-- track -->
 <script>
   (function () {
     if (/[?&]preview=1\b/.test(location.search)) return;
