@@ -82,6 +82,14 @@
   main{min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden}
   header.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:0 24px;
     height:58px;display:flex;align-items:center;gap:16px;flex:0 0 58px}
+  #notice{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:9px 24px;font-size:12.5px;
+    background:var(--info-soft);color:#075985;border-bottom:1px solid #BAE6FD}
+  #notice .ni{font-size:14px;flex:0 0 auto}
+  #notice b{color:#0C4A6E}
+  #notice .ph1{background:#DBEAFE;color:#1E40AF;font-weight:700;padding:1px 7px;border-radius:5px;font-size:11.5px}
+  #notice .ph-next{background:#F1F5F9;color:var(--ink-2);font-weight:700;padding:1px 7px;border-radius:5px;font-size:11.5px}
+  #notice .nx{margin-left:auto;cursor:pointer;color:#0369A1;font-weight:700;flex:0 0 auto;padding:0 4px}
+  #notice .nx:hover{color:#0C4A6E}
   .crumb{font-size:12.5px;color:var(--ink-2)}
   .crumb b{color:var(--ink-0)}
   .top-search{margin-left:8px;flex:1;max-width:320px;position:relative}
@@ -99,7 +107,9 @@
   .who small{display:block;color:var(--ink-2);font-size:11px}
   .who b{font-size:13px}
 
-  .view-wrap{flex:1;overflow-y:auto;padding:24px}
+  .view-wrap{flex:1;overflow-y:auto;padding:24px;position:relative;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='180'%3E%3Ctext x='0' y='110' transform='rotate(-24 0 110)' font-family='sans-serif' font-size='30' font-weight='700' fill='%231E40AF' fill-opacity='0.04'%3Ee-life-ai.com%3C/text%3E%3C/svg%3E");}
+  .view-wrap > .view{position:relative;z-index:1}
   .view{display:none;animation:fade .25s ease}
   .view.on{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -219,8 +229,9 @@
     box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .3s,opacity .3s;z-index:200;pointer-events:none}
   #toast.on{transform:translateX(-50%) translateY(0);opacity:1}
 
-  .demo-flag{position:fixed;top:0;right:0;z-index:150;background:var(--amber);color:#3b2500;font-size:11px;font-weight:800;
-    padding:4px 12px;border-bottom-left-radius:9px;letter-spacing:.05em}
+  .demo-flag{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-18deg);z-index:400;
+    pointer-events:none;color:var(--brand);font-size:clamp(30px,6vw,68px);font-weight:900;letter-spacing:.06em;
+    opacity:.07;white-space:nowrap;text-align:center;user-select:none}
 
   @media (max-width:960px){
     #app.on{grid-template-columns:1fr}
@@ -336,6 +347,12 @@
       </div>
     </header>
 
+    <div id="notice">
+      <span class="ni">ⓘ</span>
+      <span>這是<b>系統雛形展示</b>：畫面與資料皆為示意，按鈕為示範動作。頁面標示 <span class="ph1">第一階段</span> 為本次報價範圍；標示 <span class="ph-next">後續階段</span> 者為第二階段之後的功能。</span>
+      <span class="nx" onclick="document.getElementById('notice').style.display='none'">✕</span>
+    </div>
+
     <div class="view-wrap" id="viewWrap"><!-- views injected --></div>
   </main>
 </div>
@@ -378,13 +395,41 @@ function toast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
   clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200);
 }
+// ---- 角色權限：每個身分可見的功能模組 ----
+const ROLE_PERMS={
+  '禾全最高管理員':{views:['dash','projects','quote','files','rfi','mfg','billing','reports','audit','company'],name:'鄧先生',ini:'鄧'},
+  '禾全工程管理員':{views:['dash','projects','files','rfi','mfg','reports'],name:'李文豪',ini:'李'},
+  '禾全會計人員':{views:['dash','projects','quote','billing','reports','company'],name:'陳美惠',ini:'陳'},
+  '現場人員':{views:['dash','mfg','files'],name:'王志明',ini:'王'},
+};
+let CURRENT_ROLE='禾全最高管理員';
 // ---- login ----
 function doLogin(){
   document.getElementById('login').style.display='none';
   document.getElementById('app').classList.add('on');
-  const role=document.getElementById('role').value;
+  applyRole(document.getElementById('role').value);
+}
+function applyRole(role){
+  CURRENT_ROLE=role;
+  const perm=ROLE_PERMS[role]||ROLE_PERMS['禾全最高管理員'];
   document.getElementById('whoRole').textContent=role;
-  render('dash');
+  document.querySelector('.who b').textContent=perm.name;
+  document.querySelector('.avatar').textContent=perm.ini;
+  // 依權限顯示 / 隱藏選單項
+  document.querySelectorAll('#nav .nav-item').forEach(n=>{
+    n.style.display = perm.views.includes(n.dataset.view) ? '' : 'none';
+  });
+  // 隱藏整組空掉的 nav-group（該組下已無可見項）
+  document.querySelectorAll('#nav .nav-group').forEach(g=>{
+    let vis=false, el=g.nextElementSibling;
+    while(el && !el.classList.contains('nav-group')){
+      if(el.classList.contains('nav-item') && el.style.display!=='none'){vis=true;break;}
+      el=el.nextElementSibling;
+    }
+    g.style.display = vis ? '' : 'none';
+  });
+  // 進入該角色第一個有權限的頁
+  go(perm.views[0]);
 }
 // ---- nav ----
 const CRUMB={dash:'儀表板',projects:'專案工程',quote:'報價合約',files:'圖面文件',rfi:'釋疑聯繫單',mfg:'製造進度',billing:'請款估驗',reports:'報表中心',audit:'操作留痕',company:'公司資料'};
