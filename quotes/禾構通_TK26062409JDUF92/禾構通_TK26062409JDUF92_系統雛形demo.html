@@ -340,7 +340,7 @@
       </select>
     </div>
     <button class="btn btn-primary" onclick="doLogin()">登入系統</button>
-    <p class="login-hint">這是禾構通的系統雛形展示，畫面與資料皆為示意<br/>點「登入系統」即可瀏覽各功能模組</p>
+    <p class="login-hint">這是禾構通第一階段內部 MVP 雛形展示，畫面與資料皆為示意<br/>點「登入系統」即可瀏覽第一階段功能模組</p>
   </div>
 </div>
 
@@ -385,7 +385,7 @@
 
     <div id="notice">
       <span class="ni">ⓘ</span>
-      <span>這是<b>系統雛形展示</b>：畫面與資料皆為示意，按鈕為示範動作。頁面標示 <span class="ph1">第一階段</span> 為本次報價範圍；標示 <span class="ph-next">後續階段</span> 者為第二階段之後的功能。</span>
+      <span>這是<b>第一階段內部 MVP 雛形展示</b>：畫面與資料皆為示意，按鈕為示範動作。本展示只呈現第一階段交付範圍。</span>
       <span class="nx" onclick="document.getElementById('notice').style.display='none'">✕</span>
     </div>
 
@@ -526,7 +526,7 @@ const DB={
     {id:'RFI-0238',proj:'P-2026-009',from:'台達營造',to:'禾全',pm:'李文豪',open:'2026-07-06',due:'2026-07-20',stat:'等待回覆',statCls:'t-warn'},
     {id:'RFI-0235',proj:'P-2026-011',from:'禾全',to:'設計單位',pm:'陳建志',open:'2026-06-15',due:'2026-06-22',stat:'已回覆',statCls:'t-ok',closed:'2026-06-20'},
   ],
-  // 請款：本工程 P-2026-014，稅額=本期×5%、保留款=本期×10%、應收=本期+稅-保留
+  // 請款：本工程 P-2026-014，第一階段僅示範稅額、含稅總額與收款狀態
   invoices:[
     {proj:'P-2026-014',period:1,date:'2026-04-30',base:5720000,stat:'已收款',statCls:'t-ok',by:'陳美惠'},
     {proj:'P-2026-014',period:2,date:'2026-05-31',base:4290000,stat:'已收款',statCls:'t-ok',by:'陳美惠'},
@@ -548,8 +548,8 @@ function quoteTotals(q){
   return {sub,tax,total:sub+tax};
 }
 function invoiceCalc(iv){
-  const tax=Math.round(iv.base*0.05), keep=Math.round(iv.base*0.10);
-  return {tax,keep,recv:iv.base+tax-keep};
+  const tax=Math.round(iv.base*0.05);
+  return {tax,total:iv.base+tax,recv:iv.base+tax};
 }
 function projName(id){const p=DB.projects.find(x=>x.id===id);return p?p.name:id;}
 // 待辦：掃各模組「需處理」狀態自動聚合
@@ -637,7 +637,7 @@ const AUDIT_LOG=[
   {t:'2026/06/19 14:22',act:'approve',who:'鄧仕宏',mod:'報價合約',no:'QT-2026-052',d:'狀態：待核准 → 已核准；核准金額 28,600,000',ip:'61.220.31.2'},
   {t:'2026/06/18 10:05',act:'edit',who:'李文豪',mod:'報價合約',no:'QT-2026-052',d:'V1 → V2；追加 H400×200 柱 4 支，未稅 26.1M → 27.24M',ip:'118.163.7.55'},
   {t:'2026/06/17 16:48',act:'return',who:'鄧仕宏',mod:'報價合約',no:'QT-2026-052',d:'退回修正：柱腳詳圖單價需依 Rev.C 重新核算',ip:'61.220.31.2'},
-  {t:'2026/06/16 08:30',act:'edit',who:'王志明',mod:'專案工程',no:'P-2026-011',d:'更新安裝進度：C-055 已校正 → 已鎖螺栓',ip:'27.242.88.19'},
+  {t:'2026/06/16 08:30',act:'edit',who:'王志明',mod:'專案工程',no:'P-2026-011',d:'更新工項狀態：桁架吊裝工項 安裝中 → 已完成',ip:'27.242.88.19'},
   {t:'2026/06/15 09:30',act:'create',who:'李文豪',mod:'報價合約',no:'QT-2026-052',d:'建立報價 V1，關聯工程 P-2026-014',ip:'118.163.7.55'},
   {t:'2026/06/12 13:20',act:'delete',who:'鄧仕宏',mod:'圖面文件',no:'TMP-088',d:'刪除誤上傳的暫存草圖（保留刪除紀錄）',ip:'61.220.31.2'},
   {t:'2026/06/10 10:00',act:'approve',who:'陳美惠',mod:'請款估驗',no:'IV-2026-0402',d:'第 2 期請款確認收款，狀態 → 已收款',ip:'61.220.14.8'},
@@ -754,18 +754,18 @@ const VIEWS = {
 
   quote: ()=>`
     <div class="page-head">
-      <div><h1>報價合約</h1><p>專案報價、追加報價、鐵材買賣、製造、吊裝安裝、結算等報價類型</p></div>
+      <div><h1>報價合約</h1><p>第一階段支援專案工程、鐵材買賣、製造、吊裝安裝、追加工程與結算六類報價，含版次、核准狀態與 PDF / Excel 匯出</p></div>
       <button class="btn btn-primary" onclick="toast('示意：建立新報價單')">＋ 建立報價</button>
     </div>
     ${searchPanel({status:['已核准','待核准','退回修正'],owner:['李文豪','陳建志','王志明'],kw:'工程名稱 / 報價編號'})}
     <div class="card"><div class="tabs">
-      ${['專案報價','追加報價','鐵材買賣','製造報價','吊裝安裝','結算報價'].map((t,i)=>`<div class="tab ${i===0?'active':''}" onclick="qtab(this,'${t}')">${t}</div>`).join('')}
+      ${['專案工程報價','鐵材買賣報價','製造報價','吊裝安裝報價','追加工程報價','結算報價'].map((t,i)=>`<div class="tab ${i===0?'active':''}" onclick="qtab(this,'${t}')">${t}</div>`).join('')}
     </div>
     <div class="card-body flush">
       <table>
         <thead><tr><th>報價編號</th><th>工程</th><th>版次</th><th class="num">未稅金額</th><th class="num">含稅總價</th><th>狀態</th><th></th></tr></thead>
         <tbody id="quote-tb">
-          ${DB.quotes.filter(q=>!q.id.startsWith('QO')).map(q=>{const t=quoteTotals(q);
+          ${DB.quotes.map(q=>{const t=quoteTotals(q);
             return `<tr class="row-click" onclick="showQuote('${q.id}')"><td class="mono">${q.id}</td><td>${projName(q.proj)}</td><td>${q.ver}</td>
               <td class="num">${fmtNT(t.sub)}</td><td class="num">${fmtNT(t.total)}</td><td>${tag(q.statCls,q.stat)}</td>
               <td><span class="chip" onclick="event.stopPropagation();showQuote('${q.id}')">檢視</span></td></tr>`;}).join('')}
@@ -820,22 +820,22 @@ const VIEWS = {
 
   mfg: ()=>`
     <div class="page-head">
-      <div><h1>製造進度</h1><p>台中軟體園區 B 棟鋼構 · 構件製造狀態看板</p></div>
+      <div><h1>製造進度</h1><p>台中軟體園區 B 棟鋼構 · 第一階段基礎製造狀態看板</p></div>
       <button class="btn btn-ghost" onclick="toast('示意：切換其他工程')">切換工程 ▾</button>
     </div>
     <div class="kanban">
       ${[
-        ['未放樣','t-mute',[['C-101','H400×200 柱'],['C-102','H400×200 柱']]],
-        ['已切割','t-info',[['B-215','H350 大梁'],['B-216','H350 大梁'],['B-217','H350 大梁']]],
-        ['已組立','t-info',[['B-201','H400 大梁']]],
-        ['已焊接','t-warn',[['C-088','箱型柱'],['C-089','箱型柱']]],
-        ['已塗裝','t-warn',[['BR-12','斜撐']]],
+        ['未開始','t-mute',[['C-101','H400×200 柱'],['C-102','H400×200 柱']]],
+        ['製造中','t-info',[['B-215','H350 大梁'],['B-216','H350 大梁'],['B-217','H350 大梁']]],
+        ['完成','t-ok',[['B-201','H400 大梁']]],
+        ['出貨中','t-warn',[['C-088','箱型柱'],['C-089','箱型柱']]],
+        ['安裝中','t-warn',[['BR-12','斜撐']]],
         ['已完成','t-ok',[['C-055','H400 柱'],['C-056','H400 柱'],['B-140','小梁']]],
       ].map(col=>`<div class="kcol"><h4>${col[0]}<span class="cnt">${col[2].length}</span></h4>
-        ${col[2].map(c=>`<div class="kcard" onclick="toast('示意：${c[0]} 構件履歷（含照片與更新紀錄）')"><b>${c[0]}</b><small>${c[1]}</small></div>`).join('')}
+        ${col[2].map(c=>`<div class="kcard" onclick="toast('示意：開啟 ${c[0]} 進度紀錄')"><b>${c[0]}</b><small>${c[1]}</small></div>`).join('')}
       </div>`).join('')}
     </div>
-    <p class="section-sub" style="margin-top:16px">${ico('cog')} 每次狀態更新記錄操作人、時間與備註 · 完整 11 段狀態與 QR 掃碼更新為第二階段功能</p>`,
+    <p class="section-sub" style="margin-top:16px">${ico('cog')} 第一階段提供基礎製造進度追蹤，每次狀態更新記錄操作人、時間與備註</p>`,
 
   billing: ()=>`
     <div class="page-head">
@@ -857,26 +857,24 @@ const VIEWS = {
     ${searchPanel({status:['已收款','逾期未收','審核中'],extra:[{label:'工程',options:['台中軟體園區 B 棟','高雄港務大樓','楠梓廠房擴建']}],kw:'期別 / 工程'})}
     <div class="card"><div class="card-head"><h3>請款單明細 · ${projName('P-2026-014')}</h3><span class="more">應收帳款表 →</span></div><div class="card-body flush">
       <table>
-        <thead><tr><th>期別</th><th>日期</th><th class="num">本期金額</th><th class="num">稅額 5%</th><th class="num">保留款 10%</th><th class="num">應收金額</th><th>付款狀態</th></tr></thead>
+        <thead><tr><th>期別</th><th>日期</th><th class="num">本期金額</th><th class="num">稅額 5%</th><th class="num">含稅總額</th><th>付款狀態</th></tr></thead>
         <tbody>
           ${DB.invoices.map(iv=>{const c=invoiceCalc(iv);
             return `<tr><td>第 ${iv.period} 期</td><td class="mono">${iv.date.replace(/-/g,'/')}</td>
-              <td class="num">${fmtNT(iv.base)}</td><td class="num">${fmtNT(c.tax)}</td><td class="num">${fmtNT(c.keep)}</td>
-              <td class="num">${fmtNT(c.recv)}</td><td>${tag(iv.statCls,iv.stat)}</td></tr>`;}).join('')}
+              <td class="num">${fmtNT(iv.base)}</td><td class="num">${fmtNT(c.tax)}</td><td class="num">${fmtNT(c.total)}</td><td>${tag(iv.statCls,iv.stat)}</td></tr>`;}).join('')}
         </tbody>
       </table>
     </div></div>
-    <p class="section-sub" style="margin-top:14px">${ico('cash')} 請款為開立單據與記錄收付狀態，實際收款走既有銀行匯款 · 理論重量計價、保留款結算為第三階段</p>`,
+    <p class="section-sub" style="margin-top:14px">${ico('cash')} 第一階段開立請款單 / 估驗單雛形，記錄小計、稅額、含稅總額與已收 / 未收狀態；實際收款走既有銀行匯款流程</p>`,
 
   reports: ()=>`
     <div class="page-head">
-      <div><h1>報表中心</h1><p>需求書第十一節全套 18 張報表，支援 PDF / Excel 匯出</p></div>
+      <div><h1>報表中心</h1><p>需求書 18 張報表中，第一階段可產出的 9 張，支援 PDF / Excel 匯出；其餘 9 張隨第二、三階段功能提供</p></div>
     </div>
     <div class="rep-grid">
       ${[
-        '專案工程總表','報價單','追加工程報價單','圖面版本紀錄表','釋疑等待天數表','工程聯繫單',
-        '製造進度表','出貨清單','安裝進度表','構件 QR Code 清單','請款單','估驗單',
-        '保留款明細表','應收帳款表','結算單','協力廠付款紀錄','營造廠付款紀錄','工程履歷總表'
+        '專案工程總表','報價單','追加工程報價單','圖面版本紀錄表',
+        '釋疑等待天數表','工程聯繫單','製造進度表','請款單','估驗單'
       ].map((r,i)=>`<div class="rep">
         <div class="r-i">${ico('report')}</div>
         <div><h4>${String(i+1).padStart(2,'0')} · ${r}</h4><small>可依工程、期間篩選後匯出</small></div>
@@ -946,7 +944,7 @@ const VIEWS = {
         </tbody>
       </table>
     </div></div>
-    <p class="section-sub" style="margin-top:14px">${ico('building')} 外部公司統編開通、跨公司權限隔離為第四階段功能</p>`,
+    <p class="section-sub" style="margin-top:14px">${ico('building')} 第一階段提供內部公司與合作廠商資料建檔，供工程、報價、文件與請款流程引用</p>`,
 };
 
 function go(v){
@@ -972,7 +970,7 @@ function showQuote(id){
       <div class="m"><label>業主 / 營造</label><span>${p?p.owner:'—'}</span></div>
       <div class="m"><label>報價日期</label><span>${q.date.replace(/-/g,'/')}</span></div>
       <div class="m"><label>建立人</label><span>${q.by}</span></div>
-      <div class="m"><label>付款條件</label><span>估驗計價 · 保留款 10%</span></div>
+      <div class="m"><label>付款條件</label><span>估驗計價</span></div>
       <div class="m"><label>核准人</label><span>${q.approver||'（待核准）'}</span></div>
     </div>
     <table>
