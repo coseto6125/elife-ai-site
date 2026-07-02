@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>禾構通 HQ SteelPass 鋼構工程平台｜分階段報價提案｜e-life-ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================================
+   e-life-ai — 提案專用版面 (proposal layout system)
+   亮底信賴感 × mint→indigo 品牌 edge gradient × 深色品牌 footer。
+   給傳統產業／企業客戶看的正式報價提案，可列印成乾淨 PDF。
+   用法見 proposals/README.md。
+   ========================================================================= */
+
+:root {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #eef3f9;
+  --ink-0: #14233a;
+  --ink-1: #41526b;
+  --ink-2: #7b8aa3;
+  --line: #e2e9f2;
+  --brand: #1f6feb;
+  --brand-dark: #1559c4;
+  --brand-soft: #e8f1ff;
+  --ok: #16a34a;
+  --warn-soft: #fff4e6;
+  --warn-ink: #b45309;
+  --mint: #34e3c4;
+  --indigo: #7c8cff;
+  --edge: linear-gradient(120deg, var(--mint), var(--indigo));
+  --radius: 16px;
+  --radius-sm: 11px;
+  --shadow: 0 10px 30px rgba(20, 50, 90, 0.08);
+  --maxw: 880px;
+  --pad-x: clamp(18px, 5vw, 56px);
+  --font: 'Noto Sans TC', system-ui, sans-serif;
+  --font-display: 'Sora', 'Noto Sans TC', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink-1);
+  font-family: var(--font);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { color: var(--ink-0); line-height: 1.35; font-family: var(--font-display); }
+
+/* ---------- watermark: diagonal tiled e-life-ai.com on content bg ---------- */
+.paper {
+  position: relative;
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='180'%3E%3Ctext x='0' y='110' transform='rotate(-24 0 110)' font-family='Sora, sans-serif' font-size='30' font-weight='700' fill='%231f6feb' fill-opacity='0.035'%3Ee-life-ai.com%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+.wrap { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: clamp(24px, 5vw, 56px) var(--pad-x); }
+
+/* ---------- cover header ---------- */
+header.cover {
+  position: relative;
+  background: radial-gradient(ellipse 90% 70% at 50% -20%, var(--brand-soft), transparent 70%), var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+header.cover::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--edge); }
+.brandline { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.logo-mark { width: 40px; height: 40px; border-radius: 10px; display: block; box-shadow: 0 4px 12px rgba(20, 50, 90, 0.18); }
+.brand-name { font-weight: 800; font-size: 19px; color: var(--ink-0); font-family: var(--font-display); }
+.brand-tag { font-size: 13px; color: var(--ink-2); padding-left: 12px; border-left: 1px solid var(--line); }
+.eyebrow {
+  display: inline-block; background: var(--surface); border: 1px solid var(--line);
+  color: var(--brand); font-weight: 700; font-size: 13px; padding: 6px 16px;
+  border-radius: 999px; margin-bottom: 18px; box-shadow: var(--shadow);
+}
+h1.title { font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -0.01em; margin-bottom: 16px; }
+.lead { font-size: 16.5px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.chip {
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-1);
+  font-size: 13.5px; font-weight: 500; padding: 6px 14px; border-radius: 999px;
+}
+.chip b { color: var(--ink-0); }
+
+/* ---------- sections ---------- */
+section { margin-top: clamp(40px, 6vw, 64px); }
+.sec-no {
+  display: inline-grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 8px; background: var(--edge); color: #06210e; font-weight: 800; font-size: 15px;
+  margin-right: 12px; vertical-align: middle; font-family: var(--font-display);
+}
+h2.sec { font-size: clamp(21px, 3.5vw, 27px); font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; }
+p + p { margin-top: 12px; }
+
+/* ---------- diagram (legacy ASCII) ---------- */
+pre.diagram {
+  background: var(--ink-0); color: #cfe0f5; border-radius: var(--radius);
+  padding: 24px 26px; overflow-x: auto; font-size: 13.5px; line-height: 1.65;
+  font-family: var(--font-mono); box-shadow: var(--shadow); margin: 18px 0;
+}
+
+/* ---------- flow diagram (CSS boxes, always aligned) ---------- */
+.flow {
+  background: radial-gradient(ellipse 80% 120% at 50% -20%, #142033, #0b121d 75%);
+  border-radius: var(--radius); padding: clamp(24px, 4vw, 36px) 20px;
+  box-shadow: var(--shadow); margin: 18px 0;
+}
+.flow-col { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.node {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px; padding: 10px 18px; text-align: center; max-width: 100%;
+  color: #eaf2fb; font-size: 14.5px; font-weight: 600;
+}
+.node .sub { display: block; font-size: 12.5px; font-weight: 400; color: #8ba0bd; margin-top: 3px; }
+.node.accent { border-color: var(--mint); box-shadow: 0 0 0 1px rgba(52,227,196,0.25) inset; }
+.flow .arrow { width: 2px; height: 22px; background: var(--mint); position: relative; opacity: 0.85; }
+.flow .arrow::after {                  /* downward arrowhead at line bottom (CSS triangle, never distorted) */
+  content: ""; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--mint);
+}
+.flow .arrow .note {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  white-space: nowrap; color: #8ba0bd; font-size: 12.5px; font-weight: 400;
+}
+/* Connector drawn as ONE SVG → corners join cleanly, arrowheads sit flush.
+   No column-gap so the 3 column centres are exactly viewBox 110/330/550. */
+.flow-fan {
+  width: 100%; max-width: 660px;
+  display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 0; row-gap: 0;
+}
+.flow-fan .flow-conn {
+  grid-column: 1 / -1; grid-row: 1; width: 100%; height: 60px; display: block; overflow: visible;
+}
+.flow-fan .flow-conn .ln { fill: none; stroke: var(--mint); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
+.flow-fan .node {
+  grid-row: 2; align-self: stretch; display: flex; flex-direction: column; justify-content: center;
+  margin: 0 clamp(6px, 1.6vw, 14px);           /* spacing without column-gap, keeps centres exact */
+  position: relative;
+}
+.flow-fan .node::before {              /* downward arrowhead on each branch node top; node centre = line x (aligned) */
+  content: ""; position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--mint); opacity: 0.85;
+}
+.flow-fan .node:nth-of-type(1) { grid-column: 1; }
+.flow-fan .node:nth-of-type(2) { grid-column: 2; }
+.flow-fan .node:nth-of-type(3) { grid-column: 3; }
+
+/* ---------- cards ---------- */
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px 26px; box-shadow: var(--shadow); margin-bottom: 16px;
+}
+.card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.card p { font-size: 15px; }
+
+/* ---------- table ---------- */
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin: 8px 0; }
+th, td { text-align: left; padding: 13px 16px; font-size: 14.5px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: var(--brand-soft); color: var(--brand-dark); font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+td.num, th.num { width: 44px; text-align: center; color: var(--ink-2); font-weight: 700; }
+td.pct, th.pct { width: 70px; text-align: right; font-weight: 700; color: var(--ink-0); }
+
+/* ---------- numbered confirm list ---------- */
+ol.confirm { list-style: none; counter-reset: c; }
+ol.confirm > li {
+  counter-increment: c; position: relative; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px 18px 64px;
+  margin-bottom: 14px; box-shadow: var(--shadow);
+}
+ol.confirm > li::before {
+  content: counter(c); position: absolute; left: 20px; top: 18px;
+  width: 30px; height: 30px; border-radius: 50%; background: var(--edge); color: #06210e;
+  font-weight: 800; display: grid; place-items: center; font-size: 15px; font-family: var(--font-display);
+}
+ol.confirm > li > b { color: var(--ink-0); display: block; margin-bottom: 4px; font-size: 16px; }   /* card title only (direct child) */
+ol.confirm > li p { font-size: 14.5px; }
+ol.confirm > li p b { color: var(--ink-0); }   /* inline emphasis inside body text stays inline */
+
+/* ---------- callout ---------- */
+.callout {
+  background: var(--warn-soft); border: 1px solid #fcd9a8; border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14.5px; color: var(--warn-ink); margin: 14px 0;
+}
+.callout b { color: #92400e; }
+
+/* ---------- checklists ---------- */
+ul.plain { list-style: none; margin-top: 8px; }
+ul.plain li { position: relative; padding-left: 24px; margin-bottom: 9px; font-size: 15px; }
+ul.plain li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 900; }
+ul.exclude li::before { content: "✕"; color: var(--ink-2); }
+
+.price-note { background: var(--brand-soft); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 15px; color: var(--brand-dark); font-weight: 500; margin: 14px 0; }
+.price-note b { color: var(--brand-dark); }
+
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+
+/* ---------- footer: dark brand band ---------- */
+footer {
+  margin-top: 56px; position: relative; overflow: hidden;
+  background: radial-gradient(ellipse 70% 120% at 50% -30%, #142033, #0b121d 70%);
+  padding: clamp(34px, 5vw, 48px) var(--pad-x) clamp(26px, 4vw, 36px);
+  color: #8ba0bd; font-size: 13.5px;
+}
+footer::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--edge); opacity: 0.8; }
+footer .foot-inner { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; }
+.foot-lockup { display: flex; align-items: center; gap: 11px; margin-bottom: 20px; }
+.foot-lockup img { width: 32px; height: 32px; border-radius: 8px; display: block; }
+.foot-lockup .fl-name { font-family: var(--font-display); font-weight: 800; font-size: 17px; color: #eaf2fb; }
+footer .foot-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: #c2d2e6; }
+footer .foot-reg { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); color: #7589a3; }
+footer a { color: var(--mint); text-decoration: none; font-weight: 700; }
+
+/* ---------- print: clean PDF, watermark + dark band toned for paper ---------- */
+@media print {
+  body, .paper { background: #fff; }
+  .paper { background-image: none; }            /* watermark off on paper to keep it clean */
+  .card, table, ol.confirm > li, pre.diagram, .flow { box-shadow: none; }
+  /* allow long sections to flow across pages; keep only atomic units intact, so a
+     section taller than one page no longer gets pushed whole and leaves the prior page blank */
+  section { break-inside: auto; }
+  h2.sec { break-after: avoid; }                                  /* heading stays with its content */
+  thead { display: table-header-group; }                          /* repeat table header on each page */
+  tr, .card, ol.confirm > li, ul.plain > li { break-inside: avoid; } /* short atomic units: never split mid-row/item */
+  pre.diagram, .flow { break-inside: avoid; }                        /* diagrams read wrong if split; keep whole */
+  table, ol.confirm, ul.plain, .why-grid,
+  .callout, .price-note { break-inside: auto; }                      /* long boxes/containers may span pages, no blank-page push */
+  pre.diagram { background: #fff; color: var(--ink-0); border: 1px solid var(--line); }
+  .flow { background: #fff; border: 1px solid var(--line); }
+  .flow .node { color: var(--ink-0); border-color: var(--line); background: var(--surface-2); }
+  .flow .node .sub, .flow .arrow .note { color: var(--ink-2); }
+  .flow .arrow { background: var(--brand); }
+  .flow .arrow::after, .flow-fan .node::before { border-top-color: var(--brand); }
+  .flow-conn .ln { stroke: var(--brand); }
+  footer { background: #fff !important; color: var(--ink-2); border-top: 1px solid var(--line); padding: 22px 0 8px; }
+  footer::before { display: none; }
+  .foot-lockup .fl-name { color: var(--ink-0); }
+  footer .foot-inner { max-width: none; }
+  footer .foot-top { color: var(--ink-1); }
+  footer .foot-reg { color: var(--ink-2); border-top: 1px dashed var(--line); }
+  footer a { color: var(--brand); }
+}
+
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo-mark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJlLWxpZmUtYWkgbWFyayI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImVkZ2UiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMzRlM2M0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzdjOGNmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZ2xvdyIgY3g9IjUwJSIgY3k9IjQyJSIgcj0iNjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMGYxNjIwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA3MGIxMCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIHJ4PSIyNiIgZmlsbD0idXJsKCNnbG93KSIvPgogIDxyZWN0IHg9IjAuNzUiIHk9IjAuNzUiIHdpZHRoPSIxMTguNSIgaGVpZ2h0PSIxMTguNSIgcng9IjI1LjI1IiBmaWxsPSJub25lIiBzdHJva2U9IiMxZDI3MzMiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MCA1OCkiPgogICAgPGcgc3Ryb2tlPSJ1cmwoI2VkZ2UpIiBzdHJva2Utd2lkdGg9IjIuNCIgb3BhY2l0eT0iMC43IiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgICA8bGluZSB4MT0iMCIgeTE9IjAiIHgyPSItMjgiIHkyPSItMjYiLz4KICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMzAiIHkyPSItMjAiLz4KICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iLTIzIiB5Mj0iMjgiLz4KICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMjYiIHkyPSIyNiIvPgogICAgICA8bGluZSB4MT0iLTI4IiB5MT0iLTI2IiB4Mj0iMzAiIHkyPSItMjAiIG9wYWNpdHk9IjAuNCIvPgogICAgPC9nPgogICAgPGNpcmNsZSBjeD0iLTI4IiBjeT0iLTI2IiByPSI1IiBmaWxsPSIjN2M4Y2ZmIi8+CiAgICA8Y2lyY2xlIGN4PSIzMCIgY3k9Ii0yMCIgcj0iNSIgZmlsbD0iIzdjOGNmZiIvPgogICAgPGNpcmNsZSBjeD0iLTIzIiBjeT0iMjgiIHI9IjUiIGZpbGw9IiM3YzhjZmYiLz4KICAgIDxjaXJjbGUgY3g9IjI2IiBjeT0iMjYiIHI9IjUiIGZpbGw9IiM3YzhjZmYiLz4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzRlM2M0IiBzdHJva2Utd2lkdGg9IjEuNiIgb3BhY2l0eT0iMC4zNSIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjkiIGZpbGw9IiMzNGUzYzQiLz4KICA8L2c+Cjwvc3ZnPgo=" alt="e-life-ai" width="40" height="40" />
+      <span class="brand-name">e-life-ai</span>
+      <span class="brand-tag">service.e-life-ai.com</span>
+    </div>
+    <span class="eyebrow">需求釐清與分階段報價提案</span>
+    <h1 class="title">禾構通 HQ SteelPass 鋼構工程平台</h1>
+    <p class="lead">以一組統編開通公司身分，把詢價、報價、圖面釋疑、製造出貨、安裝追蹤、QR 構件履歷到請款結算，收攏成一條看得見、留得住紀錄的流程。</p>
+    <div class="meta-row">
+      <span class="chip">案件編號 <b>TK26062409JDUF92</b></span>
+      <span class="chip">業主 <b>禾全鋼鐵有限公司</b></span>
+      <span class="chip">行業 <b>鋼構工程</b></span>
+      <span class="chip">執行地點 <b>可遠端</b></span>
+      <span class="chip">交付方式 <b>分五階段</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="paper">
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">您的需求書</h2>
+    <div class="callout"><b>以下對應您《禾構通 HQ SteelPass 正式開發需求書 V1.0》的規劃</b>，逐一說明我們的理解、建議的交付順序，以及分階段報價。您在需求書第十三節請軟體公司「分階段拆開報價、附工期」，這份提案即依此格式回覆。</div>
+    <pre class="diagram">系統定位　鋼構工程統編開通平台
+核心概念　統編開通公司身分 · 工程建立專案履歷 · 構件綁定 QR Code · 請款結算全程留痕
+
+總功能地圖
+  A 統編公司身分系統      以統編建立公司資料，管理員審核開通內部帳號
+  B 工程專案管理          案名 · 業主 · 營造 · 工地 · 合約金額 · 承攬範圍 · 狀態
+  C 報價合約系統          報價單 · 追加報價 · 合約條款 · 付款條件 · PDF/Excel 匯出
+  D 圖面釋疑留痕          圖面版本 · 釋疑單 · 工程聯繫單 · 會議紀錄 · 等待天數
+  E 製造出貨安裝          構件製造 · 檢驗 · 出貨 · 到場 · 安裝 · 缺失 · 照片
+  F QR 構件履歷           每支構件產生 QR Code，掃描查看完整履歷
+  G 請款結算中心          理論重量 · 完成數量 · 估驗單 · 保留款 · 結算單
+  H AI 工程文書           公文 · 聯繫單 · 催告函 · 會議紀錄 · 結算說明
+
+建議分階段
+  一 內部 MVP → 二 QR 構件履歷 → 三 請款結算 → 四 外部公司開通 → 五 AI 文書與平台化</pre>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">1</span>我們對這個需求的理解</h2>
+    <p class="lead">這不是一支單純的 App，而是一套鋼構產業專用的工程管理平台。它的價值在於把原本散在 LINE、Email、紙本、Excel 與個人電腦資料夾裡的資料，收攏成一條有版本、有留痕、責任分得清楚的流程。您在需求書裡已經把這件事想得很完整，也把它切成了五個階段，我們認同這個切法。</p>
+    <p class="lead">我們把這五個階段，依「風險」與「商業價值」重新看過一遍，供您參考：</p>
+    <ul class="plain">
+      <li><b>第一階段（內部 MVP）是地基。</b>帳號權限、公司與工程資料、報價、文件釋疑、基本進度與請款雛形，先讓禾全內部流程跑順。這一層做穩，後面四階段才有可以長上去的骨架。</li>
+      <li><b>第二階段（QR 構件履歷）是這套系統和一般工程管理工具的差異點。</b>每支構件一組 QR，現場掃碼就能查履歷、更新狀態、拍照留證。這是工地那支手機真正每天會用到的功能。</li>
+      <li><b>第三階段（請款結算）是商業價值最高、也最需要細算的一段。</b>理論重量計價、保留款、應收帳款、估驗與結算，牽涉金額與爭議佐證，值得單獨一個階段把它做對。</li>
+      <li><b>第四階段（外部公司統編開通）的關鍵在資料隔離。</b>營造廠、協力廠、材料商、設計單位進來以後，各自只能看到自己的工程與承攬項目，禾全的內部成本與協力廠單價絕不能外洩。這是這一階段真正的工程重點。</li>
+      <li><b>第五階段（AI 文書與平台化）是加值。</b>等前面四階段的資料都在系統裡了，AI 才有東西可寫，公文、聯繫單、催告函、會議紀錄的自動生成也才站得住。</li>
+    </ul>
+    <div class="callout"><b>我們的判斷：</b>依需求書第十七節的規劃，先把第一階段內部 MVP 做出來、讓內部流程跑順，確認可行後再逐步往下導入，是風險最低、您也最好評估成效的路。所以這份提案會把第一階段的交付範圍講到最清楚，後面四階段先給出區間與工期，讓您先掌握整體輪廓，再依實際使用回饋逐階段確認。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">2</span>為什麼是我們</h2>
+    <p class="lead">這套平台的骨架，是我們實際交付過的東西：帳號權限分流、後台管理、報價與金流串接、狀態流轉、報表匯出，這些都是我們做過並交付上線的生產級系統裡本來就有的模組。</p>
+    <table>
+      <thead><tr><th>這套平台的關鍵</th><th>我們的對應經驗</th></tr></thead>
+      <tbody>
+        <tr><td>多公司、多角色、多工程的權限分層，資料不能跨公司外洩</td><td>做過需要嚴格權限隔離的後台系統，知道權限這一層要在資料層就擋住，不是只在畫面上藏</td></tr>
+        <tr><td>報價、請款、保留款、結算，金額要算對、稅額合計不能錯</td><td>做過含金流串接與帳務的生產級系統，金額計算與對帳是我們本來就會謹慎處理的部分</td></tr>
+        <tr><td>構件從製造到安裝的多段狀態流轉，每次更新都要留痕</td><td>狀態機與操作留痕是我們處理過的常見結構，不覆蓋舊資料、保留歷史版本是預設做法</td></tr>
+        <tr><td>18 張報表要能 PDF / Excel 匯出，可列印、蓋章、送審</td><td>報表輸出與文件產生是我們交付過的功能，格式對齊送審需求是可控的工作</td></tr>
+        <tr><td>後期 AI 工程文書，要能依案情生成正式公文</td><td>我們日常主導的正是企業對話與 AI 應用平台，AI 生成文件這一塊是我們的實作範圍</td></tr>
+      </tbody>
+    </table>
+    <p class="lead">您需求書裡規劃的模組，多數在我們手上都有對應的成品經驗可以直接套用到本案的架構規劃上。這讓我們有把握把第一階段的地基打穩，也看得清楚後面四階段各自的工作量落在哪裡。</p>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">3</span>建議的技術架構</h2>
+    <p class="lead">您在需求書第十三之一節請我們提出建議架構。我們的建議是：第一階段先用「一份程式碼、兩種用法」的混合設計，把交付風險與您的前期成本都壓到最低，同時保留日後升級成商店可下載 App 的空間。</p>
+    <table>
+      <thead><tr><th class="num">#</th><th>層</th><th>建議做法</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>前端（混合設計）</b></td><td>一份響應式程式碼：辦公室用電腦開，就是完整 Web 後台；工地用手機開同一個網址，是為手機優化的介面，還能「加到主畫面」變成像 App 的圖示，全螢幕操作。掃 QR、拍照都能直接調用手機相機。</td></tr>
+        <tr><td class="num">2</td><td><b>後端服務</b></td><td>成熟穩定的後端框架，處理帳號權限、資料流轉、報表產生與匯出。權限在資料層就控管，確保外部公司看不到未授權的資料。</td></tr>
+        <tr><td class="num">3</td><td><b>資料庫</b></td><td>可靠的關聯式資料庫，確保報價、請款、構件與履歷資料的一致與查詢效率，並支援操作留痕與版本保留。</td></tr>
+        <tr><td class="num">4</td><td><b>雲端主機與檔案儲存</b></td><td>雲端主機集中保存工程資料，圖面、照片、文件另以檔案儲存存放，含每日備份。主機與儲存費用由您這邊自付，我們協助選型與建置。</td></tr>
+        <tr><td class="num">5</td><td><b>QR Code</b></td><td>每支構件產生專屬 QR，支援批次產生、列印與手機掃描查履歷。</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>關於手機 App：</b>第一階段用上述混合設計，工地人員手機上「用起來就是一個 App」，但不需要經過 App Store 與 Google Play 的上架審核，省掉審核工期與商店年費。到第二階段導入 QR 構件履歷、真正需要現場離線暫存與商店可下載版本時，第一階段這份前端程式碼可以直接包成原生 App 上架，不需要重寫。這樣您第一階段花的錢不會浪費，升級路徑也是接續的。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">4</span>第一階段交付範圍（內部 MVP）</h2>
+    <p class="lead">這是您需求書第五節列的第一階段功能。同樣都在第一階段之內，我們把它分成「基礎」與「完整」兩種範圍，讓您可以先用一個能實際使用的基礎範圍把內部流程跑起來，再依實際使用回饋決定要不要補到完整。兩者的差別，主要在報表張數、版本控管的涵蓋範圍與進度細節，都不涉及後面第二到第五階段。</p>
+    <table>
+      <thead><tr><th class="num">#</th><th>功能</th><th>第一階段·基礎</th><th>第一階段·完整</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><b>登入與帳號管理</b></td><td>手機/Email 登入、管理員與員工帳號、角色權限、忘記密碼、登入紀錄</td><td>同左</td></tr>
+        <tr><td class="num">2</td><td><b>公司資料管理</b></td><td>公司名稱、統編、負責人、聯絡人、電話、Email、地址、角色、合作類型、付款條件、附件</td><td>同左</td></tr>
+        <tr><td class="num">3</td><td><b>專案工程管理</b></td><td>工程名稱、編號、業主、營造廠、工地、合約金額、承攬範圍、負責人、工程狀態</td><td>同左</td></tr>
+        <tr><td class="num">4</td><td><b>報價單系統</b></td><td>專案報價、追加報價，PDF/Excel 匯出</td><td>加：鐵材買賣、製造、吊裝安裝、結算等多種報價類型</td></tr>
+        <tr><td class="num">5</td><td><b>圖面與文件管理</b></td><td>PDF/圖片/Excel/Word 上傳與分類、核心文件版本標記</td><td>加：DWG、完整版本控管（正式版/作廢版/退回修正版標記）</td></tr>
+        <tr><td class="num">6</td><td><b>釋疑與工程聯繫單</b></td><td>建立釋疑單、指定回覆對象、設定期限、記錄回覆、計算等待天數、PDF 匯出</td><td>加：逾期自動提醒</td></tr>
+        <tr><td class="num">7</td><td><b>基本製造進度</b></td><td>工作項目狀態：未開始/製造中/完成/出貨中/安裝中/已完成</td><td>同左</td></tr>
+        <tr><td class="num">8</td><td><b>基本請款功能</b></td><td>請款單/估驗單雛形，含小計、稅額、總額、已收/未收款、備註</td><td>同左</td></tr>
+        <tr><td class="num">9</td><td><b>報表輸出</b></td><td>5～8 張核心報表（專案總表、報價單、釋疑等待天數表、製造進度表、請款單等）</td><td>補齊需求書第十一節全套 18 張報表</td></tr>
+        <tr><td class="num">10</td><td><b>操作留痕</b></td><td>建立人/時間、修改人/時間，重要資料不覆蓋舊檔</td><td>加：下載人、刪除人、核准人、退回人與版本編號完整留痕</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th>方案（皆為第一階段）</th><th>交付範圍</th><th class="pct">費用</th><th>工期</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一階段·基礎</b></td><td>上表「基礎」欄全部，先讓內部流程跑順</td><td class="pct">NT$500,000</td><td>約 8～10 週</td></tr>
+        <tr><td><b>第一階段·完整</b></td><td>基礎範圍 + 上表「完整」欄補齊項（18 張報表全套、完整版本控管、逾期提醒、完整留痕、多種報價類型）</td><td class="pct">NT$680,000 ～ 880,000</td><td>約 10～14 週</td></tr>
+      </tbody>
+    </table>
+    <div class="price-note">這兩個方案都只是第一階段的內部 MVP，不含後面第二到第五階段。基礎版可在 NT$500,000 預算內先完成一個能實際上線使用的版本；補到完整範圍的差額，您可以在基礎版跑順、確認方向後再決定要不要投入。決定權在您手上，我們據您選的範圍出正式報價與付款分期。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">5</span>五階段全景報價</h2>
+    <p class="lead">依需求書第十三節的格式，以下列出五個階段的費用與工期。下表每一格的金額，都是<b>該階段單獨的開發費用，各階段獨立計價、不含前一階段、不累加</b>：做哪一階段就支付哪一階段的費用，隨時可在某一階段結束後停下。第一階段如上節，後四階段先給區間，待前一階段完成、範圍隨實際使用細化後再提供正式報價。前提是範圍固定、分階段驗收、您這邊能配合確認流程。</p>
+    <style>
+      .phase-table td.money, .phase-table th.money { white-space: nowrap; text-align: right; font-weight: 700; color: var(--ink-0); width: 128px; }
+      .phase-table td.weeks, .phase-table th.weeks { white-space: nowrap; text-align: right; width: 72px; color: var(--ink-1); }
+      .phase-table td.money .sub { display: block; font-weight: 500; color: var(--ink-2); font-size: 13px; margin-top: 2px; }
+      .phase-table tr.sum-row td { border-top: 2px solid var(--brand-dark); background: var(--brand-soft); }
+    </style>
+    <table class="phase-table">
+      <thead><tr><th>階段</th><th>範圍</th><th class="money">該階段費用<br>（獨立計價）</th><th class="weeks">工期</th></tr></thead>
+      <tbody>
+        <tr><td><b>第一階段</b></td><td>內部 MVP：帳權、公司、專案、報價、文件釋疑、基本進度、基本請款、報表匯出、操作留痕</td><td class="money">50 萬<span class="sub">基礎</span>68～88 萬<span class="sub">完整</span></td><td class="weeks">8～14 週</td></tr>
+        <tr><td><b>第二階段</b></td><td>構件 QR 履歷：構件建檔、Excel 批次匯入、批次產 QR、製造/出貨/安裝狀態、掃碼拍照更新，含原生 App 上架</td><td class="money">65～95 萬</td><td class="weeks">8～12 週</td></tr>
+        <tr><td><b>第三階段</b></td><td>請款結算：理論重量計價、實作實算、階段付款、保留款、應收帳款、結算單、催款與催告函草稿</td><td class="money">90～140 萬</td><td class="weeks">12～16 週</td></tr>
+        <tr><td><b>第四階段</b></td><td>外部公司統編開通：多租戶、手機 OTP 與文件審核、跨公司權限隔離、內部成本防外洩</td><td class="money">100～160 萬</td><td class="weeks">12～18 週</td></tr>
+        <tr><td><b>第五階段</b></td><td>AI 工程文書與平台化：AI 生成公文/聯繫單/催告函/會議紀錄，逐步訂閱制與租戶管理</td><td class="money">依範圍另議</td><td class="weeks">依範圍<br>議定</td></tr>
+        <tr class="sum-row"><td colspan="2"><b>五階段全部完成合計</b>（第一至第四階段相加，第五階段另計）</td><td class="money">約 305～483 萬<span class="sub">＋第五階段</span></td><td class="weeks">分年進行</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>關於計價方式（回應報價關係的釐清）：</b>上表每一階段都是<b>獨立計價</b>：金額只計該階段本身的開發，<b>不包含也不累進前一階段</b>。例如第二階段的 65～95 萬，是第二階段新增功能的費用，與第一階段各自獨立。要五個階段全部完成，是各階段相加，即上表的合計列；只做其中前幾個階段，就只支付那幾個階段。每一階段各自簽約、各自驗收付款，您可以在任何一個階段結束後停下，不必一次承諾全部。第一階段的「基礎」（50 萬）與「完整」（68～88 萬）二擇一，是本次要先確認的一筆確定價；第二至第五階段列為未來可選項，屆時各自另立報價與合約。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">6</span>維護、第三方費用與智慧財產權</h2>
+    <p class="lead">這幾項是需求書第十三之一節與第十六節請我們一併回覆的，先講清楚，避免日後認知落差。</p>
+    <table>
+      <thead><tr><th>項目</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><b>年度維護費</b></td><td>建議抓已完成開發總額的 15%／年，含小修、例行更新、備份檢查、套件升級、障礙排除與少量客服支援。第四、五階段上線後（多租戶、OTP、AI、外部客戶使用）建議調整為 20%／年。新功能、流程變更、報表新增與欄位大改屬另行報價。</td></tr>
+        <tr><td><b>第三方月費（您自付）</b></td><td>雲端主機與資料庫備份、檔案儲存、簡訊 OTP、Email 寄信、AI API、網域與 SSL、Apple/Google 開發者帳號。這些依用量計費、直接對應到供應商，我們協助選型並據實提醒，不轉手加價。</td></tr>
+        <tr><td><b>智慧財產權</b></td><td>建議在開發合約明確約定：驗收付款完成後，本系統原始碼、資料庫與介面設計歸禾全鋼鐵所有，讓日後您這邊的同仁或其他廠商可自行維護延續。我們認同需求書第十六節，可先簽保密協議再進正式開發。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">7</span>這份報價的前提</h2>
+    <p class="lead">其餘功能細節會在開發前的需求訪談逐步定案。凡需求書未明確界定的部分，我們一律以較完整的做法納入估算，報價區間的上緣已把這些涵蓋進去，您不需要為了報價先逐項回答。以下說明幾個較大的範圍界定，讓您清楚這份報價包含到哪裡。</p>
+    <ul class="plain">
+      <li><b>報表與匯出：</b>第一階段·完整已含需求書第十一節全套 18 張報表的 PDF／Excel 匯出；基礎範圍先做其中 5～8 張核心報表。</li>
+      <li><b>圖面文件：</b>第一階段含 DWG 等圖檔的上傳、分類與版本管理。在系統內直接開啟預覽 DWG 圖面涉及專門的圖檔轉譯，歸在第二階段的現場圖面功能一起做，不影響第一階段。</li>
+      <li><b>業務規則：</b>報價、理論重量計價、保留款、估驗與結算這些算法，是您這邊的業務規則，我們負責照您提供並確認的規格正確實作，並在開發前把確認好的規格記錄下來作為驗收依據。這些規則之後若有調整，我們會配合，較大幅度的調整再一起把工時估列清楚。</li>
+    </ul>
+    <div class="callout"><b>第一階段唯一需要您先定的一件事：</b>先做基礎範圍（50 萬預算內先上線跑順），還是完整範圍（68～88 萬，補齊 18 張報表全套、完整版本控管與逾期提醒）。這兩者都只在第一階段之內，不含後面階段。您圈定後，我們即出正式報價與付款分期。</div>
+    <div class="callout"><b>關鍵相依：</b>雲端主機、簡訊 OTP、AI API 等第三方服務的開通與帳單由您這邊持有，我們協助選型與建置。第一階段不需簡訊與 AI 服務，這兩項到第四、五階段才會用到。</div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="sec-no">8</span>明確排除（如需，另行報價）</h2>
+    <ul class="plain exclude">
+      <li>第二至第五階段的功能開發（本提案先給區間，正式報價於各階段啟動前另議）。</li>
+      <li>線上金流／刷卡收款串接（本案請款為開立單據與記錄收付狀態，實際收款走您既有的銀行匯款流程；若未來需要線上收款，另行評估）。</li>
+      <li>與 Tekla、CAD 等外部軟體的自動串接（需求書列為「預留可能」，非第一階段範圍）。</li>
+      <li>雲端主機、簡訊、Email、AI API、檔案儲存等第三方服務的月費（由您這邊自付）。</li>
+      <li>App Store／Google Play 的原生 App 上架（第二階段導入）。</li>
+      <li>硬體、QR 標籤耗材與現場掃描設備採購。</li>
+    </ul>
+  </section>
+
+</div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-lockup">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJlLWxpZmUtYWkgbWFyayI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImVkZ2UiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMzRlM2M0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzdjOGNmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZ2xvdyIgY3g9IjUwJSIgY3k9IjQyJSIgcj0iNjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMGYxNjIwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA3MGIxMCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIHJ4PSIyNiIgZmlsbD0idXJsKCNnbG93KSIvPgogIDxyZWN0IHg9IjAuNzUiIHk9IjAuNzUiIHdpZHRoPSIxMTguNSIgaGVpZ2h0PSIxMTguNSIgcng9IjI1LjI1IiBmaWxsPSJub25lIiBzdHJva2U9IiMxZDI3MzMiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MCA1OCkiPgogICAgPGcgc3Ryb2tlPSJ1cmwoI2VkZ2UpIiBzdHJva2Utd2lkdGg9IjIuNCIgb3BhY2l0eT0iMC43IiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgICA8bGluZSB4MT0iMCIgeTE9IjAiIHgyPSItMjgiIHkyPSItMjYiLz4KICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMzAiIHkyPSItMjAiLz4KICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iLTIzIiB5Mj0iMjgiLz4KICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMjYiIHkyPSIyNiIvPgogICAgICA8bGluZSB4MT0iLTI4IiB5MT0iLTI2IiB4Mj0iMzAiIHkyPSItMjAiIG9wYWNpdHk9IjAuNCIvPgogICAgPC9nPgogICAgPGNpcmNsZSBjeD0iLTI4IiBjeT0iLTI2IiByPSI1IiBmaWxsPSIjN2M4Y2ZmIi8+CiAgICA8Y2lyY2xlIGN4PSIzMCIgY3k9Ii0yMCIgcj0iNSIgZmlsbD0iIzdjOGNmZiIvPgogICAgPGNpcmNsZSBjeD0iLTIzIiBjeT0iMjgiIHI9IjUiIGZpbGw9IiM3YzhjZmYiLz4KICAgIDxjaXJjbGUgY3g9IjI2IiBjeT0iMjYiIHI9IjUiIGZpbGw9IiM3YzhjZmYiLz4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzRlM2M0IiBzdHJva2Utd2lkdGg9IjEuNiIgb3BhY2l0eT0iMC4zNSIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjkiIGZpbGw9IiMzNGUzYzQiLz4KICA8L2c+Cjwvc3ZnPgo=" alt="e-life-ai" width="32" height="32" />
+      <span class="fl-name">e-life-ai</span>
+    </div>
+    <div class="foot-top">
+      <span>service.e-life-ai.com</span>
+      <span>本提案有效期 14 天｜聯絡：<a href="mailto:enor@e-life-ai.com">enor@e-life-ai.com</a> ／ LINE：<a href="https://line.me/R/ti/p/@936pvpoq">@936pvpoq</a></span>
+    </div>
+    <div class="foot-reg">數位綠洲有限公司｜統一編號 60512091</div>
+  </div>
+</footer>
+</body>
+</html>

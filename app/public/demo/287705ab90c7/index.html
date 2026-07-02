@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>禾構通 HQ SteelPass ｜ 系統雛形展示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --brand:#1E40AF; --brand-2:#3B82F6; --brand-dark:#1E3A8A;
+    --amber:#F59E0B; --amber-soft:#FEF3C7;
+    --bg:#F1F5F9; --surface:#FFFFFF; --surface-2:#F8FAFC;
+    --ink-0:#0F172A; --ink-1:#334155; --ink-2:#64748B; --ink-3:#94A3B8;
+    --line:#E2E8F0; --line-2:#CBD5E1;
+    --ok:#16A34A; --ok-soft:#DCFCE7; --warn:#D97706; --warn-soft:#FEF3C7;
+    --danger:#DC2626; --danger-soft:#FEE2E2; --info:#0284C7; --info-soft:#E0F2FE;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --sidebar-w:236px; --radius:10px;
+    --shadow:0 1px 2px rgba(15,23,42,.06),0 4px 12px rgba(15,23,42,.05);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Noto Sans TC',system-ui,sans-serif;
+    background:var(--bg); color:var(--ink-0);
+    font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* ============ login ============ */
+  #login{
+    position:fixed; inset:0; z-index:100; display:grid; place-items:center;
+    background:linear-gradient(135deg,#1E3A8A,#1E40AF 55%,#312E81);
+  }
+  .login-card{
+    width:min(92vw,380px); background:var(--surface); border-radius:16px;
+    padding:38px 34px 30px; box-shadow:0 24px 60px rgba(2,6,23,.4);
+  }
+  .login-brand{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+  .logo-mark{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));
+    display:grid;place-items:center;color:#fff;font-weight:900;font-size:19px;box-shadow:0 4px 12px rgba(30,64,175,.35)}
+  .login-brand b{font-size:19px;letter-spacing:.5px}
+  .login-brand span{display:block;font-size:11px;color:var(--ink-2);font-weight:500;margin-top:1px}
+  .login-sub{color:var(--ink-2);font-size:12.5px;margin:8px 0 22px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--ink-1);margin-bottom:5px}
+  .field input,.field select{width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:9px;
+    font-family:inherit;font-size:14px;color:var(--ink-0);background:var(--surface-2)}
+  .field input:focus,.field select:focus{outline:2px solid var(--brand-2);outline-offset:1px;border-color:var(--brand-2)}
+  .btn{cursor:pointer;border:none;border-radius:9px;font-family:inherit;font-weight:700;font-size:14px;
+    transition:background .18s,box-shadow .18s,transform .05s}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--brand);color:#fff;padding:11px 16px;width:100%;box-shadow:0 4px 12px rgba(30,64,175,.28)}
+  .btn-primary:hover{background:var(--brand-dark)}
+  .login-hint{margin-top:15px;font-size:11px;color:var(--ink-3);text-align:center;line-height:1.6}
+
+  /* ============ app shell ============ */
+  #app{display:none;min-height:100vh}
+  #app.on{display:grid;grid-template-columns:var(--sidebar-w) 1fr}
+  aside{
+    background:#0F1E4D; color:#C7D2FE; position:sticky;top:0;height:100vh;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .side-brand{display:flex;align-items:center;gap:10px;padding:18px 18px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .side-brand .logo-mark{width:34px;height:34px;font-size:16px}
+  .side-brand b{color:#fff;font-size:15px;letter-spacing:.4px}
+  .side-brand span{display:block;font-size:10px;color:#8DA2E0;font-weight:500}
+  nav{flex:1;overflow-y:auto;padding:10px 10px 20px}
+  .nav-group{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:#6B7FC7;
+    padding:14px 10px 6px;font-weight:700}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;cursor:pointer;
+    color:#C7D2FE;font-size:13.5px;font-weight:500;transition:background .15s,color .15s;margin-bottom:1px}
+  .nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+  .nav-item.active{background:var(--brand-2);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(59,130,246,.4)}
+  .nav-item svg{width:18px;height:18px;flex:0 0 18px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .nav-badge{margin-left:auto;background:var(--amber);color:#3b2500;font-size:10.5px;font-weight:700;
+    padding:1px 7px;border-radius:20px}
+
+  main{min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  header.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:0 24px;
+    height:58px;display:flex;align-items:center;gap:16px;flex:0 0 58px}
+  .crumb{font-size:12.5px;color:var(--ink-2)}
+  .crumb b{color:var(--ink-0)}
+  .top-search{margin-left:8px;flex:1;max-width:320px;position:relative}
+  .top-search input{width:100%;padding:8px 12px 8px 34px;border:1px solid var(--line);border-radius:20px;
+    background:var(--surface-2);font-family:inherit;font-size:13px}
+  .top-search svg{position:absolute;left:11px;top:9px;width:16px;height:16px;stroke:var(--ink-3);fill:none;stroke-width:2}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .icon-btn{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2);
+    transition:background .15s}
+  .icon-btn:hover{background:var(--surface-2)}
+  .icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .who{display:flex;align-items:center;gap:9px;padding-left:14px;border-left:1px solid var(--line)}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--amber));
+    color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+  .who small{display:block;color:var(--ink-2);font-size:11px}
+  .who b{font-size:13px}
+
+  .view-wrap{flex:1;overflow-y:auto;padding:24px}
+  .view{display:none;animation:fade .25s ease}
+  .view.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .page-head{display:flex;align-items:flex-end;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+  .page-head h1{margin:0;font-size:21px;font-weight:900;letter-spacing:.3px}
+  .page-head p{margin:0;color:var(--ink-2);font-size:13px}
+  .page-head .btn-primary{width:auto;margin-left:auto;padding:9px 16px;font-size:13px}
+  .btn-ghost{background:var(--surface);color:var(--brand);border:1px solid var(--line-2);padding:9px 15px;font-size:13px}
+  .btn-ghost:hover{background:var(--surface-2);border-color:var(--brand-2)}
+  .btn-sm{padding:6px 12px;font-size:12px}
+
+  /* KPI cards */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+  .kpi .lbl{font-size:12px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:7px}
+  .kpi .lbl .dot{width:8px;height:8px;border-radius:50%}
+  .kpi .val{font-size:27px;font-weight:900;margin-top:8px;font-family:var(--mono);letter-spacing:-.5px}
+  .kpi .sub{font-size:11.5px;color:var(--ink-3);margin-top:3px}
+  .kpi .sub b{color:var(--ok)}
+  .kpi .sub b.dn{color:var(--danger)}
+
+  .grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .card-head{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .card-head h3{margin:0;font-size:14.5px;font-weight:700}
+  .card-head .more{margin-left:auto;font-size:12px;color:var(--brand);cursor:pointer;font-weight:600}
+  .card-body{padding:16px 18px}
+  .card-body.flush{padding:0}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{background:var(--surface-2);text-align:left;padding:10px 16px;font-weight:700;color:var(--ink-1);
+    font-size:12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody td{padding:11px 16px;border-bottom:1px solid var(--line);color:var(--ink-1);vertical-align:middle}
+  tbody tr{transition:background .12s}
+  tbody tr:hover{background:var(--surface-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num,th.num{text-align:right;font-family:var(--mono);white-space:nowrap}
+  td.mono{font-family:var(--mono);color:var(--ink-2);font-size:12.5px}
+  .row-click{cursor:pointer}
+
+  .tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap}
+  .tag .d{width:6px;height:6px;border-radius:50%}
+  .t-ok{background:var(--ok-soft);color:#166534} .t-ok .d{background:var(--ok)}
+  .t-warn{background:var(--warn-soft);color:#92400E} .t-warn .d{background:var(--warn)}
+  .t-danger{background:var(--danger-soft);color:#991B1B} .t-danger .d{background:var(--danger)}
+  .t-info{background:var(--info-soft);color:#075985} .t-info .d{background:var(--info)}
+  .t-mute{background:#F1F5F9;color:var(--ink-2)} .t-mute .d{background:var(--ink-3)}
+
+  .bar{height:7px;background:var(--line);border-radius:6px;overflow:hidden;min-width:90px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--brand-2),var(--brand));border-radius:6px}
+
+  /* quote / doc detail */
+  .doc{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:26px 30px;max-width:820px}
+  .doc-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--brand);padding-bottom:16px;margin-bottom:18px}
+  .doc-top h2{margin:0;font-size:19px;color:var(--brand-dark)}
+  .doc-top .no{font-family:var(--mono);color:var(--ink-2);font-size:12.5px;margin-top:4px}
+  .doc-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 20px;margin-bottom:18px}
+  .doc-meta .m label{font-size:11px;color:var(--ink-3);font-weight:600;display:block}
+  .doc-meta .m span{font-size:13.5px;font-weight:600}
+  .doc-total{margin-top:16px;margin-left:auto;width:280px}
+  .doc-total .r{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}
+  .doc-total .r.grand{border-top:2px solid var(--ink-0);margin-top:6px;padding-top:11px;font-size:17px;font-weight:900}
+  .doc-total .r.grand span:last-child{color:var(--brand);font-family:var(--mono)}
+
+  /* tabs */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:0}
+  .tab{padding:10px 16px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-2);border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+  .tab:hover{color:var(--ink-0)}
+  .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+
+  /* kanban */
+  .kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  .kcol{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:10px;min-height:160px}
+  .kcol h4{margin:0 0 10px;font-size:12px;font-weight:700;color:var(--ink-1);display:flex;align-items:center;gap:6px}
+  .kcol h4 .cnt{margin-left:auto;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:0 7px;font-size:11px;color:var(--ink-2)}
+  .kcard{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin-bottom:8px;box-shadow:0 1px 2px rgba(15,23,42,.05);cursor:pointer;transition:box-shadow .15s,transform .05s}
+  .kcard:hover{box-shadow:0 4px 10px rgba(15,23,42,.1)}
+  .kcard b{font-family:var(--mono);font-size:12.5px}
+  .kcard small{display:block;color:var(--ink-2);font-size:11px;margin-top:2px}
+
+  /* audit timeline */
+  .timeline{position:relative;padding-left:26px}
+  .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--line)}
+  .tl-item{position:relative;padding:0 0 18px}
+  .tl-item::before{content:'';position:absolute;left:-22px;top:3px;width:12px;height:12px;border-radius:50%;
+    background:var(--surface);border:2.5px solid var(--brand-2)}
+  .tl-item .tl-h{font-size:13px;font-weight:600}
+  .tl-item .tl-m{font-size:11.5px;color:var(--ink-3);font-family:var(--mono)}
+  .tl-item .tl-d{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+  .tl-item.create::before{border-color:var(--ok)}
+  .tl-item.edit::before{border-color:var(--amber)}
+  .tl-item.approve::before{border-color:var(--brand)}
+
+  /* report grid */
+  .rep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .rep{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;gap:10px;transition:border-color .15s,box-shadow .15s}
+  .rep:hover{border-color:var(--brand-2);box-shadow:0 6px 16px rgba(30,64,175,.1)}
+  .rep .r-i{width:38px;height:38px;border-radius:9px;background:var(--info-soft);display:grid;place-items:center;color:var(--info)}
+  .rep .r-i svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .rep h4{margin:0;font-size:13.5px}
+  .rep small{color:var(--ink-3);font-size:11.5px}
+  .rep .r-act{display:flex;gap:7px;margin-top:auto}
+  .chip{font-size:11px;font-weight:700;padding:4px 10px;border-radius:7px;cursor:pointer;border:1px solid var(--line-2);
+    background:var(--surface);color:var(--ink-1);transition:background .15s,color .15s}
+  .chip.pdf:hover{background:var(--danger-soft);color:#991B1B;border-color:var(--danger)}
+  .chip.xls:hover{background:var(--ok-soft);color:#166534;border-color:var(--ok)}
+
+  .section-sub{font-size:12px;color:var(--ink-2);margin:2px 0 14px;display:flex;align-items:center;gap:8px}
+  .pill{background:var(--amber-soft);color:#92400E;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
+
+  /* toast */
+  #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);opacity:0;
+    background:var(--ink-0);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .3s,opacity .3s;z-index:200;pointer-events:none}
+  #toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+
+  .demo-flag{position:fixed;top:0;right:0;z-index:150;background:var(--amber);color:#3b2500;font-size:11px;font-weight:800;
+    padding:4px 12px;border-bottom-left-radius:9px;letter-spacing:.05em}
+
+  @media (max-width:960px){
+    #app.on{grid-template-columns:1fr}
+    aside{display:none}
+    .kpi-row{grid-template-columns:repeat(2,1fr)}
+    .grid-2{grid-template-columns:1fr}
+    .kanban{grid-template-columns:repeat(2,1fr)}
+    .rep-grid{grid-template-columns:1fr}
+    .doc-meta{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-flag">系統雛形展示 · 資料為示意</div>
+
+<!-- ============ LOGIN ============ -->
+<div id="login">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="logo-mark">禾</div>
+      <div><b>禾構通 SteelPass</b><span>鋼構工程統編開通平台</span></div>
+    </div>
+    <p class="login-sub">請登入以進入工程管理系統</p>
+    <div class="field">
+      <label for="acc">手機 / Email</label>
+      <input id="acc" value="admin@ho-chuan.com.tw" />
+    </div>
+    <div class="field">
+      <label for="pw">密碼</label>
+      <input id="pw" type="password" value="········" />
+    </div>
+    <div class="field">
+      <label for="role">登入身分</label>
+      <select id="role">
+        <option>禾全最高管理員</option>
+        <option>禾全工程管理員</option>
+        <option>禾全會計人員</option>
+        <option>現場人員</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">登入系統</button>
+    <p class="login-hint">這是禾構通的系統雛形展示，畫面與資料皆為示意<br/>點「登入系統」即可瀏覽各功能模組</p>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <!-- sidebar -->
+  <aside>
+    <div class="side-brand">
+      <div class="logo-mark">禾</div>
+      <div><b>禾構通</b><span>HQ SteelPass</span></div>
+    </div>
+    <nav id="nav">
+      <div class="nav-group">總覽</div>
+      <div class="nav-item active" data-view="dash"><span>儀表板</span></div>
+      <div class="nav-group">工程作業</div>
+      <div class="nav-item" data-view="projects"><span>專案工程</span></div>
+      <div class="nav-item" data-view="quote"><span>報價合約</span></div>
+      <div class="nav-item" data-view="files"><span>圖面文件</span></div>
+      <div class="nav-item" data-view="rfi"><span>釋疑聯繫單</span><span class="nav-badge">3</span></div>
+      <div class="nav-item" data-view="mfg"><span>製造進度</span></div>
+      <div class="nav-group">財務</div>
+      <div class="nav-item" data-view="billing"><span>請款估驗</span></div>
+      <div class="nav-group">系統</div>
+      <div class="nav-item" data-view="reports"><span>報表中心</span></div>
+      <div class="nav-item" data-view="audit"><span>操作留痕</span></div>
+      <div class="nav-item" data-view="company"><span>公司資料</span></div>
+    </nav>
+  </aside>
+
+  <!-- main -->
+  <main>
+    <header class="topbar">
+      <span class="crumb" id="crumb">禾構通 · <b>儀表板</b></span>
+      <div class="top-search">
+        <input placeholder="搜尋工程、構件、報價單…" />
+      </div>
+      <div class="top-right">
+        <div class="icon-btn" onclick="toast('目前沒有新的系統通知')">${ico('bell')}</div>
+        <div class="who">
+          <div class="avatar">鄧</div>
+          <div><b>鄧先生</b><small id="whoRole">禾全最高管理員</small></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="view-wrap" id="viewWrap"><!-- views injected --></div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+function ico(n){
+  const p={
+    grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+    folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    doc:'<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M14 2v6h6"/>',
+    layers:'<path d="M12 3 2 8l10 5 10-5z"/><path d="M2 13l10 5 10-5"/>',
+    chat:'<path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/>',
+    cog:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+    cash:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/>',
+    report:'<path d="M4 3h16v18H4z"/><path d="M8 12v5M12 8v9M16 14v3"/>',
+    shield:'<path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/>',
+    building:'<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h6"/>',
+    search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/>',
+    bell:'<path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  };
+  return '<svg viewBox="0 0 24 24">'+(p[n]||'')+'</svg>';
+}
+// inject icons already in DOM (template literals in HTML don't execute) -> handled below
+</script>
+
+<script>
+// ---- render sidebar icons (since HTML template ${} is literal) ----
+document.querySelectorAll('#nav .nav-item').forEach(el=>{
+  const map={dash:'grid',projects:'folder',quote:'doc',files:'layers',rfi:'chat',mfg:'cog',billing:'cash',reports:'report',audit:'shield',company:'building'};
+  const v=el.dataset.view; el.insertAdjacentHTML('afterbegin', ico(map[v]));
+});
+document.querySelector('.top-search').insertAdjacentHTML('afterbegin', ico('search'));
+document.querySelector('.top-right .icon-btn').innerHTML = ico('bell');
+
+// ---- toast ----
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200);
+}
+// ---- login ----
+function doLogin(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').classList.add('on');
+  const role=document.getElementById('role').value;
+  document.getElementById('whoRole').textContent=role;
+  render('dash');
+}
+// ---- nav ----
+const CRUMB={dash:'儀表板',projects:'專案工程',quote:'報價合約',files:'圖面文件',rfi:'釋疑聯繫單',mfg:'製造進度',billing:'請款估驗',reports:'報表中心',audit:'操作留痕',company:'公司資料'};
+document.getElementById('nav').addEventListener('click',e=>{
+  const item=e.target.closest('.nav-item'); if(!item)return;
+  document.querySelectorAll('#nav .nav-item').forEach(n=>n.classList.remove('active'));
+  item.classList.add('active');
+  render(item.dataset.view);
+  document.getElementById('viewWrap').scrollTop=0;
+});
+function render(v){
+  document.getElementById('crumb').innerHTML='禾構通 · <b>'+CRUMB[v]+'</b>';
+  document.getElementById('viewWrap').innerHTML = VIEWS[v]();
+}
+function tag(cls,txt){return '<span class="tag '+cls+'"><span class="d"></span>'+txt+'</span>'}
+
+// ================= VIEWS =================
+const VIEWS = {
+  dash: ()=>`
+    <div class="page-head">
+      <div><h1>儀表板</h1><p>禾全鋼鐵 · 工程營運總覽（示意資料）</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：開新工程表單')">＋ 新增工程</button>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--brand-2)"></span>進行中工程</div><div class="val">7</div><div class="sub">本月新增 <b>2</b> 件</div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--amber)"></span>待回覆釋疑</div><div class="val">3</div><div class="sub"><b class="dn">1 件已逾期</b></div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>本月已請款</div><div class="val">4.82<span style="font-size:15px">M</span></div><div class="sub">已收 <b>3.1M</b> · 未收 1.72M</div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--info)"></span>製造中構件</div><div class="val">1,248</div><div class="sub">今日完成 <b>86</b> 支</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>進行中工程</h3><span class="more" onclick="go('projects')">查看全部 →</span></div>
+        <div class="card-body flush">
+          <table>
+            <thead><tr><th>工程名稱</th><th>業主</th><th class="num">合約金額</th><th>進度</th><th>狀態</th></tr></thead>
+            <tbody>
+              <tr class="row-click" onclick="go('projects')"><td><b>台中軟體園區 B 棟鋼構</b></td><td>宏泰營造</td><td class="num">28,600,000</td><td><div class="bar"><i style="width:62%"></i></div></td><td>${tag('t-info','製造中')}</td></tr>
+              <tr class="row-click" onclick="go('projects')"><td><b>高雄港務大樓增建</b></td><td>國眾建設</td><td class="num">15,200,000</td><td><div class="bar"><i style="width:88%"></i></div></td><td>${tag('t-warn','安裝中')}</td></tr>
+              <tr class="row-click" onclick="go('projects')"><td><b>楠梓廠房擴建鋼構</b></td><td>台達營造</td><td class="num">9,450,000</td><td><div class="bar"><i style="width:34%"></i></div></td><td>${tag('t-info','製造中')}</td></tr>
+              <tr class="row-click" onclick="go('projects')"><td><b>沙鹿物流中心</b></td><td>豐邑機構</td><td class="num">41,800,000</td><td><div class="bar"><i style="width:12%"></i></div></td><td>${tag('t-mute','放樣中')}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>待辦與提醒</h3></div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="tl-item edit"><div class="tl-h">釋疑單 RFI-0241 已逾期 2 天</div><div class="tl-m">台中軟體園區 B 棟 · 待設計單位回覆</div></div>
+            <div class="tl-item approve"><div class="tl-h">高雄港務大樓 第 4 期請款待審核</div><div class="tl-m">金額 3,120,000 · 會計已送出</div></div>
+            <div class="tl-item create"><div class="tl-h">楠梓廠房 追加報價 QO-0188 待核准</div><div class="tl-m">追加 H400 型鋼 12 支</div></div>
+            <div class="tl-item"><div class="tl-h">沙鹿物流中心 構件清單已匯入</div><div class="tl-m">共 320 支 · 已批次產生 QR</div></div>
+          </div>
+        </div>
+      </div>
+    </div>`,
+
+  projects: ()=>`
+    <div class="page-head">
+      <div><h1>專案工程</h1><p>管理工程專案、業主、營造、合約與承攬範圍</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：新增工程專案')">＋ 新增工程</button>
+    </div>
+    <div class="card"><div class="card-body flush">
+      <table>
+        <thead><tr><th>工程編號</th><th>工程名稱</th><th>業主 / 營造</th><th>工地地址</th><th class="num">合約金額</th><th>負責人</th><th>狀態</th></tr></thead>
+        <tbody>
+          ${[
+            ['P-2026-014','台中軟體園區 B 棟鋼構','宏泰營造','台中市西屯區','28,600,000','李文豪','t-info','製造中'],
+            ['P-2026-011','高雄港務大樓增建','國眾建設','高雄市鼓山區','15,200,000','陳建志','t-warn','安裝中'],
+            ['P-2026-009','楠梓廠房擴建鋼構','台達營造','高雄市楠梓區','9,450,000','李文豪','t-info','製造中'],
+            ['P-2026-016','沙鹿物流中心','豐邑機構','台中市沙鹿區','41,800,000','王志明','t-mute','放樣中'],
+            ['P-2025-088','岡山醫院鋼構天橋','榮工工程','高雄市岡山區','6,200,000','陳建志','t-ok','已完工'],
+            ['P-2025-081','台南科技廠辦','達欣工程','台南市新市區','33,400,000','王志明','t-ok','已完工'],
+          ].map(r=>`<tr class="row-click" onclick="toast('示意：開啟 ${r[1]} 工程履歷')">
+            <td class="mono">${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td><td>${r[3]}</td>
+            <td class="num">${r[4]}</td><td>${r[5]}</td><td>${tag(r[6],r[7])}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div></div>`,
+
+  quote: ()=>`
+    <div class="page-head">
+      <div><h1>報價合約</h1><p>專案報價、追加報價、鐵材買賣、製造、吊裝安裝、結算等報價類型</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：建立新報價單')">＋ 建立報價</button>
+    </div>
+    <div class="card" style="margin-bottom:16px"><div class="tabs">
+      ${['專案報價','追加報價','鐵材買賣','製造報價','吊裝安裝','結算報價'].map((t,i)=>`<div class="tab ${i===0?'active':''}" onclick="qtab(this,'${t}')">${t}</div>`).join('')}
+    </div>
+    <div class="card-body flush">
+      <table>
+        <thead><tr><th>報價編號</th><th>工程</th><th>版次</th><th class="num">未稅金額</th><th class="num">含稅總價</th><th>狀態</th><th></th></tr></thead>
+        <tbody>
+          <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-052</td><td>台中軟體園區 B 棟鋼構</td><td>V2</td><td class="num">27,238,095</td><td class="num">28,600,000</td><td>${tag('t-ok','已核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
+          <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-049</td><td>沙鹿物流中心</td><td>V1</td><td class="num">39,809,524</td><td class="num">41,800,000</td><td>${tag('t-warn','待核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
+          <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-041</td><td>楠梓廠房擴建鋼構</td><td>V3</td><td class="num">9,000,000</td><td class="num">9,450,000</td><td>${tag('t-ok','已核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
+        </tbody>
+      </table>
+    </div></div>
+    <div id="quoteDoc"></div>`,
+
+  files: ()=>`
+    <div class="page-head">
+      <div><h1>圖面文件</h1><p>PDF、DWG、圖片、Excel、Word 上傳分類，版本控管與正式版標記</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：上傳新版圖面')">↑ 上傳文件</button>
+    </div>
+    <div class="card"><div class="card-body flush">
+      <table>
+        <thead><tr><th>圖號 / 檔名</th><th>類型</th><th>版次</th><th>狀態</th><th>上傳人</th><th>上傳日期</th><th>關聯釋疑</th></tr></thead>
+        <tbody>
+          ${[
+            ['S-B-101 結構平面圖','DWG','Rev.C','t-ok','正式版','李文豪','2026/06/18','—'],
+            ['S-B-101 結構平面圖','DWG','Rev.B','t-mute','已作廢','李文豪','2026/05/30','RFI-0231'],
+            ['S-B-204 柱腳詳圖','PDF','Rev.A','t-ok','正式版','設計單位','2026/06/12','—'],
+            ['B棟-合約書-用印版','PDF','—','t-info','合約','陳建志','2026/04/02','—'],
+            ['構件清單_B棟','XLSX','V4','t-warn','退回修正','李文豪','2026/06/20','RFI-0240'],
+          ].map(r=>`<tr class="row-click" onclick="toast('示意：預覽 ${r[0]} 並顯示版本歷史')">
+            <td><b>${r[0]}</b></td><td class="mono">${r[1]}</td><td class="mono">${r[2]}</td>
+            <td>${tag(r[3],r[4])}</td><td>${r[5]}</td><td class="mono">${r[6]}</td><td class="mono">${r[7]}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div></div>
+    <p class="section-sub" style="margin-top:14px">${ico('layers')} 舊版不覆蓋，作廢版保留可追溯 · 每次上傳記錄版次、上傳人與時間</p>`,
+
+  rfi: ()=>`
+    <div class="page-head">
+      <div><h1>釋疑與工程聯繫單</h1><p>記錄提出時間、回覆對象、等待天數與逾期提醒</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：開立新釋疑單')">＋ 開立釋疑單</button>
+    </div>
+    <div class="card"><div class="card-body flush">
+      <table>
+        <thead><tr><th>釋疑編號</th><th>工程</th><th>提出 / 回覆對象</th><th>提出日期</th><th>期限</th><th class="num">等待天數</th><th>狀態</th></tr></thead>
+        <tbody>
+          <tr class="row-click" onclick="toast('示意：開啟 RFI-0241 明細與附件')"><td class="mono">RFI-0241</td><td>台中軟體園區 B 棟</td><td>禾全 → 設計單位</td><td class="mono">2026/06/22</td><td class="mono">2026/06/29</td><td class="num" style="color:var(--danger);font-weight:700">+9 逾期</td><td>${tag('t-danger','逾期未覆')}</td></tr>
+          <tr class="row-click" onclick="toast('示意：開啟 RFI-0240')"><td class="mono">RFI-0240</td><td>台中軟體園區 B 棟</td><td>禾全 → 宏泰營造</td><td class="mono">2026/06/25</td><td class="mono">2026/07/05</td><td class="num" style="color:var(--warn);font-weight:700">+3</td><td>${tag('t-warn','等待回覆')}</td></tr>
+          <tr class="row-click" onclick="toast('示意：開啟 RFI-0238')"><td class="mono">RFI-0238</td><td>楠梓廠房擴建</td><td>台達營造 → 禾全</td><td class="mono">2026/06/28</td><td class="mono">2026/07/06</td><td class="num" style="color:var(--warn);font-weight:700">+2</td><td>${tag('t-warn','等待回覆')}</td></tr>
+          <tr class="row-click" onclick="toast('示意：開啟 RFI-0235')"><td class="mono">RFI-0235</td><td>高雄港務大樓</td><td>禾全 → 設計單位</td><td class="mono">2026/06/15</td><td class="mono">2026/06/22</td><td class="num">已結案</td><td>${tag('t-ok','已回覆')}</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+    <p class="section-sub" style="margin-top:14px"><span class="pill">逾期自動提醒</span> 系統依期限自動標示逾期，並可匯出釋疑等待天數表送審</p>`,
+
+  mfg: ()=>`
+    <div class="page-head">
+      <div><h1>製造進度</h1><p>台中軟體園區 B 棟鋼構 · 構件製造狀態看板</p></div>
+      <button class="btn btn-ghost" onclick="toast('示意：切換其他工程')">切換工程 ▾</button>
+    </div>
+    <div class="kanban">
+      ${[
+        ['未放樣','t-mute',[['C-101','H400×200 柱'],['C-102','H400×200 柱']]],
+        ['已切割','t-info',[['B-215','H350 大梁'],['B-216','H350 大梁'],['B-217','H350 大梁']]],
+        ['已組立','t-info',[['B-201','H400 大梁']]],
+        ['已焊接','t-warn',[['C-088','箱型柱'],['C-089','箱型柱']]],
+        ['已塗裝','t-warn',[['BR-12','斜撐']]],
+        ['已完成','t-ok',[['C-055','H400 柱'],['C-056','H400 柱'],['B-140','小梁']]],
+      ].map(col=>`<div class="kcol"><h4>${col[0]}<span class="cnt">${col[2].length}</span></h4>
+        ${col[2].map(c=>`<div class="kcard" onclick="toast('示意：${c[0]} 構件履歷（含照片與更新紀錄）')"><b>${c[0]}</b><small>${c[1]}</small></div>`).join('')}
+      </div>`).join('')}
+    </div>
+    <p class="section-sub" style="margin-top:16px">${ico('cog')} 每次狀態更新記錄操作人、時間與備註 · 完整 11 段狀態與 QR 掃碼更新為第二階段功能</p>`,
+
+  billing: ()=>`
+    <div class="page-head">
+      <div><h1>請款與估驗</h1><p>請款單、估驗單，含小計、稅額、已收未收款與應收帳款</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：建立第 5 期請款單')">＋ 建立請款單</button>
+    </div>
+    <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--brand-2)"></span>累計已請款</div><div class="val">18.4<span style="font-size:15px">M</span></div><div class="sub">台中軟體園區 B 棟</div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>累計已收款</div><div class="val">14.8<span style="font-size:15px">M</span></div><div class="sub">收款率 <b>80%</b></div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--danger)"></span>未收款</div><div class="val">3.6<span style="font-size:15px">M</span></div><div class="sub"><b class="dn">含逾期 1 期</b></div></div>
+    </div>
+    <div class="card"><div class="card-head"><h3>請款單明細</h3><span class="more">應收帳款表 →</span></div><div class="card-body flush">
+      <table>
+        <thead><tr><th>期別</th><th>日期</th><th class="num">本期金額</th><th class="num">稅額</th><th class="num">保留款</th><th class="num">應收金額</th><th>付款狀態</th></tr></thead>
+        <tbody>
+          <tr><td>第 1 期</td><td class="mono">2026/04/30</td><td class="num">5,720,000</td><td class="num">286,000</td><td class="num">572,000</td><td class="num">5,434,000</td><td>${tag('t-ok','已收款')}</td></tr>
+          <tr><td>第 2 期</td><td class="mono">2026/05/31</td><td class="num">4,290,000</td><td class="num">214,500</td><td class="num">429,000</td><td class="num">4,075,500</td><td>${tag('t-ok','已收款')}</td></tr>
+          <tr><td>第 3 期</td><td class="mono">2026/06/30</td><td class="num">5,270,000</td><td class="num">263,500</td><td class="num">527,000</td><td class="num">5,006,500</td><td>${tag('t-danger','逾期未收')}</td></tr>
+          <tr><td>第 4 期</td><td class="mono">2026/07/15</td><td class="num">3,120,000</td><td class="num">156,000</td><td class="num">312,000</td><td class="num">2,964,000</td><td>${tag('t-warn','審核中')}</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+    <p class="section-sub" style="margin-top:14px">${ico('cash')} 請款為開立單據與記錄收付狀態，實際收款走既有銀行匯款 · 理論重量計價、保留款結算為第三階段</p>`,
+
+  reports: ()=>`
+    <div class="page-head">
+      <div><h1>報表中心</h1><p>需求書第十一節全套 18 張報表，支援 PDF / Excel 匯出</p></div>
+    </div>
+    <div class="rep-grid">
+      ${[
+        '專案工程總表','報價單','追加工程報價單','圖面版本紀錄表','釋疑等待天數表','工程聯繫單',
+        '製造進度表','出貨清單','安裝進度表','構件 QR Code 清單','請款單','估驗單',
+        '保留款明細表','應收帳款表','結算單','協力廠付款紀錄','營造廠付款紀錄','工程履歷總表'
+      ].map((r,i)=>`<div class="rep">
+        <div class="r-i">${ico('report')}</div>
+        <div><h4>${String(i+1).padStart(2,'0')} · ${r}</h4><small>可依工程、期間篩選後匯出</small></div>
+        <div class="r-act">
+          <span class="chip pdf" onclick="toast('示意：匯出「${r}」PDF')">匯出 PDF</span>
+          <span class="chip xls" onclick="toast('示意：匯出「${r}」Excel')">匯出 Excel</span>
+        </div>
+      </div>`).join('')}
+    </div>`,
+
+  audit: ()=>`
+    <div class="page-head">
+      <div><h1>操作留痕</h1><p>報價單 QT-2026-052 的完整異動歷史（不覆蓋、可追溯）</p></div>
+    </div>
+    <div class="card"><div class="card-body">
+      <div class="timeline">
+        <div class="tl-item approve"><div class="tl-h">核准報價 · 鄧先生（最高管理員）</div><div class="tl-m">2026/06/19 14:22 · IP 61.220.xx.xx</div><div class="tl-d">狀態：待核准 → 已核准；核准金額 28,600,000</div></div>
+        <div class="tl-item edit"><div class="tl-h">修改報價 · 李文豪（工程管理員）</div><div class="tl-m">2026/06/18 10:05</div><div class="tl-d">V1 → V2；追加 H400×200 柱 4 支，未稅金額 26.1M → 27.24M</div></div>
+        <div class="tl-item edit"><div class="tl-h">退回修正 · 鄧先生</div><div class="tl-m">2026/06/17 16:48</div><div class="tl-d">退回原因：柱腳詳圖單價需依 Rev.C 重新核算</div></div>
+        <div class="tl-item create"><div class="tl-h">建立報價 · 李文豪</div><div class="tl-m">2026/06/15 09:30</div><div class="tl-d">建立 QT-2026-052 V1，關聯工程 P-2026-014</div></div>
+      </div>
+    </div></div>
+    <p class="section-sub" style="margin-top:14px">${ico('shield')} 建立、修改、核准、退回、下載、刪除均留痕，記錄操作人、時間與變更內容</p>`,
+
+  company: ()=>`
+    <div class="page-head">
+      <div><h1>公司資料</h1><p>以統一編號建立公司身分，管理合作類型、付款條件與附件</p></div>
+      <button class="btn btn-primary" onclick="toast('示意：新增公司資料')">＋ 新增公司</button>
+    </div>
+    <div class="card"><div class="card-body flush">
+      <table>
+        <thead><tr><th>公司名稱</th><th>統一編號</th><th>負責人</th><th>公司角色</th><th>合作類型</th><th>付款條件</th></tr></thead>
+        <tbody>
+          ${[
+            ['禾全鋼鐵有限公司','86531042','鄧仕宏','系統擁有者','—','—'],
+            ['宏泰營造股份有限公司','23145678','林宏泰','營造廠','月結 60 天','已建檔'],
+            ['國眾建設股份有限公司','54329871','黃國眾','營造廠','估驗計價','已建檔'],
+            ['大成鋼鐵材料行','12984563','張大成','材料商','貨到 30 天','已建檔'],
+            ['三豐加工廠','78451236','吳三豐','協力廠','完工結算','已建檔'],
+            ['禾築結構技師事務所','90128734','劉禾築','設計單位','—','已建檔'],
+          ].map(r=>`<tr class="row-click" onclick="toast('示意：開啟 ${r[0]} 公司履歷與合作紀錄')">
+            <td><b>${r[0]}</b></td><td class="mono">${r[1]}</td><td>${r[2]}</td><td>${tag(r[3]==='系統擁有者'?'t-info':'t-mute',r[3])}</td><td>${r[4]}</td><td class="mono">${r[5]}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div></div>
+    <p class="section-sub" style="margin-top:14px">${ico('building')} 外部公司統編開通、跨公司權限隔離為第四階段功能</p>`,
+};
+
+function go(v){
+  document.querySelectorAll('#nav .nav-item').forEach(n=>n.classList.toggle('active',n.dataset.view===v));
+  render(v); document.getElementById('viewWrap').scrollTop=0;
+}
+function qtab(el,name){
+  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); toast('示意：切換到「'+name+'」報價類型');
+}
+function showQuote(){
+  const el=document.getElementById('quoteDoc');
+  el.innerHTML=`<div style="margin-top:18px" class="doc">
+    <div class="doc-top">
+      <div><h2>工程報價單</h2><div class="no">報價編號 QT-2026-052 · 版次 V2 · 已核准</div></div>
+      <div style="text-align:right"><div class="logo-mark" style="margin-left:auto">禾</div><div style="font-size:11px;color:var(--ink-2);margin-top:6px">禾全鋼鐵有限公司</div></div>
+    </div>
+    <div class="doc-meta">
+      <div class="m"><label>工程名稱</label><span>台中軟體園區 B 棟鋼構</span></div>
+      <div class="m"><label>業主 / 營造</label><span>宏泰營造</span></div>
+      <div class="m"><label>報價日期</label><span>2026/06/18</span></div>
+      <div class="m"><label>承攬範圍</label><span>結構鋼構製造安裝</span></div>
+      <div class="m"><label>付款條件</label><span>估驗計價 · 保留款 10%</span></div>
+      <div class="m"><label>核准人</label><span>鄧仕宏</span></div>
+    </div>
+    <table>
+      <thead><tr><th>品項</th><th>規格</th><th class="num">數量</th><th>單位</th><th class="num">單價</th><th class="num">小計</th></tr></thead>
+      <tbody>
+        <tr><td>鋼構製造</td><td>H400×200×8×13</td><td class="num">186.5</td><td>公噸</td><td class="num">62,000</td><td class="num">11,563,000</td></tr>
+        <tr><td>箱型柱製造</td><td>□500×500×20</td><td class="num">92.0</td><td>公噸</td><td class="num">78,000</td><td class="num">7,176,000</td></tr>
+        <tr><td>現場吊裝安裝</td><td>—</td><td class="num">278.5</td><td>公噸</td><td class="num">18,500</td><td class="num">5,152,250</td></tr>
+        <tr><td>防火被覆</td><td>1 小時</td><td class="num">3,200</td><td>M²</td><td class="num">980</td><td class="num">3,136,000</td></tr>
+      </tbody>
+    </table>
+    <div class="doc-total">
+      <div class="r"><span>未稅小計</span><span>27,027,250</span></div>
+      <div class="r"><span>營業稅 5%</span><span>1,351,363</span></div>
+      <div class="r"><span>調整（四捨五入）</span><span>221,387</span></div>
+      <div class="r grand"><span>含稅總價</span><span>28,600,000</span></div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:8px">
+      <span class="chip pdf" onclick="toast('示意：匯出報價單 PDF')">匯出 PDF</span>
+      <span class="chip xls" onclick="toast('示意：匯出報價單 Excel')">匯出 Excel</span>
+      <span class="chip" onclick="toast('示意：建立追加報價')">追加報價</span>
+    </div>
+  </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+<!-- 瀏覽追蹤（只記開啟次數與時間，無 cookie、無個資） -->
+<script>
+  (function () {
+    if (/[?&]preview=1\b/.test(location.search)) return;
+    var base = 'https://elife-ai-contact.digital-oasis-tw.workers.dev/track';
+    var q = '?p=287705ab90c7&label=' + encodeURIComponent('禾構通系統雛形demo TK26062409JDUF92');
+    new Image().src = base + q + '&t=' + Date.now();
+  })();
+</script>
+</body>
+</html>
