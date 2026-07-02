@@ -32,9 +32,12 @@
 
   /* ============ login ============ */
   #login{
-    position:fixed; inset:0; z-index:100; display:grid; place-items:center;
+    position:fixed; inset:0; z-index:600; display:grid; place-items:center;
     background:linear-gradient(135deg,#1E3A8A,#1E40AF 55%,#312E81);
   }
+  #login::before{content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='170'%3E%3Ctext x='12' y='105' transform='rotate(-24 12 105)' font-family='sans-serif' font-size='24' font-weight='700' fill='%23FFFFFF' fill-opacity='0.12'%3Ee-life-ai.com%3C/text%3E%3C/svg%3E");}
+  #login .login-card{position:relative;z-index:1}
   .login-card{
     width:min(92vw,380px); background:var(--surface); border-radius:16px;
     padding:38px 34px 30px; box-shadow:0 24px 60px rgba(2,6,23,.4);
@@ -107,9 +110,14 @@
   .who small{display:block;color:var(--ink-2);font-size:11px}
   .who b{font-size:13px}
 
-  .view-wrap{flex:1;overflow-y:auto;padding:24px;position:relative;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='180'%3E%3Ctext x='0' y='110' transform='rotate(-24 0 110)' font-family='sans-serif' font-size='30' font-weight='700' fill='%231E40AF' fill-opacity='0.04'%3Ee-life-ai.com%3C/text%3E%3C/svg%3E");}
-  .view-wrap > .view{position:relative;z-index:1}
+  .view-wrap{flex:1;overflow-y:auto;padding:24px;position:relative}
+  /* 全畫面連續浮水印（含深藍側邊欄、topbar）：疊在最上層但不擋操作 */
+  #wm-bg{position:fixed;inset:0;z-index:300;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='170'%3E%3Ctext x='12' y='105' transform='rotate(-24 12 105)' font-family='sans-serif' font-size='24' font-weight='700' fill='%2394A6D4' fill-opacity='0.28'%3Ee-life-ai.com%3C/text%3E%3C/svg%3E");}
+  /* 畫面正中央大浮水印：系統雛形展示 · 資料為示意（登入頁與 app 都顯示） */
+  #wm-center{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-18deg);z-index:601;
+    pointer-events:none;color:#94A6D4;font-size:clamp(28px,5.5vw,60px);font-weight:900;letter-spacing:.06em;
+    opacity:.12;white-space:nowrap;text-align:center;user-select:none}
   .view{display:none;animation:fade .25s ease}
   .view.on{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -150,6 +158,19 @@
   td.num,th.num{text-align:right;font-family:var(--mono);white-space:nowrap}
   td.mono{font-family:var(--mono);color:var(--ink-2);font-size:12.5px}
   .row-click{cursor:pointer}
+
+  /* 共用查詢篩選列 */
+  .filter-bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+  .filter-bar .fld{display:flex;flex-direction:column;gap:4px}
+  .filter-bar .fld.grow{flex:1;min-width:130px}
+  .filter-bar .fld label{font-size:11px;font-weight:600;color:var(--ink-2)}
+  .filter-bar .fld select,.filter-bar .fld input{padding:8px 11px;border:1px solid var(--line-2);border-radius:8px;
+    font-family:inherit;font-size:13px;color:var(--ink-0);background:var(--surface);min-width:120px}
+  .filter-bar .fld select:focus,.filter-bar .fld input:focus{outline:2px solid var(--brand-2);outline-offset:1px;border-color:var(--brand-2)}
+  .filter-bar .btn-sm{flex:0 0 auto;white-space:nowrap}
+  .filter-bar .btn-fld{flex:0 0 auto}
+  .filter-bar .btn-row{display:flex;gap:8px}
+  .search-card .filter-bar .btn-primary.btn-sm{padding:8px 22px}
 
   .tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap}
   .tag .d{width:6px;height:6px;border-radius:50%}
@@ -229,9 +250,9 @@
     box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .3s,opacity .3s;z-index:200;pointer-events:none}
   #toast.on{transform:translateX(-50%) translateY(0);opacity:1}
 
-  .demo-flag{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-18deg);z-index:400;
-    pointer-events:none;color:var(--brand);font-size:clamp(30px,6vw,68px);font-weight:900;letter-spacing:.06em;
-    opacity:.07;white-space:nowrap;text-align:center;user-select:none}
+  .demo-flag{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:400;background:var(--amber);color:#3b2500;
+    font-size:11.5px;font-weight:800;padding:5px 18px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;
+    letter-spacing:.05em;box-shadow:0 2px 8px rgba(245,158,11,.35);white-space:nowrap}
 
   @media (max-width:960px){
     #app.on{grid-template-columns:1fr}
@@ -265,7 +286,6 @@
 </head>
 <body>
 
-<div class="demo-flag">系統雛形展示 · 資料為示意</div>
 
 <!-- 僅支援 PC 觀看提示（小螢幕顯示） -->
 <div id="pc-only">
@@ -357,6 +377,8 @@
   </main>
 </div>
 
+<div id="wm-bg"></div>
+<div id="wm-center">系統雛形展示 · 資料為示意</div>
 <div id="toast"></div>
 
 <script>
@@ -443,8 +465,111 @@ document.getElementById('nav').addEventListener('click',e=>{
 function render(v){
   document.getElementById('crumb').innerHTML='禾構通 · <b>'+CRUMB[v]+'</b>';
   document.getElementById('viewWrap').innerHTML = VIEWS[v]();
+  if(v==='audit') renderAudit();
 }
 function tag(cls,txt){return '<span class="tag '+cls+'"><span class="d"></span>'+txt+'</span>'}
+
+// ---- 通用檢索面板（示意）：時間區間 + 狀態 + 負責人 combolist + 關鍵字 ----
+// opts: {status:[], owner:[], extra:[{label,options}], kw:'placeholder', date:true(預設)}
+function searchPanel(opts){
+  opts=opts||{};
+  const sel=(label,arr,ph)=> arr&&arr.length?`<div class="fld"><label>${label}</label>
+    <select onchange="this.blur()"><option value="">${ph||('全部'+label)}</option>${arr.map(o=>`<option>${o}</option>`).join('')}</select></div>`:'';
+  const dateFld = opts.date===false ? '' : `
+    <div class="fld"><label>日期（起）</label><input type="date" value="2026-06-01"></div>
+    <div class="fld"><label>日期（迄）</label><input type="date" value="2026-06-30"></div>`;
+  const extra = (opts.extra||[]).map(e=>sel(e.label,e.options,e.ph)).join('');
+  return `<div class="card search-card" style="margin-bottom:14px"><div class="card-body">
+    <div class="filter-bar">
+      ${dateFld}
+      ${sel('狀態',opts.status)}
+      ${sel('負責人',opts.owner)}
+      ${extra}
+      <div class="fld grow"><label>關鍵字</label><input type="text" placeholder="${opts.kw||'輸入關鍵字'}"></div>
+      <div class="fld btn-fld"><label>&nbsp;</label>
+        <div class="btn-row">
+          <button class="btn btn-primary btn-sm" onclick="demoSearch(this)">查詢</button>
+          <button class="btn btn-ghost btn-sm" onclick="demoSearchReset(this)">清除</button>
+        </div>
+      </div>
+    </div>
+  </div></div>`;
+}
+function demoSearch(btn){
+  const bar=btn.closest('.filter-bar');
+  const chosen=[...bar.querySelectorAll('select')].filter(s=>s.value).map(s=>s.value);
+  const kw=[...bar.querySelectorAll('input[type=text]')].map(i=>i.value.trim()).filter(Boolean);
+  const cond=[...chosen,...kw].join('、')||'（未設條件）';
+  toast('示意查詢：'+cond+'　正式系統會依此即時篩選並分頁');
+}
+function demoSearchReset(btn){
+  const bar=btn.closest('.filter-bar');
+  bar.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+  bar.querySelectorAll('input[type=text]').forEach(i=>i.value='');
+  toast('已清除查詢條件');
+}
+
+// ---- 操作留痕：資料 + 檢索 ----
+const ACT_META={create:['建立','t-ok'],edit:['修改','t-warn'],approve:['核准','t-info'],
+  return:['退回','t-danger'],download:['下載','t-mute'],delete:['刪除','t-danger']};
+const AUDIT_LOG=[
+  {t:'2026/06/28 09:12',act:'download',who:'陳美惠',mod:'請款估驗',no:'IV-2026-0431',d:'下載第 3 期請款單 PDF',ip:'61.220.14.8'},
+  {t:'2026/06/25 16:40',act:'edit',who:'李文豪',mod:'圖面文件',no:'S-B-101 Rev.C',d:'上傳新版結構平面圖，Rev.B 標記為作廢',ip:'118.163.7.55'},
+  {t:'2026/06/22 11:05',act:'create',who:'李文豪',mod:'釋疑聯繫單',no:'RFI-0241',d:'開立釋疑單，指定回覆對象：設計單位',ip:'118.163.7.55'},
+  {t:'2026/06/19 14:22',act:'approve',who:'鄧仕宏',mod:'報價合約',no:'QT-2026-052',d:'狀態：待核准 → 已核准；核准金額 28,600,000',ip:'61.220.31.2'},
+  {t:'2026/06/18 10:05',act:'edit',who:'李文豪',mod:'報價合約',no:'QT-2026-052',d:'V1 → V2；追加 H400×200 柱 4 支，未稅 26.1M → 27.24M',ip:'118.163.7.55'},
+  {t:'2026/06/17 16:48',act:'return',who:'鄧仕宏',mod:'報價合約',no:'QT-2026-052',d:'退回修正：柱腳詳圖單價需依 Rev.C 重新核算',ip:'61.220.31.2'},
+  {t:'2026/06/16 08:30',act:'edit',who:'王志明',mod:'專案工程',no:'P-2026-011',d:'更新安裝進度：C-055 已校正 → 已鎖螺栓',ip:'27.242.88.19'},
+  {t:'2026/06/15 09:30',act:'create',who:'李文豪',mod:'報價合約',no:'QT-2026-052',d:'建立報價 V1，關聯工程 P-2026-014',ip:'118.163.7.55'},
+  {t:'2026/06/12 13:20',act:'delete',who:'鄧仕宏',mod:'圖面文件',no:'TMP-088',d:'刪除誤上傳的暫存草圖（保留刪除紀錄）',ip:'61.220.31.2'},
+  {t:'2026/06/10 10:00',act:'approve',who:'陳美惠',mod:'請款估驗',no:'IV-2026-0402',d:'第 2 期請款確認收款，狀態 → 已收款',ip:'61.220.14.8'},
+];
+function renderAudit(){
+  const g=id=>document.getElementById(id)?document.getElementById(id).value:'';
+  const act=g('f-act'),who=g('f-who'),mod=g('f-mod'),kw=g('f-kw').trim(),from=g('f-from'),to=g('f-to');
+  const dnum=s=>s.slice(0,10).replace(/\//g,'-');
+  const rows=AUDIT_LOG.filter(r=>{
+    if(act && r.act!==act) return false;
+    if(who && r.who!==who) return false;
+    if(mod && r.mod!==mod) return false;
+    if(from && dnum(r.t)<from) return false;
+    if(to && dnum(r.t)>to) return false;
+    if(kw && !(r.no+r.d).toLowerCase().includes(kw.toLowerCase())) return false;
+    return true;
+  });
+  const body=document.getElementById('audit-rows');
+  if(!body) return;
+  body.innerHTML = rows.length ? rows.map(r=>{
+    const[label,cls]=ACT_META[r.act];
+    return `<tr><td class="mono">${r.t}</td><td>${tag(cls,label)}</td><td>${r.who}</td>
+      <td><b>${r.mod}</b><br><span class="mono" style="font-size:11.5px">${r.no}</span></td>
+      <td>${r.d}</td><td class="mono" style="color:var(--ink-3)">${r.ip}</td></tr>`;
+  }).join('') : `<tr><td colspan="6" style="text-align:center;color:var(--ink-3);padding:30px">查無符合條件的紀錄</td></tr>`;
+  document.getElementById('audit-count').textContent = `共 ${rows.length} 筆`;
+}
+function resetAudit(){
+  ['f-act','f-who','f-mod','f-kw'].forEach(i=>{const e=document.getElementById(i);if(e)e.value='';});
+  const f=document.getElementById('f-from'),t=document.getElementById('f-to');
+  if(f)f.value=''; if(t)t.value=''; renderAudit();
+}
+
+// ---- 通用列表篩選：掃 tbody 每列文字，依所有欄位條件顯示/隱藏 ----
+// selectorVals: 由呼叫端傳入的字串陣列（各下拉/輸入的值，空字串代表不篩）
+function filterList(tbodyId, countId){
+  const tb=document.getElementById(tbodyId); if(!tb) return;
+  const vals=[...document.querySelectorAll('#'+tbodyId+'-bar [data-f]')].map(el=>el.value.trim().toLowerCase()).filter(Boolean);
+  let shown=0;
+  tb.querySelectorAll('tr').forEach(tr=>{
+    const txt=tr.textContent.toLowerCase();
+    const ok=vals.every(v=>txt.includes(v));
+    tr.style.display=ok?'':'none'; if(ok)shown++;
+  });
+  const c=document.getElementById(countId); if(c)c.textContent='共 '+shown+' 筆';
+}
+function resetList(tbodyId,countId){
+  document.querySelectorAll('#'+tbodyId+'-bar [data-f]').forEach(el=>{el.value='';});
+  filterList(tbodyId,countId);
+}
 
 // ================= VIEWS =================
 const VIEWS = {
@@ -492,10 +617,11 @@ const VIEWS = {
       <div><h1>專案工程</h1><p>管理工程專案、業主、營造、合約與承攬範圍</p></div>
       <button class="btn btn-primary" onclick="toast('示意：新增工程專案')">＋ 新增工程</button>
     </div>
+    ${searchPanel({status:['製造中','安裝中','放樣中','已完工'],owner:['李文豪','陳建志','王志明'],kw:'工程名稱 / 業主 / 編號'})}
     <div class="card"><div class="card-body flush">
       <table>
         <thead><tr><th>工程編號</th><th>工程名稱</th><th>業主 / 營造</th><th>工地地址</th><th class="num">合約金額</th><th>負責人</th><th>狀態</th></tr></thead>
-        <tbody>
+        <tbody id="proj-tb">
           ${[
             ['P-2026-014','台中軟體園區 B 棟鋼構','宏泰營造','台中市西屯區','28,600,000','李文豪','t-info','製造中'],
             ['P-2026-011','高雄港務大樓增建','國眾建設','高雄市鼓山區','15,200,000','陳建志','t-warn','安裝中'],
@@ -515,13 +641,14 @@ const VIEWS = {
       <div><h1>報價合約</h1><p>專案報價、追加報價、鐵材買賣、製造、吊裝安裝、結算等報價類型</p></div>
       <button class="btn btn-primary" onclick="toast('示意：建立新報價單')">＋ 建立報價</button>
     </div>
-    <div class="card" style="margin-bottom:16px"><div class="tabs">
+    ${searchPanel({status:['已核准','待核准','退回修正'],owner:['李文豪','陳建志','王志明'],kw:'工程名稱 / 報價編號'})}
+    <div class="card"><div class="tabs">
       ${['專案報價','追加報價','鐵材買賣','製造報價','吊裝安裝','結算報價'].map((t,i)=>`<div class="tab ${i===0?'active':''}" onclick="qtab(this,'${t}')">${t}</div>`).join('')}
     </div>
     <div class="card-body flush">
       <table>
         <thead><tr><th>報價編號</th><th>工程</th><th>版次</th><th class="num">未稅金額</th><th class="num">含稅總價</th><th>狀態</th><th></th></tr></thead>
-        <tbody>
+        <tbody id="quote-tb">
           <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-052</td><td>台中軟體園區 B 棟鋼構</td><td>V2</td><td class="num">27,238,095</td><td class="num">28,600,000</td><td>${tag('t-ok','已核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
           <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-049</td><td>沙鹿物流中心</td><td>V1</td><td class="num">39,809,524</td><td class="num">41,800,000</td><td>${tag('t-warn','待核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
           <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-041</td><td>楠梓廠房擴建鋼構</td><td>V3</td><td class="num">9,000,000</td><td class="num">9,450,000</td><td>${tag('t-ok','已核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
@@ -535,6 +662,7 @@ const VIEWS = {
       <div><h1>圖面文件</h1><p>PDF、DWG、圖片、Excel、Word 上傳分類，版本控管與正式版標記</p></div>
       <button class="btn btn-primary" onclick="toast('示意：上傳新版圖面')">↑ 上傳文件</button>
     </div>
+    ${searchPanel({status:['正式版','已作廢','退回修正','合約'],owner:['李文豪','陳建志','設計單位'],extra:[{label:'類型',options:['DWG','PDF','XLSX','圖片','Word']}],kw:'圖號 / 檔名'})}
     <div class="card"><div class="card-body flush">
       <table>
         <thead><tr><th>圖號 / 檔名</th><th>類型</th><th>版次</th><th>狀態</th><th>上傳人</th><th>上傳日期</th><th>關聯釋疑</th></tr></thead>
@@ -558,6 +686,7 @@ const VIEWS = {
       <div><h1>釋疑與工程聯繫單</h1><p>記錄提出時間、回覆對象、等待天數與逾期提醒</p></div>
       <button class="btn btn-primary" onclick="toast('示意：開立新釋疑單')">＋ 開立釋疑單</button>
     </div>
+    ${searchPanel({status:['逾期未覆','等待回覆','已回覆'],extra:[{label:'回覆對象',options:['設計單位','宏泰營造','台達營造']}],kw:'釋疑編號 / 工程'})}
     <div class="card"><div class="card-body flush">
       <table>
         <thead><tr><th>釋疑編號</th><th>工程</th><th>提出 / 回覆對象</th><th>提出日期</th><th>期限</th><th class="num">等待天數</th><th>狀態</th></tr></thead>
@@ -600,6 +729,7 @@ const VIEWS = {
       <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>累計已收款</div><div class="val">14.8<span style="font-size:15px">M</span></div><div class="sub">收款率 <b>80%</b></div></div>
       <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--danger)"></span>未收款</div><div class="val">3.6<span style="font-size:15px">M</span></div><div class="sub"><b class="dn">含逾期 1 期</b></div></div>
     </div>
+    ${searchPanel({status:['已收款','逾期未收','審核中'],extra:[{label:'工程',options:['台中軟體園區 B 棟','高雄港務大樓','楠梓廠房擴建']}],kw:'期別 / 工程'})}
     <div class="card"><div class="card-head"><h3>請款單明細</h3><span class="more">應收帳款表 →</span></div><div class="card-body flush">
       <table>
         <thead><tr><th>期別</th><th>日期</th><th class="num">本期金額</th><th class="num">稅額</th><th class="num">保留款</th><th class="num">應收金額</th><th>付款狀態</th></tr></thead>
@@ -634,23 +764,54 @@ const VIEWS = {
 
   audit: ()=>`
     <div class="page-head">
-      <div><h1>操作留痕</h1><p>報價單 QT-2026-052 的完整異動歷史（不覆蓋、可追溯）</p></div>
+      <div><h1>操作留痕檢索</h1><p>依操作類型、操作人與日期查詢全系統異動紀錄（不覆蓋、可追溯）</p></div>
+      <button class="btn btn-ghost" onclick="toast('示意：匯出目前查詢結果')">匯出結果</button>
     </div>
-    <div class="card"><div class="card-body">
-      <div class="timeline">
-        <div class="tl-item approve"><div class="tl-h">核准報價 · 鄧先生（最高管理員）</div><div class="tl-m">2026/06/19 14:22 · IP 61.220.xx.xx</div><div class="tl-d">狀態：待核准 → 已核准；核准金額 28,600,000</div></div>
-        <div class="tl-item edit"><div class="tl-h">修改報價 · 李文豪（工程管理員）</div><div class="tl-m">2026/06/18 10:05</div><div class="tl-d">V1 → V2；追加 H400×200 柱 4 支，未稅金額 26.1M → 27.24M</div></div>
-        <div class="tl-item edit"><div class="tl-h">退回修正 · 鄧先生</div><div class="tl-m">2026/06/17 16:48</div><div class="tl-d">退回原因：柱腳詳圖單價需依 Rev.C 重新核算</div></div>
-        <div class="tl-item create"><div class="tl-h">建立報價 · 李文豪</div><div class="tl-m">2026/06/15 09:30</div><div class="tl-d">建立 QT-2026-052 V1，關聯工程 P-2026-014</div></div>
+    <div class="card" style="margin-bottom:14px"><div class="card-body">
+      <div class="filter-bar">
+        <div class="fld"><label>操作類型</label>
+          <select id="f-act" onchange="renderAudit()">
+            <option value="">全部類型</option>
+            <option value="create">建立</option>
+            <option value="edit">修改</option>
+            <option value="approve">核准</option>
+            <option value="return">退回</option>
+            <option value="download">下載</option>
+            <option value="delete">刪除</option>
+          </select>
+        </div>
+        <div class="fld"><label>操作人</label>
+          <select id="f-who" onchange="renderAudit()">
+            <option value="">全部人員</option>
+            <option>鄧仕宏</option><option>李文豪</option><option>陳美惠</option><option>王志明</option>
+          </select>
+        </div>
+        <div class="fld"><label>功能模組</label>
+          <select id="f-mod" onchange="renderAudit()">
+            <option value="">全部模組</option>
+            <option>報價合約</option><option>圖面文件</option><option>請款估驗</option><option>釋疑聯繫單</option><option>專案工程</option>
+          </select>
+        </div>
+        <div class="fld"><label>日期（起）</label><input type="date" id="f-from" value="2026-06-01" onchange="renderAudit()"></div>
+        <div class="fld"><label>日期（迄）</label><input type="date" id="f-to" value="2026-06-30" onchange="renderAudit()"></div>
+        <div class="fld grow"><label>關鍵字（單號 / 內容）</label><input type="text" id="f-kw" placeholder="例如 QT-2026-052、柱腳" oninput="renderAudit()"></div>
+        <button class="btn btn-ghost btn-sm" onclick="resetAudit()">清除</button>
       </div>
     </div></div>
-    <p class="section-sub" style="margin-top:14px">${ico('shield')} 建立、修改、核准、退回、下載、刪除均留痕，記錄操作人、時間與變更內容</p>`,
+    <div class="card"><div class="card-head"><h3>查詢結果</h3><span class="more" id="audit-count"></span></div>
+      <div class="card-body flush">
+        <table><thead><tr><th>時間</th><th>操作</th><th>操作人</th><th>模組 / 單號</th><th>變更內容</th><th>IP</th></tr></thead>
+        <tbody id="audit-rows"></tbody></table>
+      </div>
+    </div>
+    <p class="section-sub" style="margin-top:14px">${ico('shield')} 建立、修改、核准、退回、下載、刪除均留痕，記錄操作人、時間、IP 與變更內容，可依條件查詢與匯出</p>`,
 
   company: ()=>`
     <div class="page-head">
       <div><h1>公司資料</h1><p>以統一編號建立公司身分，管理合作類型、付款條件與附件</p></div>
       <button class="btn btn-primary" onclick="toast('示意：新增公司資料')">＋ 新增公司</button>
     </div>
+    ${searchPanel({date:false,extra:[{label:'公司角色',options:['營造廠','材料商','協力廠','設計單位']},{label:'合作類型',options:['月結 60 天','估驗計價','貨到 30 天','完工結算']}],kw:'公司名稱 / 統編 / 負責人'})}
     <div class="card"><div class="card-body flush">
       <table>
         <thead><tr><th>公司名稱</th><th>統一編號</th><th>負責人</th><th>公司角色</th><th>合作類型</th><th>付款條件</th></tr></thead>
