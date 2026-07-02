@@ -214,6 +214,24 @@
   .kcard small{display:block;color:var(--ink-2);font-size:11px;margin-top:2px}
 
   /* audit timeline */
+  /* 待辦與提醒清單 */
+  .todo-list{display:flex;flex-direction:column}
+  .todo{padding:12px 18px 12px 16px;border-left:3px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s}
+  .todo:last-child{border-bottom:none}
+  .todo:hover{background:var(--surface-2)}
+  .todo.t-red{border-left-color:var(--danger)}
+  .todo.t-amber{border-left-color:var(--warn)}
+  .todo.t-blue{border-left-color:var(--brand-2)}
+  .todo.t-green{border-left-color:var(--ok)}
+  .todo-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .todo-badge{font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:20px}
+  .tb-red{background:var(--danger-soft);color:#991B1B}
+  .tb-amber{background:var(--warn-soft);color:#92400E}
+  .tb-blue{background:#DBEAFE;color:#1E40AF}
+  .tb-green{background:var(--ok-soft);color:#166534}
+  .todo-when{font-size:11px;color:var(--ink-3);font-family:var(--mono)}
+  .todo-h{font-size:13.5px;font-weight:700;color:var(--ink-0);margin-bottom:3px}
+  .todo-meta{font-size:11.5px;color:var(--ink-2)}
   .timeline{position:relative;padding-left:26px}
   .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--line)}
   .tl-item{position:relative;padding:0 0 18px}
@@ -450,6 +468,109 @@ function applyRole(role){
   // 進入該角色第一個有權限的頁
   go(perm.views[0]);
 }
+// =================================================================
+// 單一資料源（single source of truth）：所有頁面從此衍生，資料彼此對得起來
+// 「系統當前日」固定，讓逾期天數等可穩定驗算（demo 為靜態頁，不用即時 Date）
+// =================================================================
+const TODAY='2026-07-13';
+function daysBetween(a,b){ // b - a，回傳天數（YYYY-MM-DD 或 YYYY/MM/DD）
+  const p=s=>{const[y,m,d]=s.replace(/\//g,'-').split('-').map(Number);return Date.UTC(y,m-1,d);};
+  return Math.round((p(b)-p(a))/86400000);
+}
+function fmtNT(n){return n.toLocaleString('en-US');}
+
+const DB={
+  people:{
+    tang:{name:'鄧仕宏',role:'禾全最高管理員'},
+    li:{name:'李文豪',role:'禾全工程管理員'},
+    chenj:{name:'陳建志',role:'禾全工程管理員'},
+    wang:{name:'王志明',role:'現場人員'},
+    chenm:{name:'陳美惠',role:'禾全會計人員'},
+  },
+  companies:[
+    {no:'86531042',name:'禾全鋼鐵有限公司',owner:'鄧仕宏',role:'系統擁有者',coop:'—',pay:'—'},
+    {no:'23145678',name:'宏泰營造股份有限公司',owner:'林宏泰',role:'營造廠',coop:'月結 60 天',pay:'已建檔'},
+    {no:'54329871',name:'國眾建設股份有限公司',owner:'黃國眾',role:'營造廠',coop:'估驗計價',pay:'已建檔'},
+    {no:'12984563',name:'大成鋼鐵材料行',owner:'張大成',role:'材料商',coop:'貨到 30 天',pay:'已建檔'},
+    {no:'78451236',name:'三豐加工廠',owner:'吳三豐',role:'協力廠',coop:'完工結算',pay:'已建檔'},
+    {no:'90128734',name:'禾築結構技師事務所',owner:'劉禾築',role:'設計單位',coop:'—',pay:'已建檔'},
+  ],
+  projects:[
+    {id:'P-2026-014',name:'台中軟體園區 B 棟鋼構',owner:'宏泰營造',build:'宏泰營造',site:'台中市西屯區',amount:28600000,pm:'李文豪',stat:'製造中',statCls:'t-info',prog:62},
+    {id:'P-2026-011',name:'高雄港務大樓增建',owner:'國眾建設',build:'國眾建設',site:'高雄市鼓山區',amount:15200000,pm:'陳建志',stat:'安裝中',statCls:'t-warn',prog:88},
+    {id:'P-2026-009',name:'楠梓廠房擴建鋼構',owner:'台達營造',build:'台達營造',site:'高雄市楠梓區',amount:9450000,pm:'李文豪',stat:'製造中',statCls:'t-info',prog:34},
+    {id:'P-2026-016',name:'沙鹿物流中心',owner:'豐邑機構',build:'豐邑機構',site:'台中市沙鹿區',amount:41800000,pm:'王志明',stat:'放樣中',statCls:'t-mute',prog:12},
+    {id:'P-2025-088',name:'岡山醫院鋼構天橋',owner:'榮工工程',build:'榮工工程',site:'高雄市岡山區',amount:6200000,pm:'陳建志',stat:'已完工',statCls:'t-ok',prog:100},
+    {id:'P-2025-081',name:'台南科技廠辦',owner:'達欣工程',build:'達欣工程',site:'台南市新市區',amount:33400000,pm:'王志明',stat:'已完工',statCls:'t-ok',prog:100},
+  ],
+  // 報價：明細用算的（小計=數量×單價、稅額、含稅）
+  quotes:[
+    {id:'QT-2026-052',proj:'P-2026-014',ver:'V2',stat:'已核准',statCls:'t-ok',by:'李文豪',approver:'鄧仕宏',date:'2026-06-18',
+     items:[{name:'鋼構製造',spec:'H400×200×8×13',qty:186.5,unit:'公噸',price:62000},
+            {name:'箱型柱製造',spec:'□500×500×20',qty:92.0,unit:'公噸',price:78000},
+            {name:'現場吊裝安裝',spec:'—',qty:278.5,unit:'公噸',price:18500},
+            {name:'防火被覆',spec:'1 小時',qty:3200,unit:'M²',price:980}]},
+    {id:'QT-2026-049',proj:'P-2026-016',ver:'V1',stat:'待核准',statCls:'t-warn',by:'王志明',approver:'',date:'2026-07-08',
+     items:[{name:'鋼構製造',spec:'H500×200',qty:520,unit:'公噸',price:61000},
+            {name:'現場吊裝安裝',spec:'—',qty:520,unit:'公噸',price:16000}]},
+    {id:'QT-2026-041',proj:'P-2026-009',ver:'V3',stat:'已核准',statCls:'t-ok',by:'李文豪',approver:'鄧仕宏',date:'2026-06-30',
+     items:[{name:'鋼構製造',spec:'H350×175',qty:132,unit:'公噸',price:60000},
+            {name:'現場吊裝安裝',spec:'—',qty:132,unit:'公噸',price:16000}]},
+    {id:'QO-0188',proj:'P-2026-009',ver:'追加',stat:'待核准',statCls:'t-warn',by:'李文豪',approver:'',date:'2026-07-11',
+     items:[{name:'追加 H400 型鋼',spec:'H400×200',qty:12,unit:'支',price:48000}]},
+  ],
+  // 釋疑：逾期天數用 TODAY - 期限 算的
+  rfis:[
+    {id:'RFI-0241',proj:'P-2026-014',from:'禾全',to:'設計單位',pm:'李文豪',open:'2026-06-22',due:'2026-06-29',stat:'逾期未覆',statCls:'t-danger'},
+    {id:'RFI-0240',proj:'P-2026-014',from:'禾全',to:'宏泰營造',pm:'李文豪',open:'2026-07-04',due:'2026-07-18',stat:'等待回覆',statCls:'t-warn'},
+    {id:'RFI-0238',proj:'P-2026-009',from:'台達營造',to:'禾全',pm:'李文豪',open:'2026-07-06',due:'2026-07-20',stat:'等待回覆',statCls:'t-warn'},
+    {id:'RFI-0235',proj:'P-2026-011',from:'禾全',to:'設計單位',pm:'陳建志',open:'2026-06-15',due:'2026-06-22',stat:'已回覆',statCls:'t-ok',closed:'2026-06-20'},
+  ],
+  // 請款：本工程 P-2026-014，稅額=本期×5%、保留款=本期×10%、應收=本期+稅-保留
+  invoices:[
+    {proj:'P-2026-014',period:1,date:'2026-04-30',base:5720000,stat:'已收款',statCls:'t-ok',by:'陳美惠'},
+    {proj:'P-2026-014',period:2,date:'2026-05-31',base:4290000,stat:'已收款',statCls:'t-ok',by:'陳美惠'},
+    {proj:'P-2026-014',period:3,date:'2026-06-30',base:5270000,stat:'逾期未收',statCls:'t-danger',by:'陳美惠'},
+    {proj:'P-2026-014',period:4,date:'2026-07-12',base:3120000,stat:'審核中',statCls:'t-warn',by:'陳美惠',approver:'鄧仕宏'},
+  ],
+  files:[
+    {name:'S-B-101 結構平面圖',proj:'P-2026-014',type:'DWG',ver:'Rev.C',stat:'正式版',statCls:'t-ok',by:'李文豪',date:'2026-06-18',rfi:'—'},
+    {name:'S-B-101 結構平面圖',proj:'P-2026-014',type:'DWG',ver:'Rev.B',stat:'已作廢',statCls:'t-mute',by:'李文豪',date:'2026-05-30',rfi:'RFI-0231'},
+    {name:'S-B-204 柱腳詳圖',proj:'P-2026-014',type:'PDF',ver:'Rev.A',stat:'正式版',statCls:'t-ok',by:'設計單位',date:'2026-06-12',rfi:'—'},
+    {name:'B棟-合約書-用印版',proj:'P-2026-014',type:'PDF',ver:'—',stat:'合約',statCls:'t-info',by:'陳建志',date:'2026-04-02',rfi:'—'},
+    {name:'構件清單_B棟',proj:'P-2026-014',type:'XLSX',ver:'V4',stat:'退回修正',statCls:'t-warn',by:'李文豪',date:'2026-06-20',rfi:'RFI-0240'},
+  ],
+};
+// ---- 衍生計算（不寫死，用算的）----
+function quoteTotals(q){
+  const sub=q.items.reduce((s,i)=>s+Math.round(i.qty*i.price),0);
+  const tax=Math.round(sub*0.05);
+  return {sub,tax,total:sub+tax};
+}
+function invoiceCalc(iv){
+  const tax=Math.round(iv.base*0.05), keep=Math.round(iv.base*0.10);
+  return {tax,keep,recv:iv.base+tax-keep};
+}
+function projName(id){const p=DB.projects.find(x=>x.id===id);return p?p.name:id;}
+// 待辦：掃各模組「需處理」狀態自動聚合
+function buildTodos(){
+  const t=[];
+  DB.rfis.filter(r=>r.stat==='逾期未覆').forEach(r=>{
+    const od=daysBetween(r.due,TODAY);
+    t.push({cls:'t-red',badge:'釋疑逾期',bcls:'tb-red',when:`逾期 ${od} 天 · 期限 ${r.due.slice(5).replace('-','/')}`,
+      h:`釋疑單 ${r.id} 待${r.to}回覆`,meta:`${projName(r.proj)}　·　負責人 ${r.pm}　·　來源：釋疑聯繫單`,view:'rfi'});
+  });
+  DB.invoices.filter(i=>i.stat==='審核中').forEach(i=>{
+    t.push({cls:'t-amber',badge:'待審核',bcls:'tb-amber',when:`期限 ${i.date.slice(5).replace('-','/')}`,
+      h:`${projName(i.proj)} 第 ${i.period} 期請款`,meta:`金額 ${fmtNT(i.base)}　·　送件 ${i.by}（會計）　·　待 ${i.approver} 核准　·　來源：請款估驗`,view:'billing'});
+  });
+  DB.quotes.filter(q=>q.stat==='待核准').forEach(q=>{
+    t.push({cls:'t-blue',badge:'待核准',bcls:'tb-blue',when:`建立 ${q.date.slice(5).replace('-','/')}`,
+      h:`${projName(q.proj)} ${q.id.startsWith('QO')?'追加報價':'報價'} ${q.id}`,meta:`建立 ${q.by}　·　待核准　·　來源：報價合約`,view:'quote'});
+  });
+  return t;
+}
+
 // ---- nav ----
 const CRUMB={dash:'儀表板',projects:'專案工程',quote:'報價合約',files:'圖面文件',rfi:'釋疑聯繫單',mfg:'製造進度',billing:'請款估驗',reports:'報表中心',audit:'操作留痕',company:'公司資料'};
 document.getElementById('nav').addEventListener('click',e=>{
@@ -575,12 +696,19 @@ const VIEWS = {
       <div><h1>儀表板</h1><p>禾全鋼鐵 · 工程營運總覽（示意資料）</p></div>
       <button class="btn btn-primary" onclick="toast('示意：開新工程表單')">＋ 新增工程</button>
     </div>
-    <div class="kpi-row">
-      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--brand-2)"></span>進行中工程</div><div class="val">7</div><div class="sub">本月新增 <b>2</b> 件</div></div>
-      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--amber)"></span>待回覆釋疑</div><div class="val">3</div><div class="sub"><b class="dn">1 件已逾期</b></div></div>
-      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>本月已請款</div><div class="val">4.82<span style="font-size:15px">M</span></div><div class="sub">已收 <b>3.1M</b> · 未收 1.72M</div></div>
+    ${(()=>{
+      const active=DB.projects.filter(p=>p.stat!=='已完工').length;
+      const rfiOpen=DB.rfis.filter(r=>r.stat!=='已回覆').length;
+      const rfiOver=DB.rfis.filter(r=>r.stat==='逾期未覆').length;
+      const paidThis=DB.invoices.filter(i=>i.stat==='已收款').reduce((s,i)=>s+i.base,0);
+      const unpaid=DB.invoices.filter(i=>i.stat==='逾期未收'||i.stat==='審核中').reduce((s,i)=>s+invoiceCalc(i).recv,0);
+      const m=n=>(n/1000000).toFixed(2);
+      return `<div class="kpi-row">
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--brand-2)"></span>進行中工程</div><div class="val">${active}</div><div class="sub">共 ${DB.projects.length} 件（含已完工）</div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--amber)"></span>待回覆釋疑</div><div class="val">${rfiOpen}</div><div class="sub"><b class="dn">${rfiOver} 件已逾期</b></div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>累計已收款</div><div class="val">${m(paidThis)}<span style="font-size:15px">M</span></div><div class="sub">未收（含審核中） <b class="dn">${m(unpaid)}M</b></div></div>
       <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--info)"></span>製造中構件</div><div class="val">1,248</div><div class="sub">今日完成 <b>86</b> 支</div></div>
-    </div>
+    </div>`;})()}
     <div class="grid-2">
       <div class="card">
         <div class="card-head"><h3>進行中工程</h3><span class="more" onclick="go('projects')">查看全部 →</span></div>
@@ -588,22 +716,20 @@ const VIEWS = {
           <table>
             <thead><tr><th>工程名稱</th><th>業主</th><th class="num">合約金額</th><th>進度</th><th>狀態</th></tr></thead>
             <tbody>
-              <tr class="row-click" onclick="go('projects')"><td><b>台中軟體園區 B 棟鋼構</b></td><td>宏泰營造</td><td class="num">28,600,000</td><td><div class="bar"><i style="width:62%"></i></div></td><td>${tag('t-info','製造中')}</td></tr>
-              <tr class="row-click" onclick="go('projects')"><td><b>高雄港務大樓增建</b></td><td>國眾建設</td><td class="num">15,200,000</td><td><div class="bar"><i style="width:88%"></i></div></td><td>${tag('t-warn','安裝中')}</td></tr>
-              <tr class="row-click" onclick="go('projects')"><td><b>楠梓廠房擴建鋼構</b></td><td>台達營造</td><td class="num">9,450,000</td><td><div class="bar"><i style="width:34%"></i></div></td><td>${tag('t-info','製造中')}</td></tr>
-              <tr class="row-click" onclick="go('projects')"><td><b>沙鹿物流中心</b></td><td>豐邑機構</td><td class="num">41,800,000</td><td><div class="bar"><i style="width:12%"></i></div></td><td>${tag('t-mute','放樣中')}</td></tr>
+              ${DB.projects.filter(p=>p.stat!=='已完工').map(p=>`<tr class="row-click" onclick="go('projects')"><td><b>${p.name}</b></td><td>${p.owner}</td><td class="num">${fmtNT(p.amount)}</td><td><div class="bar"><i style="width:${p.prog}%"></i></div></td><td>${tag(p.statCls,p.stat)}</td></tr>`).join('')}
             </tbody>
           </table>
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><h3>待辦與提醒</h3></div>
-        <div class="card-body">
-          <div class="timeline">
-            <div class="tl-item edit"><div class="tl-h">釋疑單 RFI-0241 已逾期 2 天</div><div class="tl-m">台中軟體園區 B 棟 · 待設計單位回覆</div></div>
-            <div class="tl-item approve"><div class="tl-h">高雄港務大樓 第 4 期請款待審核</div><div class="tl-m">金額 3,120,000 · 會計已送出</div></div>
-            <div class="tl-item create"><div class="tl-h">楠梓廠房 追加報價 QO-0188 待核准</div><div class="tl-m">追加 H400 型鋼 12 支</div></div>
-            <div class="tl-item"><div class="tl-h">沙鹿物流中心 構件清單已匯入</div><div class="tl-m">共 320 支 · 已批次產生 QR</div></div>
+        <div class="card-head"><h3>待辦與提醒</h3><span class="more" style="cursor:default;color:var(--ink-3);font-weight:400">系統自動彙整</span></div>
+        <div class="card-body flush">
+          <div class="todo-list">
+            ${buildTodos().map(t=>`<div class="todo ${t.cls}" onclick="go('${t.view}')">
+              <div class="todo-top"><span class="todo-badge ${t.bcls}">${t.badge}</span><span class="todo-when">${t.when}</span></div>
+              <div class="todo-h">${t.h}</div>
+              <div class="todo-meta">${t.meta}</div>
+            </div>`).join('')}
           </div>
         </div>
       </div>
@@ -619,16 +745,9 @@ const VIEWS = {
       <table>
         <thead><tr><th>工程編號</th><th>工程名稱</th><th>業主 / 營造</th><th>工地地址</th><th class="num">合約金額</th><th>負責人</th><th>狀態</th></tr></thead>
         <tbody id="proj-tb">
-          ${[
-            ['P-2026-014','台中軟體園區 B 棟鋼構','宏泰營造','台中市西屯區','28,600,000','李文豪','t-info','製造中'],
-            ['P-2026-011','高雄港務大樓增建','國眾建設','高雄市鼓山區','15,200,000','陳建志','t-warn','安裝中'],
-            ['P-2026-009','楠梓廠房擴建鋼構','台達營造','高雄市楠梓區','9,450,000','李文豪','t-info','製造中'],
-            ['P-2026-016','沙鹿物流中心','豐邑機構','台中市沙鹿區','41,800,000','王志明','t-mute','放樣中'],
-            ['P-2025-088','岡山醫院鋼構天橋','榮工工程','高雄市岡山區','6,200,000','陳建志','t-ok','已完工'],
-            ['P-2025-081','台南科技廠辦','達欣工程','台南市新市區','33,400,000','王志明','t-ok','已完工'],
-          ].map(r=>`<tr class="row-click" onclick="toast('示意：開啟 ${r[1]} 工程履歷')">
-            <td class="mono">${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td><td>${r[3]}</td>
-            <td class="num">${r[4]}</td><td>${r[5]}</td><td>${tag(r[6],r[7])}</td></tr>`).join('')}
+          ${DB.projects.map(p=>`<tr class="row-click" onclick="toast('示意：開啟 ${p.name} 工程履歷')">
+            <td class="mono">${p.id}</td><td><b>${p.name}</b></td><td>${p.build}</td><td>${p.site}</td>
+            <td class="num">${fmtNT(p.amount)}</td><td>${p.pm}</td><td>${tag(p.statCls,p.stat)}</td></tr>`).join('')}
         </tbody>
       </table>
     </div></div>`,
@@ -646,9 +765,10 @@ const VIEWS = {
       <table>
         <thead><tr><th>報價編號</th><th>工程</th><th>版次</th><th class="num">未稅金額</th><th class="num">含稅總價</th><th>狀態</th><th></th></tr></thead>
         <tbody id="quote-tb">
-          <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-052</td><td>台中軟體園區 B 棟鋼構</td><td>V2</td><td class="num">27,238,095</td><td class="num">28,600,000</td><td>${tag('t-ok','已核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
-          <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-049</td><td>沙鹿物流中心</td><td>V1</td><td class="num">39,809,524</td><td class="num">41,800,000</td><td>${tag('t-warn','待核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
-          <tr class="row-click" onclick="showQuote()"><td class="mono">QT-2026-041</td><td>楠梓廠房擴建鋼構</td><td>V3</td><td class="num">9,000,000</td><td class="num">9,450,000</td><td>${tag('t-ok','已核准')}</td><td><span class="chip" onclick="event.stopPropagation();showQuote()">檢視</span></td></tr>
+          ${DB.quotes.filter(q=>!q.id.startsWith('QO')).map(q=>{const t=quoteTotals(q);
+            return `<tr class="row-click" onclick="showQuote('${q.id}')"><td class="mono">${q.id}</td><td>${projName(q.proj)}</td><td>${q.ver}</td>
+              <td class="num">${fmtNT(t.sub)}</td><td class="num">${fmtNT(t.total)}</td><td>${tag(q.statCls,q.stat)}</td>
+              <td><span class="chip" onclick="event.stopPropagation();showQuote('${q.id}')">檢視</span></td></tr>`;}).join('')}
         </tbody>
       </table>
     </div></div>
@@ -664,15 +784,9 @@ const VIEWS = {
       <table>
         <thead><tr><th>圖號 / 檔名</th><th>類型</th><th>版次</th><th>狀態</th><th>上傳人</th><th>上傳日期</th><th>關聯釋疑</th></tr></thead>
         <tbody>
-          ${[
-            ['S-B-101 結構平面圖','DWG','Rev.C','t-ok','正式版','李文豪','2026/06/18','—'],
-            ['S-B-101 結構平面圖','DWG','Rev.B','t-mute','已作廢','李文豪','2026/05/30','RFI-0231'],
-            ['S-B-204 柱腳詳圖','PDF','Rev.A','t-ok','正式版','設計單位','2026/06/12','—'],
-            ['B棟-合約書-用印版','PDF','—','t-info','合約','陳建志','2026/04/02','—'],
-            ['構件清單_B棟','XLSX','V4','t-warn','退回修正','李文豪','2026/06/20','RFI-0240'],
-          ].map(r=>`<tr class="row-click" onclick="toast('示意：預覽 ${r[0]} 並顯示版本歷史')">
-            <td><b>${r[0]}</b></td><td class="mono">${r[1]}</td><td class="mono">${r[2]}</td>
-            <td>${tag(r[3],r[4])}</td><td>${r[5]}</td><td class="mono">${r[6]}</td><td class="mono">${r[7]}</td></tr>`).join('')}
+          ${DB.files.map(f=>`<tr class="row-click" onclick="toast('示意：預覽 ${f.name} 並顯示版本歷史')">
+            <td><b>${f.name}</b></td><td class="mono">${f.type}</td><td class="mono">${f.ver}</td>
+            <td>${tag(f.statCls,f.stat)}</td><td>${f.by}</td><td class="mono">${f.date.replace(/-/g,'/')}</td><td class="mono">${f.rfi}</td></tr>`).join('')}
         </tbody>
       </table>
     </div></div>
@@ -688,10 +802,17 @@ const VIEWS = {
       <table>
         <thead><tr><th>釋疑編號</th><th>工程</th><th>提出 / 回覆對象</th><th>提出日期</th><th>期限</th><th class="num">等待天數</th><th>狀態</th></tr></thead>
         <tbody>
-          <tr class="row-click" onclick="toast('示意：開啟 RFI-0241 明細與附件')"><td class="mono">RFI-0241</td><td>台中軟體園區 B 棟</td><td>禾全 → 設計單位</td><td class="mono">2026/06/22</td><td class="mono">2026/06/29</td><td class="num" style="color:var(--danger);font-weight:700">+9 逾期</td><td>${tag('t-danger','逾期未覆')}</td></tr>
-          <tr class="row-click" onclick="toast('示意：開啟 RFI-0240')"><td class="mono">RFI-0240</td><td>台中軟體園區 B 棟</td><td>禾全 → 宏泰營造</td><td class="mono">2026/06/25</td><td class="mono">2026/07/05</td><td class="num" style="color:var(--warn);font-weight:700">+3</td><td>${tag('t-warn','等待回覆')}</td></tr>
-          <tr class="row-click" onclick="toast('示意：開啟 RFI-0238')"><td class="mono">RFI-0238</td><td>楠梓廠房擴建</td><td>台達營造 → 禾全</td><td class="mono">2026/06/28</td><td class="mono">2026/07/06</td><td class="num" style="color:var(--warn);font-weight:700">+2</td><td>${tag('t-warn','等待回覆')}</td></tr>
-          <tr class="row-click" onclick="toast('示意：開啟 RFI-0235')"><td class="mono">RFI-0235</td><td>高雄港務大樓</td><td>禾全 → 設計單位</td><td class="mono">2026/06/15</td><td class="mono">2026/06/22</td><td class="num">已結案</td><td>${tag('t-ok','已回覆')}</td></tr>
+          ${DB.rfis.map(r=>{
+            let wait,cls='';
+            if(r.stat==='已回覆'){wait='已結案';}
+            else{const d=daysBetween(r.due,TODAY);
+              if(d>0){wait=`+${d} 逾期`;cls='color:var(--danger);font-weight:700';}
+              else{wait=`剩 ${-d} 天`;cls='color:var(--warn);font-weight:700';}}
+            return `<tr class="row-click" onclick="toast('示意：開啟 ${r.id} 明細與附件')">
+              <td class="mono">${r.id}</td><td>${projName(r.proj)}</td><td>${r.from} → ${r.to}</td>
+              <td class="mono">${r.open.replace(/-/g,'/')}</td><td class="mono">${r.due.replace(/-/g,'/')}</td>
+              <td class="num" style="${cls}">${wait}</td><td>${tag(r.statCls,r.stat)}</td></tr>`;
+          }).join('')}
         </tbody>
       </table>
     </div></div>
@@ -722,19 +843,26 @@ const VIEWS = {
       <button class="btn btn-primary" onclick="toast('示意：建立第 5 期請款單')">＋ 建立請款單</button>
     </div>
     <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
-      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--brand-2)"></span>累計已請款</div><div class="val">18.4<span style="font-size:15px">M</span></div><div class="sub">台中軟體園區 B 棟</div></div>
-      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>累計已收款</div><div class="val">14.8<span style="font-size:15px">M</span></div><div class="sub">收款率 <b>80%</b></div></div>
-      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--danger)"></span>未收款</div><div class="val">3.6<span style="font-size:15px">M</span></div><div class="sub"><b class="dn">含逾期 1 期</b></div></div>
+      ${(()=>{
+        const iv=DB.invoices;
+        const billed=iv.reduce((s,i)=>s+i.base,0);
+        const paid=iv.filter(i=>i.stat==='已收款').reduce((s,i)=>s+i.base,0);
+        const unpaid=iv.filter(i=>i.stat!=='已收款').reduce((s,i)=>s+invoiceCalc(i).recv,0);
+        const over=iv.filter(i=>i.stat==='逾期未收').length;
+        const m=n=>(n/1000000).toFixed(2), rate=Math.round(paid/billed*100);
+        return `<div class="kpi"><div class="lbl"><span class="dot" style="background:var(--brand-2)"></span>累計已請款</div><div class="val">${m(billed)}<span style="font-size:15px">M</span></div><div class="sub">${projName('P-2026-014')}</div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--ok)"></span>累計已收款</div><div class="val">${m(paid)}<span style="font-size:15px">M</span></div><div class="sub">收款率 <b>${rate}%</b></div></div>
+      <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--danger)"></span>未收款</div><div class="val">${m(unpaid)}<span style="font-size:15px">M</span></div><div class="sub"><b class="dn">含逾期 ${over} 期</b></div></div>`;})()}
     </div>
     ${searchPanel({status:['已收款','逾期未收','審核中'],extra:[{label:'工程',options:['台中軟體園區 B 棟','高雄港務大樓','楠梓廠房擴建']}],kw:'期別 / 工程'})}
-    <div class="card"><div class="card-head"><h3>請款單明細</h3><span class="more">應收帳款表 →</span></div><div class="card-body flush">
+    <div class="card"><div class="card-head"><h3>請款單明細 · ${projName('P-2026-014')}</h3><span class="more">應收帳款表 →</span></div><div class="card-body flush">
       <table>
-        <thead><tr><th>期別</th><th>日期</th><th class="num">本期金額</th><th class="num">稅額</th><th class="num">保留款</th><th class="num">應收金額</th><th>付款狀態</th></tr></thead>
+        <thead><tr><th>期別</th><th>日期</th><th class="num">本期金額</th><th class="num">稅額 5%</th><th class="num">保留款 10%</th><th class="num">應收金額</th><th>付款狀態</th></tr></thead>
         <tbody>
-          <tr><td>第 1 期</td><td class="mono">2026/04/30</td><td class="num">5,720,000</td><td class="num">286,000</td><td class="num">572,000</td><td class="num">5,434,000</td><td>${tag('t-ok','已收款')}</td></tr>
-          <tr><td>第 2 期</td><td class="mono">2026/05/31</td><td class="num">4,290,000</td><td class="num">214,500</td><td class="num">429,000</td><td class="num">4,075,500</td><td>${tag('t-ok','已收款')}</td></tr>
-          <tr><td>第 3 期</td><td class="mono">2026/06/30</td><td class="num">5,270,000</td><td class="num">263,500</td><td class="num">527,000</td><td class="num">5,006,500</td><td>${tag('t-danger','逾期未收')}</td></tr>
-          <tr><td>第 4 期</td><td class="mono">2026/07/15</td><td class="num">3,120,000</td><td class="num">156,000</td><td class="num">312,000</td><td class="num">2,964,000</td><td>${tag('t-warn','審核中')}</td></tr>
+          ${DB.invoices.map(iv=>{const c=invoiceCalc(iv);
+            return `<tr><td>第 ${iv.period} 期</td><td class="mono">${iv.date.replace(/-/g,'/')}</td>
+              <td class="num">${fmtNT(iv.base)}</td><td class="num">${fmtNT(c.tax)}</td><td class="num">${fmtNT(c.keep)}</td>
+              <td class="num">${fmtNT(c.recv)}</td><td>${tag(iv.statCls,iv.stat)}</td></tr>`;}).join('')}
         </tbody>
       </table>
     </div></div>
@@ -813,15 +941,8 @@ const VIEWS = {
       <table>
         <thead><tr><th>公司名稱</th><th>統一編號</th><th>負責人</th><th>公司角色</th><th>合作類型</th><th>付款條件</th></tr></thead>
         <tbody>
-          ${[
-            ['禾全鋼鐵有限公司','86531042','鄧仕宏','系統擁有者','—','—'],
-            ['宏泰營造股份有限公司','23145678','林宏泰','營造廠','月結 60 天','已建檔'],
-            ['國眾建設股份有限公司','54329871','黃國眾','營造廠','估驗計價','已建檔'],
-            ['大成鋼鐵材料行','12984563','張大成','材料商','貨到 30 天','已建檔'],
-            ['三豐加工廠','78451236','吳三豐','協力廠','完工結算','已建檔'],
-            ['禾築結構技師事務所','90128734','劉禾築','設計單位','—','已建檔'],
-          ].map(r=>`<tr class="row-click" onclick="toast('示意：開啟 ${r[0]} 公司履歷與合作紀錄')">
-            <td><b>${r[0]}</b></td><td class="mono">${r[1]}</td><td>${r[2]}</td><td>${tag(r[3]==='系統擁有者'?'t-info':'t-mute',r[3])}</td><td>${r[4]}</td><td class="mono">${r[5]}</td></tr>`).join('')}
+          ${DB.companies.map(c=>`<tr class="row-click" onclick="toast('示意：開啟 ${c.name} 公司履歷與合作紀錄')">
+            <td><b>${c.name}</b></td><td class="mono">${c.no}</td><td>${c.owner}</td><td>${tag(c.role==='系統擁有者'?'t-info':'t-mute',c.role)}</td><td>${c.coop}</td><td class="mono">${c.pay}</td></tr>`).join('')}
         </tbody>
       </table>
     </div></div>
@@ -836,35 +957,34 @@ function qtab(el,name){
   el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active'); toast('示意：切換到「'+name+'」報價類型');
 }
-function showQuote(){
+function showQuote(id){
+  const q=DB.quotes.find(x=>x.id===id)||DB.quotes[0];
+  const p=DB.projects.find(x=>x.id===q.proj);
+  const t=quoteTotals(q);
   const el=document.getElementById('quoteDoc');
   el.innerHTML=`<div style="margin-top:18px" class="doc">
     <div class="doc-top">
-      <div><h2>工程報價單</h2><div class="no">報價編號 QT-2026-052 · 版次 V2 · 已核准</div></div>
+      <div><h2>工程報價單</h2><div class="no">報價編號 ${q.id} · 版次 ${q.ver} · ${q.stat}</div></div>
       <div style="text-align:right"><div class="logo-mark" style="margin-left:auto">禾</div><div style="font-size:11px;color:var(--ink-2);margin-top:6px">禾全鋼鐵有限公司</div></div>
     </div>
     <div class="doc-meta">
-      <div class="m"><label>工程名稱</label><span>台中軟體園區 B 棟鋼構</span></div>
-      <div class="m"><label>業主 / 營造</label><span>宏泰營造</span></div>
-      <div class="m"><label>報價日期</label><span>2026/06/18</span></div>
-      <div class="m"><label>承攬範圍</label><span>結構鋼構製造安裝</span></div>
+      <div class="m"><label>工程名稱</label><span>${p?p.name:q.proj}</span></div>
+      <div class="m"><label>業主 / 營造</label><span>${p?p.owner:'—'}</span></div>
+      <div class="m"><label>報價日期</label><span>${q.date.replace(/-/g,'/')}</span></div>
+      <div class="m"><label>建立人</label><span>${q.by}</span></div>
       <div class="m"><label>付款條件</label><span>估驗計價 · 保留款 10%</span></div>
-      <div class="m"><label>核准人</label><span>鄧仕宏</span></div>
+      <div class="m"><label>核准人</label><span>${q.approver||'（待核准）'}</span></div>
     </div>
     <table>
       <thead><tr><th>品項</th><th>規格</th><th class="num">數量</th><th>單位</th><th class="num">單價</th><th class="num">小計</th></tr></thead>
       <tbody>
-        <tr><td>鋼構製造</td><td>H400×200×8×13</td><td class="num">186.5</td><td>公噸</td><td class="num">62,000</td><td class="num">11,563,000</td></tr>
-        <tr><td>箱型柱製造</td><td>□500×500×20</td><td class="num">92.0</td><td>公噸</td><td class="num">78,000</td><td class="num">7,176,000</td></tr>
-        <tr><td>現場吊裝安裝</td><td>—</td><td class="num">278.5</td><td>公噸</td><td class="num">18,500</td><td class="num">5,152,250</td></tr>
-        <tr><td>防火被覆</td><td>1 小時</td><td class="num">3,200</td><td>M²</td><td class="num">980</td><td class="num">3,136,000</td></tr>
+        ${q.items.map(i=>`<tr><td>${i.name}</td><td>${i.spec}</td><td class="num">${i.qty}</td><td>${i.unit}</td><td class="num">${fmtNT(i.price)}</td><td class="num">${fmtNT(Math.round(i.qty*i.price))}</td></tr>`).join('')}
       </tbody>
     </table>
     <div class="doc-total">
-      <div class="r"><span>未稅小計</span><span>27,027,250</span></div>
-      <div class="r"><span>營業稅 5%</span><span>1,351,363</span></div>
-      <div class="r"><span>調整（四捨五入）</span><span>221,387</span></div>
-      <div class="r grand"><span>含稅總價</span><span>28,600,000</span></div>
+      <div class="r"><span>未稅小計</span><span>${fmtNT(t.sub)}</span></div>
+      <div class="r"><span>營業稅 5%</span><span>${fmtNT(t.tax)}</span></div>
+      <div class="r grand"><span>含稅總價</span><span>${fmtNT(t.total)}</span></div>
     </div>
     <div style="margin-top:20px;display:flex;gap:8px">
       <span class="chip pdf" onclick="toast('示意：匯出報價單 PDF')">匯出 PDF</span>
