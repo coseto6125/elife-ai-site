@@ -355,9 +355,6 @@
   <main>
     <header class="topbar">
       <span class="crumb" id="crumb">禾構通 · <b>儀表板</b></span>
-      <div class="top-search">
-        <input placeholder="搜尋工程、構件、報價單…" />
-      </div>
       <div class="top-right">
         <div class="icon-btn" onclick="toast('目前沒有新的系統通知')">${ico('bell')}</div>
         <div class="who">
@@ -408,7 +405,6 @@ document.querySelectorAll('#nav .nav-item').forEach(el=>{
   const map={dash:'grid',projects:'folder',quote:'doc',files:'layers',rfi:'chat',mfg:'cog',billing:'cash',reports:'report',audit:'shield',company:'building'};
   const v=el.dataset.view; el.insertAdjacentHTML('afterbegin', ico(map[v]));
 });
-document.querySelector('.top-search').insertAdjacentHTML('afterbegin', ico('search'));
 document.querySelector('.top-right .icon-btn').innerHTML = ico('bell');
 
 // ---- toast ----
