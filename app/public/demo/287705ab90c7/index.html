@@ -231,11 +231,38 @@
     .rep-grid{grid-template-columns:1fr}
     .doc-meta{grid-template-columns:1fr 1fr}
   }
+
+  /* ---- 僅支援 PC 觀看：小螢幕遮罩 ---- */
+  #pc-only{display:none}
+  @media (max-width:900px){
+    #pc-only{
+      display:flex;position:fixed;inset:0;z-index:500;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;padding:32px;
+      background:linear-gradient(135deg,#1E3A8A,#1E40AF 55%,#312E81);color:#fff;
+    }
+    #pc-only .m{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,.14);
+      display:grid;place-items:center;margin-bottom:20px}
+    #pc-only .m svg{width:32px;height:32px;stroke:#fff;fill:none;stroke-width:1.6}
+    #pc-only h2{margin:0 0 10px;font-size:20px;font-weight:900;letter-spacing:.5px}
+    #pc-only p{margin:0;font-size:14px;line-height:1.7;color:#C7D2FE;max-width:300px}
+    #pc-only .tag-pc{margin-top:20px;font-size:12px;font-weight:700;background:var(--amber);
+      color:#3b2500;padding:6px 14px;border-radius:20px}
+    /* 遮罩開啟時鎖住底層捲動 */
+    body{overflow:hidden}
+  }
 </style>
 </head>
 <body>
 
 <div class="demo-flag">系統雛形展示 · 資料為示意</div>
+
+<!-- 僅支援 PC 觀看提示（小螢幕顯示） -->
+<div id="pc-only">
+  <div class="m"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+  <h2>請用電腦瀏覽</h2>
+  <p>禾構通是工程管理後台系統，畫面資訊量較大，建議在桌上型電腦或筆電上開啟，以獲得完整的操作體驗。</p>
+  <div class="tag-pc">此雛形展示僅支援 PC 觀看</div>
+</div>
 
 <!-- ============ LOGIN ============ -->
 <div id="login">
